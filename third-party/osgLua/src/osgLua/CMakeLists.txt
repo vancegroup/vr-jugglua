@@ -16,6 +16,6 @@ set(OSGLUA_SRCS
 	Value.h
 	../../include/osgLua/Script)
 
-#add_library(osgLua SHARED ${OSGLUA_SRCS})
-add_library(osgLua ${OSGLUA_SRCS})
+add_library(osgLua SHARED ${OSGLUA_SRCS})
+#add_library(osgLua ${OSGLUA_SRCS})
 target_link_libraries(osgLua ${OPENSCENEGRAPH_LIBRARIES} ${LUA_LIBRARIES})
