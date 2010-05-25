@@ -66,7 +66,13 @@ static void ll_unloadlib (void *lib) {
 
 
 static void *ll_load (lua_State *L, const char *path) {
-  void *lib = dlopen(path, RTLD_NOW);
+  void *lib = dlopen(path,
+#ifdef LUA_DL_USE_RTLD_GLOBAL
+		  RTLD_NOW | RTLD_GLOBAL
+#else
+		  RTLD_NOW
+#endif
+		  );
   if (lib == NULL) lua_pushstring(L, dlerror());
   return lib;
 }

@@ -67,6 +67,9 @@ elseif(APPLE)
 	add_definitions(-DLUA_USE_MACOSX)
 else() # Linux
 	add_definitions(-DLUA_USE_LINUX)
+
+	# TODO: might need this for osgLua?
+	#add_definitions(-DLUA_DL_USE_RTLD_GLOBAL)
 	list(APPEND LUA_EXTRA_LIBS readline)
 endif()
 
