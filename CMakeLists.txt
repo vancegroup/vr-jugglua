@@ -22,6 +22,11 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-src
 # Set up options
 ###
 
+option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app." ON)
+if(BUILD_EMBEDDED_LUA)
+	add_definitions(-DEMBEDDED_LUA)
+endif()
+
 option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple." OFF)
 if(BUILD_LUABIND_COMBINED)
 	add_definitions(-DLUABIND_COMBINED_COMPILE)
@@ -50,7 +55,7 @@ include(CreateDashboardScripts)
 # OpenSceneGraph
 set(EXTRA_LIBS)
 include(SearchProgramFilesForOpenSceneGraph)
-find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgUtil)
+find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgUtil osgIntrospection)
 list(APPEND EXTRA_LIBS ${OPENSCENEGRAPH_LIBRARIES})
 
 include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
@@ -67,15 +72,20 @@ list(APPEND EXTRA_LIBS ${VRJUGGLER22_LIBRARIES})
 include_directories(${VRJUGGLER22_INCLUDE_DIRS})
 
 # Lua
-find_package(Luabind REQUIRED)
-list(APPEND EXTRA_LIBS ${LUABIND_LIBRARIES})
-include_directories(${LUABIND_INCLUDE_DIRS})
-add_definitions(${LUABIND_DEFINITIONS})
+if(BUILD_EMBEDDED_LUA)
+	add_subdirectory(third-party)
+	list(APPEND EXTRA_LIBS luabind osgLua)
+	include_directories(${LUABIND_INCLUDE_DIRS} ${OSGLUA_INCLUDE_DIRS})
+else()
+	find_package(Luabind REQUIRED)
+	list(APPEND EXTRA_LIBS ${LUABIND_LIBRARIES})
+	include_directories(${LUABIND_INCLUDE_DIRS})
+	add_definitions(${LUABIND_DEFINITIONS})
 
-find_package(osgLua REQUIRED)
-list(APPEND EXTRA_LIBS ${OSGLUA_LIBRARIES})
-include_directories(${OSGLUA_INCLUDE_DIRS})
-
+	find_package(osgLua REQUIRED)
+	list(APPEND EXTRA_LIBS ${OSGLUA_LIBRARIES})
+	include_directories(${OSGLUA_INCLUDE_DIRS})
+endif()
 
 ###
 # End build configuration

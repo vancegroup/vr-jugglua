@@ -1,25 +1,14 @@
-project(osgLua)
+# Embedded build for osgLua
+# 2009-2010 Ryan Pavlik <rpavlik@iastate.edu>
+# http://academic.cleardefinition.com/
+# Iowa State University HCI Graduate Program/VRAC
 
-option(OSGLUA_EXAMPLES "Compile osgLua Examples" YES)
-option(OSGLUA_USE_INTERNAL_LUA "Compile lua inside osgLuas" YES)
+# Must configure your top-level project to find osgIntrospection
 
-set(CMAKE_MODULE_PATH "${osgLua_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
-set(LIBRARY_OUTPUT_PATH ${osgLua_SOURCE_DIR}/lib)
-set(EXECUTABLE_OUTPUT_PATH ${osgLua_SOURCE_DIR}/bin)
-link_directories(${LIBRARY_OUTPUT_PATH})
+include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
 
-find_package(OSG REQUIRED)
+include_directories(${LUA_INCLUDE_DIRS})
 
-if (NOT OSGLUA_USE_INTERNAL_LUA)
-	find_package(Lua REQUIRED)
-else (NOT OSGLUA_USE_INTERNAL_LUA)
-	set(LUA_INCLUDE_DIR "${osgLua_SOURCE_DIR}/src/lua-5.1.2/src")
-	set(LUA_LIBRARY "")
-endif(NOT OSGLUA_USE_INTERNAL_LUA)
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-
-add_subdirectory(src)
-if(OSGLUA_EXAMPLES)
-	add_subdirectory(examples)
-endif(OSGLUA_EXAMPLES)
-
+add_subdirectory(src/osgLua)
