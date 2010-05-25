@@ -207,10 +207,10 @@ else
 
 if docs in [ modules.peek : ARGV ] 
 {
-    local result = [ SHELL "rst2html.py --version 2>&1" : exit-status ] ;
+    local result = [ SHELL "rst2html --version 2>&1" : exit-status ] ;
     if $(result[2]) = 0
     {
-        found-rst2html = rst2html.py ;
+        found-rst2html = rst2html ;
     }
 }
 

@@ -93,16 +93,16 @@ else()
 endif()
 
 ###
-# End build configuration
-###
-
-###
 # Build the project
 ###
 
 set(CMAKE_DEBUG_POSTFIX  "_d")
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+
+# Add a full lua interpreter as a test
+add_executable(luainterp third-party/lua-5.1.4/src/lua.c)
+target_link_libraries(luainterp ${EXTRA_LIBS})
 
 add_subdirectory(vrjugglua)
 
