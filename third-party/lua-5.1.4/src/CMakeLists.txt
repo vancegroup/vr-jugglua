@@ -70,7 +70,12 @@ else() # Linux
 
 	# TODO: might need this for osgLua?
 	#add_definitions(-DLUA_DL_USE_RTLD_GLOBAL)
-	list(APPEND LUA_EXTRA_LIBS readline)
+	find_library(READLINE_LIBRARY
+		NAMES
+		readline)
+	find_package(Curses)
+
+	list(APPEND LUA_EXTRA_LIBS ${READLINE_LIBRARY} ${CURSES_LIBRARIES})
 endif()
 
 add_library(lua ${LUA_SRCS})
