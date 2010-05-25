@@ -21,6 +21,9 @@ set(APP_SOURCES
 	LuaOSGApp.h
 	main.cpp)
 
+set(LUAAPPOBJ_SOURCES
+	runLuaAppObject.cpp)
+
 add_library(vrjugglua ${SOURCES} ${API})
 set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
 target_link_libraries(vrjugglua ${EXTRA_LIBS})
@@ -32,3 +35,8 @@ add_executable(vrjugglua-launcher ${APP_SOURCES})
 target_link_libraries(vrjugglua-launcher vrjugglua)
 stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua-launcher)
 add_cppcheck(vrjugglua-launcher)
+
+add_executable(vrjugglua-appobject ${LUAAPPOBJ_SOURCES})
+target_link_libraries(vrjugglua-appobject vrjugglua)
+stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua-appobject)
+add_cppcheck(vrjugglua-appobject)
