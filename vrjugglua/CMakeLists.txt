@@ -4,14 +4,21 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 set(SOURCES
+	Lua_PositionInterface.h
 	Lua_PositionInterface.cpp
 	LuaScript.cpp)
+
+set(LUA_BINDING_COMPONENTS
+	BindPositionInterfaceToLua.h
+	BindOsgToLua.h
+	BindOsgAppToLua.h)
 
 set(API
 	LuaScript.h)
 
 set(APP_SOURCES
 	LuaOSGApp.cpp
+	LuaOSGApp.h
 	main.cpp)
 
 add_library(vrjugglua ${SOURCES} ${API})

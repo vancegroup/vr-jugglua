@@ -24,6 +24,9 @@
 #include "BindPositionInterfaceToLua.h"
 #endif
 
+#include "BindOsgAppToLua.h"
+#include "BindOsgToLua.h"
+
 // Library/third-party includes
 extern "C" {
 #include "lauxlib.h"
@@ -39,10 +42,7 @@ namespace vrjLua {
 
 LuaScript::LuaScript() :
 		_state(luaL_newstate(), std::ptr_fun(lua_close)) {
-#ifdef VERBOSE
-	std::cout << "**** LuaScript constructor invoked" << std::endl;
-	std::cout << "Lua state pointer: " << _state.get() << std::endl;
-#endif
+	// Load default Lua libs
 	luaL_openlibs(_state.get());
 
 	// Connect LuaBind to this state
@@ -52,12 +52,19 @@ LuaScript::LuaScript() :
 		std::cerr << "Caught exception connecting luabind: " << e.what() << std::endl;
 		throw;
 	}
-	//luabind::call_function<void>(_state.get(), "require", "base");
 
-	// Extend the path
+	/// @todo Extend the path here for shared libraries?
 	//luabind::call_function<std::string>(_state.get(), "format", "%q", )
 	//luaL_dostring(_state.get(), "package.cpath = ")
+
+	/// Apply our bindings to this state
+
+	// osgLua
+	bindOsgToLua(_state);
+
+	// vrjugglua
 	bindPositionInterfaceToLua(_state);
+	bindOsgAppToLua(_state);
 }
 
 LuaScript::LuaScript(const LuaScript & other) :
@@ -82,11 +89,10 @@ bool LuaScript::runFile(const std::string & fn) {
 bool LuaScript::call(const std::string & func) {
 	try {
 		return luabind::call_function<bool>(_state.get(), func.c_str());
-		} catch (const std::exception & e) {
-			std::cerr << "Caught exception calling '" << func << "': " << e.what() << std::endl;
-			throw;
-		}
-
+	} catch (const std::exception & e) {
+		std::cerr << "Caught exception calling '" << func << "': " << e.what() << std::endl;
+		throw;
+	}
 }
 
 
