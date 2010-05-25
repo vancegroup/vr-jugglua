@@ -78,15 +78,19 @@ LuaScript::LuaScript(const LuaScript & other) :
 }
 
 bool LuaScript::runFile(const std::string & fn) {
+	/*
 	int ret = luaL_dofile(_state.get(), fn.c_str());
 	if (ret != 0) {
 		std::cerr << "Could not run Lua file " << fn << std::endl;
 	}
-	/*
-	int ret = 0;
-	luabind::call_function<void>(_state.get(), "require", fn.c_str());
 	*/
-	return (ret == 0);
+	try {
+		luabind::call_function<void>(_state.get(), "require", fn.c_str());
+	} catch (std::exception & e) {
+		std::cerr << "Could not run Lua file " << fn << " - error: " << e.what() << std::endl;
+		return false;
+	}
+	return true;
 }
 
 bool LuaScript::call(const std::string & func) {

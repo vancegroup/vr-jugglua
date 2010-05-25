@@ -32,7 +32,6 @@
 
 // VR Juggler includes
 #include <vrj/vrjConfig.h>
-#include <vrj/Draw/OGL/GlApp.h>
 #include <vrj/Draw/OSG/OsgApp.h>
 #include <gadget/Type/PositionInterface.h>
 

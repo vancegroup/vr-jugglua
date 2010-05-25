@@ -16,18 +16,13 @@
 #include "LuaScript.h"
 
 // Library/third-party includes
-#include <gadget/Type/PositionInterface.h>
-
-#include <gmtl/Matrix.h>
-
-#include <osg/Matrix>
-#include <osg/Vec3f>
+// - none
 
 // Standard includes
 // - none
 
 namespace vrjLua {
-	class PositionInterface {
+	class FrameLogicUnit {
 		public:
 			PositionInterface();
 
