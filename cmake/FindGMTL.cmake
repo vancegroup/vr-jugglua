@@ -34,9 +34,6 @@
 set(_HUMAN "GMTL")
 set(_HEADER gmtl/gmtl.h)
 set(_FP_PKG_NAME gmtl)
-if(NOT DEFINED GMTL_PEER_VER)
-	set(GMTL_PEER_VER 0.6.0)
-endif()
 
 set(GMTL_VERSIONS
 	0.5.1
@@ -44,6 +41,7 @@ set(GMTL_VERSIONS
 	0.5.3
 	0.5.4
 	0.6.0
+	0.6.1
 	${GMTL_ADDITIONAL_VERSIONS})
 set(GMTL_DIRS)
 foreach(_version ${GMTL_VERSIONS})
@@ -81,42 +79,15 @@ find_path(GMTL_INCLUDE_DIR
 	NAMES
 	${_HEADER}
 	HINTS
+	"${_ROOT_DIR}"
 	${${_FP_PKG_NAME}_FLAGPOLL_INCLUDE_DIRS}
 	PATHS
-	"${_ROOT_DIR}"
 	PATH_SUFFIXES
 	${GMTL_DIRS}
 	${GMTL_HEADER_DIRS}
 	include/
 	DOC
 	"GMTL include path")
-
-# Search in peer library directory
-if(NOT GMTL_INCLUDE_DIR)
-
-	# Default peer library root
-	if(NOT PEER_ROOT)
-		set(PEER_ROOT
-			"${CMAKE_SOURCE_DIR}/peer"
-			CACHE
-			PATH
-			"The root directory for bundled peer libraries.")
-		mark_as_advanced(PEER_ROOT)
-	endif()
-
-	if(NOT GMTL_FIND_QUIETLY)
-		message(STATUS
-			"Searching for ${_HUMAN} in local peer directory: ${PEER_ROOT}/${GMTL_DIR}/")
-	endif()
-
-	find_path(GMTL_INCLUDE_DIR
-		NAMES
-		${_HEADER}
-		PATHS
-		${PEER_ROOT}/gmtl-${GMTL_PEER_VER}/include)
-
-endif()
-
 
 # handle the QUIETLY and REQUIRED arguments and set xxx_FOUND to TRUE if
 # all listed variables are TRUE
