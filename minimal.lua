@@ -1,5 +1,3 @@
-package.cpath = "/home/rpavlik/deps/osgLua/lib/?.so;" .. package.cpath
-
 require("libosgLua")
 print("Loading lua file")
 
