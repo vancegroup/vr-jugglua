@@ -24,8 +24,10 @@
 #include "BindPositionInterfaceToLua.h"
 #endif
 
-#include "BindOsgAppToLua.h"
 #include "BindOsgToLua.h"
+
+#include "BindOsgAppToLua.h"
+#include "BindKernelToLua.h"
 
 // Library/third-party includes
 extern "C" {
@@ -65,6 +67,7 @@ LuaScript::LuaScript() :
 	// vrjugglua
 	bindPositionInterfaceToLua(_state);
 	bindOsgAppToLua(_state);
+	bindKernelToLua(_state);
 }
 
 LuaScript::LuaScript(const LuaScript & other) :

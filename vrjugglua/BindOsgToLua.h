@@ -28,9 +28,25 @@ namespace vrjLua {
 
 void bindOsgToLua(LuaStatePtr state) {
 	luaopen_osgLua(state.get());
-	osgLua::loadWrapper(state.get(), "osg");
-	osgLua::loadWrapper(state.get(), "osgDB");
-	osgLua::loadWrapper(state.get(), "osgUtil");
+	bool ret;
+
+	ret = osgLua::loadWrapper(state.get(), "osg");
+	if (!ret) {
+		std::cerr << "Could not load Lua wrapper for osg!" << std::endl;
+		return;
+	}
+
+	ret = osgLua::loadWrapper(state.get(), "osgDB");
+	if (!ret) {
+		std::cerr << "Could not load Lua wrapper for osgDB!" << std::endl;
+		return;
+	}
+
+	ret = osgLua::loadWrapper(state.get(), "osgUtil");
+	if (!ret) {
+		std::cerr << "Could not load Lua wrapper for osgUtil!" << std::endl;
+		return;
+	}
 }
 
 }// end of vrjLua namespace
