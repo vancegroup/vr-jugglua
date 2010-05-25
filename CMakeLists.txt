@@ -52,8 +52,13 @@ include(StampSourcesWithVersion)
 include(CTest)
 include(CreateDashboardScripts)
 
-# OpenSceneGraph
 set(EXTRA_LIBS)
+
+# Boost
+find_package(Boost 1.34.0 REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
+# OpenSceneGraph
 include(SearchProgramFilesForOpenSceneGraph)
 find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgUtil osgIntrospection)
 list(APPEND EXTRA_LIBS ${OPENSCENEGRAPH_LIBRARIES})
