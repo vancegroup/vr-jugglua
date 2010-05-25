@@ -5,6 +5,8 @@
 #include "Type.h"
 #include <osgLua/Callback>
 
+#include <osg/Version>
+
 #include <osg/Vec3> // FIXME!!! (this is for checkings)
 
 #include <osgDB/DynamicLibrary>
@@ -13,26 +15,27 @@
 // borrowed from osgDB...
 std::string createLibraryNameForWrapper(const std::string& ext)
 {
+	static std::string prepend = std::string("osgPlugins-")+std::string(osgGetVersion())+std::string("/");
 #if defined(WIN32)
     // !! recheck evolving Cygwin DLL extension naming protocols !! NHV
     #ifdef __CYGWIN__
-        return "cygosgwrapper_"+ext+".dll";
+        return prepend+"cygosgwrapper_"+ext+".dll";
     #elif defined(__MINGW32__)
-        return "libosgwrapper_"+ext+".dll";
+        return prepend+"libosgwrapper_"+ext+".dll";
     #else
         #ifdef _DEBUG
-            return "osgwrapper_"+ext+"d.dll";
+            return prepend+"osgwrapper_"+ext+"d.dll";
         #else
-            return "osgwrapper_"+ext+".dll";
+            return prepend+"osgwrapper_"+ext+".dll";
         #endif
     #endif
 #elif macintosh
-    return "osgwrapper_"+ext;
+    return prepend+"osgwrapper_"+ext;
 #elif defined(__hpux__)
     // why don't we use PLUGIN_EXT from the makefiles here?
-    return "osgwrapper_"+ext+".sl";
+    return prepend+"osgwrapper_"+ext+".sl";
 #else
-    return "osgwrapper_"+ext+".so";
+    return prepend+"osgwrapper_"+ext+".so";
 #endif
 }
 
