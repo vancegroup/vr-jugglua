@@ -1,4 +1,4 @@
-/**	@file	Lua_PositionInterface.h
+/**	@file	Internal_PositionInterface.h
 	@brief	PositionInterface wrapper class for LuaBind
 
 	@date
@@ -12,17 +12,27 @@
 	Human-Computer Interaction Graduate Program
 */
 
+#pragma once
+#ifndef INCLUDED_vrjugglua_Internal_PositionInterface_h
+#define INCLUDED_vrjugglua_Internal_PositionInterface_h
+
 // Internal Includes
 #include "LuaScript.h"
 
 // Library/third-party includes
-// - none
+#include <gadget/Type/PositionInterface.h>
+
+#include <gmtl/Matrix.h>
+
+#include <osg/Matrix>
+#include <osg/Vec3f>
 
 // Standard includes
 // - none
 
 namespace vrjLua {
-	class FrameLogicUnit {
+namespace Internal {
+	class PositionInterface {
 		public:
 			PositionInterface();
 
@@ -38,8 +48,7 @@ namespace vrjLua {
 			bool _ready;
 			gadget::PositionInterface _iface;
 	};
-
-#ifndef LUABIND_COMBINED_COMPILE
-	void bindPositionInterfaceToLua(LuaStatePtr state);
-#endif
+} // end of Internal namespace
 } // end of vrjLua namespace
+
+#endif // INCLUDED_vrjugglua_Lua_PositionInterface_h

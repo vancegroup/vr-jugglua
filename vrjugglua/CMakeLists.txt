@@ -4,17 +4,29 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 set(SOURCES
-	Lua_PositionInterface.h
-	Lua_PositionInterface.cpp
-	LuaScript.cpp)
-
-set(LUA_BINDING_COMPONENTS
-	BindPositionInterfaceToLua.h
+	bindUtils/WrapperClass_Macros.h
+	Internal_PositionInterface.cpp
+	Internal_PositionInterface.h
+	LuaScript.cpp
+	BindKernelToLua.h
 	BindOsgToLua.h
-	BindOsgAppToLua.h)
+	BindOsgAppToLua.h
+	BindPositionInterfaceToLua.h)
 
 set(API
 	LuaScript.h)
+
+
+set(LUA_BINDING_COMPONENTS
+	BindKernelToLua.cpp
+	BindOsgToLua.cpp
+	BindOsgAppToLua.cpp
+	BindPositionInterfaceToLua.cpp)
+
+if(NOT BUILD_LUABIND_COMBINED)
+	list(APPEND SOURCES ${LUA_BINDING_COMPONENTS})
+endif()
+
 
 set(APP_SOURCES
 	LuaOSGApp.cpp

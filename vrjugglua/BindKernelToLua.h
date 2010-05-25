@@ -22,12 +22,13 @@
 #include <vrj/Kernel/Kernel.h>
 #include <vrj/Draw/OSG/OsgApp.h>
 
-#include <luabind/luabind.hpp>
-
 // Standard includes
 // - none
 
 namespace vrjLua {
+
+
+void bindKernelToLua(LuaStatePtr state);
 
 namespace Internal {
 	inline void stopKernel() {
@@ -38,17 +39,10 @@ namespace Internal {
 		vrj::Kernel::instance()->setApplication(app);
 	}
 
-}
+} // end of Internal namespace
 
-void bindKernelToLua(LuaStatePtr state) {
-	using namespace luabind;
-	module(state.get(), "vrj") [
-		def("stopKernel", &Internal::stopKernel),
-		def("setApplication", &Internal::setApplication)
-	];
-}
+} // end of vrjLua namespace
 
-}// end of vrjLua namespace
 
 
 #endif // INCLUDED_vrjugglua_BindKernelToLua_h

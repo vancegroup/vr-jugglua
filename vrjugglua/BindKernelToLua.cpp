@@ -1,5 +1,5 @@
-/**	@file	BindOsgToLua.h
-	@brief	header
+/**	@file	BindKernelToLua.cpp
+	@brief	implementation
 
 	@date
 	2009-2010
@@ -11,24 +11,24 @@
 	Iowa State University Virtual Reality Applications Center
 	Human-Computer Interaction Graduate Program
 */
-#pragma once
-#ifndef INCLUDED_vrjugglua_BindOsgToLua_h
-#define INCLUDED_vrjugglua_BindOsgToLua_h
 
 // Local includes
-#include "LuaScript.h"
+#include "BindKernelToLua.h"
 
 // Library/third-party includes
-// - none
+#include <luabind/luabind.hpp>
 
 // Standard includes
 // - none
 
 namespace vrjLua {
 
-void bindOsgToLua(LuaStatePtr state);
+void bindKernelToLua(LuaStatePtr state) {
+	using namespace luabind;
+	module(state.get(), "vrj") [
+		def("stopKernel", &Internal::stopKernel),
+		def("setApplication", &Internal::setApplication)
+	];
+}
 
 }// end of vrjLua namespace
-
-
-#endif // INCLUDED_vrjugglua_BindOsgToLua_h

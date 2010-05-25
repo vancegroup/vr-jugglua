@@ -66,12 +66,13 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 	{
 		lua_pop(L,1);
 
-		osglib *lib = 
-			osgDB::DynamicLibrary::loadLibrary( 
+		osglib *lib =
+			osgDB::DynamicLibrary::loadLibrary(
 			createLibraryNameForWrapper(name) );
 
 		if (!lib)
 		{
+			std::cerr << "Failed following osgDB::DynamicLibrary::loadLibrary call: trying to load "<< createLibraryNameForWrapper(name) << std::endl;
 			return false;
 		}
 

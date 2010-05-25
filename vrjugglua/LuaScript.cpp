@@ -18,16 +18,19 @@
 
 #include "LuaScript.h"
 
-#include "Lua_PositionInterface.h"
-
-#ifdef LUABIND_COMBINED_COMPILE
-#include "BindPositionInterfaceToLua.h"
-#endif
-
 #include "BindOsgToLua.h"
 
-#include "BindOsgAppToLua.h"
 #include "BindKernelToLua.h"
+#include "BindPositionInterfaceToLua.h"
+#include "BindOsgAppToLua.h"
+
+#ifdef LUABIND_COMBINED_COMPILE
+#include "BindOsgToLua.cpp"
+
+#include "BindKernelToLua.cpp"
+#include "BindPositionInterfaceToLua.cpp"
+#include "BindOsgAppToLua.cpp"
+#endif
 
 // Library/third-party includes
 extern "C" {
@@ -65,9 +68,9 @@ LuaScript::LuaScript() :
 	bindOsgToLua(_state);
 
 	// vrjugglua
+	bindKernelToLua(_state);
 	bindPositionInterfaceToLua(_state);
 	bindOsgAppToLua(_state);
-	bindKernelToLua(_state);
 }
 
 LuaScript::LuaScript(const LuaScript & other) :

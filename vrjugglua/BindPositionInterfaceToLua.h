@@ -16,8 +16,8 @@
 #define INCLUDED_vrjugglua_BindPositionInterfaceToLua_h
 
 // Local includes
-#include "Lua_PositionInterface.h"
 #include "LuaScript.h"
+#include "Internal_PositionInterface.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
@@ -27,19 +27,12 @@
 
 namespace vrjLua {
 
-void bindPositionInterfaceToLua(LuaStatePtr state) {
-	using namespace luabind;
-	module(state.get(), "gadget") [
-		class_<PositionInterface, boost::shared_ptr<PositionInterface> >("PositionInterface")
-			.def(constructor<>())
-			.def("init", &PositionInterface::init)
-			.def("getMatrix", & PositionInterface::getMatrix)
-			.def("getPosition", & PositionInterface::getPosition)
-			.def("getForwardVector", & PositionInterface::getForwardVector)
-	];
-}
+	void bindPositionInterfaceToLua(LuaStatePtr state);
 
 }// end of vrjLua namespace
 
+#ifdef LUABIND_COMBINED_COMPILE
+#include "BindPositionInterfaceToLua.cpp"
+#endif
 
 #endif // INCLUDED_vrjugglua_BindPositionInterfaceToLua_h
