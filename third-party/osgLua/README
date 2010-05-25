@@ -1,0 +1,68 @@
+osgLua
+------
+   osgLua is a lua wrapper that explores in run-time OpenSceneGraph's classes
+   and methods using the osgIntrospection capabilities. osgLua can also be 
+   used to access your own reflected classes (with osgWrapper), everything
+   accessible through osgIntrospection can be created, used, passed or
+   returned by the lua script.
+
+
+How to use osgLua
+-----------------
+
+   osgLua uses the same directory structure as other OSG projects, simply use
+   make to compile libraries and examples. Remember that you can use:
+       make INST_LOCATION=/whatever/is/osg/path install 
+   in order to install osgLua in the same directory as OpenSceneGraph. 
+
+   You will need osg libs and lua5.1 to compile osgLua. In run-time osgLua
+   will require osgWrappers dll/so's to look into osg's classes, types, and 
+   methods.
+
+   In the `scripts' directory of each example you will find some examples of 
+   scripts written in lua. `osgconsle/scrips/test.lua' shows a complete example
+   of how to setup a viewer from the script, since osgProducer is reflected by
+   osg introspection it can be instanced and used from the lua script.
+   Nevertheless, osgLua's initial purpose was scene creation with a procedural
+   language.
+
+Scripts notes
+-------------
+    
+   To create an instance of an object or get a value from an enumeration 
+   you can write:
+   
+       v = osg.Vec2(5,6)
+       value = osgProducer.Viewer.ViewerOptions.STANDARD_SETTINGS
+   
+   as a general rule when we use "::" in C++ to access a namespace in lua 
+   is replaced by "."  (eg. osg::Vec2 --> osg.Vec2)
+
+   You can also use a the function `createByName' to instance objects:
+
+      v = createByName("osg::Vec2",5,6)
+   
+   Once the we have an instance we can call methods using ":" :
+
+      v = osg.Vec2(5,6)
+      v:set(7,8)
+      v:normalize()
+      print(v:x(), v:y())
+   
+   (This is the pseudo-object-oriented style of use objects in lua sorry about
+    the notation, what is a "." in C++ is a ":" in Lua)
+
+   Finally there are two more functions accessible from luaScripts:
+      getTypes() -> returns a table with all reflected types by
+                osgIntrospection
+      getTypeInfo(type) -> type can be an instance or a string with the name
+                    of a class. Returns a dictionary with keys: name, methods,
+                    constructors, ...  with information about the class ( see
+                    scripts/show.lua )
+
+
+-------------------------------------------------------------------------------
+Jose L. Hidalgo Valiño (PpluX) http://www.pplux.com
+mailto:pplux@pplux.com
+October 2006
+-------------------------------------------------------------------------------

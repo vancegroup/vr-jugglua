@@ -1,0 +1,101 @@
+/*
+	osgLua: use Lua to access dynamically to osg using osgIntrospection
+	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
+
+    This library is open source and may be redistributed and/or modified under  
+    the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
+    (at your option) any later version.  The full license is in LICENSE file
+    included with this distribution, and on the openscenegraph.org website.
+    
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+    OpenSceneGraph Public License for more details.
+*/
+
+#ifndef OSGLUA_CALLBACK_
+#define OSGLUA_CALLBACK_
+
+#if defined(_MSC_VER)
+	#  if defined( _LIB ) || defined( USE_STATIC )
+	#    define OSGLUA_API
+	#  elif defined( OSGLUA_LIBRARY )
+	#    define OSGLUA_API   __declspec(dllexport)
+	#  else
+	#    define OSGLUA_API   __declspec(dllimport)
+	#  endif /* OSGLUA_API */
+#else
+	#  define OSGLUA_API
+#endif 
+
+#include <osgLua/Script>
+
+extern "C" {
+	#include "lua.h"
+}
+
+namespace osgLua {
+
+	class OSGLUA_API Callback {
+	public:
+		/// creates a callback using funcName in the Script s.
+		Callback(Script *s, const char *funcName);
+
+		/// creates a callback directly using a lua_State
+		Callback(lua_State *L);
+
+	protected:
+		typedef const osgIntrospection::Value &P;
+		virtual ~Callback();
+
+		void execute();
+		void execute(P);
+		void execute(P,P);
+		void execute(P,P,P);
+		void execute(P,P,P,P);
+
+	private:
+		void init(lua_State *L);
+		void pushFunc();
+		void call(int num);
+
+		osg::ref_ptr<Script> _script;
+		int _ref;
+		lua_State *_L;
+	};
+
+} // end of osgLua namespace
+
+
+/*************************************************************/
+/********************* osg::NodeCallback *********************/
+/*************************************************************/
+#include <osg/Node>
+#include <osg/NodeVisitor>
+#include <osg/NodeCallback>
+#include <iostream>
+
+namespace osgLua {
+
+	class OSGLUA_API NodeCallback :
+		public osg::NodeCallback, 
+		public Callback
+	{
+	public:
+		NodeCallback(Script *s, const char *name) : Callback(s,name) {}
+		NodeCallback(lua_State *L) : Callback(L) {}
+
+		void operator() (osg::Node *node, osg::NodeVisitor *nv)
+		{ 
+			execute(node,nv);
+		}
+		// A function to create a NodeCallback from lua
+		static int createFromLua(lua_State *L);
+	protected:
+		virtual ~NodeCallback() {}
+	};
+
+} // end of osgLua namespace
+
+
+#endif
