@@ -5,3 +5,11 @@
 
 set(TESTS_DATA "${CMAKE_CURRENT_SOURCE_DIR}/data")
 set(LUA_TESTS "${CMAKE_CURRENT_SOURCE_DIR}/luatests")
+
+foreach(script stop-kernel inherit-osgapp minimal)
+    add_test(NAME
+        vrjlua-run-${script}_lua
+        COMMAND
+        vrjlua
+        "${LUA_TESTS}/${script}.lua")
+endforeach()
