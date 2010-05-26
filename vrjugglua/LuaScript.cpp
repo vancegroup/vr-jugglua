@@ -55,6 +55,7 @@ void no_op_deleter(lua_State *L) {
 
 int luaopen_vrjugglua(lua_State *L) {
 	vrjLua::LuaScript script(L);
+	return 0; // success
 }
 
 int luaopen_libvrjugglua(lua_State *L) {
