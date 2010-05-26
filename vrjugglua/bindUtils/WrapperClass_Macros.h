@@ -35,13 +35,13 @@
 #define METHOD_BIND(NAME)	.def(#NAME, &BASECLASS::NAME, &WRAPPERCLASS::STATIC_METHOD_NAME(NAME))
 #define BEGIN_WRAPPER_CLASS struct WRAPPERCLASS : BASECLASS,  luabind::wrap_base
 
-#define METHOD_WRAP(RET_TYPE, NAME, PRE_CODE, POST_CODE)	\
-	virtual RET_TYPE NAME() {						\
+#define VOIDMETHOD_WRAP(NAME, PRE_CODE, POST_CODE)	\
+	virtual void NAME() {						\
 		PRE_CODE;									\
-		call<RET_TYPE>(BOOST_PP_STRINGIZE(NAME));	\
+		call<void>(BOOST_PP_STRINGIZE(NAME));	\
 		POST_CODE;									\
 	}												\
-	static RET_TYPE STATIC_METHOD_NAME(NAME)(BASECLASS * ptr) {		\
+	static void STATIC_METHOD_NAME(NAME)(BASECLASS * ptr) {		\
 		return ptr->BASECLASS::NAME();								\
 	}
 

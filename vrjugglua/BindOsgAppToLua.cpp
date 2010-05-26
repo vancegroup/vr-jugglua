@@ -52,6 +52,8 @@ void LuaOsgApp::postFrame() { ; }
 
 double LuaOsgApp::getTimeDelta() { return _timeDelta; }
 
+LuaOsgApp* LuaOsgApp::getAppPointer() { return this; }
+
 LuaOsgApp::LuaOsgApp(/*vrj::Kernel* kern, int & argc, char** argv*/) :
 		vrj::OsgApp(vrj::Kernel::instance() /*kern , argc, argv */),
 		_timeDelta(-1) {
@@ -99,19 +101,33 @@ BEGIN_WRAPPER_CLASS {
 	public:
 	WRAPPERCLASS() {}
 
-	METHOD_WRAP(void, init, (BASECLASS::init()), );
+	VOIDMETHOD_WRAP(init, (BASECLASS::init()), );
 
-	METHOD_WRAP(void, initScene, , );
+	VOIDMETHOD_WRAP(initScene, , );
 
-	METHOD_WRAP(void, preFrame, (BASECLASS::preFrame()), );
+	VOIDMETHOD_WRAP(preFrame, (BASECLASS::preFrame()), );
 
-	METHOD_WRAP(void, latePreFrame, , (BASECLASS::latePreFrame()));
+	VOIDMETHOD_WRAP(latePreFrame, , (BASECLASS::latePreFrame()));
 
-	METHOD_WRAP(void, intraFrame, , );
+	VOIDMETHOD_WRAP(intraFrame, , );
 
-	METHOD_WRAP(void, postFrame, , );
+	VOIDMETHOD_WRAP(postFrame, , );
 
-	METHOD_WRAP(double, getTimeDelta, , );
+	virtual double getTimeDelta() {
+		return call<double>("getTimeDelta");
+	}
+	
+	static double default_getTimeDelta(BASECLASS* ptr) {
+		return ptr->BASECLASS::getTimeDelta();
+	}
+	
+	virtual LuaOsgApp* getAppPointer() {
+		return call<LuaOsgApp*>("getAppPointer");
+	}
+	
+	static LuaOsgApp* default_getAppPointer(BASECLASS* ptr) {
+		return ptr->BASECLASS::getAppPointer();
+	}
 };
 
 void bindOsgAppToLua(LuaStatePtr state) {
@@ -129,6 +145,7 @@ void bindOsgAppToLua(LuaStatePtr state) {
 			METHOD_BIND(intraFrame)
 			METHOD_BIND(postFrame)
 			METHOD_BIND(getTimeDelta)
+			METHOD_BIND(getAppPointer)
 	];
 }
 

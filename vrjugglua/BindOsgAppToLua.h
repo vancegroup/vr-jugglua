@@ -60,6 +60,7 @@ namespace vrjLua {
 			/// @name Convenience functions for Lua apps
 			/// @{
 			double getTimeDelta();
+			LuaOsgApp * getAppPointer();
 
 			/// @}
 		protected:
