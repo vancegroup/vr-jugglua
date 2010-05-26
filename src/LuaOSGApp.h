@@ -35,6 +35,9 @@
 #include <vrj/Draw/OSG/OsgApp.h>
 #include <gadget/Type/PositionInterface.h>
 
+// LuaBind includes
+#include <luabind/object.hpp>
+
 /////////////
 // Standard includes
 #include <string>
@@ -65,13 +68,6 @@ class VRApp : public vrj::OsgApp {
 	float getTimeDelta();
 
 	void loadLuaFile(const std::string & fn);
-
-	/** Specify the primary state machine for this application.
-
-		@returns false if another machine was already set as primary.
-		@returns true otherwise
-	*/
-	//bool setStateMachine(FrameStateMachinePtr sm);
 
 	/** Execute any initialization needed before the API is started.
 
@@ -190,14 +186,5 @@ inline unsigned int VRApp::getSceneViewDefaults() {
 inline float VRApp::getTimeDelta() {
 	return m_timeDelta;
 }
-
-/*
-inline bool VRApp::setStateMachine(FrameStateMachinePtr sm) {
-	/// set state machine pointer
-	m_pStateMachine = sm;
-	return true;
-}
-*/
-
 
 #endif // INCLUDED_vrjugglua_LuaOSGApp_h
