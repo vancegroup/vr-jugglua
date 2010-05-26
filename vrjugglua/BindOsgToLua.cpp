@@ -29,8 +29,9 @@ void bindOsgToLua(LuaStatePtr state) {
 	std::cerr << "Started binding OSG to Lua..." << std::flush << std::endl;
 #endif
 	luaopen_osgLua(state.get());
-	luaL_dostring(state.get(), "print(osgLua.getTypes())");
-
+#ifdef VERBOSE
+	luaL_dostring(state.get(), "print('osgLua: ' .. tostring(osgLua.getTypes()))");
+#endif
 	bool ret;
 
 	ret = osgLua::loadWrapper(state.get(), "osg");

@@ -52,6 +52,10 @@ include(CreateDashboardScripts)
 
 set(EXTRA_LIBS)
 
+set(CMAKE_DEBUG_POSTFIX  "_d")
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+
 # Boost
 find_package(Boost 1.34.0 REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
@@ -75,11 +79,7 @@ list(APPEND EXTRA_LIBS ${VRJUGGLER22_LIBRARIES})
 include_directories(${VRJUGGLER22_INCLUDE_DIRS})
 
 # Lua
-if(BUILD_EMBEDDED_LUA)
-	add_subdirectory(third-party)
-	list(APPEND EXTRA_LIBS luabind osgLua_static)
-	include_directories(${LUABIND_INCLUDE_DIRS} ${OSGLUA_INCLUDE_DIRS})
-else()
+if(NOT BUILD_EMBEDDED_LUA)
 	find_package(Luabind REQUIRED)
 	list(APPEND EXTRA_LIBS ${LUABIND_LIBRARIES})
 	include_directories(${LUABIND_INCLUDE_DIRS})
@@ -94,15 +94,18 @@ endif()
 # Build the project
 ###
 
-set(CMAKE_DEBUG_POSTFIX  "_d")
+# Build the embedded libraries
+if(BUILD_EMBEDDED_LUA)
+	add_subdirectory(third-party)
+	list(APPEND EXTRA_LIBS luabind osgLua_static)
+	include_directories(${LUABIND_INCLUDE_DIRS} ${OSGLUA_INCLUDE_DIRS})
+endif()
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
-
+# Build the vrjugglua library
 add_subdirectory(vrjugglua)
 
-# Add a full lua interpreter as a test
-add_executable(luainterp lua.c)
-target_link_libraries(luainterp ${EXTRA_LIBS} vrjugglua)
+# Build the applications
+add_subdirectory(src)
 
 add_doxygen(Doxyfile)
 
