@@ -1,4 +1,4 @@
 print("In Lua script stop-kernel.lua")
-print(vrjKernel.stopKernel)
+print(vrjKernel.stop)
 
-vrjKernel.stopKernel()
+vrjKernel.stop()
