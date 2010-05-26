@@ -43,6 +43,24 @@ extern "C" {
 #include <functional>
 #include <iostream>
 
+// Functions to register us from within a Lua interpreter
+extern "C" {
+	int luaopen_vrjugglua(lua_State *L);
+	int luaopen_libvrjugglua(lua_State *L);
+}
+
+void no_op_deleter(lua_State *L) {
+	return;
+}
+
+int luaopen_vrjugglua(lua_State *L) {
+	vrjLua::LuaScript script(L);
+}
+
+int luaopen_libvrjugglua(lua_State *L) {
+	return luaopen_vrjugglua(L);
+}
+
 namespace vrjLua {
 
 LuaScript::LuaScript() :
@@ -50,27 +68,18 @@ LuaScript::LuaScript() :
 	// Load default Lua libs
 	luaL_openlibs(_state.get());
 
-	// Connect LuaBind to this state
-	try {
-		luabind::open(_state.get());
-	} catch (const std::exception & e) {
-		std::cerr << "Caught exception connecting luabind: " << e.what() << std::endl;
-		throw;
-	}
+
 
 	/// @todo Extend the path here for shared libraries?
 	//luabind::call_function<std::string>(_state.get(), "format", "%q", )
 	//luaL_dostring(_state.get(), "package.cpath = ")
 
-	/// Apply our bindings to this state
+	_applyBindings();
+}
 
-	// osgLua
-	bindOsgToLua(_state);
-
-	// vrjugglua
-	bindKernelToLua(_state);
-	bindPositionInterfaceToLua(_state);
-	bindOsgAppToLua(_state);
+LuaScript::LuaScript(lua_State * state) :
+			_state(state, std::ptr_fun(no_op_deleter)) {
+	_applyBindings();
 }
 
 LuaScript::LuaScript(const LuaScript & other) :
@@ -81,19 +90,40 @@ LuaScript::LuaScript(const LuaScript & other) :
 }
 
 bool LuaScript::runFile(const std::string & fn) {
-	/*
+
 	int ret = luaL_dofile(_state.get(), fn.c_str());
 	if (ret != 0) {
 		std::cerr << "Could not run Lua file " << fn << std::endl;
 	}
-	*/
+	/*
 	try {
 		luabind::call_function<void>(_state.get(), "require", fn.c_str());
 	} catch (std::exception & e) {
 		std::cerr << "Could not run Lua file " << fn << " - error: " << e.what() << std::endl;
 		return false;
 	}
+	*/
 	return true;
+}
+
+void LuaScript::_applyBindings() {
+	// Connect LuaBind to this state
+	try {
+		luabind::open(_state.get());
+	} catch (const std::exception & e) {
+		std::cerr << "Caught exception connecting luabind: " << e.what() << std::endl;
+		throw;
+	}
+
+	/// Apply our bindings to this state
+
+	// osgLua
+	bindOsgToLua(_state);
+
+	// vrjugglua
+	bindKernelToLua(_state);
+	bindPositionInterfaceToLua(_state);
+	bindOsgAppToLua(_state);
 }
 
 bool LuaScript::call(const std::string & func) {

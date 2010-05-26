@@ -23,14 +23,10 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-src
 ###
 
 option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app." ON)
-if(BUILD_EMBEDDED_LUA)
-	add_definitions(-DEMBEDDED_LUA)
-endif()
 
 option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple." OFF)
-if(BUILD_LUABIND_COMBINED)
-	add_definitions(-DLUABIND_COMBINED_COMPILE)
-endif()
+
+option(BUILD_VERBOSE "Turn on lots of output." off)
 
 ###
 # End options
@@ -79,7 +75,7 @@ include_directories(${VRJUGGLER22_INCLUDE_DIRS})
 # Lua
 if(BUILD_EMBEDDED_LUA)
 	add_subdirectory(third-party)
-	list(APPEND EXTRA_LIBS luabind osgLua)
+	list(APPEND EXTRA_LIBS luabind osgLua_static)
 	include_directories(${LUABIND_INCLUDE_DIRS} ${OSGLUA_INCLUDE_DIRS})
 else()
 	find_package(Luabind REQUIRED)
@@ -100,11 +96,11 @@ set(CMAKE_DEBUG_POSTFIX  "_d")
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
 
-# Add a full lua interpreter as a test
-add_executable(luainterp third-party/lua-5.1.4/src/lua.c)
-target_link_libraries(luainterp ${EXTRA_LIBS})
-
 add_subdirectory(vrjugglua)
+
+# Add a full lua interpreter as a test
+add_executable(luainterp lua.c)
+target_link_libraries(luainterp ${EXTRA_LIBS} vrjugglua)
 
 add_doxygen(Doxyfile)
 

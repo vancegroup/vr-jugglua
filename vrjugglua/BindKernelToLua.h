@@ -27,19 +27,7 @@
 
 namespace vrjLua {
 
-
 void bindKernelToLua(LuaStatePtr state);
-
-namespace Internal {
-	inline void stopKernel() {
-		vrj::Kernel::instance()->stop();
-	}
-
-	inline void setApplication(vrj::OsgApp * app) {
-		vrj::Kernel::instance()->setApplication(app);
-	}
-
-} // end of Internal namespace
 
 } // end of vrjLua namespace
 

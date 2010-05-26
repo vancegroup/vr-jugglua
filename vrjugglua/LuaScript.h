@@ -36,12 +36,18 @@ typedef boost::shared_ptr<lua_State> LuaStatePtr;
 class LuaScript {
 	public:
 		LuaScript();
+
+		/// @brief constructor from an externally-allocated state
+		explicit LuaScript(lua_State * state);
+
+		/// @brief copy constructor - doesn't re-bind
 		LuaScript(const LuaScript & other);
 
 		bool runFile(const std::string & fn);
 		bool call(const std::string & func);
 
 	protected:
+		void _applyBindings();
 		LuaStatePtr _state;
 };
 

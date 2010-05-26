@@ -20,7 +20,7 @@
 #include "Internal_PositionInterface.h"
 
 // Library/third-party includes
-#include <luabind/luabind.hpp>
+// - none
 
 // Standard includes
 // - none
@@ -30,9 +30,5 @@ namespace vrjLua {
 	void bindPositionInterfaceToLua(LuaStatePtr state);
 
 }// end of vrjLua namespace
-
-#ifdef LUABIND_COMBINED_COMPILE
-#include "BindPositionInterfaceToLua.cpp"
-#endif
 
 #endif // INCLUDED_vrjugglua_BindPositionInterfaceToLua_h

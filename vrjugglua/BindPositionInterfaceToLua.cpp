@@ -21,12 +21,17 @@
 #include <luabind/luabind.hpp>
 
 // Standard includes
-// - none
+#ifdef VERBOSE
+#include <iostream>
+#endif
 
 namespace vrjLua {
 
 void bindPositionInterfaceToLua(LuaStatePtr state) {
 	using namespace luabind;
+#ifdef VERBOSE
+	std::cerr << "Registering gadget.PositionInterface with Lua..." << std::flush << std::endl;
+#endif
 	module(state.get(), "gadget") [
 		class_<Internal::PositionInterface, boost::shared_ptr<Internal::PositionInterface> >("PositionInterface")
 			.def(constructor<>())

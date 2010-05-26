@@ -35,92 +35,39 @@
 
 namespace vrjLua {
 
-class LuaOsgApp : public vrj::OsgApp {
-	public:
-		LuaOsgApp(/*vrj::Kernel* kern, int & argc, char** argv*/);
-		virtual ~LuaOsgApp() {}
-		virtual osg::Group* getScene();
+	void bindOsgAppToLua(LuaStatePtr state);
 
-		/// @name OsgApp interface
-		/// @{
-		virtual void init();
-		virtual void initScene();
+	class LuaOsgApp : public vrj::OsgApp {
+		public:
+			LuaOsgApp(/*vrj::Kernel* kern, int & argc, char** argv*/);
+			virtual ~LuaOsgApp() {}
+			virtual osg::Group* getScene();
 
-		virtual void configSceneView(osgUtil::SceneView* newSceneViewer);
-		unsigned int getSceneViewDefaults();
+			/// @name OsgApp interface
+			/// @{
+			virtual void init();
+			virtual void initScene();
 
-		virtual void preFrame();
-		virtual void latePreFrame();
-		virtual void intraFrame();
-		virtual void postFrame();
-		/// @}
+			virtual void configSceneView(osgUtil::SceneView* newSceneViewer);
+			unsigned int getSceneViewDefaults();
 
-		/// @name Convenience functions for Lua apps
-		/// @{
-		double getTimeDelta();
+			virtual void preFrame();
+			virtual void latePreFrame();
+			virtual void intraFrame();
+			virtual void postFrame();
+			/// @}
 
-		/// @}
-	protected:
-		osg::ref_ptr<osg::Group>           _root;
-		vpr::Interval _lastPreFrameTime;
-		double _timeDelta;
-};
+			/// @name Convenience functions for Lua apps
+			/// @{
+			double getTimeDelta();
 
+			/// @}
+		protected:
+			osg::ref_ptr<osg::Group>           _root;
+			vpr::Interval _lastPreFrameTime;
+			double _timeDelta;
+	};
 
-inline osg::Group* LuaOsgApp::getScene() {
-	return _root.get();
-}
-
-inline void LuaOsgApp::init() {
-	_root = new osg::Group();
-	vrj::OsgApp::init();
-}
-
-inline void LuaOsgApp::initScene() { ; }
-
-inline unsigned int LuaOsgApp::getSceneViewDefaults() {
-	return osgUtil::SceneView::NO_SCENEVIEW_LIGHT;
-}
-
-inline void LuaOsgApp::latePreFrame() {
-	vrj::OsgApp::latePreFrame();
-}
-
-inline void LuaOsgApp::intraFrame() { ; }
-
-inline void LuaOsgApp::postFrame() { ; }
-
-inline double LuaOsgApp::getTimeDelta() { return _timeDelta; }
-
-
-#define BASECLASS LuaOsgApp
-#define WRAPPERCLASS LuaOsgApp_wrapper
-
-/// @brief Wrapper class to permit inheritance in Lua
-BEGIN_WRAPPER_CLASS {
-	public:
-	WRAPPERCLASS() {}
-
-	METHOD_WRAP(void, init, (BASECLASS::init()), );
-
-	METHOD_WRAP(void, initScene, , );
-
-	METHOD_WRAP(void, preFrame, (BASECLASS::preFrame()), );
-
-	METHOD_WRAP(void, latePreFrame, , (BASECLASS::latePreFrame()));
-
-	METHOD_WRAP(void, intraFrame, , );
-
-	METHOD_WRAP(void, postFrame, , );
-
-	METHOD_WRAP(double, getTimeDelta, , );
-};
-
-void bindOsgAppToLua(LuaStatePtr state);
-
-
-#undef BASECLASS
-#undef STATIC_METHOD
 }// end of vrjLua namespace
 
 

@@ -3,6 +3,21 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
+if(BUILD_VERBOSE)
+	add_definitions(-DVERBOSE)
+endif()
+
+if(BUILD_LUABIND_COMBINED)
+	add_definitions(-DLUABIND_COMBINED_COMPILE)
+endif()
+
+if(BUILD_EMBEDDED_LUA)
+	add_definitions(-DEMBEDDED_LUA)
+endif()
+
+add_definitions(-DLUABIND_MAX_BASES=6)
+add_definitions(-DLUABIND_MAX_ARITY=3)
+
 set(SOURCES
 	bindUtils/WrapperClass_Macros.h
 	Internal_PositionInterface.cpp

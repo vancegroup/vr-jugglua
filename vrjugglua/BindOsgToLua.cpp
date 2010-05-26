@@ -17,6 +17,7 @@
 
 // Library/third-party includes
 #include <osgLua/osgLua.h>
+#include <luabind/function.hpp>
 
 // Standard includes
 #include <iostream>
@@ -24,7 +25,12 @@
 namespace vrjLua {
 
 void bindOsgToLua(LuaStatePtr state) {
+#ifdef VERBOSE
+	std::cerr << "Started binding OSG to Lua..." << std::flush << std::endl;
+#endif
 	luaopen_osgLua(state.get());
+	luaL_dostring(state.get(), "print(osgLua.getTypes())");
+
 	bool ret;
 
 	ret = osgLua::loadWrapper(state.get(), "osg");

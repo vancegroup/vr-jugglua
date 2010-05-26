@@ -84,12 +84,12 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		/***********************************************************/
 		if (strcmp(name,"osg") == 0)
 		{
-			const std::type_info &tcheck = 
+			const std::type_info &tcheck =
 				osgIntrospection::Reflection::getType("osg::Vec3").
 				getStdTypeInfo();
 			if (tcheck != typeid(osg::Vec3))
 			{
-				std::cerr << 
+				std::cerr <<
 				"\n **********************************************************"
 		        "\n ****************     W A R N I N G     *******************"
 				"\n **********************************************************"
@@ -119,8 +119,8 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		/***********************************************************/
 		/***********************************************************/
 		/***********************************************************/
-			
-		osglib **ptr = reinterpret_cast<osglib**>( 
+
+		osglib **ptr = reinterpret_cast<osglib**>(
 			lua_newuserdata(L, sizeof(osglib*)) );
 
 		if (luaL_newmetatable(L, "osgLuaDynamicLibraries"))
@@ -143,9 +143,9 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 	}
 
 	// enable the namespace
-	osgLua::Type::push(L,name); 
+	osgLua::Type::push(L,name);
 	lua_setglobal(L,name);
-		
+
 	lua_settop(L, top);
 	return true;
 }

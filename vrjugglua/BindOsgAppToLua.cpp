@@ -21,9 +21,36 @@
 #include <osgUtil/SceneView>
 
 // Standard includes
-// - none
+#ifdef VERBOSE
+#include <iostream>
+#endif
 
 namespace vrjLua {
+
+osg::Group* LuaOsgApp::getScene() {
+	return _root.get();
+}
+
+void LuaOsgApp::init() {
+	_root = new osg::Group();
+	vrj::OsgApp::init();
+}
+
+void LuaOsgApp::initScene() { ; }
+
+unsigned int LuaOsgApp::getSceneViewDefaults() {
+	return osgUtil::SceneView::NO_SCENEVIEW_LIGHT;
+}
+
+void LuaOsgApp::latePreFrame() {
+	vrj::OsgApp::latePreFrame();
+}
+
+void LuaOsgApp::intraFrame() { ; }
+
+void LuaOsgApp::postFrame() { ; }
+
+double LuaOsgApp::getTimeDelta() { return _timeDelta; }
 
 LuaOsgApp::LuaOsgApp(/*vrj::Kernel* kern, int & argc, char** argv*/) :
 		vrj::OsgApp(vrj::Kernel::instance() /*kern , argc, argv */),
@@ -31,7 +58,7 @@ LuaOsgApp::LuaOsgApp(/*vrj::Kernel* kern, int & argc, char** argv*/) :
 
 }
 
-inline void LuaOsgApp::configSceneView(osgUtil::SceneView * newSceneViewer) {
+void LuaOsgApp::configSceneView(osgUtil::SceneView * newSceneViewer) {
 	vrj::OsgApp::configSceneView(newSceneViewer);
 	osg::ref_ptr<osg::Light> light0;
 	osg::ref_ptr<osg::LightSource> lightSource0;
@@ -53,7 +80,7 @@ inline void LuaOsgApp::configSceneView(osgUtil::SceneView * newSceneViewer) {
 	this->getScene()->addChild( lightSource0.get() );
 }
 
-inline void LuaOsgApp::preFrame() {
+void LuaOsgApp::preFrame() {
 	vpr::Interval cur_time = vrj::Kernel::instance()->getUsers()[0]->getHeadUpdateTime();
 	vpr::Interval diff_time(cur_time - _lastPreFrameTime);
 	if (_lastPreFrameTime.getBaseVal() >= cur_time.getBaseVal()) {
@@ -67,7 +94,30 @@ inline void LuaOsgApp::preFrame() {
 #define BASECLASS LuaOsgApp
 #define WRAPPERCLASS LuaOsgApp_wrapper
 
+/// @brief Wrapper class to permit inheritance in Lua
+BEGIN_WRAPPER_CLASS {
+	public:
+	WRAPPERCLASS() {}
+
+	METHOD_WRAP(void, init, (BASECLASS::init()), );
+
+	METHOD_WRAP(void, initScene, , );
+
+	METHOD_WRAP(void, preFrame, (BASECLASS::preFrame()), );
+
+	METHOD_WRAP(void, latePreFrame, , (BASECLASS::latePreFrame()));
+
+	METHOD_WRAP(void, intraFrame, , );
+
+	METHOD_WRAP(void, postFrame, , );
+
+	METHOD_WRAP(double, getTimeDelta, , );
+};
+
 void bindOsgAppToLua(LuaStatePtr state) {
+#ifdef VERBOSE
+	std::cerr << "Registering vrj.OsgApp with Lua..." << std::flush << std::endl;
+#endif
 	using namespace luabind;
 	module(state.get(), "vrj") [
 		class_<BASECLASS, WRAPPERCLASS>("OsgApp")
