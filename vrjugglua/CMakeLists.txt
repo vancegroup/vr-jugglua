@@ -15,6 +15,8 @@ if(BUILD_EMBEDDED_LUA)
 	add_definitions(-DEMBEDDED_LUA)
 endif()
 
+add_definitions(-DOSGLUA_LIBRARY_STATIC)
+
 add_definitions(-DLUABIND_MAX_BASES=6)
 add_definitions(-DLUABIND_MAX_ARITY=3)
 

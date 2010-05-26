@@ -26,6 +26,8 @@ option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app."
 
 option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple." OFF)
 
+option(BUILD_SHARED_OSGLUA "Whether to also build a DLL/.so version of osgLua." OFF)
+
 option(BUILD_VERBOSE "Turn on lots of output." off)
 
 ###

@@ -13,11 +13,21 @@ set(OSGLUA_SRCS
 	Type.cpp
 	Type.h
 	Value.cpp
-	Value.h
+	Value.h)
+
+set(OSGLUA_SIMPLE_API
+	../../include/osgLua/Callback
 	../../include/osgLua/Script)
 
-add_library(osgLua SHARED ${OSGLUA_SRCS})
-target_link_libraries(osgLua ${OPENSCENEGRAPH_LIBRARIES} ${LUA_LIBRARIES})
+source_group(API FILES ${OSGLUA_SIMPLE_API})
 
-add_library(osgLua_static ${OSGLUA_SRCS})
-target_link_libraries(osgLua_static ${OPENSCENEGRAPH_LIBRARIES} ${LUA_LIBRARIES})
+
+if(BUILD_SHARED_OSGLUA)
+	add_library(osgLua SHARED ${OSGLUA_SRCS} ${OSGLUA_SIMPLE_API})
+	target_link_libraries(osgLua lua ${OPENSCENEGRAPH_LIBRARIES} lua)
+endif()
+
+# TODO: this might make it impossible to build an osgLua dll on windows
+add_definitions(-DOSGLUA_LIBRARY_STATIC)
+add_library(osgLua_static ${OSGLUA_SRCS} ${OSGLUA_SIMPLE_API})
+target_link_libraries(osgLua_static lua ${OPENSCENEGRAPH_LIBRARIES} lua)

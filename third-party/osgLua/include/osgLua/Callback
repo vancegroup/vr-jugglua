@@ -17,7 +17,7 @@
 #define OSGLUA_CALLBACK_
 
 #if defined(_MSC_VER)
-	#  if defined( _LIB ) || defined( USE_STATIC )
+	#  if defined( OSGLUA_LIBRARY_STATIC )
 	#    define OSGLUA_API
 	#  elif defined( OSGLUA_LIBRARY )
 	#    define OSGLUA_API   __declspec(dllexport)
