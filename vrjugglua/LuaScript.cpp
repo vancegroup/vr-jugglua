@@ -21,14 +21,14 @@
 #include "BindOsgToLua.h"
 
 #include "BindKernelToLua.h"
-#include "BindPositionInterfaceToLua.h"
+#include "BindGadgetInterfacesToLua.h"
 #include "BindOsgAppToLua.h"
 
 #ifdef LUABIND_COMBINED_COMPILE
 #include "BindOsgToLua.cpp"
 
 #include "BindKernelToLua.cpp"
-#include "BindPositionInterfaceToLua.cpp"
+#include "BindGadgetInterfacesToLua.cpp"
 #include "BindOsgAppToLua.cpp"
 #endif
 
@@ -123,7 +123,7 @@ void LuaScript::_applyBindings() {
 
 	// vrjugglua
 	bindKernelToLua(_state);
-	bindPositionInterfaceToLua(_state);
+	bindGadgetInterfacesToLua(_state);
 	bindOsgAppToLua(_state);
 }
 

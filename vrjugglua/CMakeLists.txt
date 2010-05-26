@@ -24,11 +24,13 @@ set(SOURCES
 	bindUtils/WrapperClass_Macros.h
 	Internal_PositionInterface.cpp
 	Internal_PositionInterface.h
+	Internal_DigitalInterface.cpp
+	Internal_DigitalInterface.h
 	LuaScript.cpp
 	BindKernelToLua.h
 	BindOsgToLua.h
 	BindOsgAppToLua.h
-	BindPositionInterfaceToLua.h)
+	BindGadgetInterfacesToLua.h)
 
 set(API
 	LuaScript.h)
@@ -38,7 +40,7 @@ set(LUA_BINDING_COMPONENTS
 	BindKernelToLua.cpp
 	BindOsgToLua.cpp
 	BindOsgAppToLua.cpp
-	BindPositionInterfaceToLua.cpp)
+	BindGadgetInterfacesToLua.cpp)
 
 if(NOT BUILD_LUABIND_COMBINED)
 	list(APPEND SOURCES ${LUA_BINDING_COMPONENTS})

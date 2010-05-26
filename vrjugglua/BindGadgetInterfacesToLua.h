@@ -12,12 +12,13 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_BindPositionInterfaceToLua_h
-#define INCLUDED_vrjugglua_BindPositionInterfaceToLua_h
+#ifndef INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h
+#define INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h
 
 // Local includes
 #include "LuaScript.h"
 #include "Internal_PositionInterface.h"
+#include "Internal_DigitalInterface.h"
 
 // Library/third-party includes
 // - none
@@ -27,8 +28,8 @@
 
 namespace vrjLua {
 
-	void bindPositionInterfaceToLua(LuaStatePtr state);
+	void bindGadgetInterfacesToLua(LuaStatePtr state);
 
 }// end of vrjLua namespace
 
-#endif // INCLUDED_vrjugglua_BindPositionInterfaceToLua_h
+#endif // INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h
