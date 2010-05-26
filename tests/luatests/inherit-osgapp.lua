@@ -4,6 +4,7 @@ do
 	function lua_testapp:__init()
 		print("App object created")
 		self.counter = 0
+		vrj.OsgApp:__init()
 	end
 
 	function lua_testapp:initScene()
@@ -19,7 +20,7 @@ do
 	app = lua_testapp()
 	print("After instantiating the app")
 	print(type(app))
-	vrjKernel.setApplication(app)
+	vrjKernel.setApplication(vrj.OsgApp:getAppPointer())
 
 	--osgLua.loadWrapper("osg")
 	--osgLua.loadWrapper("osgDB")
