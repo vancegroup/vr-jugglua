@@ -15,6 +15,8 @@
 // Internal Includes
 #include "OsgAppProxy.h"
 
+#include "ConvertOsgPtrToOsgLuaPtr.h"
+
 #include "vrjLuaOutput.h"
 
 // Library/third-party includes

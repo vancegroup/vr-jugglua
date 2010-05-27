@@ -33,16 +33,16 @@ inline gmtl::Matrix44f PositionInterface::_getData(const float scale) {
 	return _iface->getData(scale);
 }
 
-osg::Matrixf PositionInterface::getMatrix() {
+osg::Matrix PositionInterface::getMatrix() {
 	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
 }
 
-osg::Vec3f PositionInterface::getPosition() {
+osg::Vec3 PositionInterface::getPosition() {
 	gmtl::Vec3f xlate = gmtl::makeTrans<gmtl::Vec3f>(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
 	return osg::Vec3f(xlate[0], xlate[1], xlate[2]);
 }
 
-osg::Vec3f PositionInterface::getForwardVector() {
+osg::Vec3 PositionInterface::getForwardVector() {
 	return osg::Vec3f(0,0,-1) * util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
 }
 } // end of Internal namespace

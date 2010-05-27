@@ -25,7 +25,7 @@
 #include <gmtl/Matrix.h>
 
 #include <osg/Matrix>
-#include <osg/Vec3f>
+#include <osg/Vec3>
 
 // Standard includes
 // - none
@@ -36,9 +36,9 @@ namespace Internal {
 		public:
 			PositionInterface(const std::string & device);
 
-			osg::Matrixf getMatrix();
-			osg::Vec3f getPosition();
-			osg::Vec3f getForwardVector();
+			osg::Matrix getMatrix();
+			osg::Vec3 getPosition();
+			osg::Vec3 getForwardVector();
 
 		protected:
 			gmtl::Matrix44f _getData(const float scale = gadget::PositionUnitConversion::ConvertToFeet);

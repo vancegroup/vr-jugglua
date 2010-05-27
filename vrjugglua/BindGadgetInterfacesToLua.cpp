@@ -24,10 +24,44 @@
 // Library/third-party includes
 #include <luabind/luabind.hpp>
 
+#include <osgLua/Value.h>
+
 // Standard includes
 #ifdef VERBOSE
 #include <iostream>
 #endif
+
+namespace luabind
+{
+    template <>
+    struct default_converter<osg::Vec3>
+      : native_converter_base<osg::Vec3>
+    {
+        static int compute_score(lua_State* L, int index)
+        {
+			/// @todo actually figure out what's good and what's not
+        	return -1;
+            return lua_type(L, index) == LUA_TUSERDATA ? 0 : -1;
+        }
+
+        osg::Group* from(lua_State* L, int index)
+        {
+        	/// @todo implement
+            return NULL;
+        }
+
+        void to(lua_State* L, osg::Vec3 const& x)
+        {
+        	osgLua::Value::push(L, x);
+        }
+    };
+
+    template <>
+    struct default_converter<osg::Vec3 const&>
+      : default_converter<osg::Vec3>
+    {};
+}
+
 
 namespace vrjLua {
 

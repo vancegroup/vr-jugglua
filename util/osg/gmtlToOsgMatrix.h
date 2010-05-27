@@ -30,8 +30,8 @@ namespace util {
 
 namespace osg {
 
-inline ::osg::Matrixf toOsgMatrix(const gmtl::Matrix44f & r) {
-	::osg::Matrixf temp;
+inline ::osg::Matrix toOsgMatrix(const gmtl::Matrix44f & r) {
+	::osg::Matrix temp;
 	temp.set(r.getData());
 	return temp;
 }
