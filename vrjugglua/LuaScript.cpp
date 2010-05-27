@@ -137,4 +137,8 @@ bool LuaScript::call(const std::string & func) {
 }
 
 
+LuaStateWeakPtr LuaScript::getLuaState() const {
+	return _state;
+}
+
 } // end of vrjLua namespace

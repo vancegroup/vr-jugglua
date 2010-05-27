@@ -25,6 +25,7 @@ extern "C"
 }
 
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 
 // Standard includes
 #include <string>
@@ -32,6 +33,7 @@ extern "C"
 namespace vrjLua {
 
 typedef boost::shared_ptr<lua_State> LuaStatePtr;
+typedef boost::weak_ptr<lua_State> LuaStateWeakPtr;
 
 class LuaScript {
 	public:
@@ -44,7 +46,10 @@ class LuaScript {
 		LuaScript(const LuaScript & other);
 
 		bool runFile(const std::string & fn);
+		bool runString(const std::string & fn);
 		bool call(const std::string & func);
+
+		LuaStateWeakPtr getLuaState() const;
 
 	protected:
 		void _applyBindings();
