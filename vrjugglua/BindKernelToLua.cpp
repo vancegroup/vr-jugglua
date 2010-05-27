@@ -44,8 +44,9 @@ namespace Kernel {
 		vrj::Kernel::instance()->waitForKernelStop();
 	}
 
-	void setApplication(LuaOsgApp & app) {
-		vrj::Kernel::instance()->setApplication(&app);
+	void setApplication(luabind::object app) {
+
+		vrj::Kernel::instance()->setApplication(luabind::object_cast<LuaOsgApp*>(app));
 	}
 
 	void loadConfigFile(const std::string & fn) {

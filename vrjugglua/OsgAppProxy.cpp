@@ -1,5 +1,5 @@
-/**	@file	LuaOSGApp.cpp
-	@brief Application object implementation
+/**	@file	OsgAppProxy.cpp
+	@brief Application proxy object implementation
 
 	@date
 	2009-2010
@@ -13,7 +13,7 @@
 */
 
 // Internal Includes
-#include "LuaOSGApp.h"
+#include "OsgAppProxy.h"
 
 // Library/third-party includes
 #include <luabind/class.hpp>
@@ -21,35 +21,52 @@
 // Standard includes
 #include <cstring>
 
+namespace vrjLua {
 /// Initialize static member variable
-VRApp* VRApp::m_pApp = NULL;
+OsgAppProxy* OsgAppProxy::m_pApp = NULL;
 
-VRApp::VRApp(vrj::Kernel* kern/*, int & argc, char** argv*/) :
+OsgAppProxy::OsgAppProxy() :
+	vrj::OsgApp(vrj::Kernel::instance()),
+	m_timeDelta(-1) {
+
+}
+
+OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
 	vrj::OsgApp(kern),
 	m_timeDelta(-1)
 {
 	/// update static pointer to app object
 	m_pApp = this;
+}
 
+void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 	// Bind this class
-	vrjLua::LuaStatePtr p = _luaScript.getLuaState().lock();
-	if (p) {
+	if (state) {
 		std::cerr << "Binding the OsgAppProxy to Lua" << std::endl;
 		// we lock the pointer here to borrow it
 		using namespace luabind;
-		module(p.get(), "vrjApp") [
-		   class_<VRApp>("OsgAppProxy")
-		   .def("setAppDelegate", & VRApp::setAppDelegate)
-		   .def("getAppDelegate", & VRApp::getAppDelegate)
+		module(state.get(), "vrjApp") [
+			class_<OsgAppProxy>("OsgAppProxy")
+				.def(constructor<>())
+				.def("setAppDelegate", & OsgAppProxy::setAppDelegate)
+				.def("getAppDelegate", & OsgAppProxy::getAppDelegate)
+				.def("setActiveApplication", & OsgAppProxy::setActiveApplication)
+				.def("getScene", & OsgAppProxy::getScene())
+				.def("getTimeDelta", & OsgAppProxy::getTimeDelta())
 	   ];
 	}
 }
 
-VRApp::~VRApp() {
+OsgAppProxy::~OsgAppProxy() {
 
 }
 
-void VRApp::setAppDelegate(luabind::object const & delegate) {
+void OsgAppProxy::setActiveApplication() {
+	vrj::Kernel::instance()->setApplication(this);
+}
+
+
+void OsgAppProxy::setAppDelegate(luabind::object const & delegate) {
 	/// @todo test here to see if the passed delegate is suitable
 	std::cerr << "Trying to set the app delegate..." << std::endl;
 	if (luabind::type(delegate) == LUA_TTABLE) {
@@ -59,29 +76,18 @@ void VRApp::setAppDelegate(luabind::object const & delegate) {
 	}
 }
 
-luabind::object const & VRApp::getAppDelegate() {
+luabind::object const & OsgAppProxy::getAppDelegate() {
 	return _delegate;
 }
 
-void VRApp::loadLuaFile(const std::string & fn) {
-	_luaFn = fn;
-
-	// Run the Lua file
-	_luaScript.runFile(_luaFn);
-
-}
-
-void VRApp::initScene() {
-	std::cout << "---------- VRApp::initScene() ---------------" << std::endl;
-	// Initialize devices
-	const std::string wand("VJWand");
-	m_wand.init(wand);
+void OsgAppProxy::initScene() {
+	std::cout << "---------- OsgAppProxy::initScene() ---------------" << std::endl;
 
 	// Create the top level node of the tree
-	m_rootNode = new osg::Group();
+	_rootNode = new osg::Group();
 }
 
-void VRApp::configSceneView(osgUtil::SceneView* newSceneViewer) {
+void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	vrj::OsgApp::configSceneView(newSceneViewer);
 /*
 	newSceneViewer->getLight()->setAmbient(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -105,48 +111,36 @@ void VRApp::configSceneView(osgUtil::SceneView* newSceneViewer) {
 
 	// Now that we know we have a root node add the default light to the
 	// scene.
-	this->getScene()->addChild( lightSource0.get() );
+	getScene()->addChild( lightSource0.get() );
 }
 
-void VRApp::preFrame() {
-	/*
-	if (m_logicManager.isEmpty()) {
-		/// Activate frame logic in primary state machine
-		assert(m_pStateMachine.valid());
-		m_pStateMachine->activate();
-	}
-	*/
-	vpr::Interval cur_time = m_wand->getTimeStamp();
-	vpr::Interval diff_time(cur_time - m_lastPreFrameTime);
-	if (m_lastPreFrameTime.getBaseVal() >= cur_time.getBaseVal()) {
+void OsgAppProxy::preFrame() {
+	vpr::Interval cur_time = vrj::Kernel::instance()->getUsers()[0]->getHeadUpdateTime();
+	vpr::Interval diff_time(cur_time - _lastPreFrameTime);
+	if (_lastPreFrameTime.getBaseVal() >= cur_time.getBaseVal()) {
 		diff_time.secf(0.0f);
 	}
 
-	m_timeDelta = diff_time.secf();
+	_timeDelta = diff_time.secf();
 
-	/// Pass this message on to all of our frame logic units.
-	//m_logicManager.callOnAllFrameLogicUnits(&FrameLogicUnit::preFrame);
+	/// @todo call delegate here
 
-	m_lastPreFrameTime = cur_time;
+	_lastPreFrameTime = cur_time;
 }
 
-void VRApp::latePreFrame() {
-
-	/// Update the scene graph here!
-
-	/// Pass this message on to all of our frame logic units.
-	//m_logicManager.callOnAllFrameLogicUnits(&FrameLogicUnit::latePreFrame);
+void OsgAppProxy::latePreFrame() {
+	/// @todo call delegate here
 
 	// Finish updating the scene graph.
 	vrj::OsgApp::latePreFrame();
 }
 
-void VRApp::intraFrame() {
-	/// Pass this message on to all of our frame logic units.
-	//m_logicManager.callOnAllFrameLogicUnits(&FrameLogicUnit::intraFrame);
+void OsgAppProxy::intraFrame() {
+	/// @todo call delegate here
 }
 
-void VRApp::postFrame() {
-	/// Pass this message on to all of our frame logic units.
-	//m_logicManager.callOnAllFrameLogicUnits(&FrameLogicUnit::postFrame);
+void OsgAppProxy::postFrame() {
+	/// @todo call delegate here
 }
+
+} // end of vrjLua namespace

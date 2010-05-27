@@ -6,10 +6,18 @@
 set(TESTS_DATA "${CMAKE_CURRENT_SOURCE_DIR}/data")
 set(LUA_TESTS "${CMAKE_CURRENT_SOURCE_DIR}/luatests")
 
-foreach(script stop-kernel inherit-osgapp minimal initialize-devices)
+foreach(script stop-kernel minimal initialize-devices osgapp-delegate) # inherit-osgapp
     add_test(NAME
         vrjlua-run-${script}_lua
         COMMAND
         vrjlua
         "${LUA_TESTS}/${script}.lua")
 endforeach()
+
+#foreach(script osgapp-delegate)
+#    add_test(NAME
+#        vrjlua-delegation-run-${script}_lua
+#        COMMAND
+#        vrjlua-delegation
+#        "${LUA_TESTS}/${script}.lua")
+#endforeach()

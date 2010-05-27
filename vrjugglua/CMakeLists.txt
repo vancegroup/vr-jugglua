@@ -30,10 +30,12 @@ set(SOURCES
 	BindKernelToLua.h
 	BindOsgToLua.h
 	BindOsgAppToLua.h
-	BindGadgetInterfacesToLua.h)
+	BindGadgetInterfacesToLua.h
+	OsgAppProxy.cpp)
 
 set(API
-	LuaScript.h)
+	LuaScript.h
+	OsgAppProxy.h)
 
 
 set(LUA_BINDING_COMPONENTS

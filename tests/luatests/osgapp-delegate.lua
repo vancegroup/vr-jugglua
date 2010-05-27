@@ -11,8 +11,14 @@ function testapp:preFrame()
 end
 
 
-print("App defined, now setting delegate")
-vrjApp.setAppDelegate(testapp)
+print("App delegate defined, now creating OsgAppProxy")
+app = vrjApp.OsgAppProxy()
+
+print ("Now setting OsgAppProxy's delegate")
+app:setAppDelegate(testapp)
 
 print("Loading config files into kernel")
 vrjKernel.loadConfigFile("standalone.jconf")
+
+print("Setting kernel application")
+app:setActiveApplication()

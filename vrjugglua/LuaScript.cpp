@@ -24,6 +24,8 @@
 #include "BindGadgetInterfacesToLua.h"
 #include "BindOsgAppToLua.h"
 
+#include "OsgAppProxy.h"
+
 #ifdef LUABIND_COMBINED_COMPILE
 #include "BindOsgToLua.cpp"
 
@@ -125,6 +127,8 @@ void LuaScript::_applyBindings() {
 	bindKernelToLua(_state);
 	bindGadgetInterfacesToLua(_state);
 	bindOsgAppToLua(_state);
+
+	OsgAppProxy::bindToLua(_state);
 }
 
 bool LuaScript::call(const std::string & func) {
