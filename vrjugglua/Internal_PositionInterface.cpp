@@ -25,19 +25,11 @@
 
 namespace vrjLua {
 namespace Internal {
-PositionInterface::PositionInterface() :
-	_ready(false) {
-}
-
-void PositionInterface::init(const std::string & device) {
+PositionInterface::PositionInterface(const std::string & device) {
 	_iface.init(device);
-	_ready = true;
 }
 
 inline gmtl::Matrix44f PositionInterface::_getData(const float scale) {
-	if (_ready) {
-		/// @todo Error condition if not initialized
-	}
 	return _iface->getData(scale);
 }
 

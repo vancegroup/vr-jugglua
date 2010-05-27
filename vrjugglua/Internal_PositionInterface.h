@@ -34,9 +34,7 @@ namespace vrjLua {
 namespace Internal {
 	class PositionInterface {
 		public:
-			PositionInterface();
-
-			void init(const std::string & device);
+			PositionInterface(const std::string & device);
 
 			osg::Matrixf getMatrix();
 			osg::Vec3f getPosition();
@@ -45,7 +43,6 @@ namespace Internal {
 		protected:
 			gmtl::Matrix44f _getData(const float scale = gadget::PositionUnitConversion::ConvertToFeet);
 
-			bool _ready;
 			gadget::PositionInterface _iface;
 	};
 } // end of Internal namespace

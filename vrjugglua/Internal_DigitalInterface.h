@@ -29,9 +29,7 @@ namespace vrjLua {
 namespace Internal {
 	class DigitalInterface {
 		public:
-			DigitalInterface();
-
-			void init(const std::string & device);
+			DigitalInterface(std::string device);
 
 			bool isPressed();
 			bool isAChange();
@@ -40,7 +38,6 @@ namespace Internal {
 			bool wasJustReleased();
 
 		protected:
-			bool _ready;
 			gadget::DigitalInterface _iface;
 	};
 } // end of Internal namespace

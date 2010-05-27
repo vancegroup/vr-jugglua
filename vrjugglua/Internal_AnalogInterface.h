@@ -29,9 +29,7 @@ namespace vrjLua {
 namespace Internal {
 	class AnalogInterface {
 		public:
-		AnalogInterface();
-
-			void init(const std::string & device);
+			AnalogInterface(const std::string & device);
 
 			/// @brief get value in range [0, 1]
 			double getData();
@@ -40,7 +38,6 @@ namespace Internal {
 			double getCentered();
 
 		protected:
-			bool _ready;
 			gadget::AnalogInterface _iface;
 	};
 } // end of Internal namespace

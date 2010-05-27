@@ -3,11 +3,9 @@ print("In Lua script initialize-devices.lua")
 vrjKernel.loadConfigFile("standalone.jconf")
 vrjKernel.start()
 
-wand = gadget.PositionInterface()
-wand:init("VJWand")
+wand = gadget.PositionInterface("VJWand")
 
 
-button = gadget.ButtonInterface()
-wand:init("VJButton0")
+button = gadget.ButtonInterface("VJButton0")
 
 vrjKernel.stop()

@@ -6,24 +6,30 @@ testapp = {
 
 	initScene = function (self)
 		print("In initScene - setting devices")
-		self.head = gadget.PositionInterface()
-		self.head:init("VJHead")
 
-		self.button = gadget.DigitalInterface()
-		self.button:init("VJButton0")
+		print("Setting up position interface")
+		self.head = gadget.PositionInterface("VJHead")
 
-		--self.analog = gadget.AnalogInterface()
-		--self.analog:init("VJAnalogAxis0")
-	end
-	,
+		print("Setting up second position interface")
+		self.head = gadget.PositionInterface("VJWand")
 
-	preFrame = function (self)
-		print("In preFrame")
-		self.counter = self.counter + 1
-		print("Counter at " .. tostring(self.counter))
-		if self.counter >= self.max then
-			print("Counter at maximum")
-			vrjKernel.stop()
+		print("Setting up Analog interface")
+		self.analog = gadget.AnalogInterface("VJAnalogAxis0")
+
+		print("Setting up digital interface")
+		self.button = gadget.DigitalInterface("VJButton0")
+
+
+		-- If we get this far, set up a shutdown preframe
+		-- If we fail before here, the proxy will shut down with an error
+		self.preFrame = function (self)
+			print("In preFrame")
+			self.counter = self.counter + 1
+			print("Counter at " .. tostring(self.counter))
+			if self.counter >= self.max then
+				print("Counter at maximum")
+				vrjKernel.stop()
+			end
 		end
 	end
 }

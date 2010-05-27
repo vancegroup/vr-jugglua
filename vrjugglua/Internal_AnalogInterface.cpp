@@ -24,13 +24,8 @@
 namespace vrjLua {
 namespace Internal {
 
-AnalogInterface::AnalogInterface() :
-	_ready(false) {
-}
-
-void AnalogInterface::init(const std::string & device) {
+AnalogInterface::AnalogInterface(const std::string & device) {
 	_iface.init(device);
-	_ready = true;
 }
 
 double AnalogInterface::getData() {

@@ -24,13 +24,8 @@
 namespace vrjLua {
 namespace Internal {
 
-DigitalInterface::DigitalInterface() :
-	_ready(false) {
-}
-
-void DigitalInterface::init(const std::string & device) {
+DigitalInterface::DigitalInterface(std::string device) {
 	_iface.init(device);
-	_ready = true;
 }
 
 bool DigitalInterface::isPressed() {
@@ -46,6 +41,7 @@ bool DigitalInterface::isAChange() {
 bool DigitalInterface::wasJustPressed() {
 	return (_iface->getData() == gadget::Digital::TOGGLE_ON);
 }
+
 bool DigitalInterface::wasJustReleased() {
 	return (_iface->getData() == gadget::Digital::TOGGLE_OFF);
 }
