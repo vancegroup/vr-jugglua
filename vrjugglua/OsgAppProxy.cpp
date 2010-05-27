@@ -51,14 +51,15 @@ void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 
 OsgAppProxy::OsgAppProxy() :
 	vrj::OsgApp(vrj::Kernel::instance()),
-	_timeDelta(-1) {
+	_timeDelta(-1),
+	_delegationSuccessFlag(true) {
 
 }
 
 OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
 	vrj::OsgApp(kern),
-	_timeDelta(-1)
-{
+	_timeDelta(-1),
+	_delegationSuccessFlag(true) {
 	/// update static pointer to app object
 	_pApp = this;
 }
@@ -82,6 +83,10 @@ void OsgAppProxy::setAppDelegate(luabind::object const & delegate) {
 		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
 #endif
 		_delegate = delegate;
+
+		// New delegate gets a fresh attempt
+		_delegationSuccessFlag = true;
+
 	} else {
 		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
 			<< "Lua app tried to set an invalid app delegate: " << delegate
@@ -105,7 +110,8 @@ void OsgAppProxy::initScene() {
 		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_WARNING)
 			<< "No delegate has been set yet - exiting to avoid busy-waiting forever."
 			<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_WARNING);
-		vrj::Kernel::instance()->stop();
+		//vrj::Kernel::instance()->stop();
+		std::exit(1);
 	}
 
 	// Create the top level node of the tree
@@ -138,6 +144,18 @@ void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 }
 
 void OsgAppProxy::preFrame() {
+	if (!_delegationSuccessFlag) {
+		// We made it through a whole frame without a successful call
+		// to the delegate - bail out.
+		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
+				<< "A full frame loop completed without any successful calls to the delegate."
+				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
+				<< "Assuming application failure, bailing out."
+				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+		std::exit(1);
+	}
+	_delegationSuccessFlag = false;
 	vpr::Interval cur_time = vrj::Kernel::instance()->getUsers()[0]->getHeadUpdateTime();
 	vpr::Interval diff_time(cur_time - _lastPreFrameTime);
 	if (_lastPreFrameTime.getBaseVal() >= cur_time.getBaseVal()) {
@@ -176,8 +194,22 @@ double OsgAppProxy::getTimeDelta() {
 
 bool OsgAppProxy::_forwardCallToDelegate(const char * call) {
 	if (_delegate && luabind::type(_delegate[call]) == LUA_TFUNCTION) {
-		_delegate[call](_delegate);
-		return true;
+		try {
+			_delegate[call](_delegate);
+
+			// We had at least one success this frame
+			_delegationSuccessFlag = true;
+			return true;
+		} catch (luabind::error & e) {
+			VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
+				<< "Calling '" << call << "' in the delegate failed - check your lua code!"
+				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+			luabind::object o(luabind::from_stack(e.state(), -1));
+			VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
+				<< "Top of the Lua stack (error message) is: '" << o << "'"
+				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+		}
+		return false;
 	}
 	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_DRIVEL)
 		<< "Delegate not valid or no '" << call << "' element defined: " << _delegate

@@ -171,6 +171,7 @@ class OsgAppProxy : public vrj::OsgApp {
 	/// @{
 	bool _forwardCallToDelegate(const char * call);
 	luabind::object _delegate;
+	bool _delegationSuccessFlag;
 	/// @}
 
 	/**	@brief Time of the start of the last preframe.
