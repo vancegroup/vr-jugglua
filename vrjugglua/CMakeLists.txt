@@ -13,11 +13,7 @@ endif()
 
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
-add_definitions(-DLUABIND_MAX_BASES=6)
-add_definitions(-DLUABIND_MAX_ARITY=3)
-
 set(SOURCES
-	bindUtils/WrapperClass_Macros.h
 	Internal_PositionInterface.cpp
 	Internal_PositionInterface.h
 	Internal_DigitalInterface.cpp
@@ -25,7 +21,6 @@ set(SOURCES
 	LuaScript.cpp
 	BindKernelToLua.h
 	BindOsgToLua.h
-	BindOsgAppToLua.h
 	BindGadgetInterfacesToLua.h
 	OsgAppProxy.cpp)
 
@@ -37,7 +32,6 @@ set(API
 set(LUA_BINDING_COMPONENTS
 	BindKernelToLua.cpp
 	BindOsgToLua.cpp
-	BindOsgAppToLua.cpp
 	BindGadgetInterfacesToLua.cpp)
 
 if(NOT BUILD_LUABIND_COMBINED)

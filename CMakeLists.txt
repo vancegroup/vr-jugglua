@@ -89,6 +89,9 @@ include_directories(${VRJUGGLER22_INCLUDE_DIRS})
 
 # Lua
 if(NOT BUILD_EMBEDDED_LUA)
+	add_definitions(-DLUABIND_MAX_BASES=3)
+	add_definitions(-DLUABIND_MAX_ARITY=3)
+
 	find_package(Luabind REQUIRED)
 	list(APPEND EXTRA_LIBS ${LUABIND_LIBRARIES})
 	include_directories(${LUABIND_INCLUDE_DIRS})

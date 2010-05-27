@@ -22,7 +22,6 @@
 
 #include "BindKernelToLua.h"
 #include "BindGadgetInterfacesToLua.h"
-#include "BindOsgAppToLua.h"
 
 #include "OsgAppProxy.h"
 
@@ -31,7 +30,6 @@
 
 #include "BindKernelToLua.cpp"
 #include "BindGadgetInterfacesToLua.cpp"
-#include "BindOsgAppToLua.cpp"
 #endif
 
 // Library/third-party includes
@@ -134,7 +132,6 @@ void LuaScript::_applyBindings() {
 	// vrjugglua
 	bindKernelToLua(_state);
 	bindGadgetInterfacesToLua(_state);
-	bindOsgAppToLua(_state);
 
 	OsgAppProxy::bindToLua(_state);
 }

@@ -16,8 +16,6 @@
 #include "BindKernelToLua.h"
 #include "vrjLuaOutput.h"
 
-#include "BindOsgAppToLua.h"
-
 // Library/third-party includes
 #include <luabind/luabind.hpp>
 
@@ -46,7 +44,7 @@ namespace Kernel {
 
 	void setApplication(luabind::object app) {
 
-		vrj::Kernel::instance()->setApplication(luabind::object_cast<LuaOsgApp*>(app));
+		vrj::Kernel::instance()->setApplication(luabind::object_cast<vrj::OsgApp*>(app));
 	}
 
 	void loadConfigFile(const std::string & fn) {
