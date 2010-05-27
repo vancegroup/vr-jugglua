@@ -49,6 +49,9 @@ class VRApp : public vrj::OsgApp {
 
 	virtual ~VRApp();
 
+	void setAppDelegate(luabind::object delegate);
+	luabind::object getAppDelegate();
+
 	/** Static accessor for the app pointer.
 		@returns the pointer to the singleton app object.
 	*/
@@ -157,7 +160,7 @@ class VRApp : public vrj::OsgApp {
 	private:
 	osg::ref_ptr<osg::Group>           m_rootNode;
 
-	//FrameLogicManager m_logicManager;
+	luabind::object _delegate;
 
 	/**
 		Time of the start of the last preframe.

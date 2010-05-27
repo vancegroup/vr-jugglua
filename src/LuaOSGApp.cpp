@@ -16,7 +16,7 @@
 #include "LuaOSGApp.h"
 
 // Library/third-party includes
-// - none
+#include <luabind/class.hpp>
 
 // Standard includes
 #include <cstring>
@@ -42,6 +42,15 @@ VRApp::~VRApp() {
 
 }
 
+void VRApp::setAppDelegate(luabind::object delegate) {
+	/// @todo test here to see if the passed delegate is suitable
+	_delegate = delegate;
+}
+
+luabind::object VRApp::getAppDelegate() {
+	return _delegate;
+}
+
 void VRApp::loadLuaFile(const std::string & fn) {
 	_luaFn = fn;
 }
@@ -55,6 +64,17 @@ void VRApp::initScene() {
 	// Create the top level node of the tree
 	m_rootNode = new osg::Group();
 
+	// Bind this class
+	vrjLua::LuaStatePtr p = _luaScript.getLuaState().lock();
+	if (p) {
+		// we lock the pointer here to borrow it
+		using namespace luabind;
+		module(p.get(), "vrjApp") [
+			class_<VRApp>("OsgAppProxy")
+				.def("setAppDelegate", & VRApp::setAppDelegate)
+				.def("getAppDelegate", & VRApp::getAppDelegate)
+		];
+	}
 	// Run the LUA file
 	_luaScript.runFile(_luaFn);
 	_luaScript.call("initScene");
