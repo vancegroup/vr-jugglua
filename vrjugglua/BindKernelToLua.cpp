@@ -50,6 +50,10 @@ namespace Kernel {
 		vrj::Kernel::instance()->loadConfigFile(fn);
 	}
 
+	bool isRunning() {
+		return vrj::Kernel::instance()->isRunning();
+	}
+
 	void safePrint(const std::string & s) {
 		VRJLUA_MSG_START(dbgVRJLUA_APP, MSG_STATUS)
 				<< s
@@ -69,6 +73,7 @@ void bindKernelToLua(LuaStatePtr state) {
 		def("setApplication", &Kernel::setApplication),
 		def("loadConfigFile", &Kernel::loadConfigFile),
 		def("waitForKernelStop", &Kernel::waitForKernelStop),
+		def("isRunning", &Kernel::isRunning),
 		def("safePrint", &Kernel::safePrint)
 	];
 
