@@ -24,35 +24,50 @@
 /// Initialize static member variable
 VRApp* VRApp::m_pApp = NULL;
 
-VRApp::VRApp(vrj::Kernel* kern, int & /*argc*/, char** /*argv*/) :
+VRApp::VRApp(vrj::Kernel* kern/*, int & argc, char** argv*/) :
 	vrj::OsgApp(kern),
 	m_timeDelta(-1)
 {
 	/// update static pointer to app object
 	m_pApp = this;
 
-	/// Initialize state machine
-	/*
-	FrameStateMachinePtr sm = new StateMachine_Roxbury();
-	setStateMachine(sm);
-	*/
+	// Bind this class
+	vrjLua::LuaStatePtr p = _luaScript.getLuaState().lock();
+	if (p) {
+		std::cerr << "Binding the OsgAppProxy to Lua" << std::endl;
+		// we lock the pointer here to borrow it
+		using namespace luabind;
+		module(p.get(), "vrjApp") [
+		   def("setAppDelegate", & VRApp::setAppDelegate),
+		   def("getAppDelegate", & VRApp::getAppDelegate)
+	   ];
+	}
 }
 
 VRApp::~VRApp() {
 
 }
 
-void VRApp::setAppDelegate(luabind::object delegate) {
+void VRApp::setAppDelegate(luabind::object const & delegate) {
 	/// @todo test here to see if the passed delegate is suitable
-	_delegate = delegate;
+	std::cerr << "Trying to set the app delegate..." << std::endl;
+	if (luabind::type(delegate) == LUA_TTABLE) {
+		_delegate = delegate;
+	} else {
+		std::cerr << "Lua app tried to set an invalid app delegate!" << std::endl;
+	}
 }
 
-luabind::object VRApp::getAppDelegate() {
+luabind::object const & VRApp::getAppDelegate() {
 	return _delegate;
 }
 
 void VRApp::loadLuaFile(const std::string & fn) {
 	_luaFn = fn;
+	
+	// Run the Lua file
+	_luaScript.runFile(_luaFn);
+	
 }
 
 void VRApp::initScene() {
@@ -63,21 +78,6 @@ void VRApp::initScene() {
 
 	// Create the top level node of the tree
 	m_rootNode = new osg::Group();
-
-	// Bind this class
-	vrjLua::LuaStatePtr p = _luaScript.getLuaState().lock();
-	if (p) {
-		// we lock the pointer here to borrow it
-		using namespace luabind;
-		module(p.get(), "vrjApp") [
-			class_<VRApp>("OsgAppProxy")
-				.def("setAppDelegate", & VRApp::setAppDelegate)
-				.def("getAppDelegate", & VRApp::getAppDelegate)
-		];
-	}
-	// Run the LUA file
-	_luaScript.runFile(_luaFn);
-	_luaScript.call("initScene");
 }
 
 void VRApp::configSceneView(osgUtil::SceneView* newSceneViewer) {

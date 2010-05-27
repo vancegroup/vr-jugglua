@@ -45,12 +45,12 @@
 
 class VRApp : public vrj::OsgApp {
 	public:
-	VRApp(vrj::Kernel* kern, int & argc, char** argv);
+	VRApp(vrj::Kernel* kern);
 
 	virtual ~VRApp();
 
-	void setAppDelegate(luabind::object delegate);
-	luabind::object getAppDelegate();
+	void setAppDelegate(luabind::object const & delegate);
+	luabind::object const & getAppDelegate();
 
 	/** Static accessor for the app pointer.
 		@returns the pointer to the singleton app object.

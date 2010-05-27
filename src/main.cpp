@@ -28,27 +28,19 @@
 int main(int argc, char* argv[])
 {
 	vrj::Kernel* kernel = vrj::Kernel::instance();
-	boost::scoped_ptr<VRApp> application(new VRApp(kernel, argc, argv));
+	boost::scoped_ptr<VRApp> application(new VRApp(kernel));
 
-	if (argc <= 2)
+	if (argc <= 1)
 	{
 		/// if not enough arguments.
 		std::cout << std::endl << std::endl;
-		std::cout << "Usage: " << argv[0] << " luascriptfile vjconfigfile[0] vjconfigfile[1] ... vjconfigfile[n]\n" << std::endl << std::endl;
+		std::cout << "Usage: " << argv[0] << " luascriptfile ... \n" << std::endl << std::endl;
 		std::exit(1);
 	}
 
-	application->loadLuaFile(argv[1]);
-
-	/// Load any config files specified on the command line
-	for (int i = 2; i < argc; ++i) {
-		kernel->loadConfigFile(argv[i]);
-		std::cout << "VRJuggler config file is " << argv[i] << std::endl;
+	for (unsigned int i = 1; i < argc; ++i) {
+		application->loadLuaFile(argv[i]);
 	}
-
-	std::cout << "------------------------" << std::endl;
-	std::cout << "Configuration complete, starting kernel..." << std::endl;
-	std::cout << "------------------------" << std::endl;
 
 	kernel->start();
 	kernel->setApplication(application.get());
