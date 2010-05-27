@@ -19,8 +19,7 @@
 #include "LuaScript.h"
 
 // Library/third-party includes
-#include <vrj/Kernel/Kernel.h>
-#include <vrj/Draw/OSG/OsgApp.h>
+// - none
 
 // Standard includes
 // - none

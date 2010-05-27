@@ -14,14 +14,15 @@
 
 // Local includes
 #include "BindKernelToLua.h"
+#include "vrjLuaOutput.h"
 
 #include "BindOsgAppToLua.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
-//#include <luabind/object.hpp>
 
 #include <vrj/Draw/OSG/OsgApp.h>
+#include <vrj/Kernel/Kernel.h>
 
 // Standard includes
 #ifdef VERBOSE
@@ -29,7 +30,6 @@
 #endif
 
 namespace vrjLua {
-
 
 namespace Kernel {
 	void start() {
@@ -53,6 +53,12 @@ namespace Kernel {
 		vrj::Kernel::instance()->loadConfigFile(fn);
 	}
 
+	void safePrint(const std::string & s) {
+		VRJLUA_MSG_START(dbgVRJLUA_APP, MSG_STATUS)
+				<< s
+				<< VRJLUA_MSG_END(dbgVRJLUA_APP, MSG_STATUS);
+	}
+
 } // end of Internal namespace
 
 void bindKernelToLua(LuaStatePtr state) {
@@ -65,8 +71,18 @@ void bindKernelToLua(LuaStatePtr state) {
 		def("stop", &Kernel::stop),
 		def("setApplication", &Kernel::setApplication),
 		def("loadConfigFile", &Kernel::loadConfigFile),
-		def("waitForKernelStop", &Kernel::waitForKernelStop)
+		def("waitForKernelStop", &Kernel::waitForKernelStop),
+		def("safePrint", &Kernel::safePrint)
 	];
+
+	// Hide the print function, using the threadsafe one.
+	luaL_dostring(state.get(),
+	"do \
+		local oldprint = print \
+		print = function(s) \
+			vrjKernel.safePrint(s) \
+		end \
+	end");
 }
 
 }// end of vrjLua namespace

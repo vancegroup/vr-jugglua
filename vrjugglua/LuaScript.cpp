@@ -39,6 +39,7 @@ extern "C" {
 #include "lauxlib.h"
 #include "lualib.h"
 }
+
 #include <luabind/luabind.hpp>
 
 // Standard includes
@@ -51,9 +52,6 @@ extern "C" {
 	int luaopen_libvrjugglua(lua_State *L);
 }
 
-void no_op_deleter(lua_State *L) {
-	return;
-}
 
 int luaopen_vrjugglua(lua_State *L) {
 	vrjLua::LuaScript script(L);
@@ -65,6 +63,16 @@ int luaopen_libvrjugglua(lua_State *L) {
 }
 
 namespace vrjLua {
+
+/// @brief no-op deleter for externally-provided state pointers
+static void no_op_deleter(lua_State *L) {
+	return;
+}
+
+/// @brief Replacement, juggler-compatible print statement
+static void print(const std::string & s) {
+
+}
 
 LuaScript::LuaScript() :
 		_state(luaL_newstate(), std::ptr_fun(lua_close)) {

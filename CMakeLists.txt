@@ -28,10 +28,16 @@ option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rath
 
 option(BUILD_SHARED_OSGLUA "Whether to also build a DLL/.so version of osgLua." OFF)
 
-option(BUILD_VERBOSE "Turn on lots of output." off)
+option(BUILD_VERBOSE "Turn on lots of runtime output." off)
 if(BUILD_VERBOSE)
 	add_definitions(-DVERBOSE)
 endif()
+
+option(BUILD_VERY_VERBOSE "Turn on excessive amounts of runtime output." off)
+if(BUILD_VERBOSE)
+	add_definitions(-DVERY_VERBOSE)
+endif()
+mark_as_advanced(BUILD_VERY_VERBOSE)
 
 ###
 # End options

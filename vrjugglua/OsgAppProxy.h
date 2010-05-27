@@ -170,6 +170,7 @@ class OsgAppProxy : public vrj::OsgApp {
 	private:
 	osg::ref_ptr<osg::Group>           _rootNode;
 
+	bool _forwardCallToDelegate(const char * call);
 	luabind::object _delegate;
 
 	/**	Time of the start of the last preframe.

@@ -15,6 +15,8 @@
 // Internal Includes
 #include "OsgAppProxy.h"
 
+#include "vrjLuaOutput.h"
+
 // Library/third-party includes
 #include <luabind/class.hpp>
 
@@ -42,8 +44,11 @@ OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
 void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 	// Bind this class
 	if (state) {
-		std::cerr << "Binding the OsgAppProxy to Lua" << std::endl;
-		// we lock the pointer here to borrow it
+#ifdef VERBOSE
+		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
+			<< "Registering vrj.OsgAppProxy with Lua"
+			<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
+#endif
 		using namespace luabind;
 		module(state.get(), "vrjApp") [
 			class_<OsgAppProxy>("OsgAppProxy")
@@ -68,11 +73,17 @@ void OsgAppProxy::setActiveApplication() {
 
 void OsgAppProxy::setAppDelegate(luabind::object const & delegate) {
 	/// @todo test here to see if the passed delegate is suitable
-	std::cerr << "Trying to set the app delegate..." << std::endl;
+#ifdef VERBOSE
+	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
+		<< "Trying to set the app delegate"
+		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
+#endif
 	if (luabind::type(delegate) == LUA_TTABLE) {
 		_delegate = delegate;
 	} else {
-		std::cerr << "Lua app tried to set an invalid app delegate!" << std::endl;
+		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
+			<< "Lua app tried to set an invalid app delegate: " << delegate
+			<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
 	}
 }
 
@@ -86,7 +97,7 @@ void OsgAppProxy::initScene() {
 	// Create the top level node of the tree
 	_rootNode = new osg::Group();
 
-	/// @todo call delegate here
+	_forwardCallToDelegate("initScene");
 }
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
@@ -125,24 +136,38 @@ void OsgAppProxy::preFrame() {
 
 	_timeDelta = diff_time.secf();
 
-	/// @todo call delegate here
+	_forwardCallToDelegate("preFrame");
 
 	_lastPreFrameTime = cur_time;
 }
 
 void OsgAppProxy::latePreFrame() {
-	/// @todo call delegate here
+	_forwardCallToDelegate("latePreFrame");
 
 	// Finish updating the scene graph.
 	vrj::OsgApp::latePreFrame();
 }
 
 void OsgAppProxy::intraFrame() {
-	/// @todo call delegate here
+	_forwardCallToDelegate("latePreFrame");
 }
 
 void OsgAppProxy::postFrame() {
-	/// @todo call delegate here
+	_forwardCallToDelegate("postFrame");
+}
+
+bool OsgAppProxy::_forwardCallToDelegate(const char * call) {
+	if (_delegate && luabind::type(_delegate[call]) == LUA_TFUNCTION) {
+		_delegate[call](_delegate);
+		return true;
+	}
+
+#ifdef VERY_VERBOSE
+	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
+		<< "Delegate not valid or no '" << call << "' element defined: " << _delegate
+		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+#endif
+	return false;
 }
 
 } // end of vrjLua namespace
