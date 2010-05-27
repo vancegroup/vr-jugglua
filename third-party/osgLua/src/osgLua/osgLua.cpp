@@ -73,16 +73,20 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 	{
 		lua_pop(L,1);
 		std::string fn = createLibraryNameForWrapper(name);
-		osglib *lib =
-			osgDB::DynamicLibrary::loadLibrary( fn );
+		osglib *lib = osgDB::DynamicLibrary::loadLibrary( fn );
 
 		// try it with an extension
 		if (!lib) {
-			std::cerr << "Could not load library " << fn << ", trying with prepended directory: " << getLibraryNamePrepend() << std::endl;
 			fn = getLibraryNamePrepend() + createLibraryNameForWrapper(name);
 			lib = osgDB::DynamicLibrary::loadLibrary(fn);
 		}
-		
+
+#ifdef VERBOSE
+		if (lib) {
+			std::cerr << "Successfully loaded " << fn << std::endl;
+		}
+#endif
+
 		if (!lib)
 		{
 			std::cerr << "Failed following osgDB::DynamicLibrary::loadLibrary call: trying to load "<< fn << std::endl;

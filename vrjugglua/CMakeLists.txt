@@ -3,10 +3,6 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
-if(BUILD_VERBOSE)
-	add_definitions(-DVERBOSE)
-endif()
-
 if(BUILD_LUABIND_COMBINED)
 	add_definitions(-DLUABIND_COMBINED_COMPILE)
 endif()

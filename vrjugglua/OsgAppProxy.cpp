@@ -23,20 +23,20 @@
 
 namespace vrjLua {
 /// Initialize static member variable
-OsgAppProxy* OsgAppProxy::m_pApp = NULL;
+OsgAppProxy* OsgAppProxy::_pApp = NULL;
 
 OsgAppProxy::OsgAppProxy() :
 	vrj::OsgApp(vrj::Kernel::instance()),
-	m_timeDelta(-1) {
+	_timeDelta(-1) {
 
 }
 
 OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
 	vrj::OsgApp(kern),
-	m_timeDelta(-1)
+	_timeDelta(-1)
 {
 	/// update static pointer to app object
-	m_pApp = this;
+	_pApp = this;
 }
 
 void OsgAppProxy::bindToLua(LuaStatePtr & state) {
@@ -51,8 +51,8 @@ void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 				.def("setAppDelegate", & OsgAppProxy::setAppDelegate)
 				.def("getAppDelegate", & OsgAppProxy::getAppDelegate)
 				.def("setActiveApplication", & OsgAppProxy::setActiveApplication)
-				.def("getScene", & OsgAppProxy::getScene())
-				.def("getTimeDelta", & OsgAppProxy::getTimeDelta())
+				.def("getScene", & OsgAppProxy::getScene)
+				.def("getTimeDelta", & OsgAppProxy::getTimeDelta)
 	   ];
 	}
 }
@@ -85,6 +85,8 @@ void OsgAppProxy::initScene() {
 
 	// Create the top level node of the tree
 	_rootNode = new osg::Group();
+
+	/// @todo call delegate here
 }
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {

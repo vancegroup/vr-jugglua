@@ -22,3 +22,9 @@ vrjKernel.loadConfigFile("standalone.jconf")
 
 print("Setting kernel application")
 app:setActiveApplication()
+
+print("Starting kernel")
+vrjKernel.start()
+
+print("Stopping kernel")
+vrjKernel.stop()
