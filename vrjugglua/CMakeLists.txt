@@ -14,10 +14,12 @@ endif()
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
 set(SOURCES
-	Internal_PositionInterface.cpp
-	Internal_PositionInterface.h
+	Internal_AnalogInterface.cpp
+	Internal_AnalogInterface.h
 	Internal_DigitalInterface.cpp
 	Internal_DigitalInterface.h
+	Internal_PositionInterface.cpp
+	Internal_PositionInterface.h
 	LuaScript.cpp
 	BindKernelToLua.h
 	BindOsgToLua.h

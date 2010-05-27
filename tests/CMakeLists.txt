@@ -11,7 +11,8 @@ set(LUA_TEST_SCRIPTS
 	minimal-osg
 	initialize-devices
 	osgapp-delegate
-	osgapp-delegate-useful)
+	osgapp-delegate-useful
+	osgapp-delegate-initdevices)
 
 foreach(script ${LUA_TEST_SCRIPTS})
     add_test(NAME
@@ -20,4 +21,3 @@ foreach(script ${LUA_TEST_SCRIPTS})
         vrjlua
         "${LUA_TEST_DIR}/${script}.lua")
 endforeach()
-

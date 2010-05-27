@@ -4,7 +4,7 @@ vrjKernel.loadConfigFile("standalone.jconf")
 vrjKernel.start()
 
 wand = gadget.PositionInterface()
-wand:init("VJ Wand")
+wand:init("VJWand")
 
 
 button = gadget.ButtonInterface()

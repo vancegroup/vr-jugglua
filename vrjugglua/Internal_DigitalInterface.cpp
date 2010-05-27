@@ -51,6 +51,5 @@ bool DigitalInterface::wasJustReleased() {
 }
 
 
-
 } // end of Internal namespace
 } // end of vrjLua namespace

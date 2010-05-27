@@ -1,5 +1,5 @@
-/**	@file	Internal_DigitalInterface.h
-	@brief	DigitalInterface wrapper class for LuaBind
+/**	@file	Internal_AnalogInterface.h
+	@brief	AnalogInterface wrapper class for LuaBind
 
 	@date
 	2009-2010
@@ -13,37 +13,37 @@
 */
 
 #pragma once
-#ifndef INCLUDED_vrjugglua_Internal_DigitalInterface_h
-#define INCLUDED_vrjugglua_Internal_DigitalInterface_h
+#ifndef INCLUDED_vrjugglua_Internal_AnalogInterface_h
+#define INCLUDED_vrjugglua_Internal_AnalogInterface_h
 
 // Internal Includes
 #include "LuaScript.h"
 
 // Library/third-party includes
-#include <gadget/Type/DigitalInterface.h>
+#include <gadget/Type/AnalogInterface.h>
 
 // Standard includes
 // - none
 
 namespace vrjLua {
 namespace Internal {
-	class DigitalInterface {
+	class AnalogInterface {
 		public:
-			DigitalInterface();
+		AnalogInterface();
 
 			void init(const std::string & device);
 
-			bool isPressed();
-			bool isAChange();
+			/// @brief get value in range [0, 1]
+			double getData();
 
-			bool wasJustPressed();
-			bool wasJustReleased();
+			/// @brief get value in range [-1, 1]
+			double getCentered();
 
 		protected:
 			bool _ready;
-			gadget::DigitalInterface _iface;
+			gadget::AnalogInterface _iface;
 	};
 } // end of Internal namespace
 } // end of vrjLua namespace
 
-#endif // INCLUDED_vrjugglua_Internal_DigitalInterface_h
+#endif // INCLUDED_vrjugglua_Internal_AnalogInterface_h

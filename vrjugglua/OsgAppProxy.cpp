@@ -22,6 +22,7 @@
 
 // Standard includes
 #include <cstring>
+#include <cstdlib>
 
 namespace vrjLua {
 /// Initialize static member variable

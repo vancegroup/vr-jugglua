@@ -17,8 +17,6 @@
 
 // Local includes
 #include "LuaScript.h"
-#include "Internal_PositionInterface.h"
-#include "Internal_DigitalInterface.h"
 
 // Library/third-party includes
 // - none
