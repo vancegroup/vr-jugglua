@@ -4,12 +4,11 @@ testapp = {
 
 	initScene = function (self)
 		print("In initScene")
-		print("Stopping kernel")
-		vrjKernel.stop()
 	end,
 
 	preFrame = function (self)
-		print("In preFrame")
+		print("In preFrame - Stopping kernel")
+		vrjKernel.stop()
 	end
 }
 
@@ -28,3 +27,6 @@ app:setActiveApplication()
 
 print("Starting kernel")
 vrjKernel.start()
+
+print("Waiting for kernel stop")
+vrjKernel.waitForKernelStop()

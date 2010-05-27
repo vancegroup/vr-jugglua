@@ -27,20 +27,6 @@ namespace vrjLua {
 /// Initialize static member variable
 OsgAppProxy* OsgAppProxy::_pApp = NULL;
 
-OsgAppProxy::OsgAppProxy() :
-	vrj::OsgApp(vrj::Kernel::instance()),
-	_timeDelta(-1) {
-
-}
-
-OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
-	vrj::OsgApp(kern),
-	_timeDelta(-1)
-{
-	/// update static pointer to app object
-	_pApp = this;
-}
-
 void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 	// Bind this class
 	if (state) {
@@ -62,6 +48,20 @@ void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 	}
 }
 
+OsgAppProxy::OsgAppProxy() :
+	vrj::OsgApp(vrj::Kernel::instance()),
+	_timeDelta(-1) {
+
+}
+
+OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
+	vrj::OsgApp(kern),
+	_timeDelta(-1)
+{
+	/// update static pointer to app object
+	_pApp = this;
+}
+
 OsgAppProxy::~OsgAppProxy() {
 
 }
@@ -73,12 +73,13 @@ void OsgAppProxy::setActiveApplication() {
 
 void OsgAppProxy::setAppDelegate(luabind::object const & delegate) {
 	/// @todo test here to see if the passed delegate is suitable
+
+	if (luabind::type(delegate) == LUA_TTABLE) {
 #ifdef VERBOSE
 	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
-		<< "Trying to set the app delegate"
+		<< "App delegate set."
 		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
 #endif
-	if (luabind::type(delegate) == LUA_TTABLE) {
 		_delegate = delegate;
 	} else {
 		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
@@ -92,7 +93,19 @@ luabind::object const & OsgAppProxy::getAppDelegate() {
 }
 
 void OsgAppProxy::initScene() {
-	std::cout << "---------- OsgAppProxy::initScene() ---------------" << std::endl;
+#ifdef VERBOSE
+	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
+		<< "------- OsgAppProxy::initScene() -------"
+		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
+#endif
+
+	// Exit now if there's no delegate set
+	if (!_delegate) {
+		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_WARNING)
+			<< "No delegate has been set yet - exiting to avoid busy-waiting forever."
+			<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_WARNING);
+		vrj::Kernel::instance()->stop();
+	}
 
 	// Create the top level node of the tree
 	_rootNode = new osg::Group();
@@ -102,11 +115,7 @@ void OsgAppProxy::initScene() {
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	vrj::OsgApp::configSceneView(newSceneViewer);
-/*
-	newSceneViewer->getLight()->setAmbient(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
-	newSceneViewer->getLight()->setDiffuse(osg::Vec4(0.9f, 0.9f, 0.9f, 1.0f));
-	newSceneViewer->getLight()->setSpecular(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	*/
+
 	osg::ref_ptr<osg::Light> light0;
 	osg::ref_ptr<osg::LightSource> lightSource0;
 	light0 = new osg::Light();
@@ -156,17 +165,22 @@ void OsgAppProxy::postFrame() {
 	_forwardCallToDelegate("postFrame");
 }
 
+osg::Group* OsgAppProxy::getScene() {
+	return _rootNode.get();
+}
+
+double OsgAppProxy::getTimeDelta() {
+	return _timeDelta;
+}
+
 bool OsgAppProxy::_forwardCallToDelegate(const char * call) {
 	if (_delegate && luabind::type(_delegate[call]) == LUA_TFUNCTION) {
 		_delegate[call](_delegate);
 		return true;
 	}
-
-#ifdef VERY_VERBOSE
-	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
+	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_DRIVEL)
 		<< "Delegate not valid or no '" << call << "' element defined: " << _delegate
-		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
-#endif
+		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_DRIVEL);
 	return false;
 }
 

@@ -24,16 +24,13 @@
 #include <osgUtil/SceneView>
 
 // VR Juggler includes
-#include <vrj/vrjConfig.h>
 #include <vrj/Draw/OSG/OsgApp.h>
-#include <gadget/Type/PositionInterface.h>
 
 // LuaBind includes
 #include <luabind/object.hpp>
 
 // Standard includes
-#include <string>
-#include <vector>
+// - none
 
 namespace vrjLua {
 
@@ -41,7 +38,6 @@ class OsgAppProxy : public vrj::OsgApp {
 	public:
 	/// @brief Lua binding call
 	static void bindToLua(LuaStatePtr & state);
-
 
 	/// @brief Standard constructor
 	OsgAppProxy(vrj::Kernel* kern);
@@ -78,6 +74,8 @@ class OsgAppProxy : public vrj::OsgApp {
 	double getTimeDelta();
 	/// @}
 
+	/// @name Methods for C++ access only
+	/// @{
 	/** Static accessor for the app pointer.
 		@returns the pointer to the singleton app object.
 	*/
@@ -91,6 +89,7 @@ class OsgAppProxy : public vrj::OsgApp {
 		CAVEs.
 	 */
 	unsigned int getSceneViewDefaults();
+	/// @}
 
 	/// @name Methods proxied to the Lua delegate
 	/// @{
@@ -161,8 +160,6 @@ class OsgAppProxy : public vrj::OsgApp {
 	virtual void postFrame();
 	/// @}
 
-
-
 	protected:
 	/**	Static app pointer - do not access directly	*/
 	static OsgAppProxy* _pApp;
@@ -170,34 +167,28 @@ class OsgAppProxy : public vrj::OsgApp {
 	private:
 	osg::ref_ptr<osg::Group>           _rootNode;
 
+	/// @name Proxy/Delegation internals
+	/// @{
 	bool _forwardCallToDelegate(const char * call);
 	luabind::object _delegate;
+	/// @}
 
-	/**	Time of the start of the last preframe.
+	/**	@brief Time of the start of the last preframe.
 
 		Updated each preframe using the user's head timestamp
 	*/
 	vpr::Interval _lastPreFrameTime;
 	double _timeDelta;
-
-	std::string _luaFn;
 };
 
-// -- inline implementations -- /
+// -- inline implementations -- //
+// -- only safe for functions not callable from lua -- /
 inline OsgAppProxy* OsgAppProxy::getApp() {
 	return _pApp;
 }
 
-inline osg::Group* OsgAppProxy::getScene() {
-	return _rootNode.get();
-}
-
 inline unsigned int OsgAppProxy::getSceneViewDefaults() {
 	return osgUtil::SceneView::NO_SCENEVIEW_LIGHT;
-}
-
-inline double OsgAppProxy::getTimeDelta() {
-	return _timeDelta;
 }
 
 } // end of vrjLua namespace

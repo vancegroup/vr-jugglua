@@ -34,7 +34,7 @@ if(BUILD_VERBOSE)
 endif()
 
 option(BUILD_VERY_VERBOSE "Turn on excessive amounts of runtime output." off)
-if(BUILD_VERBOSE)
+if(BUILD_VERY_VERBOSE)
 	add_definitions(-DVERY_VERBOSE)
 endif()
 mark_as_advanced(BUILD_VERY_VERBOSE)

@@ -43,7 +43,6 @@ namespace Kernel {
 	}
 
 	void setApplication(luabind::object app) {
-
 		vrj::Kernel::instance()->setApplication(luabind::object_cast<vrj::OsgApp*>(app));
 	}
 
@@ -75,11 +74,11 @@ void bindKernelToLua(LuaStatePtr state) {
 
 	// Hide the print function, using the threadsafe one.
 	luaL_dostring(state.get(),
-	"do \
-		local oldprint = print \
-		print = function(s) \
-			vrjKernel.safePrint(s) \
-		end \
+	"do \n\
+		local oldprint = print \n\
+		print = function(s) \n\
+			vrjKernel.safePrint(s) \n\
+		end \n\
 	end");
 }
 

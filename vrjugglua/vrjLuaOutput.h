@@ -24,9 +24,17 @@
 // Standard includes
 // - none
 
+/// @brief Standard "status" message importance
 #define MSG_STATUS vprDBG_CONFIG_STATUS_LVL
+
+/// @brief Warning message importance
 #define MSG_WARNING vprDBG_WARNING_LVL
+
+/// @brief Error message importance
 #define MSG_ERROR vprDBG_CRITICAL_LVL
+
+/// @brief Very verbose message importance - not shown by default
+#define MSG_DRIVEL vprDBG_HVERB_LVL
 
 #define VRJLUA_MSG_START(msgsrc, msglevel) vprDEBUG(msgsrc, msglevel)
 #define VRJLUA_MSG_END(msgsrc, msglevel) std::endl << vprDEBUG_FLUSH
