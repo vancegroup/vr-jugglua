@@ -12,30 +12,34 @@
 #include <osgDB/DynamicLibrary>
 #include <osgDB/ReadFile>
 
+std::string getLibraryNamePrepend() {
+	return std::string("osgPlugins-")+std::string(osgGetVersion())+std::string("/");
+}
+
 // borrowed from osgDB...
 std::string createLibraryNameForWrapper(const std::string& ext)
 {
-	static std::string prepend = std::string("osgPlugins-")+std::string(osgGetVersion())+std::string("/");
+
 #if defined(WIN32)
     // !! recheck evolving Cygwin DLL extension naming protocols !! NHV
     #ifdef __CYGWIN__
-        return prepend+"cygosgwrapper_"+ext+".dll";
+        return "cygosgwrapper_"+ext+".dll";
     #elif defined(__MINGW32__)
-        return prepend+"libosgwrapper_"+ext+".dll";
+        return "libosgwrapper_"+ext+".dll";
     #else
         #ifdef _DEBUG
-            return prepend+"osgwrapper_"+ext+"d.dll";
+            return "osgwrapper_"+ext+"d.dll";
         #else
-            return prepend+"osgwrapper_"+ext+".dll";
+            return "osgwrapper_"+ext+".dll";
         #endif
     #endif
 #elif macintosh
-    return prepend+"osgwrapper_"+ext;
+    return "osgwrapper_"+ext;
 #elif defined(__hpux__)
     // why don't we use PLUGIN_EXT from the makefiles here?
-    return prepend+"osgwrapper_"+ext+".sl";
+    return "osgwrapper_"+ext+".sl";
 #else
-    return prepend+"osgwrapper_"+ext+".so";
+    return "osgwrapper_"+ext+".so";
 #endif
 }
 
@@ -68,14 +72,20 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 	if (lua_isnil(L,-1))
 	{
 		lua_pop(L,1);
-
+		std::string fn = createLibraryNameForWrapper(name);
 		osglib *lib =
-			osgDB::DynamicLibrary::loadLibrary(
-			createLibraryNameForWrapper(name) );
+			osgDB::DynamicLibrary::loadLibrary( fn );
 
+		// try it with an extension
+		if (!lib) {
+			std::cerr << "Could not load library " << fn << ", trying with prepended directory: " << getLibraryNamePrepend() << std::endl;
+			fn = getLibraryNamePrepend() + createLibraryNameForWrapper(name);
+			lib = osgDB::DynamicLibrary::loadLibrary(fn);
+		}
+		
 		if (!lib)
 		{
-			std::cerr << "Failed following osgDB::DynamicLibrary::loadLibrary call: trying to load "<< createLibraryNameForWrapper(name) << std::endl;
+			std::cerr << "Failed following osgDB::DynamicLibrary::loadLibrary call: trying to load "<< fn << std::endl;
 			return false;
 		}
 
