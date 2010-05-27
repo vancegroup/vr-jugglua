@@ -66,55 +66,57 @@ function createWandNavigator(wand, button, max_vel)
 			-- Scale the velocity by time and multiply by the direction
 			-- of the wand
 			local mvmt = dt * self.vel
-			local fwd = osg.Vec3()
+			local fwd = osg.Vec3d()
 			fwd:set(wand:getForwardVector())
 			local magnitude = fwd:length()
 
 
-			local xlate = osg.Vec3(
+			local newpos = osg.Vec3d(
 				prev:x() - (fwd:x() / magnitude) * mvmt,
 				prev:y() - (fwd:y() / magnitude) * mvmt,
 				prev:z() - (fwd:z() / magnitude) * mvmt)
-			return xlate
+			return newpos
 		end
 	}
 end
 
 
-osgnav = {
-	position = osg.Vec3(0, 0, 0),
+osgnav = {position = osg.Vec3d(0, 0, 0)}
 
-	initScene = function (self)
-		print("In initScene - setting devices")
+function osgnav:initScene()
+	print("In initScene - setting devices")
 
-		print("Setting up position interface")
-		self.wand = gadget.PositionInterface("VJWand")
+	print("Setting up position interface")
+	self.wand = gadget.PositionInterface("VJWand")
 
-		print("Setting up digital interface")
-		self.button = gadget.DigitalInterface("VJButton0")
+	print("Setting up digital interface")
+	self.button = gadget.DigitalInterface("VJButton0")
 
-		print("Creating navigator")
-		self.wandnav = createWandNavigator(self.wand, self.button, 1.5)
+	print("Creating navigator")
+	self.wandnav = createWandNavigator(self.wand, self.button, 1.5)
 
-		print("Setting up scenegraph")
-		self.navtransform = osg.PositionAttitudeTransform()
-		self.navtransform:addChild(scene)
+	print("Setting up scenegraph")
+	self.navtransform = osg.PositionAttitudeTransform()
+	self.navtransform:addChild(scene)
 
-		print("Attaching to app proxy's scene")
-		print("App proxy scene: ")
-		showInfo(self.appProxy:getScene())
-		self.appProxy:getScene():addChild(self.navtransform)
-	end,
+	print("Attaching to app proxy's scene")
+	print("App proxy scene: ")
+	showInfo(self.appProxy:getScene())
+	self.appProxy:getScene():addChild(self.navtransform)
+end
 
-	preFrame = function (self)
-		print("In preFrame")
-		local xlate
-		print("Location of the world: " .. vecToString(self.position))
+function osgnav:preFrame()
+	print("Location of the world: " .. vecToString(self.position))
+	print("Delta: " .. self.appProxy:getTimeDelta())
+	showInfo(self.position)
+	local newpos = self.wandnav:getPosition(self.appProxy:getTimeDelta(), self.position)
+	print("Location of the world: " .. vecToString(newpos))
+	self.position = newpos
+	print("Location of the world: " .. vecToString(self.position))
 
-		print("Getting translation from navigator")
-		self.position:set(self.wandnav:getPosition(self.appProxy:getTimeDelta(), self.position))
-	end
-}
+	showInfo(self.navtransform)
+	self.navtransform:setPosition(self.position)
+end
 
 
 print("App delegate defined, now creating OsgAppProxy")

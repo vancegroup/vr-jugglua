@@ -106,7 +106,7 @@ void OsgAppProxy::initScene() {
 		<< "------- OsgAppProxy::initScene() -------"
 		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
 #endif
-
+	_lastPreFrameTime.setNow();
 	// Exit now if there's no delegate set
 	if (!_delegate) {
 		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_WARNING)
@@ -118,8 +118,9 @@ void OsgAppProxy::initScene() {
 
 	// Create the top level node of the tree
 	_rootNode = new osg::Group();
-
+	std::cerr << "Number of children: " << _rootNode->getNumChildren() << std::endl;
 	_forwardCallToDelegate("initScene");
+	std::cerr << "Number of children: " << _rootNode->getNumChildren() << std::endl;
 }
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
@@ -164,7 +165,7 @@ void OsgAppProxy::preFrame() {
 		diff_time.secf(0.0f);
 	}
 
-	_timeDelta = diff_time.secf();
+	_timeDelta = diff_time.secd();
 
 	_forwardCallToDelegate("preFrame");
 
