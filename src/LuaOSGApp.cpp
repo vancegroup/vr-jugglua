@@ -17,6 +17,8 @@
 
 // Library/third-party includes
 #include <luabind/class.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
 
 // Standard includes
 #include <cstring>
