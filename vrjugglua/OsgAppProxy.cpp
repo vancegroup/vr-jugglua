@@ -107,7 +107,9 @@ void OsgAppProxy::initScene() {
 		<< "------- OsgAppProxy::initScene() -------"
 		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
 #endif
+
 	_lastPreFrameTime.setNow();
+
 	// Exit now if there's no delegate set
 	if (!_delegate) {
 		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_WARNING)
