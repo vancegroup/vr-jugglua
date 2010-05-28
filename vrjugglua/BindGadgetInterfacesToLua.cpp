@@ -26,6 +26,8 @@
 
 #include <osgLua/Value.h>
 
+#include <osg/Vec3d>
+
 // Standard includes
 #ifdef VERBOSE
 #include <iostream>
@@ -34,8 +36,8 @@
 namespace luabind
 {
     template <>
-    struct default_converter<osg::Vec3>
-      : native_converter_base<osg::Vec3>
+    struct default_converter<osg::Vec3d>
+      : native_converter_base<osg::Vec3d>
     {
         static int compute_score(lua_State* L, int index)
         {
@@ -44,29 +46,30 @@ namespace luabind
             return lua_type(L, index) == LUA_TUSERDATA ? 0 : -1;
         }
 
-        osg::Group* from(lua_State* L, int index)
+        osg::Vec3d from(lua_State* L, int index)
         {
         	/// @todo implement
-            return NULL;
+            return osg::Vec3d();
         }
 
-        void to(lua_State* L, osg::Vec3 const& x)
+        void to(lua_State* L, osg::Vec3d const& x)
         {
         	osgLua::Value::push(L, x);
         }
     };
 
     template <>
-    struct default_converter<osg::Vec3 const&>
-      : default_converter<osg::Vec3>
+    struct default_converter<osg::Vec3d const&>
+      : default_converter<osg::Vec3d>
     {};
 }
 
 
 namespace vrjLua {
 
+using namespace luabind;
+
 void bindGadgetInterfacesToLua(LuaStatePtr state) {
-	using namespace luabind;
 #ifdef VERBOSE
 	std::cerr << "Registering Gadgeteer device interfaces with Lua..." << std::flush << std::endl;
 #endif

@@ -18,10 +18,7 @@
 
 #include "LuaScript.h"
 
-#include "BindOsgToLua.h"
 
-#include "BindKernelToLua.h"
-#include "BindGadgetInterfacesToLua.h"
 
 #include "OsgAppProxy.h"
 
@@ -30,6 +27,12 @@
 
 #include "BindKernelToLua.cpp"
 #include "BindGadgetInterfacesToLua.cpp"
+#else
+#include "BindOsgToLua.h"
+
+#include "BindKernelToLua.h"
+#include "BindGadgetInterfacesToLua.h"
+
 #endif
 
 // Library/third-party includes
@@ -65,11 +68,6 @@ namespace vrjLua {
 /// @brief no-op deleter for externally-provided state pointers
 static void no_op_deleter(lua_State *L) {
 	return;
-}
-
-/// @brief Replacement, juggler-compatible print statement
-static void print(const std::string & s) {
-
 }
 
 LuaScript::LuaScript() :

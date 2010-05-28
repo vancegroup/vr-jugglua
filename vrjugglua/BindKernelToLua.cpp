@@ -28,6 +28,7 @@
 #endif
 
 namespace vrjLua {
+using namespace luabind;
 
 namespace Kernel {
 	void start() {
@@ -63,7 +64,6 @@ namespace Kernel {
 } // end of Internal namespace
 
 void bindKernelToLua(LuaStatePtr state) {
-	using namespace luabind;
 #ifdef VERBOSE
 	std::cerr << "Registering vrjKernel module functions with Lua..." << std::flush << std::endl;
 #endif
