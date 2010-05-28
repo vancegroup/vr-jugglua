@@ -85,6 +85,7 @@ void bindKernelToLua(LuaStatePtr state) {
 			vrjKernel.safePrint(s) \n\
 		end \n\
 	end");
+
 }
 
 }// end of vrjLua namespace

@@ -32,9 +32,13 @@
 #include <osg/Referenced>
 #include <osgIntrospection/Type>
 
+#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 extern "C" {
+#endif
 	#include "lua.h"
+#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 }
+#endif
 
 namespace osgLua {
 

@@ -29,10 +29,13 @@
 #endif 
 
 #include <osgLua/Script>
-
+#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 extern "C" {
+#endif
 	#include "lua.h"
+#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 }
+#endif
 
 namespace osgLua {
 

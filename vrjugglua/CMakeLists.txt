@@ -20,13 +20,16 @@ set(SOURCES
 	Internal_DigitalInterface.h
 	Internal_PositionInterface.cpp
 	Internal_PositionInterface.h
+	LuaRunBuffer.cpp
 	LuaScript.cpp
 	BindKernelToLua.h
 	BindOsgToLua.h
 	BindGadgetInterfacesToLua.h
+	BindRunBufferToLua.h
 	OsgAppProxy.cpp)
 
 set(API
+	LuaRunBuffer.h
 	LuaScript.h
 	OsgAppProxy.h)
 
@@ -34,10 +37,15 @@ set(API
 set(LUA_BINDING_COMPONENTS
 	BindKernelToLua.cpp
 	BindOsgToLua.cpp
-	BindGadgetInterfacesToLua.cpp)
+	BindGadgetInterfacesToLua.cpp
+	BindRunBufferToLua.cpp)
 
 if(NOT BUILD_LUABIND_COMBINED)
 	list(APPEND SOURCES ${LUA_BINDING_COMPONENTS})
+endif()
+
+if(${Boost_VERSION} LESS 103500)
+	include_directories(bitsOfBoost143)
 endif()
 
 add_library(vrjugglua ${SOURCES} ${API})

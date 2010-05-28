@@ -64,6 +64,7 @@ OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
 	_delegationSuccessFlag(true) {
 	/// update static pointer to app object
 	_pApp = this;
+
 }
 
 OsgAppProxy::~OsgAppProxy() {

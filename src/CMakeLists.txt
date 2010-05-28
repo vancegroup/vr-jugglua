@@ -18,6 +18,9 @@ add_definitions(-DOSGLUA_LIBRARY_STATIC)
 ###
 add_executable(vrjlua lua.c)
 target_link_libraries(vrjlua vrjugglua)
+if(BUILD_LUA_AS_CPP)
+	set_source_files_properties(lua.c PROPERTIES LANGUAGE CXX)
+endif()
 
 
 

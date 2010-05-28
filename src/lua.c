@@ -17,14 +17,13 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include <vrjugglua/LuaScript.h>
+
 
 
 static lua_State *globalL = NULL;
 
 static const char *progname = LUA_PROGNAME;
-
-int luaopen_vrjugglua(lua_State *L);
-int luaopen_libvrjugglua(lua_State *L);
 
 static void lstop (lua_State *L, lua_Debug *ar) {
   (void)ar;  /* unused arg. */
@@ -344,6 +343,10 @@ static int pmain (lua_State *L) {
   int script;
   int has_i = 0, has_v = 0, has_e = 0;
   globalL = L;
+
+  /* Let VR JuggLua know which interpreter state we want to use */
+  setInteractiveInterpreter(L);
+
   if (argv[0] && argv[0][0]) progname = argv[0];
   lua_gc(L, LUA_GCSTOP, 0);  /* stop collector during initialization */
   luaL_openlibs(L);  /* open libraries */

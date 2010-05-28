@@ -39,6 +39,11 @@ if(BUILD_VERY_VERBOSE)
 endif()
 mark_as_advanced(BUILD_VERY_VERBOSE)
 
+option(BUILD_LUA_AS_CPP "Build Lua as C++, rather than C" ON)
+if(BUILD_LUA_AS_CPP)
+	add_definitions(-DBUILD_LUA_AS_CPP)
+endif()
+
 ###
 # End options
 ###

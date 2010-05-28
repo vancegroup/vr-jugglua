@@ -16,10 +16,14 @@
 #ifndef OSGLUA_TYPE
 #define OSGLUA_TYPE
 
+#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 extern "C" {
+#endif
 	#include <lualib.h>
 	#include <lauxlib.h>
+#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 }
+#endif
 
 namespace osgLua {
 

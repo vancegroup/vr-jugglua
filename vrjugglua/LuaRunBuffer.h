@@ -19,31 +19,61 @@
 #include <vrjugglua/LuaScript.h>
 
 // Library/third-party includes
+
+// Requires Boost 1.35 or newer, but we've bundled these too
 #include <boost/circular_buffer.hpp>
 
-#include <vpr/Sync/Mutex.h>
+#include <vpr/Sync/CondVar.h>
+#include <vpr/IO/SerializableObject.h>
+#include <vpr/Util/GUID.h>
 
 // Standard includes
 #include <string>
 
 namespace vrjLua {
 
-class LuaRunBuffer {
+class LuaRunBuffer : public vpr::SerializableObject {
 	public:
-		LuaRunBuffer();
+		LuaRunBuffer(unsigned int capacity = 10, bool runBlocks = false);
+
+		/// @brief Call to set the active lua interpreter
+		void initLua(LuaScript script);
+
+		/// @brief Checks to see if we've been initialized
+		bool ready() const;
+
+		/// @brief Get the GUID for a single RunBuffer syncronized in an app
+		static vpr::GUID getGUID();
 
 		/// @name Adding new chunks to the run buffer
 		/// @{
-		bool addFile(const std::string & fn, bool blocking = false);
+		bool addFile(const std::string & filename, bool blocking = false);
 		bool addString(const std::string & str, bool blocking = false);
 		/// @}
-		
+
 		/// @brief Run currently buffered chunks - only call from a single thread!
-		int runBuffer(LuaScript & script);
+		unsigned int runBuffer();
+
+
+
+		/// @name vpr::SerializableObject interface
+		/// @{
+		void writeObject(vpr::ObjectWriter* writer);
+		void readObject(vpr::ObjectReader* reader);
+		/// @}
 
 	protected:
+		bool _full() const;
+		bool _empty() const;
+
+		LuaScript _script;
+
 		boost::circular_buffer<std::string> _buf;
-		vpr::Mutex _lock;
+		vpr::CondVar _cond;
+		unsigned int _maxRun;
+
+		/// @brief configuration - whether we should block in runBuffer
+		bool _runBlock;
 };
 
 // -- inline implementations -- /

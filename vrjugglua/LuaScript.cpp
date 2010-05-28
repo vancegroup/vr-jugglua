@@ -18,8 +18,6 @@
 
 #include "LuaScript.h"
 
-
-
 #include "OsgAppProxy.h"
 
 #ifdef LUABIND_COMBINED_COMPILE
@@ -27,12 +25,14 @@
 
 #include "BindKernelToLua.cpp"
 #include "BindGadgetInterfacesToLua.cpp"
+#include "BindRunBufferToLua.cpp"
+
 #else
 #include "BindOsgToLua.h"
 
 #include "BindKernelToLua.h"
 #include "BindGadgetInterfacesToLua.h"
-
+#include "BindRunBufferToLua.h"
 #endif
 
 // Library/third-party includes
@@ -47,15 +47,9 @@ extern "C" {
 #include <functional>
 #include <iostream>
 
-// Functions to register us from within a Lua interpreter
-extern "C" {
-	int luaopen_vrjugglua(lua_State *L);
-	int luaopen_libvrjugglua(lua_State *L);
-}
-
-
 int luaopen_vrjugglua(lua_State *L) {
-	vrjLua::LuaScript script(L);
+	// Create a script and load the bindings
+	vrjLua::LuaScript script(L, true);
 	return 0; // success
 }
 
@@ -70,12 +64,32 @@ static void no_op_deleter(lua_State *L) {
 	return;
 }
 
+/// @name Manipulating global interpreter variable
+/// @{
+LuaStatePtr g_state;
+
+
+void setInteractiveInterpreter(LuaStatePtr state) {
+	g_state = state;
+}
+
+LuaStatePtr getInteractiveInterpreter() {
+	return g_state;
+}
+/// @}
+
+} // end of namespace vrjLua
+
+void setInteractiveInterpreter(lua_State * state) {
+	vrjLua::g_state = vrjLua::LuaStatePtr(state, std::ptr_fun(vrjLua::no_op_deleter));
+}
+
+namespace vrjLua {
+
 LuaScript::LuaScript() :
 		_state(luaL_newstate(), std::ptr_fun(lua_close)) {
 	// Load default Lua libs
 	luaL_openlibs(_state.get());
-
-
 
 	/// @todo Extend the path here for shared libraries?
 	//luabind::call_function<std::string>(_state.get(), "format", "%q", )
@@ -84,9 +98,12 @@ LuaScript::LuaScript() :
 	_applyBindings();
 }
 
-LuaScript::LuaScript(lua_State * state) :
+LuaScript::LuaScript(lua_State * state, bool bind) :
 			_state(state, std::ptr_fun(no_op_deleter)) {
-	_applyBindings();
+	// If requested, bind.
+	if (bind) {
+		_applyBindings();
+	}
 }
 
 LuaScript::LuaScript(const LuaScript & other) :
@@ -96,11 +113,21 @@ LuaScript::LuaScript(const LuaScript & other) :
 #endif
 }
 
+LuaScript::LuaScript(const LuaStatePtr & otherptr) :
+		_state(otherptr) {
+}
+
+LuaScript & LuaScript::operator=(const LuaScript & other) {
+	_state = other._state;
+	return *this;
+}
+
 bool LuaScript::runFile(const std::string & fn) {
 
 	int ret = luaL_dofile(_state.get(), fn.c_str());
 	if (ret != 0) {
 		std::cerr << "Could not run Lua file " << fn << std::endl;
+		return false;
 	}
 	/*
 	try {
@@ -110,6 +137,16 @@ bool LuaScript::runFile(const std::string & fn) {
 		return false;
 	}
 	*/
+	return true;
+}
+
+bool LuaScript::runString(const std::string & str) {
+
+	int ret = luaL_dostring(_state.get(), str.c_str());
+	if (ret != 0) {
+		std::cerr << "Could not run provided Lua string" << std::endl;
+		return false;
+	}
 	return true;
 }
 
@@ -130,6 +167,7 @@ void LuaScript::_applyBindings() {
 	// vrjugglua
 	bindKernelToLua(_state);
 	bindGadgetInterfacesToLua(_state);
+	bindRunBufferToLua(_state);
 
 	OsgAppProxy::bindToLua(_state);
 }
@@ -142,7 +180,6 @@ bool LuaScript::call(const std::string & func) {
 		throw;
 	}
 }
-
 
 LuaStateWeakPtr LuaScript::getLuaState() const {
 	return _state;

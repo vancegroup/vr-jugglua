@@ -42,5 +42,7 @@
 const vpr::DebugCategory dbgVRJLUA(vpr::GUID("dd146240-69b2-11df-96d4-0002a5d5c51b"), "DBG_VRJLUA", "VRJLUA:");
 const vpr::DebugCategory dbgVRJLUA_PROXY(vpr::GUID("dd146240-69b2-11df-96d4-0002a5d5c51b"), "DBG_LUAPROXY", "LUAPROXY:");
 const vpr::DebugCategory dbgVRJLUA_APP(vpr::GUID("c153dce0-69b5-11df-90ff-0002a5d5c51b"), "DBG_LUAAPP", "LUAAPP:");
+const vpr::DebugCategory dbgVRJLUA_BUFFER(vpr::GUID("1a4dd46d-1b7e-4a53-9cdd-94c3dbf84b6e"), "DBG_LUABUFFER", "LUABUFFER:");
+
 
 #endif // INCLUDED_vrjugglua_vrjLuaOutput_h
