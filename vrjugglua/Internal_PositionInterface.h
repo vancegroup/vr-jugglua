@@ -37,8 +37,8 @@ namespace Internal {
 			PositionInterface(const std::string & device);
 
 			osg::Matrix getMatrix();
-			osg::Vec3 getPosition();
-			osg::Vec3 getForwardVector();
+			osg::Vec3d getPosition();
+			osg::Vec3d getForwardVector();
 
 		protected:
 			gmtl::Matrix44f _getData(const float scale = gadget::PositionUnitConversion::ConvertToFeet);

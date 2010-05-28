@@ -37,13 +37,13 @@ osg::Matrix PositionInterface::getMatrix() {
 	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
 }
 
-osg::Vec3 PositionInterface::getPosition() {
-	gmtl::Vec3f xlate = gmtl::makeTrans<gmtl::Vec3f>(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
-	return osg::Vec3f(xlate[0], xlate[1], xlate[2]);
+osg::Vec3d PositionInterface::getPosition() {
+	gmtl::Vec3d xlate = gmtl::makeTrans<gmtl::Vec3d>(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
+	return osg::Vec3d(xlate[0], xlate[1], xlate[2]);
 }
 
-osg::Vec3 PositionInterface::getForwardVector() {
-	return osg::Vec3f(0,0,-1) * util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
+osg::Vec3d PositionInterface::getForwardVector() {
+	return osg::Vec3d(0,0,-1) * util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
 }
 } // end of Internal namespace
 } // end of vrjLua namespace

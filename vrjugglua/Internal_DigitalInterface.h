@@ -29,7 +29,7 @@ namespace vrjLua {
 namespace Internal {
 	class DigitalInterface {
 		public:
-			DigitalInterface(std::string device);
+			DigitalInterface(const std::string & device);
 
 			bool isPressed();
 			bool isAChange();

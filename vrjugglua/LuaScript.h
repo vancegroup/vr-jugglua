@@ -23,6 +23,7 @@ extern "C" {
 void setInteractiveInterpreter(lua_State * state);
 int luaopen_vrjugglua(lua_State *L);
 int luaopen_libvrjugglua(lua_State *L);
+int add_file_and_line(lua_State* L);
 
 #if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 }

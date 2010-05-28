@@ -46,6 +46,7 @@ extern "C" {
 // Standard includes
 #include <functional>
 #include <iostream>
+#include <sstream>
 
 int luaopen_vrjugglua(lua_State *L) {
 	// Create a script and load the bindings
@@ -55,6 +56,27 @@ int luaopen_vrjugglua(lua_State *L) {
 
 int luaopen_libvrjugglua(lua_State *L) {
 	return luaopen_vrjugglua(L);
+}
+
+// From the Luabind docs
+int add_file_and_line(lua_State* L)
+{
+	lua_Debug d;
+	lua_getstack(L, 1, &d);
+	lua_getinfo(L, "Sln", &d);
+	std::string err = lua_tostring(L, -1);
+	lua_pop(L, 1);
+	std::stringstream msg;
+	msg << d.short_src << ":" << d.currentline;
+
+	if (d.name != 0)
+	{
+		msg << "(" << d.namewhat << " " << d.name << ")";
+	}
+	msg << " " << err;
+	lua_pushstring(L, msg.str().c_str());
+	std::cerr << std::endl << msg.str() << std::endl;
+	return 1;
 }
 
 namespace vrjLua {
@@ -85,6 +107,9 @@ void setInteractiveInterpreter(lua_State * state) {
 }
 
 namespace vrjLua {
+
+
+
 
 LuaScript::LuaScript() :
 		_state(luaL_newstate(), std::ptr_fun(lua_close)) {
@@ -170,6 +195,9 @@ void LuaScript::_applyBindings() {
 	bindRunBufferToLua(_state);
 
 	OsgAppProxy::bindToLua(_state);
+
+	// Set up traceback...
+	luabind::set_pcall_callback(&add_file_and_line);
 }
 
 bool LuaScript::call(const std::string & func) {

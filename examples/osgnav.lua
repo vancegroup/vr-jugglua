@@ -2,9 +2,11 @@
 
 print("Loading lua file osgnav.lua")
 
+maxspeed = 150
+
 -- sets the variable "scene"
 --loadfile("sceneconfig.lua")
-node = osgLua.loadObjectFile('/home/rpavlik/.gvfs/sftp for rpavlik on keymaker.vrac.iastate.edu/home/users/mperkins/export/bottle.obj')
+node = osgLua.loadObjectFile('/home/rpavlik/src/wiimote-modelrot/models/cessna.osg')
 scene = osg.PositionAttitudeTransform()
 scene:addChild(node)
 --[[osg.PositionAttitudeTransform()
@@ -14,9 +16,30 @@ shape:setShape( osg.Sphere(osg.Vec3(20,20,20),5) )
 geode:addDrawable(shape)
 scene:addChild(geode)]]--
 
+function addVec3d(a, b)
+	--print("In addVec3d")
+	return osg.Vec3d(a:x() + b:x(),
+		a:y() + b:y(),
+		a:z() + b:z())
+end
+
+function subtractVec3d(a, b)
+	--print("In subtractVec3d")
+	return osg.Vec3d(a:x() - b:x(),
+		a:y() - b:y(),
+		a:z() - b:z())
+end
+
+function scaleVec3d(a, scale)
+	--print("in scaleVec3d")
+	return osg.Vec3d(a:x() * scale,
+		a:y() * scale,
+		a:z() * scale)
+end
+
 function showInfo(instance)
 	local c = osgLua.getTypeInfo(instance)
-	if c  then
+	if c then
 		print("name = ",c.name)
 		for i,v in ipairs(c.constructors) do
 	  	 print(string.format("\tconstructor(%2d) %s",i,v))
@@ -38,7 +61,7 @@ function createWandNavigator(wand, button, max_vel)
 	return {
 		vel = 0,
 		goal_vel = 0,
-		getPosition = function(self, dt, prev)
+		getTranslation = function(self, dt, prev)
 			if button:isPressed() == true then
 				-- Set our goal velocity
 				self.goal_vel = max_vel
@@ -66,16 +89,13 @@ function createWandNavigator(wand, button, max_vel)
 			-- Scale the velocity by time and multiply by the direction
 			-- of the wand
 			local mvmt = dt * self.vel
+			--print("Movement magnitude: " .. mvmt)
 			local fwd = osg.Vec3d()
 			fwd:set(wand:getForwardVector())
-			local magnitude = fwd:length()
-
-
-			local newpos = osg.Vec3d(
-				prev:x() - (fwd:x() / magnitude) * mvmt,
-				prev:y() - (fwd:y() / magnitude) * mvmt,
-				prev:z() - (fwd:z() / magnitude) * mvmt)
-			return newpos
+			--print(vecToString(fwd))
+			--showInfo(fwd)
+			fwd:normalize()
+			return scaleVec3d(fwd, mvmt)
 		end
 	}
 end
@@ -93,7 +113,7 @@ function osgnav:initScene()
 	self.button = gadget.DigitalInterface("VJButton0")
 
 	print("Creating navigator")
-	self.wandnav = createWandNavigator(self.wand, self.button, 1.5)
+	self.wandnav = createWandNavigator(self.wand, self.button, maxspeed)
 
 	print("Setting up scenegraph")
 	self.navtransform = osg.PositionAttitudeTransform()
@@ -106,15 +126,15 @@ function osgnav:initScene()
 end
 
 function osgnav:preFrame()
-	print("Location of the world: " .. vecToString(self.position))
-	print("Delta: " .. self.appProxy:getTimeDelta())
-	showInfo(self.position)
-	local newpos = self.wandnav:getPosition(self.appProxy:getTimeDelta(), self.position)
-	print("Location of the world: " .. vecToString(newpos))
-	self.position = newpos
-	print("Location of the world: " .. vecToString(self.position))
+	--print("Location of the world: " .. vecToString(self.position))
+	--print("Delta: " .. self.appProxy:getTimeDelta())
+	--showInfo(self.position)
+	local xlate = self.wandnav:getTranslation(self.appProxy:getTimeDelta(), self.position)
+	--print("Translation of me: " .. vecToString(xlate))
+	self.position = subtractVec3d(self.position, xlate)
+	--print("Location of the world: " .. vecToString(self.position))
 
-	showInfo(self.navtransform)
+	--showInfo(self.navtransform)
 	self.navtransform:setPosition(self.position)
 end
 

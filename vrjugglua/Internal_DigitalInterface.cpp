@@ -24,7 +24,7 @@
 namespace vrjLua {
 namespace Internal {
 
-DigitalInterface::DigitalInterface(std::string device) {
+DigitalInterface::DigitalInterface(const std::string & device) {
 	_iface.init(device);
 }
 
