@@ -1,0 +1,6 @@
+scene = osg.PositionAttitudeTransform()
+geode = osg.Geode()
+shape = osg.ShapeDrawable()
+shape:setShape( osg.Sphere(osg.Vec3(0,0,0),15) )
+geode:addDrawable(shape)
+scene:addChild(geode)
