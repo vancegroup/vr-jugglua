@@ -22,6 +22,8 @@
 // Library/third-party includes
 #include <luabind/class.hpp>
 
+#include <osg/LightModel>
+
 // Standard includes
 #include <cstring>
 #include <cstdlib>
@@ -128,25 +130,15 @@ void OsgAppProxy::initScene() {
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	vrj::OsgApp::configSceneView(newSceneViewer);
+		newSceneViewer->getLight()->setAmbient(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+		newSceneViewer->getLight()->setDiffuse(osg::Vec4(0.9f,0.9f,0.9f,1.0f));
+		newSceneViewer->getLight()->setSpecular(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 
-	osg::ref_ptr<osg::Light> light0;
-	osg::ref_ptr<osg::LightSource> lightSource0;
-	light0 = new osg::Light();
-	light0->setLightNum(0);
-	light0->setAmbient(osg::Vec4f(0.36862f, 0.36842f, 0.36842f, 1.0f));
-	light0->setDiffuse(osg::Vec4f(0.88627f, 0.88500f, 0.88500f, 1.0f));
-	light0->setSpecular(osg::Vec4f(0.49019f, 0.48872f, 0.48872f, 1.0f));
-	//light0->setPosition(osg::Vec4f(0.0f, 10000.0f, -20.0f, 0.0f));
-	light0->setPosition(osg::Vec4f(10000.0f, 10000.0f, 10000.0f, 0.0f));
-	light0->setDirection(osg::Vec3f(-1.0f, -1.0f, -1.0f));
+		// setup the ambient light the way I want it
+		osg::LightModel* lightmodel = new osg::LightModel;
+		lightmodel->setAmbientIntensity(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 
-	lightSource0 = new osg::LightSource();
-	lightSource0->setLight(light0.get());
-	lightSource0->setLocalStateSetModes(osg::StateAttribute::ON);
-
-	// Now that we know we have a root node add the default light to the
-	// scene.
-	getScene()->addChild( lightSource0.get() );
+		newSceneViewer->getGlobalStateSet()->setAttributeAndModes(lightmodel, osg::StateAttribute::ON);
 }
 
 void OsgAppProxy::preFrame() {
