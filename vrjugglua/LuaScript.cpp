@@ -36,10 +36,10 @@
 #endif
 
 // Library/third-party includes
-extern "C" {
+LUA_C_INTERFACE_BEGIN
 #include "lauxlib.h"
 #include "lualib.h"
-}
+LUA_C_INTERFACE_END
 
 #include <luabind/luabind.hpp>
 

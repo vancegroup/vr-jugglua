@@ -15,26 +15,10 @@
 #ifndef INCLUDED_vrjugglua_LuaScript_h
 #define INCLUDED_vrjugglua_LuaScript_h
 
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-extern "C" {
-#endif // defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-
-#include "lua.h"
-void setInteractiveInterpreter(lua_State * state);
-int luaopen_vrjugglua(lua_State *L);
-int luaopen_libvrjugglua(lua_State *L);
-int add_file_and_line(lua_State* L);
-
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-}
-#endif
-
-#if defined(__cplusplus)
 // Local includes
-// - none
+#include <vrjugglua/LuaScript_C_Interface.h>
 
 // Library/third-party includes
-
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
@@ -87,5 +71,5 @@ inline bool LuaScript::isValid() const {
 }
 
 }// end of vrjLua namespace
-#endif // defined(__cplusplus)
+
 #endif // INCLUDED_vrjugglua_LuaScript_h

@@ -30,6 +30,7 @@ namespace Internal {
 	class DigitalInterface {
 		public:
 			DigitalInterface(const std::string & device);
+			DigitalInterface(const DigitalInterface & other);
 
 			bool isPressed();
 			bool isAChange();

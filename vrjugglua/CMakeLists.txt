@@ -31,6 +31,7 @@ set(SOURCES
 set(API
 	LuaRunBuffer.h
 	LuaScript.h
+	LuaScript_C_Interface.h
 	OsgAppProxy.h)
 
 

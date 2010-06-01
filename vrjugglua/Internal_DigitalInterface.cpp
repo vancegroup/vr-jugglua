@@ -28,6 +28,10 @@ DigitalInterface::DigitalInterface(const std::string & device) {
 	_iface.init(device);
 }
 
+DigitalInterface::DigitalInterface(const DigitalInterface & other) :
+	_iface(other._iface) {
+}
+
 bool DigitalInterface::isPressed() {
 	return (_iface->getData() == gadget::Digital::TOGGLE_ON ||
 			_iface->getData() == gadget::Digital::ON);
