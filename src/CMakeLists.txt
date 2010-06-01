@@ -22,5 +22,6 @@ if(BUILD_LUA_AS_CPP)
 	set_source_files_properties(lua.c PROPERTIES LANGUAGE CXX)
 endif()
 
-
+install(TARGETS vrjlua
+	RUNTIME DESTINATION ${BIN_DIR})
 

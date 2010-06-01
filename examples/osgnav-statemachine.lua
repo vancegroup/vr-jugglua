@@ -8,7 +8,7 @@ require("StateMachine")
 function init()
 	print("Setting up scenegraph")
 	navtransform = osg.PositionAttitudeTransform()
-	navtransform:addChild(osgLua.loadObjectFile('/home/rpavlik/src/wiimote-modelrot/models/cessna.osg'))
+	navtransform:addChild(osgLua.loadObjectFile('cessna.osg'))
 
 	print("Attaching to scene")
 	StateMachine.getScene():addChild(navtransform)

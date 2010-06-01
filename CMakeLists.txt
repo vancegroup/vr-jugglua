@@ -44,6 +44,15 @@ if(BUILD_LUA_AS_CPP)
 	add_definitions(-DBUILD_LUA_AS_CPP)
 endif()
 
+#if(WIN32)
+	set(BIN_DIR bin/)
+	set(LUA_DIR bin/)
+	set(INCLUDE_DIR include/)
+	set(LIB_DIR lib/)
+#else()
+#	set(BIN_DIR bin)
+#	set(LUA_DIR share/vrjugglua/lua)
+#endif()
 ###
 # End options
 ###
@@ -91,6 +100,9 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${VRJUGGLER22_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${VRJUGGLER22_CXX_FLAGS}")
 list(APPEND EXTRA_LIBS ${VRJUGGLER22_LIBRARIES})
 include_directories(${VRJUGGLER22_INCLUDE_DIRS})
+
+include(BundleOSGRuntime)
+include(BundleVRJ22Runtime)
 
 # Lua
 if(NOT BUILD_EMBEDDED_LUA)
@@ -141,6 +153,10 @@ create_dashboard_scripts("DashboardBuildInitialCache.cmake.in")
 ###
 # Set packaging options (for CPack)
 ###
+
+# Install the examples
+install(DIRECTORY examples
+	DESTINATION .)
 
 # Choose desired package generators
 if(APPLE)

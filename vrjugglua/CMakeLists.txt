@@ -54,3 +54,15 @@ set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
 target_link_libraries(vrjugglua ${EXTRA_LIBS})
 stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua)
 add_cppcheck(vrjugglua)
+
+install(TARGETS vrjugglua
+	RUNTIME DESTINATION ${BIN_DIR}
+	ARCHIVE DESTINATION	${LIB_DIR}
+	PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua)
+
+install(FILES
+	lua/Navigator.lua
+	lua/osgTools.lua
+	lua/StateMachine.lua
+	DESTINATION
+	${LUA_DIR})

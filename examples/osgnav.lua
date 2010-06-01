@@ -4,15 +4,9 @@ print("Loading lua file osgnav.lua")
 
 -- sets the variable "scene"
 --loadfile("sceneconfig.lua")
-node = osgLua.loadObjectFile('/home/rpavlik/src/wiimote-modelrot/models/cessna.osg')
+node = osgLua.loadObjectFile('cessna.osg')
 scene = osg.PositionAttitudeTransform()
 scene:addChild(node)
---[[osg.PositionAttitudeTransform()
-geode = osg.Geode()
-shape = osg.ShapeDrawable()
-shape:setShape( osg.Sphere(osg.Vec3(20,20,20),5) )
-geode:addDrawable(shape)
-scene:addChild(geode)]]--
 
 function vecToString(vec)
 	return "(" .. tostring(vec:x()) .. ", " .. tostring(vec:y()) .. ", " .. tostring(vec:z()) .. ")"
