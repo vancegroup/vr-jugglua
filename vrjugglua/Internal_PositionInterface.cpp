@@ -43,7 +43,9 @@ osg::Vec3d PositionInterface::getPosition() {
 }
 
 osg::Vec3d PositionInterface::getForwardVector() {
-	return osg::Vec3d(0,0,-1) * util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
+	gmtl::Vec4f fwd;
+	gmtl::xform(fwd, _iface->getData(gadget::PositionUnitConversion::ConvertToMeters), gmtl::Vec4f(0, 0, -1, 0));
+	return osg::Vec3d(fwd[0], fwd[1], fwd[2]);
 }
 } // end of Internal namespace
 } // end of vrjLua namespace
