@@ -19,14 +19,12 @@ function vecToString(vec)
 end
 
 
-require("WandNavigator")
+require("Navigator")
 require("osgTools")
 
 osgnav = {position = osg.Vec3d(0, 0, 0)}
 
 function osgnav:initScene()
-	print("In initScene - setting devices")
-
 	print("Setting up position interface")
 	self.wand = gadget.PositionInterface("VJWand")
 
@@ -34,25 +32,19 @@ function osgnav:initScene()
 	self.button = gadget.DigitalInterface("VJButton0")
 
 	print("Creating navigator")
-	self.wandnav = WandNavigator.create(self.wand, self.button, maxspeed)
+	self.nav = Navigator.create(maxspeed)
+	Navigator.useWandTranslation(self.nav, self.wand, self.button)
 
 	print("Setting up scenegraph")
 	self.navtransform = osg.PositionAttitudeTransform()
 	self.navtransform:addChild(scene)
 
 	print("Attaching to app proxy's scene")
-	print("App proxy scene: ")
-	osgTools.printInfo(self.appProxy:getScene())
 	self.appProxy:getScene():addChild(self.navtransform)
 end
 
 function osgnav:preFrame()
-	local xlate = self.wandnav:getTranslation(self.appProxy:getTimeDelta(), self.position)
-	--print("Translation of me: " .. vecToString(xlate))
-	self.position = osgTools.subVec(self.position, xlate)
-	--print("Location of the world: " .. vecToString(self.position))
-
-	--showInfo(self.navtransform)
+	self.position = osgTools.subVec(self.position, self.nav:getTranslation(self.appProxy:getTimeDelta(), self.position))
 	self.navtransform:setPosition(self.position)
 end
 
