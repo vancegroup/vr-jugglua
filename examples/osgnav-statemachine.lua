@@ -5,13 +5,22 @@ require("osgTools")
 require("StateMachine")
 
 -- Define application-wide data --
-navtransform = osg.PositionAttitudeTransform()
+function init()
+	print("Setting up scenegraph")
+	navtransform = osg.PositionAttitudeTransform()
+	navtransform:addChild(osgLua.loadObjectFile('/home/rpavlik/src/wiimote-modelrot/models/cessna.osg'))
+
+	print("Attaching to scene")
+	StateMachine.getScene():addChild(navtransform)
+end
+
+---------------------- osgnav state ----------------------------
 
 -- Define the osgnav "state" --
-
 osgnav = {}
 osgnav.position = osg.Vec3d(0, 0, 0)
 
+-- When entering "osgnav"
 function osgnav:enter()
 	-- Set up the state
 	print("Setting up position interface")
@@ -26,52 +35,52 @@ function osgnav:enter()
 	self.nav = Navigator.create(maxspeed)
 	Navigator.useWandTranslation(self.nav, wand, button)
 
-	print("Setting up scenegraph")
-	navtransform:addChild(osgLua.loadObjectFile('/home/rpavlik/src/wiimote-modelrot/models/cessna.osg'))
-
-	print("Attaching to scene")
-	StateMachine.getScene():addChild(navtransform)
+	
 	
 	-- Set up the events
-	self.events = {}
-	self.events[function() button2:wasJustPressed() end] = function() StateMachine.moveToState(simplerotation) end
-	print(tostring(self.events))
-	for event, action in pairs(self.events) do
-		print(tostring(event) .. " --> " .. tostring(action))
-	end
+	self.events = {
+		[function() return button2:wasJustPressed() end] = StateMachine.createStateTransition(simplerotation);
+	}
 end
 
+-- When updating "osgnav"
 function osgnav:update(dt)
 	self.position = osgTools.subVec(self.position, self.nav:getTranslation(dt, self.position))
 	navtransform:setPosition(self.position)
 end
 
+-- osgnav:leave is undefined - no specific action we wish to carry out.
+
+
+----------- simplerotation state --------------
+
 -- Define the simplerotation "state"
 simplerotation = {}
 simplerotation.degrees = 0
+
+-- When entering "simplerotation"
 function simplerotation:enter()
 	local button2 = gadget.DigitalInterface("VJButton1")
-	self.events = {}
-	self.events[function() button2:wasJustPressed() end] = function() StateMachine.moveToState(osgnav) end
+	self.events = {
+		[function() return button2:wasJustPressed() end] = StateMachine.createStateTransition(osgnav);
+	}
 end
 
+-- When updating "simplerotation"
 function simplerotation:update(dt)
-	degreesPerSec = 15
+	degreesPerSec = 3
 	simplerotation.degrees = simplerotation.degrees + degreesPerSec * dt
-	navtransform.setRotate(osg.Quat(simplerotation.degrees,  osg.Vec3d(0, 1, 0))	)
+	navtransform:setAttitude(osg.Quat(simplerotation.degrees,  osg.Vec3d(0, 1, 0))	)
 end
 
--- Define the events --
+-- simplerotation:leave is undefined - no specific action we wish to carry out.
 
-
-
-
-
--- Start up the app --
+------------------ Start up the app -----------------------
 
 print("Loading config files into kernel")
 StateMachine.loadConfigFile("standalone.jconf")
 
-StateMachine.defineStartingState(osgnav)
+StateMachine.setInitFunction(init)
+StateMachine.setStartingState(osgnav)
 StateMachine.runApp()
 StateMachine.waitForStop()
