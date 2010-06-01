@@ -60,9 +60,9 @@ simplerotation.degrees = 0
 
 -- When entering "simplerotation"
 function simplerotation:enter()
-	local button2 = gadget.DigitalInterface("VJButton1")
+	local button = gadget.DigitalInterface("VJButton2")
 	self.events = {
-		[function() return button2:wasJustPressed() end] = StateMachine.createStateTransition(osgnav);
+		[function() return button:wasJustPressed() end] = StateMachine.createStateTransition(osgnav);
 	}
 end
 
