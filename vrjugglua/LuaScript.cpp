@@ -68,19 +68,21 @@ LuaStatePtr getInteractiveInterpreter() {
 }
 /// @}
 
-LuaScript::LuaScript() :
-		_state(luaL_newstate(), std::ptr_fun(lua_close)) {
+LuaScript::LuaScript(const bool create) {
+	if (create) {
+		_state = LuaStatePtr(luaL_newstate(), std::ptr_fun(lua_close));
 
-	lua_gc(_state.get(), LUA_GCSTOP, 0);  /* stop collector during initialization */
-	// Load default Lua libs
-	luaL_openlibs(_state.get());
+		lua_gc(_state.get(), LUA_GCSTOP, 0);  /* stop collector during initialization */
+		// Load default Lua libs
+		luaL_openlibs(_state.get());
 
-	/// @todo Extend the path here for shared libraries?
-	//luabind::call_function<std::string>(_state.get(), "format", "%q", )
-	//luaL_dostring(_state.get(), "package.cpath = ")
+		/// @todo Extend the path here for shared libraries?
+		//luabind::call_function<std::string>(_state.get(), "format", "%q", )
+		//luaL_dostring(_state.get(), "package.cpath = ")
 
-	_applyBindings();
-	lua_gc(_state.get(), LUA_GCRESTART, 0);
+		_applyBindings();
+		lua_gc(_state.get(), LUA_GCRESTART, 0);
+	}
 }
 
 LuaScript::LuaScript(lua_State * state, bool bind) :

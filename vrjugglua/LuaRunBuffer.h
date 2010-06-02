@@ -22,6 +22,7 @@
 
 // Requires Boost 1.35 or newer, but we've bundled these too
 #include <boost/circular_buffer.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #include <vpr/Sync/CondVar.h>
 #include <vpr/IO/SerializableObject.h>
@@ -36,9 +37,9 @@ class LuaRunBuffer : public vpr::SerializableObject {
 	public:
 		LuaRunBuffer(unsigned int capacity = 10, bool runBlocks = false);
 
-		/// @brief Call to set the active lua interpreter
-		void initLua(const LuaScript & script);
-
+		/// @brief sets the lua state
+		void initLua(lua_State * L);
+		
 		/// @brief Checks to see if we've been initialized
 		bool ready() const;
 

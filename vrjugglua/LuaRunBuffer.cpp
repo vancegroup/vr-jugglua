@@ -39,18 +39,19 @@ inline bool LuaRunBuffer::ready() const {
 }
 
 LuaRunBuffer::LuaRunBuffer(unsigned int capacity, bool runBlocks) :
+		_script(false),
 		_buf(capacity),
 		_runBlock(runBlocks),
 		_maxRun(capacity) {
 
 }
 
-vpr::GUID LuaRunBuffer::getGUID() {
-	return vpr::GUID("00B73EB2-6A89-11DF-ABEB-0FA0DFD72085");
+void LuaRunBuffer::initLua(lua_State * L) {
+	_script = LuaScript(L, false);
 }
 
-void LuaRunBuffer::initLua(const LuaScript & script) {
-	_script = script;
+vpr::GUID LuaRunBuffer::getGUID() {
+	return vpr::GUID("00B73EB2-6A89-11DF-ABEB-0FA0DFD72085");
 }
 
 void LuaRunBuffer::writeObject(vpr::ObjectWriter* writer) {

@@ -35,7 +35,7 @@ LuaStatePtr getInteractiveInterpreter();
 
 class LuaScript {
 	public:
-		LuaScript();
+		explicit LuaScript(const bool create = true);
 
 		/// @brief constructor from an externally-allocated state
 		LuaScript(lua_State * state, bool bind = false);
