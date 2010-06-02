@@ -35,8 +35,8 @@ FLTKNav::~FLTKNav() {
 
 }
 
-void FLTKNav::run() {
-
+int FLTKNav::run() {
+	return Fl::run();
 }
 
 void FLTKNav::runInput() {
@@ -45,8 +45,14 @@ void FLTKNav::runInput() {
 	bool ret = _nav.runString(input);
 	if (ret) {
 		// Successful - append to the text display
-
+		_codeBuf.append("\n");
+		_codeBuf.append(input.c_str());
+	} else {
+		_codeBuf.append("\nExecution of input failed - check for errors and try again");
 	}
+
+	// Scroll to bottom
+	_existingCode->scroll(_existingCode->count_lines(0, _codeBuf.length(), 1), 0);
 }
 
 void FLTKNav::chooseFile() {

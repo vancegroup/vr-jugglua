@@ -28,6 +28,7 @@ set(SOURCES
 	Internal_PositionInterface.h
 	LuaRunBuffer.cpp
 	LuaScript.cpp
+	LuaPath.cpp
 	BindKernelToLua.h
 	BindOsgToLua.h
 	BindGadgetInterfacesToLua.h
@@ -39,6 +40,7 @@ set(API
 	LuaInclude.h
 	LuaRunBuffer.h
 	LuaScript.h
+	LuaPath.h
 	OsgAppProxy.h
 	VRJLua_C_Interface.h)
 
@@ -53,9 +55,18 @@ if(NOT BUILD_LUABIND_COMBINED)
 	list(APPEND SOURCES ${LUA_BINDING_COMPONENTS})
 endif()
 
+# If we have an older boost, work around it
 if(${Boost_VERSION} LESS 103500)
 	include_directories(bitsOfBoost143)
 endif()
+
+# Get the Lua files
+add_subdirectory(lua)
+message(STATUS "Lua files: ${LUA_FILES}")
+foreach(luafile ${LUA_FILES})
+	list(APPEND SOURCES "lua/${luafile}")
+endforeach()
+
 
 add_library(vrjugglua ${SOURCES} ${API})
 set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
@@ -68,9 +79,21 @@ install(TARGETS vrjugglua
 	ARCHIVE DESTINATION	${LIB_DIR}
 	PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua)
 
-install(FILES
-	lua/Navigator.lua
-	lua/osgTools.lua
-	lua/StateMachine.lua
-	DESTINATION
-	${LUA_DIR})
+###
+# Let the Lua files install themselves
+add_custom_command(TARGET vrjugglua
+			POST_BUILD
+			COMMAND
+			${CMAKE_COMMAND}
+			ARGS -E make_directory "${CMAKE_BINARY_DIR}/${LUA_DIR}"
+			COMMENT "Creating directory ${CMAKE_BINARY_DIR}/${LUA_DIR}")
+
+foreach(luafile ${LUA_FILES})
+	add_custom_command(TARGET vrjugglua
+			POST_BUILD
+			COMMAND
+			${CMAKE_COMMAND}
+			ARGS -E copy "${luafile}" "${CMAKE_BINARY_DIR}/${LUA_DIR}"
+			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lua"
+			COMMENT "Copying lua/${luafile} to ${CMAKE_BINARY_DIR}/${LUA_DIR}")
+endforeach()

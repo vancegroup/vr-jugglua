@@ -57,7 +57,7 @@ endif()
 
 #if(WIN32)
 	set(BIN_DIR bin/)
-	set(LUA_DIR bin/)
+	set(LUA_DIR share/vrjugglua/lua/)
 	set(INCLUDE_DIR include/)
 	set(LIB_DIR lib/)
 #else()

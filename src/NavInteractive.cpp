@@ -23,12 +23,26 @@ LUA_C_INTERFACE_END
 
 // Standard includes
 #include <iostream>
-
+#include <stdexcept>
 
 namespace vrjLua {
-NavInteractive::NavInteractive() {
-	_script.runFile("osgnav-testbed.lua");
+NavInteractive::NavInteractive() :
+		_runbuf(NULL) {
+	bool ret = _script.requireModule("osgnav-testbed");
+	if (!ret) {
+		throw std::runtime_error("Could not find and run file osgnav-testbed.lua - make sure Lua can find it");
+	}
 
+	LuaStatePtr state = _script.getLuaState().lock();
+	if (!state) {
+		throw std::runtime_error("Could not get a valid lua state pointer!");
+	}
+
+	luabind::object runbufLua(luabind::globals(state.get())["runbuf"]);
+	_runbuf = luabind::object_cast<SynchronizedRunBuffer*>(runbufLua);
+	if (!_runbuf) {
+		throw std::runtime_error("Could not get a valid run buffer pointer from lua!");
+	}
 }
 
 NavInteractive::~NavInteractive() {
@@ -36,7 +50,9 @@ NavInteractive::~NavInteractive() {
 }
 
 bool NavInteractive::runFile(const std::string & fn) {
-	SynchronizedRunBuffer
+	/// @todo get the buffer and add a file
+
+	_runbuf->addFile(fn);
 }
 
 bool NavInteractive::runString(const std::string & str) {

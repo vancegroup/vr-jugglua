@@ -16,6 +16,7 @@
 #include "LuaScript.h"
 
 #include "OsgAppProxy.h"
+#include "LuaPath.h"
 
 #ifdef LUABIND_COMBINED_COMPILE
 
@@ -107,20 +108,20 @@ LuaScript & LuaScript::operator=(const LuaScript & other) {
 }
 
 bool LuaScript::runFile(const std::string & fn) {
-
 	int ret = luaL_dofile(_state.get(), fn.c_str());
 	if (ret != 0) {
 		std::cerr << "Could not run Lua file " << fn << std::endl;
 		return false;
 	}
-	/*
+}
+
+bool LuaScript::requireModule(const std::string & mod) {
 	try {
-		luabind::call_function<void>(_state.get(), "require", fn.c_str());
+		luabind::call_function<void>(_state.get(), "require", mod);
 	} catch (std::exception & e) {
-		std::cerr << "Could not run Lua file " << fn << " - error: " << e.what() << std::endl;
+		std::cerr << "Could not load Lua module " << mod << " - error: " << e.what() << std::endl;
 		return false;
 	}
-	*/
 	return true;
 }
 
@@ -144,6 +145,10 @@ void LuaScript::_applyBindings() {
 	}
 
 	/// Apply our bindings to this state
+
+	// Extend the lua script search path for "require"
+	LuaPath lp;
+	lp.prependLuaRequirePath(_state);
 
 	// osgLua
 	bindOsgToLua(_state);

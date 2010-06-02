@@ -24,9 +24,9 @@
 using namespace vrjLua;
 
 int main(int argc, char * argv[]) {
-	FLTKNav nav; 	
+	FLTKNav nav;
 
-	nav.run();
-	
-	return 0;
+	return nav.run();
+
+	//return 0;
 }

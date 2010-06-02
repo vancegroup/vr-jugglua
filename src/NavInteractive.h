@@ -18,6 +18,7 @@
 // Local includes
 #include <vrjugglua/VRJLua_C_Interface.h>
 #include <vrjugglua/LuaScript.h>
+#include <vrjugglua/BindRunBufferToLua.h>
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
@@ -39,6 +40,7 @@ class NavInteractive {
 
 	protected:
 		LuaScript _script;
+		SynchronizedRunBuffer* _runbuf;
 };
 
 // -- inline implementations -- /

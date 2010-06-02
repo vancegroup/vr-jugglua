@@ -20,7 +20,7 @@ function osgnav:initScene()
 
 	print("Setting up digital interface")
 	local button = gadget.DigitalInterface("VJButton0")
-	
+
 	print("Setting up run buffer")
 	runbuf = vrjSync.RunBuffer()
 
@@ -41,7 +41,7 @@ function osgnav:preFrame()
 end
 
 function osgnav:postFrame()
-	runbuf:runBuffer()	
+	runbuf:runBuffer()
 end
 
 print("App delegate defined, now creating OsgAppProxy")
@@ -49,8 +49,9 @@ osgnav.appProxy = vrjApp.OsgAppProxy()
 
 print ("Now setting OsgAppProxy's delegate")
 osgnav.appProxy:setAppDelegate(osgnav)
+
 print("Loading config files into kernel")
-require(config)
+require("vrjlua-config")
 
 StateMachine.setInitFunction(init)
 StateMachine.setStartingState(osgnav)

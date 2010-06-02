@@ -50,6 +50,7 @@ class LuaScript {
 
 		bool runFile(const std::string & fn);
 		bool runString(const std::string & str);
+		bool requireModule(const std::string & mod);
 		bool call(const std::string & func);
 
 		LuaStateWeakPtr getLuaState() const;

@@ -33,7 +33,7 @@ class FLTKNav : public NavTestbedUI {
 		FLTKNav();
 		virtual ~FLTKNav();
 
-		void run();
+		int run();
 
 		/// @name Interface required by NavTestbedUI
 		/// @{

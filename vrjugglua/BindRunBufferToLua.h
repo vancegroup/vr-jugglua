@@ -22,6 +22,8 @@
 // Library/third-party includes
 #include <plugins/ApplicationDataManager/UserData.h>
 
+#include <luabind/object.hpp>
+
 // Standard includes
 // - none
 

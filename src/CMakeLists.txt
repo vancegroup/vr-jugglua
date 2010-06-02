@@ -13,6 +13,11 @@ endif()
 
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
+if(${Boost_VERSION} LESS 103500)
+	include_directories(../vrjugglua/bitsOfBoost143)
+endif()
+
+
 ###
 # Standard Lua interpreter with VRJ and OSG automatically loaded
 ###
@@ -26,24 +31,24 @@ install(TARGETS vrjlua
 	RUNTIME DESTINATION ${BIN_DIR})
 
 
-    
+
 ###
 # FLTK-based GUIs
 ###
 if(BUILD_FLTK_GUI)
     set(NAVTESTBED_SRCS
-        FLTKNavMain.cpp 
-        FLTKNav.cpp 
-        FLTKNav.h 
+        FLTKNavMain.cpp
+        FLTKNav.cpp
+        FLTKNav.h
         NavInteractive.cpp
         NavInteractive.h)
-        
+
     fltk_wrap_ui(NavTestbed NavTestbedUI.fl)
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
-    
+
     add_executable(NavTestbed ${NAVTESTBED_SRCS} ${NavTestbed_FLTK_UI_SRCS})
     target_link_libraries(NavTestbed vrjugglua ${FLTK_GUI_LIBS})
-    
+
     install(TARGETS NavTestbed
-	    RUNTIME DESTINATION ${BIN_DIR})    
+	    RUNTIME DESTINATION ${BIN_DIR})
 endif()
