@@ -19,9 +19,7 @@
 #include <FL/Fl_Native_File_Chooser.H>
 
 // Standard includes
-#include <boost/shared_ptr.hpp>
-
-using boost::shared_ptr;
+// - none
 
 namespace vrjLua {
 
@@ -40,8 +38,12 @@ int FLTKNav::run() {
 }
 
 void FLTKNav::runInput() {
-	shared_ptr<const char> input_chars(_inputBuf.text(), &free);
-	std::string input(input_chars.get());
+	std::string input;
+	{
+		char * input_chars = _inputBuf.text();
+		input = std::string(input_chars);
+		free(input_chars);
+	}
 	bool ret = _nav.runString(input);
 	if (ret) {
 		// Successful - append to the text display
@@ -56,7 +58,7 @@ void FLTKNav::runInput() {
 }
 
 void FLTKNav::chooseFile() {
-
+	/// @todo implement
 }
 
 } // end of vrjLua namespace
