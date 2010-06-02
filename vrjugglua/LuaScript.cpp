@@ -113,6 +113,7 @@ bool LuaScript::runFile(const std::string & fn) {
 		std::cerr << "Could not run Lua file " << fn << std::endl;
 		return false;
 	}
+	return true;
 }
 
 bool LuaScript::requireModule(const std::string & mod) {

@@ -49,7 +49,7 @@ vpr::GUID LuaRunBuffer::getGUID() {
 	return vpr::GUID("00B73EB2-6A89-11DF-ABEB-0FA0DFD72085");
 }
 
-void LuaRunBuffer::initLua(LuaScript script) {
+void LuaRunBuffer::initLua(const LuaScript & script) {
 	_script = script;
 }
 

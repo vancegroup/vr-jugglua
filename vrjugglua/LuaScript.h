@@ -38,7 +38,7 @@ class LuaScript {
 		LuaScript();
 
 		/// @brief constructor from an externally-allocated state
-		explicit LuaScript(lua_State * state, bool bind = false);
+		LuaScript(lua_State * state, bool bind = false);
 
 		/// @brief copy constructor - doesn't re-bind
 		LuaScript(const LuaScript & other);

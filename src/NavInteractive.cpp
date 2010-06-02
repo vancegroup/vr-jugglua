@@ -54,17 +54,22 @@ NavInteractive::~NavInteractive() {
 }
 
 bool NavInteractive::runFile(const std::string & fn) {
-	/// @todo get the buffer and add a file
-
-	_runbuf->addFile(fn);
+	if (!_runbuf) {
+		return false;
+	}
+	return _runbuf->addFile(fn);
 }
 
 bool NavInteractive::runString(const std::string & str) {
-
+	if (!_runbuf) {
+		return false;
+	}
+	return _runbuf->addString(str);
 }
 
 bool isRunning() {
-
+	/// @todo implement as a member function (?)
+	return true; 
 }
 
 } // end of vrjLua namespace

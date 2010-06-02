@@ -37,7 +37,7 @@ class LuaRunBuffer : public vpr::SerializableObject {
 		LuaRunBuffer(unsigned int capacity = 10, bool runBlocks = false);
 
 		/// @brief Call to set the active lua interpreter
-		void initLua(LuaScript script);
+		void initLua(const LuaScript & script);
 
 		/// @brief Checks to see if we've been initialized
 		bool ready() const;
