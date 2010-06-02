@@ -3,14 +3,6 @@
 require("Navigator")
 require("osgTools")
 
--- Define application-wide data --
-function init()
-	print("Setting up scenegraph")
-	navtransform = osg.PositionAttitudeTransform()
-
-	print("Attaching to scene")
-	StateMachine.getScene():addChild(navtransform)
-end
 osgnav = {position = osg.Vec3d(0, 0, 0)}
 
 function osgnav:initScene()
@@ -49,7 +41,10 @@ osgnav.appProxy:setAppDelegate(osgnav)
 -- Load config files
 require("vrjlua-config")
 
+print("Setting up scenegraph")
+navtransform = osg.PositionAttitudeTransform()
+
 print("Setting up run buffer")
-runbuf = vrjSync.RunBuffer(osgnav)
+runbuf = vrjSync.RunBuffer(nil)
 
 vrjKernel.start()
