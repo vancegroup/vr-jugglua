@@ -15,12 +15,12 @@
 // Local includes
 #include "BindRunBufferToLua.h"
 
-#include "LuaRunBuffer.h"
+
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
 
-#include <plugins/ApplicationDataManager/UserData.h>
+
 
 // Standard includes
 #ifdef VERBOSE
@@ -30,16 +30,7 @@
 namespace vrjLua {
 using namespace luabind;
 
-namespace Internal {
-	class SynchronizedRunBuffer {
-		public:
-			SynchronizedRunBuffer(luabind::object const& delegate);
-			bool addFile(const std::string & filename, bool blocking = false);
-			bool addString(const std::string & str, bool blocking = false);
-			unsigned int runBuffer();
-		protected:
-			cluster::UserData<LuaRunBuffer> _runBuf;
-	};
+
 
 	SynchronizedRunBuffer::SynchronizedRunBuffer(luabind::object const& delegate) {
 		/// Initialize run buffer's shared data ID
@@ -58,18 +49,17 @@ namespace Internal {
 		return _runBuf->runBuffer();
 	}
 
-} // end of Internal namespace
 
 void bindRunBufferToLua(LuaStatePtr state) {
 #ifdef VERBOSE
 	std::cerr << "Registering vrjSync.RunBuffer object with Lua..." << std::flush << std::endl;
 #endif
 	module(state.get(), "vrjSync") [
-		class_<Internal::SynchronizedRunBuffer>("RunBuffer")
+		class_<SynchronizedRunBuffer>("RunBuffer")
 			.def(constructor<luabind::object>())
-			.def("addFile", &Internal::SynchronizedRunBuffer::addFile)
-			.def("addString", &Internal::SynchronizedRunBuffer::addString)
-			.def("runBuffer", &Internal::SynchronizedRunBuffer::runBuffer)
+			.def("addFile", &SynchronizedRunBuffer::addFile)
+			.def("addString", &SynchronizedRunBuffer::addString)
+			.def("runBuffer", &SynchronizedRunBuffer::runBuffer)
 	];
 
 }

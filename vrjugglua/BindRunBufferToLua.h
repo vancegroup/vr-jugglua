@@ -17,9 +17,10 @@
 
 // Local includes
 #include "LuaScript.h"
+#include "LuaRunBuffer.h"
 
 // Library/third-party includes
-// - none
+#include <plugins/ApplicationDataManager/UserData.h>
 
 // Standard includes
 // - none
@@ -27,6 +28,16 @@
 namespace vrjLua {
 
 void bindRunBufferToLua(LuaStatePtr state);
+
+class SynchronizedRunBuffer {
+	public:
+		SynchronizedRunBuffer(luabind::object const& delegate);
+		bool addFile(const std::string & filename, bool blocking = false);
+		bool addString(const std::string & str, bool blocking = false);
+		unsigned int runBuffer();
+	protected:
+		cluster::UserData<LuaRunBuffer> _runBuf;
+};
 
 } // end of vrjLua namespace
 

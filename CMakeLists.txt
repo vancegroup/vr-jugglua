@@ -25,6 +25,7 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-src
 # Define Simple Options
 option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple - shorter full rebuild time, but longer incremental build time." OFF)
 option(BUILD_VERBOSE "Turn on lots of runtime output." off)
+option(BUILD_FLTK_GUI "Build FLTK-based GUI apps." on)
 
 option(AUTOLOAD_WRAPPER_OSG "Load the osg wrapper automatically at binding time." ON)
 option(AUTOLOAD_WRAPPER_OSGDB "Load the osgDB wrapper automatically at binding time." OFF)
@@ -129,15 +130,27 @@ if(NOT BUILD_EMBEDDED_LUA)
 	include_directories(${OSGLUA_INCLUDE_DIRS})
 endif()
 
+# FLTK
+if(BUILD_FLTK_GUI)
+	set(CMAKE_FIND_APPBUNDLE NEVER) # Don't find Fluid.app the single-site browser
+	find_package(FLTK REQUIRED)
+endif()
+
 ###
 # Build the project
 ###
 
 # Build the embedded libraries
+add_subdirectory(third-party)
+
 if(BUILD_EMBEDDED_LUA)
-	add_subdirectory(third-party)
 	list(APPEND EXTRA_LIBS luabind osgLua_static)
 	include_directories(${LUABIND_INCLUDE_DIRS} ${OSGLUA_INCLUDE_DIRS})
+endif()
+
+if(BUILD_FLTK_GUI)
+	set(FLTK_GUI_LIBS ${FNFC_LIBRARY})
+	include_directories(${FNFC_INCLUDE_DIRS})
 endif()
 
 # Build the vrjugglua library
