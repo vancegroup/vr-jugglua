@@ -69,6 +69,8 @@ LuaStatePtr getInteractiveInterpreter() {
 
 LuaScript::LuaScript() :
 		_state(luaL_newstate(), std::ptr_fun(lua_close)) {
+
+	lua_gc(_state.get(), LUA_GCSTOP, 0);  /* stop collector during initialization */
 	// Load default Lua libs
 	luaL_openlibs(_state.get());
 
@@ -77,6 +79,7 @@ LuaScript::LuaScript() :
 	//luaL_dostring(_state.get(), "package.cpath = ")
 
 	_applyBindings();
+	lua_gc(_state.get(), LUA_GCRESTART, 0);
 }
 
 LuaScript::LuaScript(lua_State * state, bool bind) :

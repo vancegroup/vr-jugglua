@@ -49,7 +49,7 @@ class LuaScript {
 		LuaScript & operator=(const LuaScript & other);
 
 		bool runFile(const std::string & fn);
-		bool runString(const std::string & fn);
+		bool runString(const std::string & str);
 		bool call(const std::string & func);
 
 		LuaStateWeakPtr getLuaState() const;
