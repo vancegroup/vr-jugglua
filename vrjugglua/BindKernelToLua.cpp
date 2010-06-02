@@ -82,7 +82,7 @@ void bindKernelToLua(LuaStatePtr state) {
 	"do \n\
 		local oldprint = print \n\
 		print = function(s) \n\
-			vrjKernel.safePrint(s) \n\
+			vrjKernel.safePrint(tostring(s)) \n\
 		end \n\
 	end");
 
