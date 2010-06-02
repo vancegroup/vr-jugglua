@@ -37,7 +37,7 @@ using namespace luabind;
 		_runBuf.init(LuaRunBuffer::getGUID());
 		// Now, we have an state pointer, so we can set up the
 		// run buffer as well!
-		_runBuf->initLua(LuaScript(delegate.interpreter()));
+		_runBuf->initLua(LuaScript(delegate.interpreter(), false));
 	}
 	bool SynchronizedRunBuffer::addFile(const std::string & filename, bool blocking) {
 		return _runBuf->addFile(filename, blocking);
