@@ -60,14 +60,6 @@ if(${Boost_VERSION} LESS 103500)
 	include_directories(bitsOfBoost143)
 endif()
 
-# Get the Lua files
-add_subdirectory(lua)
-message(STATUS "Lua files: ${LUA_FILES}")
-foreach(luafile ${LUA_FILES})
-	list(APPEND SOURCES "lua/${luafile}")
-endforeach()
-
-
 add_library(vrjugglua ${SOURCES} ${API})
 set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
 target_link_libraries(vrjugglua ${EXTRA_LIBS})
@@ -81,19 +73,5 @@ install(TARGETS vrjugglua
 
 ###
 # Let the Lua files install themselves
-add_custom_command(TARGET vrjugglua
-			POST_BUILD
-			COMMAND
-			${CMAKE_COMMAND}
-			ARGS -E make_directory "${CMAKE_BINARY_DIR}/${LUA_DIR}"
-			COMMENT "Creating directory ${CMAKE_BINARY_DIR}/${LUA_DIR}")
 
-foreach(luafile ${LUA_FILES})
-	add_custom_command(TARGET vrjugglua
-			POST_BUILD
-			COMMAND
-			${CMAKE_COMMAND}
-			ARGS -E copy "${luafile}" "${CMAKE_BINARY_DIR}/${LUA_DIR}"
-			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lua"
-			COMMENT "Copying lua/${luafile} to ${CMAKE_BINARY_DIR}/${LUA_DIR}")
-endforeach()
+add_subdirectory(lua)

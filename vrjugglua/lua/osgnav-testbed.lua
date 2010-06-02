@@ -2,7 +2,6 @@
 
 require("Navigator")
 require("osgTools")
-require("StateMachine")
 
 -- Define application-wide data --
 function init()
@@ -20,9 +19,6 @@ function osgnav:initScene()
 
 	print("Setting up digital interface")
 	local button = gadget.DigitalInterface("VJButton0")
-
-	print("Setting up run buffer")
-	runbuf = vrjSync.RunBuffer()
 
 	print("Creating navigator")
 	self.nav = Navigator.create(maxspeed)
@@ -50,9 +46,10 @@ osgnav.appProxy = vrjApp.OsgAppProxy()
 print ("Now setting OsgAppProxy's delegate")
 osgnav.appProxy:setAppDelegate(osgnav)
 
-print("Loading config files into kernel")
+-- Load config files
 require("vrjlua-config")
 
-StateMachine.setInitFunction(init)
-StateMachine.setStartingState(osgnav)
-StateMachine.runApp()
+print("Setting up run buffer")
+runbuf = vrjSync.RunBuffer(osgnav)
+
+vrjKernel.start()

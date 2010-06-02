@@ -39,6 +39,10 @@ NavInteractive::NavInteractive() :
 	}
 
 	luabind::object runbufLua(luabind::globals(state.get())["runbuf"]);
+	if (!runbufLua) {
+		throw std::runtime_error("Could not get a lua global named runbuf!");
+	}
+
 	_runbuf = luabind::object_cast<SynchronizedRunBuffer*>(runbufLua);
 	if (!_runbuf) {
 		throw std::runtime_error("Could not get a valid run buffer pointer from lua!");

@@ -67,7 +67,7 @@ bool LuaPath::prependLuaRequirePath(LuaStatePtr state) const {
 	scr << '"';
 	// concatenation and rest of line
 	scr << " .. package.path";
-	std::cerr << "Running: " << scr.str() << std::endl;
+
 	return luaL_dostring(state.get(), scr.str().c_str());
 }
 

@@ -12,6 +12,25 @@ set(LUA_FILES
 
 set(LUA_FILES ${LUA_FILES} PARENT_SCOPE)
 
+add_custom_target(luaFiles ALL)
+add_custom_command(TARGET luaFiles
+			POST_BUILD
+			COMMAND
+			${CMAKE_COMMAND}
+			ARGS -E make_directory "${CMAKE_BINARY_DIR}/${LUA_DIR}"
+			COMMENT "Creating directory ${CMAKE_BINARY_DIR}/${LUA_DIR}")
+
+foreach(luafile ${LUA_FILES})
+	add_custom_command(TARGET luaFiles
+			POST_BUILD
+			COMMAND
+			${CMAKE_COMMAND}
+			ARGS -E copy "${luafile}" "${CMAKE_BINARY_DIR}/${LUA_DIR}"
+			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+			DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${luafile}"
+			COMMENT "Copying ${luafile} to ${CMAKE_BINARY_DIR}/${LUA_DIR}")
+endforeach()
+
 install(FILES
 	${LUA_FILES}
 	DESTINATION
