@@ -23,15 +23,7 @@
 #ifndef LUA_INCLUDE_HPP_INCLUDED
 #define LUA_INCLUDE_HPP_INCLUDED
 
-#ifndef BUILD_LUA_AS_CPP
-extern "C"
-{
-#endif
-	#include "lua.h"
-	#include "lauxlib.h"
-#ifndef BUILD_LUA_AS_CPP
-}
-#endif
+#include <vrjugglua/LuaIncludeFull.h>
 
 #endif
 

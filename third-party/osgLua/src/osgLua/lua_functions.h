@@ -20,13 +20,7 @@
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>
 
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-extern "C" {
-#endif
-	#include <lua.h>
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-}
-#endif
+#include <vrjugglua/LuaInclude.h>
 
 namespace osgLua {
 

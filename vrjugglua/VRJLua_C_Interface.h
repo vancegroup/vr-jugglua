@@ -1,4 +1,4 @@
-/**	@file	LuaScript_C_Interface.h
+/**	@file	VRJLua_C_Interface.h
 	@brief	header
 
 	@date
@@ -12,20 +12,13 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_LuaScript_C_Interface_h
-#define INCLUDED_vrjugglua_LuaScript_C_Interface_h
+#ifndef INCLUDED_vrjugglua_VRJLua_C_Interface_h
+#define INCLUDED_vrjugglua_VRJLua_C_Interface_h
 
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-#define LUA_C_INTERFACE_BEGIN extern "C" {
-#define LUA_C_INTERFACE_END }
-#else
-#define LUA_C_INTERFACE_BEGIN
-#define LUA_C_INTERFACE_END
-#endif
+#include <vrjugglua/LuaInclude.h>
 
 LUA_C_INTERFACE_BEGIN
 
-#include "lua.h"
 void setInteractiveInterpreter(lua_State * state);
 int luaopen_vrjugglua(lua_State *L);
 int luaopen_libvrjugglua(lua_State *L);
@@ -34,4 +27,4 @@ int add_file_and_line(lua_State* L);
 LUA_C_INTERFACE_END
 
 
-#endif // INCLUDED_vrjugglua_LuaScript_h
+#endif // INCLUDED_vrjugglua_VRJLua_C_Interface_h

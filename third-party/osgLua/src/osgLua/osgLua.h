@@ -16,15 +16,13 @@
 #ifndef OSGLUA_MAIN
 #define OSGLUA_MAIN
 
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-extern "C" {
-#endif
-	#include "lua.h"
+#include <vrjugglua/LuaInclude.h>
+
+LUA_C_INTERFACE_BEGIN
 	int luaopen_osgLua(lua_State *L);
 	int luaopen_libosgLua(lua_State *L);
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-}
-#endif
+LUA_C_INTERFACE_END
+
 namespace osgLua {
 
 	bool loadWrapper(lua_State *L, const char *name);

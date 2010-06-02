@@ -13,33 +13,30 @@
 */
 
 // Internal Includes
-// for luaL_openlib
-//#define LUA_COMPAT_OPENLIB 1
-
 #include "LuaScript.h"
 
 #include "OsgAppProxy.h"
 
 #ifdef LUABIND_COMBINED_COMPILE
-#include "BindOsgToLua.cpp"
 
-#include "BindKernelToLua.cpp"
-#include "BindGadgetInterfacesToLua.cpp"
-#include "BindRunBufferToLua.cpp"
+#	include "BindOsgToLua.cpp"
+
+#	include "BindKernelToLua.cpp"
+#	include "BindGadgetInterfacesToLua.cpp"
+#	include "BindRunBufferToLua.cpp"
 
 #else
-#include "BindOsgToLua.h"
 
-#include "BindKernelToLua.h"
-#include "BindGadgetInterfacesToLua.h"
-#include "BindRunBufferToLua.h"
+#	include "BindOsgToLua.h"
+
+#	include "BindKernelToLua.h"
+#	include "BindGadgetInterfacesToLua.h"
+#	include "BindRunBufferToLua.h"
+
 #endif
 
 // Library/third-party includes
-LUA_C_INTERFACE_BEGIN
-#include "lauxlib.h"
-#include "lualib.h"
-LUA_C_INTERFACE_END
+#include <vrjugglua/LuaInclude.h>
 
 #include <luabind/luabind.hpp>
 
@@ -47,37 +44,6 @@ LUA_C_INTERFACE_END
 #include <functional>
 #include <iostream>
 #include <sstream>
-
-int luaopen_vrjugglua(lua_State *L) {
-	// Create a script and load the bindings
-	vrjLua::LuaScript script(L, true);
-	return 0; // success
-}
-
-int luaopen_libvrjugglua(lua_State *L) {
-	return luaopen_vrjugglua(L);
-}
-
-// From the Luabind docs
-int add_file_and_line(lua_State* L)
-{
-	lua_Debug d;
-	lua_getstack(L, 1, &d);
-	lua_getinfo(L, "Sln", &d);
-	std::string err = lua_tostring(L, -1);
-	lua_pop(L, 1);
-	std::stringstream msg;
-	msg << d.short_src << ":" << d.currentline;
-
-	if (d.name != 0)
-	{
-		msg << "(" << d.namewhat << " " << d.name << ")";
-	}
-	msg << " " << err;
-	lua_pushstring(L, msg.str().c_str());
-	std::cerr << std::endl << msg.str() << std::endl;
-	return 1;
-}
 
 namespace vrjLua {
 
@@ -88,8 +54,9 @@ static void no_op_deleter(lua_State *L) {
 
 /// @name Manipulating global interpreter variable
 /// @{
-LuaStatePtr g_state;
 
+/// External global variable - ick!
+extern LuaStatePtr g_state;
 
 void setInteractiveInterpreter(LuaStatePtr state) {
 	g_state = state;
@@ -99,17 +66,6 @@ LuaStatePtr getInteractiveInterpreter() {
 	return g_state;
 }
 /// @}
-
-} // end of namespace vrjLua
-
-void setInteractiveInterpreter(lua_State * state) {
-	vrjLua::g_state = vrjLua::LuaStatePtr(state, std::ptr_fun(vrjLua::no_op_deleter));
-}
-
-namespace vrjLua {
-
-
-
 
 LuaScript::LuaScript() :
 		_state(luaL_newstate(), std::ptr_fun(lua_close)) {

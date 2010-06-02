@@ -16,7 +16,7 @@
 #define INCLUDED_vrjugglua_LuaScript_h
 
 // Local includes
-#include <vrjugglua/LuaScript_C_Interface.h>
+#include <vrjugglua/VRJLua_C_Interface.h>
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
@@ -24,13 +24,11 @@
 
 // Standard includes
 #include <string>
-#include <map>
 
 namespace vrjLua {
 
 typedef boost::shared_ptr<lua_State> LuaStatePtr;
 typedef boost::weak_ptr<lua_State> LuaStateWeakPtr;
-
 
 void setInteractiveInterpreter(LuaStatePtr * state);
 LuaStatePtr getInteractiveInterpreter();
@@ -61,7 +59,6 @@ class LuaScript {
 	protected:
 		void _applyBindings();
 		LuaStatePtr _state;
-		static std::map<lua_State*, LuaStateWeakPtr> _allStates;
 };
 
 // -- inline implementations -- /

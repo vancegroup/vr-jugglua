@@ -22,24 +22,34 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-src
 # Set up options
 ###
 
-option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app." ON)
-
-option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple." OFF)
-
-option(BUILD_SHARED_OSGLUA "Whether to also build a DLL/.so version of osgLua." OFF)
-
+# Define Simple Options
+option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple - shorter full rebuild time, but longer incremental build time." OFF)
 option(BUILD_VERBOSE "Turn on lots of runtime output." off)
+
+option(AUTOLOAD_WRAPPER_OSG "Load the osg wrapper automatically at binding time." ON)
+option(AUTOLOAD_WRAPPER_OSGDB "Load the osgDB wrapper automatically at binding time." OFF)
+option(AUTOLOAD_WRAPPER_OSGUTIL "Load the osgUtil wrapper automatically at binding time." OFF)
+
+# Define advanced options
+option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app - highly recommended." ON)
+option(BUILD_SHARED_OSGLUA "Whether to also build a DLL/.so version of osgLua." OFF)
+option(BUILD_LUA_AS_CPP "Build Lua as C++, rather than C - recommended." ON)
+option(BUILD_VERY_VERBOSE "Turn on excessive amounts of runtime output." OFF)
+
+# Mark some as advanced
+mark_as_advanced(BUILD_EMBEDDED_LUA
+	BUILD_SHARED_OSGLUA
+	BUILD_LUA_AS_CPP
+	BUILD_VERY_VERBOSE)
+
+
+# Apply definitions
 if(BUILD_VERBOSE)
 	add_definitions(-DVERBOSE)
 endif()
-
-option(BUILD_VERY_VERBOSE "Turn on excessive amounts of runtime output." off)
 if(BUILD_VERY_VERBOSE)
 	add_definitions(-DVERY_VERBOSE)
 endif()
-mark_as_advanced(BUILD_VERY_VERBOSE)
-
-option(BUILD_LUA_AS_CPP "Build Lua as C++, rather than C" ON)
 if(BUILD_LUA_AS_CPP)
 	add_definitions(-DBUILD_LUA_AS_CPP)
 endif()

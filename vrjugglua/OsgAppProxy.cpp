@@ -17,7 +17,7 @@
 
 #include "ConvertOsgPtrToOsgLuaPtr.h"
 
-#include "vrjLuaOutput.h"
+#include "VRJLuaOutput.h"
 
 // Library/third-party includes
 #include <luabind/class.hpp>

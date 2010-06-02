@@ -17,7 +17,7 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
-#include <vrjugglua/LuaScript_C_Interface.h>
+#include <vrjugglua/VRJLua_C_Interface.h>
 
 
 

@@ -7,6 +7,12 @@ if(BUILD_LUABIND_COMBINED)
 	add_definitions(-DLUABIND_COMBINED_COMPILE)
 endif()
 
+foreach(wrapper OSG OSGDB OSGUTIL)
+	if(AUTOLOAD_WRAPPER_${wrapper})
+		add_definitions(-DAUTOLOAD_WRAPPER_${wrapper})
+	endif()
+endforeach()
+
 if(BUILD_EMBEDDED_LUA)
 	add_definitions(-DEMBEDDED_LUA)
 endif()
@@ -26,13 +32,15 @@ set(SOURCES
 	BindOsgToLua.h
 	BindGadgetInterfacesToLua.h
 	BindRunBufferToLua.h
-	OsgAppProxy.cpp)
+	OsgAppProxy.cpp
+	VRJLua_C_Interface.cpp)
 
 set(API
+	LuaInclude.h
 	LuaRunBuffer.h
 	LuaScript.h
-	LuaScript_C_Interface.h
-	OsgAppProxy.h)
+	OsgAppProxy.h
+	VRJLua_C_Interface.h)
 
 
 set(LUA_BINDING_COMPONENTS

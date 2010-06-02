@@ -14,7 +14,7 @@
 
 // Internal Includes
 #include "LuaRunBuffer.h"
-#include "vrjLuaOutput.h"
+#include "VRJLuaOutput.h"
 
 // Library includes
 #include <vpr/Sync/Guard.h>

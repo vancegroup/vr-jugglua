@@ -14,15 +14,12 @@
 
 // Local includes
 #include "BindRunBufferToLua.h"
-#include "vrjLuaOutput.h"
 
 #include "LuaRunBuffer.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
 
-#include <vrj/Draw/OSG/OsgApp.h>
-#include <vrj/Kernel/Kernel.h>
 #include <plugins/ApplicationDataManager/UserData.h>
 
 // Standard includes

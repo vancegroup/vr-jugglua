@@ -21,14 +21,7 @@
 #include <osg/Referenced>
 #include <osg/ref_ptr>
 
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-extern "C" {
-#endif
-	#include <lualib.h>
-	#include <lauxlib.h>
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-}
-#endif
+#include <vrjugglua/LuaIncludeFull.h>
 
 namespace osgLua {
 
