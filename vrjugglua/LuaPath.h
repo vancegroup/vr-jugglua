@@ -36,6 +36,8 @@ class LuaPath {
 	protected:
 		std::string _findFilePath(const std::string & fn, const std::string & startingAt);
 
+		bool _setJugglerEnvironment() const;
+
 		std::string _root;
 		std::string _luadir;
 
