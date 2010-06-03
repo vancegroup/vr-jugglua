@@ -23,6 +23,7 @@
 #	include "BindOsgToLua.cpp"
 
 #	include "BindKernelToLua.cpp"
+#	include "BindSonixToLua.cpp"
 #	include "BindGadgetInterfacesToLua.cpp"
 #	include "BindRunBufferToLua.cpp"
 
@@ -31,6 +32,7 @@
 #	include "BindOsgToLua.h"
 
 #	include "BindKernelToLua.h"
+#	include "BindSonixToLua.h"
 #	include "BindGadgetInterfacesToLua.h"
 #	include "BindRunBufferToLua.h"
 
@@ -158,6 +160,7 @@ void LuaScript::_applyBindings() {
 
 	// vrjugglua
 	bindKernelToLua(_state);
+	bindSonixToLua(_state);
 	bindGadgetInterfacesToLua(_state);
 	bindRunBufferToLua(_state);
 
