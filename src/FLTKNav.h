@@ -22,6 +22,7 @@
 // Library/third-party includes
 #include <FL/Fl_Text_Buffer.H>
 
+#include <boost/scoped_ptr.hpp>
 
 // Standard includes
 // - none
@@ -43,8 +44,8 @@ class FLTKNav : public NavTestbedUI {
 
 	protected:
 		NavInteractive _nav;
-		Fl_Text_Buffer _inputBuf;
-		Fl_Text_Buffer _codeBuf;
+		boost::scoped_ptr<Fl_Text_Buffer> _inputBuf;
+		boost::scoped_ptr<Fl_Text_Buffer> _codeBuf;
 
 };
 

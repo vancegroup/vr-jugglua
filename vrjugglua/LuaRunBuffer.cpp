@@ -166,6 +166,9 @@ unsigned int LuaRunBuffer::runBuffer() {
 	unsigned int n = _buf.size();
 	unsigned int count(0);
 	std::string current;
+	VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_STATUS)
+			<< "In runBuffer, have " << n << " to run..."
+			<< VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_STATUS);
 	for (unsigned int i = 0; i < n && !_buf.empty(); ++i) {
 		{
 			vpr::Guard<vpr::CondVar> guard(_cond, _runBlock);
