@@ -31,6 +31,7 @@ set(SOURCES
 	LuaPath.cpp
 	BindKernelToLua.h
 	BindOsgToLua.h
+	BindSonixToLua.h
 	BindGadgetInterfacesToLua.h
 	BindRunBufferToLua.h
 	OsgAppProxy.cpp
@@ -48,6 +49,7 @@ set(API
 set(LUA_BINDING_COMPONENTS
 	BindKernelToLua.cpp
 	BindOsgToLua.cpp
+	BindSonixToLua.cpp
 	BindGadgetInterfacesToLua.cpp
 	BindRunBufferToLua.cpp)
 

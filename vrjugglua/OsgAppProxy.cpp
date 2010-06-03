@@ -123,9 +123,15 @@ void OsgAppProxy::initScene() {
 
 	// Create the top level node of the tree
 	_rootNode = new osg::Group();
-	std::cerr << "Number of children: " << _rootNode->getNumChildren() << std::endl;
+	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
+		<< "Number of children before forwarding call to delegate: " << _rootNode->getNumChildren()
+		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
+
 	_forwardCallToDelegate("initScene");
-	std::cerr << "Number of children: " << _rootNode->getNumChildren() << std::endl;
+
+	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
+			<< "Number of children after forwarding call: " << _rootNode->getNumChildren()
+			<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
 }
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {

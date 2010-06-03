@@ -24,9 +24,11 @@
 namespace vrjLua {
 
 FLTKNav::FLTKNav() :
-			NavTestbedUI(480, 560) {
-	_input->buffer(_inputBuf);
-	_existingCode->buffer(_codeBuf);
+			NavTestbedUI(480, 560),
+			_inputBuf(new Fl_Text_Buffer()),
+			_codeBuf(new Fl_Text_Buffer()) {
+	_input->buffer(_inputBuf.get());
+	_existingCode->buffer(_codeBuf.get());
 }
 
 FLTKNav::~FLTKNav() {
@@ -34,27 +36,29 @@ FLTKNav::~FLTKNav() {
 }
 
 int FLTKNav::run() {
+	show();
 	return Fl::run();
 }
 
 void FLTKNav::runInput() {
 	std::string input;
 	{
-		char * input_chars = _inputBuf.text();
+		char * input_chars = _inputBuf->text();
 		input = std::string(input_chars);
 		free(input_chars);
 	}
 	bool ret = _nav.runString(input);
 	if (ret) {
 		// Successful - append to the text display
-		_codeBuf.append("\n");
-		_codeBuf.append(input.c_str());
+		_codeBuf->append("\n");
+		_codeBuf->append(input.c_str());
+		_inputBuf->text("");
 	} else {
-		_codeBuf.append("\nExecution of input failed - check for errors and try again");
+		_codeBuf->append("\nExecution of input failed - check for errors and try again");
 	}
 
 	// Scroll to bottom
-	_existingCode->scroll(_existingCode->count_lines(0, _codeBuf.length(), 1), 0);
+	_existingCode->scroll(_existingCode->count_lines(0, _codeBuf->length(), 1), 0);
 }
 
 void FLTKNav::chooseFile() {

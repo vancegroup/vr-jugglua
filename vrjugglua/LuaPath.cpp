@@ -21,6 +21,8 @@
 // Library includes
 #include <boost/filesystem.hpp>
 
+#include <vpr/System.h>
+
 // Standard includes
 #include <fstream>
 #include <sstream>
@@ -47,7 +49,8 @@ LuaPath::LuaPath() {
 		_root = _findFilePath("StateMachine.lua", initialPath.string());
 		_luadir = _root;
 	}
-	//
+
+	_setJugglerEnvironment();
 }
 
 
@@ -92,11 +95,21 @@ std::string LuaPath::_findFilePath(const std::string & fn, const std::string & s
 
 	if (!fs::exists(filepath)) {
 		/// couldn't find it anywhere...
-		/// @todo long term: gracefully recover from missing files
 		throw std::runtime_error("Could not find file " + fn);
 	}
 
 	return location.normalize().string();
+}
+
+bool LuaPath::_setJugglerEnvironment() const {
+#ifdef _WIN32
+	/// Clear these environment variables so that Juggler figures itself out.
+	bool ret = vpr::System::setenv("VJ_BASE_DIR", "");
+	ret = vpr::System::setenv("SNX_BASE_DIR", "") && ret;
+	return ret;
+#else
+	return true;
+#endif
 }
 
 } // end of vrjLua namespace

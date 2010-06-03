@@ -47,4 +47,7 @@ navtransform = osg.PositionAttitudeTransform()
 print("Setting up run buffer")
 runbuf = vrjSync.RunBuffer(nil)
 
+print("Setting kernel application")
+osgnav.appProxy:setActiveApplication()
+
 vrjKernel.start()
