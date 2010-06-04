@@ -18,6 +18,8 @@
 // Library/third-party includes
 #include <FL/Fl_Native_File_Chooser.H>
 
+#include <vrj/Kernel/Kernel.h>
+
 // Standard includes
 // - none
 
@@ -37,7 +39,9 @@ FLTKNav::~FLTKNav() {
 
 int FLTKNav::run() {
 	show();
-	return Fl::run();
+	int ret = Fl::run();
+	vrj::Kernel::instance()->stop();
+	return ret;
 }
 
 void FLTKNav::runInput() {
