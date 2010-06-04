@@ -1,20 +1,20 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0109 
+version 1.0110 
 header_name {.h} 
 code_name {.cxx}
 widget_class NavTestbedUI {
-  label {VRJ Lua Nav Testbed} open
-  xywh {590 391 480 560} type Double
+  label {VRJ Lua Nav Testbed} open selected
+  xywh {590 184 480 560} type Double
   class Fl_Window visible
 } {
   decl {virtual void runInput() = 0;} {protected
   }
-  decl {virtual void chooseFile() = 0;} {selected protected
+  decl {virtual void chooseFile() = 0;} {protected
   }
   Fl_Button {} {
     label {Choose and Run Lua File}
     callback {chooseFile();}
-    xywh {10 10 460 30}
+    xywh {10 10 460 30} deactivate
   }
   Fl_Text_Display _existingCode {
     protected xywh {10 50 460 350} textfont 4
