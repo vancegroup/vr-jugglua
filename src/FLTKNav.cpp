@@ -39,9 +39,12 @@ FLTKNav::~FLTKNav() {
 
 int FLTKNav::run() {
 	show();
-	int ret = Fl::run();
-	vrj::Kernel::instance()->stop();
-	return ret;
+	do {
+	} while ((Fl::wait(0) >= 0) && (Fl::first_window() != NULL) && vrj::Kernel::instance()->isRunning());
+	if (vrj::Kernel::instance()->isRunning()) {
+		vrj::Kernel::instance()->stop();
+	}
+	return 0;
 }
 
 void FLTKNav::runInput() {
