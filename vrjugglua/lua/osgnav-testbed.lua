@@ -28,7 +28,7 @@ function osgnav:preFrame()
 	navtransform:setPosition(self.position)
 end
 
-function osgnav:postFrame()
+function osgnav:latePreFrame()
 	runbuf:runBuffer()
 end
 

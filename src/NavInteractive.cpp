@@ -67,9 +67,4 @@ bool NavInteractive::runString(const std::string & str) {
 	return _runbuf->addString(str);
 }
 
-bool isRunning() {
-	/// @todo implement as a member function (?)
-	return true; 
-}
-
 } // end of vrjLua namespace

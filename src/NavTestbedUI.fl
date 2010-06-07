@@ -3,13 +3,13 @@ version 1.0109
 header_name {.h} 
 code_name {.cxx}
 widget_class NavTestbedUI {
-  label {VRJ Lua Nav Testbed} open
-  xywh {590 391 480 560} type Double
+  label {VRJ Lua Nav Testbed} open selected
+  xywh {590 184 480 560} type Double resizable
   class Fl_Window visible
 } {
   decl {virtual void runInput() = 0;} {protected
   }
-  decl {virtual void chooseFile() = 0;} {selected protected
+  decl {virtual void chooseFile() = 0;} {protected
   }
   Fl_Button {} {
     label {Choose and Run Lua File}

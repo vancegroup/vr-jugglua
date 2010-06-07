@@ -16,7 +16,7 @@
 #include "FLTKNav.h"
 
 // Library/third-party includes
-// - none
+#include <vrj/Kernel/Kernel.h>
 
 // Standard includes
 #include <iostream>
@@ -24,6 +24,7 @@
 using namespace vrjLua;
 
 int main(int argc, char * argv[]) {
+	vrj::Kernel::setUseCocoaWrapper(false);
 	FLTKNav nav;
 
 	return nav.run();

@@ -6,6 +6,6 @@ vrjKernel.start()
 wand = gadget.PositionInterface("VJWand")
 
 
-button = gadget.ButtonInterface("VJButton0")
+button = gadget.DigitalInterface("VJButton0")
 
 vrjKernel.stop()
