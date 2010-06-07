@@ -21,30 +21,29 @@ add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
 set(SOURCES
 	Internal_AnalogInterface.cpp
-	Internal_AnalogInterface.h
 	Internal_DigitalInterface.cpp
-	Internal_DigitalInterface.h
 	Internal_PositionInterface.cpp
-	Internal_PositionInterface.h
 	LuaRunBuffer.cpp
 	LuaScript.cpp
 	LuaPath.cpp
+	OsgAppProxy.cpp
+	VRJLua_C_Interface.cpp)
+
+set(API
+	Internal_AnalogInterface.h
+	Internal_DigitalInterface.h
+	Internal_PositionInterface.h
 	BindKernelToLua.h
 	BindOsgToLua.h
 	BindSonixToLua.h
 	BindGadgetInterfacesToLua.h
 	BindRunBufferToLua.h
-	OsgAppProxy.cpp
-	VRJLua_C_Interface.cpp)
-
-set(API
 	LuaInclude.h
 	LuaRunBuffer.h
 	LuaScript.h
 	LuaPath.h
 	OsgAppProxy.h
 	VRJLua_C_Interface.h)
-
 
 set(LUA_BINDING_COMPONENTS
 	BindKernelToLua.cpp
@@ -60,6 +59,8 @@ endif()
 # If we have an older boost, work around it
 if(${Boost_VERSION} LESS 103500)
 	include_directories(bitsOfBoost143)
+	install(DIRECTORY bitsOfBoost143/boost
+		DESTINATION ${INCLUDE_DIR})
 endif()
 
 add_library(vrjugglua ${SOURCES} ${API})
@@ -69,6 +70,7 @@ stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua)
 add_cppcheck(vrjugglua)
 
 install(TARGETS vrjugglua
+	EXPORT vrjlua-sdk
 	RUNTIME DESTINATION ${BIN_DIR}
 	ARCHIVE DESTINATION	${LIB_DIR}
 	PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua)

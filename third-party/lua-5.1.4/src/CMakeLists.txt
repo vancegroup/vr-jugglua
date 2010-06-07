@@ -37,7 +37,6 @@ set(LUA_SRCS
 	lzio.c
 	print.c
 	lapi.h
-	lauxlib.h
 	lcode.h
 	ldebug.h
 	ldo.h
@@ -53,12 +52,15 @@ set(LUA_SRCS
 	lstring.h
 	ltable.h
 	ltm.h
-	luaconf.h
-	lua.h
-	lualib.h
 	lundump.h
 	lvm.h
 	lzio.h)
+
+set(LUA_API
+	luaconf.h
+	lua.h
+	lualib.h
+	lauxlib.h)
 
 set(LUA_EXTRA_LIBS)
 if(WIN32)
@@ -78,10 +80,17 @@ else() # Linux
 	list(APPEND LUA_EXTRA_LIBS ${READLINE_LIBRARY} ${CURSES_LIBRARIES})
 endif()
 
-add_library(lua ${LUA_SRCS})
+add_library(lua ${LUA_SRCS} ${LUA_API})
 if(LUA_EXTRA_LIBS)
 	target_link_libraries(lua ${LUA_EXTRA_LIBS})
 endif()
 if(BUILD_LUA_AS_CPP)
 	set_source_files_properties(${LUA_SRCS} PROPERTIES LANGUAGE CXX)
 endif()
+
+set_target_properties(lua PROPERTIES PUBLIC_HEADER "${LUA_API}")
+
+install(TARGETS lua
+	EXPORT vrjlua-sdk
+	ARCHIVE DESTINATION ${LIB_DIR}
+	PUBLIC_HEADER DESTINATION ${INCLUDE_DIR})

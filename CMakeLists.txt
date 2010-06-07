@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 2.6.2)
 
 # Set package properties
-project(VRJugglua)
+project(VRJuggLua)
 
 set(CPACK_PACKAGE_VENDOR "Iowa State University")
 set(CPACK_PACKAGE_CONTACT "Ryan Pavlik <rpavlik@iastate.edu>")
@@ -180,6 +180,20 @@ create_dashboard_scripts("DashboardBuildInitialCache.cmake.in")
 # Install the examples
 install(DIRECTORY examples
 	DESTINATION .)
+
+if(WIN32)
+	set(EXPORT_DIR cmake)
+else()
+	set(EXPORT_DIR ${LIB_DIR}/VRJuggLua)
+endif()
+
+install(EXPORT vrjlua-sdk
+	DESTINATION ${EXPORT_DIR}
+	NAMESPACE vrjlua_exported_
+	FILE vrjlua-targets.cmake)
+configure_file(VRJuggLua-config.cmake.in VRJuggLua-config.cmake)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/VRJuggLua-config.cmake
+	DESTINATION ${EXPORT_DIR})
 
 # Choose desired package generators
 if(APPLE)
