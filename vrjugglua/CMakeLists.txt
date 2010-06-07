@@ -68,6 +68,12 @@ target_link_libraries(vrjugglua ${EXTRA_LIBS})
 stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua)
 add_cppcheck(vrjugglua)
 
+set_property(TARGET
+	vrjugglua
+	PROPERTY
+	PROJECT_LABEL
+	"VR JuggLua library")
+
 install(TARGETS vrjugglua
 	RUNTIME DESTINATION ${BIN_DIR}
 	ARCHIVE DESTINATION	${LIB_DIR}

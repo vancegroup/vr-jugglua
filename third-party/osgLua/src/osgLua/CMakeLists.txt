@@ -31,3 +31,8 @@ endif()
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 add_library(osgLua_static ${OSGLUA_SRCS} ${OSGLUA_SIMPLE_API})
 target_link_libraries(osgLua_static lua ${OPENSCENEGRAPH_LIBRARIES} lua)
+set_property(TARGET
+	osgLua_static
+	PROPERTY
+	PROJECT_LABEL
+	"OsgLua Static Library")

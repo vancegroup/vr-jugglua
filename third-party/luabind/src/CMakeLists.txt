@@ -33,3 +33,9 @@ endif()
 
 add_library(luabind ${LUABIND_SRCS})
 target_link_libraries(luabind lua ${LUABIND_EXTRA_LIBS})
+
+set_property(TARGET
+	luabind
+	PROPERTY
+	PROJECT_LABEL
+	"LuaBind Library")

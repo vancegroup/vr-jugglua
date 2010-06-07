@@ -85,3 +85,9 @@ endif()
 if(BUILD_LUA_AS_CPP)
 	set_source_files_properties(${LUA_SRCS} PROPERTIES LANGUAGE CXX)
 endif()
+
+set_property(TARGET
+	lua
+	PROPERTY
+	PROJECT_LABEL
+	"Lua Core Library")
