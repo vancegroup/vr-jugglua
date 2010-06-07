@@ -36,8 +36,6 @@ class NavInteractive {
 		bool runFile(const std::string & fn);
 		bool runString(const std::string & str);
 
-		bool isRunning();
-
 	protected:
 		LuaScript _script;
 		SynchronizedRunBuffer* _runbuf;

@@ -23,9 +23,13 @@
 #include <FL/Fl_Text_Buffer.H>
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 // Standard includes
 // - none
+
+
+class Fl_Native_File_Chooser;
 
 namespace vrjLua {
 
@@ -46,6 +50,7 @@ class FLTKNav : public NavTestbedUI {
 		NavInteractive _nav;
 		boost::scoped_ptr<Fl_Text_Buffer> _inputBuf;
 		boost::scoped_ptr<Fl_Text_Buffer> _codeBuf;
+		boost::shared_ptr<Fl_Native_File_Chooser> _fc;
 
 };
 

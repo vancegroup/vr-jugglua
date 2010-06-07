@@ -31,6 +31,9 @@ FLTKNav::FLTKNav() :
 			_codeBuf(new Fl_Text_Buffer()) {
 	_input->buffer(_inputBuf.get());
 	_existingCode->buffer(_codeBuf.get());
+
+	/// Add a line showing the effective result of running the initial code
+	_codeBuf->append("navtransform = osg.Group()\n");
 }
 
 FLTKNav::~FLTKNav() {
@@ -39,8 +42,11 @@ FLTKNav::~FLTKNav() {
 
 int FLTKNav::run() {
 	show();
+	/// Event loop: run FLTK events, until either FLTK or VRJ exits
 	do {
 	} while ((Fl::wait(0) >= 0) && (Fl::first_window() != NULL) && vrj::Kernel::instance()->isRunning());
+
+	/// Shut down kernel nicely
 	if (vrj::Kernel::instance()->isRunning()) {
 		vrj::Kernel::instance()->stop();
 	}
@@ -69,7 +75,28 @@ void FLTKNav::runInput() {
 }
 
 void FLTKNav::chooseFile() {
-	/// @todo implement
+
+	_fc = boost::shared_ptr<Fl_Native_File_Chooser>(new Fl_Native_File_Chooser(Fl_Native_File_Chooser::BROWSE_FILE));
+	_fc->title("Open VRJLua File...");
+	_fc->filter("Lua files\t*.lua");
+
+	int ret = _fc->show();
+	if (ret != 0) {
+		// No file picked, for one reason or another.
+		return;
+	}
+
+	bool bret = _nav.runFile(_fc->filename());
+	if (bret) {
+		// Successful - append to the text display
+		std::string code("require('");
+		code += _fc->filename();
+		code += "')";
+		_codeBuf->append("\n-- Run file chosen in GUI\n");
+		_codeBuf->append(code.c_str());
+	} else {
+		_codeBuf->append("\nExecution of chosen file failed - check for errors and try again");
+	}
 }
 
 } // end of vrjLua namespace
