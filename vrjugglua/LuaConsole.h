@@ -49,6 +49,8 @@ class LuaConsole {
 		virtual void waitForThreadStop() = 0;
 
 		virtual void appendToDisplay(std::string const& message) = 0;
+
+		virtual void setTitle(std::string const& title) = 0;
 		/// @}
 
 		bool isValid() const;

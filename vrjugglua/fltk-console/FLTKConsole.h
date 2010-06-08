@@ -44,6 +44,8 @@ class FLTKConsole : public LuaConsole {
 		virtual void waitForThreadStop();
 
 		virtual void appendToDisplay(std::string const& message);
+
+		virtual void setTitle(std::string const& title);
 		/// @}
 
 	protected:

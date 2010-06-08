@@ -37,7 +37,7 @@ class FLTKConsoleView : public FLTKConsoleUI {
 	public:
 		FLTKConsoleView(FLTKConsole* console) :
 				_console(console),
-				FLTKConsoleUI(700,560),
+				FLTKConsoleUI(700,560, "VRJLua Console"),
 				_inputBuf(new Fl_Text_Buffer()),
 				_codeBuf(new Fl_Text_Buffer()) {
 			_input->buffer(_inputBuf.get());
@@ -162,6 +162,10 @@ void FLTKConsole::waitForThreadStop() {
 
 void FLTKConsole::appendToDisplay(std::string const& message) {
 	_view->appendToDisplay(message);
+}
+
+void FLTKConsole::setTitle(std::string const& title) {
+	_view->copy_label(title.c_str());
 }
 
 void FLTKConsole::_threadLoop() {
