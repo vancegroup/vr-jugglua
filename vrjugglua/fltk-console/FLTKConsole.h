@@ -48,6 +48,8 @@ class FLTKConsole : public LuaConsole {
 		virtual void setTitle(std::string const& title);
 		/// @}
 
+		static void threadEntryPoint();
+
 	protected:
 		void _threadLoop();
 		bool _doThreadWork();
@@ -56,6 +58,8 @@ class FLTKConsole : public LuaConsole {
 		vpr::Thread _thread;
 
 		boost::shared_ptr<FLTKConsoleUI> _view;
+
+		static FLTKConsole * s_console;
 };
 
 // -- inline implementations -- /

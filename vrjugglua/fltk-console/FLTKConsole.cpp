@@ -19,17 +19,17 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>
 
-
 // Standard includes
 #include <iostream>
 #include <stdexcept>
-
 
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Native_File_Chooser.H>
 #include <vrjlua-fltk-console.h>
 
 namespace vrjLua {
+
+FLTKConsole * FLTKConsole::s_console = NULL;
 
 static void doNothingUponModify(int, int, int, int, const char *, void *) {
 	// Do nothing
@@ -146,6 +146,7 @@ FLTKConsole::FLTKConsole() :
 		_running(false),
 		_view(new FLTKConsoleView(this)) {
 	// No constructor body
+	s_console = this;
 }
 
 FLTKConsole::FLTKConsole(LuaScript const& script) :
@@ -153,18 +154,21 @@ FLTKConsole::FLTKConsole(LuaScript const& script) :
 		_running(false),
 		_view(new FLTKConsoleView(this))  {
 	// No constructor body
+	s_console = this;
 }
 
 FLTKConsole::~FLTKConsole() {
+	stopThread();
 }
 
 bool FLTKConsole::startThread() {
 	if (_running) {
 		/// @todo notify that the thread is already running?
-		return true;
+		return false;
 	}
+
 	_running = true;
-	_thread.setFunctor(boost::bind(&FLTKConsole::_threadLoop, this));
+	_thread.setFunctor(&FLTKConsole::threadEntryPoint);
 	_thread.start();
 	return true;
 }
@@ -183,6 +187,15 @@ void FLTKConsole::appendToDisplay(std::string const& message) {
 
 void FLTKConsole::setTitle(std::string const& title) {
 	_view->copy_label(title.c_str());
+}
+
+void FLTKConsole::threadEntryPoint() {
+	if (s_console) {
+		std::cerr << __FUNCTION__ << ": Entering thread!" << std::endl;
+		s_console->_threadLoop();
+	} else {
+		std::cerr << __FUNCTION__ << ": Invalid console pointer!" << std::endl;
+	}
 }
 
 void FLTKConsole::_threadLoop() {
