@@ -43,8 +43,10 @@ int main(int argc, char * argv[]) {
 
 	vrj::Kernel::setUseCocoaWrapper(false);
 
+#ifndef _WIN32
 	/// Tell the kernel to shut down our console thread if it exits first
 	vrj::Kernel::instance()->addHandlerPreCallback(stopConsole);
+#endif
 
 	/// Load the startup script
 	LuaScript script;
