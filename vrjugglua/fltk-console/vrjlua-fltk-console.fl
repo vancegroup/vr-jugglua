@@ -8,9 +8,13 @@ decl {\#include <iostream>} {public
 decl {\#include <string>} {public global
 } 
 
+decl {FLTKConsoleUI* FLTKConsoleUI::_ui = NULL;} {global
+} 
+
 widget_class FLTKConsoleUI {
-  label {VR JuggLua Console} open
+  label {VR JuggLua Console} open selected
   xywh {2185 362 700 580} type Double resizable
+  code0 {_ui = this;}
   class Fl_Window visible
 } {
   decl {virtual void runInput() = 0;} {public
@@ -20,6 +24,8 @@ widget_class FLTKConsoleUI {
   decl {virtual void saveFile() = 0;} {public
   }
   decl {virtual void appendToDisplay(std::string const& message) = 0;} {public
+  }
+  decl {static FLTKConsoleUI * _ui;} {public
   }
   Fl_Text_Display _existingCode {
     protected xywh {10 40 680 390} color 48 textfont 4
@@ -42,18 +48,17 @@ widget_class FLTKConsoleUI {
     } {
       MenuItem {} {
         label {Open...}
-        callback {chooseAndRunFile();}
+        callback {FLTKConsoleUI::_ui->chooseAndRunFile();}
         xywh {0 0 100 20}
       }
       MenuItem {} {
         label {Save...}
-        callback {std::cout << "Pointer this: " << this << std::endl;
-saveFile();}
+        callback {FLTKConsoleUI::_ui->saveFile();}
         xywh {0 0 100 20} divider
       }
       MenuItem {} {
         label Quit
-        callback {hide();} selected
+        callback {FLTKConsoleUI::_ui->hide();}
         xywh {0 0 100 20}
       }
     }
