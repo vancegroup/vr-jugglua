@@ -54,6 +54,7 @@ bool LuaConsole::getRunBufFromLuaGlobal() {
 	if (!_runbuf) {
 		throw std::runtime_error("Could not get a valid run buffer pointer from lua!");
 	}
+	return true;
 }
 
 bool LuaConsole::createRunBuf() {
