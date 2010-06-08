@@ -24,9 +24,9 @@
 // Standard includes
 // - none
 
-namespace vrjLua {
+class FLTKConsoleUI;
 
-class FLTKConsoleView;
+namespace vrjLua {
 
 class FLTKConsole : public LuaConsole {
 	public:
@@ -53,7 +53,7 @@ class FLTKConsole : public LuaConsole {
 		bool _running;
 		vpr::Thread _thread;
 
-		boost::shared_ptr<FLTKConsoleView> _view;
+		boost::shared_ptr<FLTKConsoleUI> _view;
 };
 
 // -- inline implementations -- /

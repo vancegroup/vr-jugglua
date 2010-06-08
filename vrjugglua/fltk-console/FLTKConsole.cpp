@@ -14,20 +14,24 @@
 
 // Internal Includes
 #include "FLTKConsole.h"
-#include <vrjlua-fltk-console.h>
 
 // Library/third-party includes
 #include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>
 
-#include <FL/Fl_Text_Buffer.H>
-#include <FL/Fl_Native_File_Chooser.H>
 
 // Standard includes
 #include <iostream>
 #include <stdexcept>
 
+
+#include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Native_File_Chooser.H>
+#include <vrjlua-fltk-console.h>
+
 namespace vrjLua {
+
+
 
 class FLTKConsoleView : public FLTKConsoleUI {
 	public:
@@ -110,7 +114,7 @@ class FLTKConsoleView : public FLTKConsoleUI {
 			}
 		}
 
-		void appendToDisplay(std::string const& message) {
+		virtual void appendToDisplay(std::string const& message) {
 			_codeBuf->append(message.c_str());
 			_codeBuf->append("\n");
 		}
