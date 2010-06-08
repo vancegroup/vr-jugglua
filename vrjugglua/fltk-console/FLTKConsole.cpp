@@ -46,7 +46,7 @@ class FLTKConsoleView : public FLTKConsoleUI {
 	public:
 		FLTKConsoleView(FLTKConsole* console) :
 				_console(console),
-				FLTKConsoleUI(700,560, "VRJLua Console"),
+				FLTKConsoleUI(700, 590, "VRJLua Console"),
 				_inputBuf(new Fl_Text_Buffer()),
 				_codeBuf(new Fl_Text_Buffer()) {
 			_input->buffer(_inputBuf.get());
