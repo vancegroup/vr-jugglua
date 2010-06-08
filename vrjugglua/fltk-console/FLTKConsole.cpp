@@ -166,6 +166,7 @@ bool FLTKConsole::startThread() {
 	_running = true;
 	_thread.setFunctor(boost::bind(&FLTKConsole::_threadLoop, this));
 	_thread.start();
+	return true;
 }
 
 void FLTKConsole::stopThread() {
