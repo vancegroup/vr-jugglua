@@ -21,6 +21,7 @@
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
+#include <boost/function.hpp>
 
 // Standard includes
 #include <string>
@@ -32,10 +33,16 @@ class LuaConsole {
 		LuaConsole();
 		LuaConsole(LuaScript const& script);
 
-		~LuaConsole();
+		virtual ~LuaConsole();
 
 		bool getRunBufFromLuaGlobal();
 		bool createRunBuf();
+
+		virtual bool startThread() = 0;
+
+		virtual void stopThread() = 0;
+
+		virtual void waitForThreadStop() = 0;
 
 		bool isValid() const;
 
@@ -43,9 +50,14 @@ class LuaConsole {
 		bool runString(std::string const& str);
 
 	protected:
+		void _signalThreadExit();
+
 		LuaScript _script;
 
 		boost::shared_ptr<SynchronizedRunBuffer> _runbuf;
+
+	private:
+		boost::function<void ()> _exitCallback;
 };
 
 // -- inline implementations -- /

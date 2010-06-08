@@ -80,4 +80,8 @@ bool LuaConsole::runString(std::string const& str) {
 	return _runbuf->addString(str);
 }
 
+void LuaConsole::_signalThreadExit() {
+	_exitCallback();
+}
+
 } // end of vrjLua namespace

@@ -2,22 +2,50 @@
 version 1.0109 
 header_name {.h} 
 code_name {.cxx}
-widget_class NavTestbedUI {
-  label {VR JuggLua Console} open selected
-  xywh {590 184 480 560} type Double resizable
+widget_class FLTKConsoleUI {
+  label {VR JuggLua Console} open
+  xywh {2185 362 700 580} type Double resizable
   class Fl_Window visible
 } {
   decl {virtual void runInput() = 0;} {protected
   }
+  decl {virtual void chooseAndRunFile() = 0;} {protected
+  }
+  decl {virtual void saveFile() = 0;} {protected
+  }
   Fl_Text_Display _existingCode {
-    protected xywh {10 10 460 390} color 48 textfont 4
+    protected xywh {10 40 680 390} color 48 textfont 4
   }
   Fl_Text_Editor _input {
-    protected xywh {10 410 460 100} when 0 textfont 4
+    protected xywh {10 440 680 100} when 0 textfont 4
   }
   Fl_Return_Button {} {
     label Run
     callback {runInput();}
-    xywh {10 520 460 30}
+    xywh {10 550 680 30}
+  }
+  Fl_Menu_Bar {} {open
+    xywh {0 0 700 30}
+  } {
+    Submenu {} {
+      label File
+      callback {hide();} open
+      xywh {0 0 100 20}
+    } {
+      MenuItem {} {
+        label {Open...}
+        callback {chooseAndRunFile();}
+        xywh {0 0 100 20}
+      }
+      MenuItem {} {
+        label {Save...}
+        callback {saveFile();} selected
+        xywh {0 0 100 20} divider
+      }
+      MenuItem {} {
+        label Quit
+        xywh {0 0 100 20}
+      }
+    }
   }
 } 

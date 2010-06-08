@@ -4,10 +4,10 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 set(SOURCES
-	)
+	FLTKConsole.cpp)
 
 set(API
-	)
+	FLTKConsole.h)
 
 fltk_wrap_ui(vrjugglua-fltk vrjlua-fltk-console.fl)
 
