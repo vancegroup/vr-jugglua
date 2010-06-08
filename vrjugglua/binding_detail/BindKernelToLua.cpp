@@ -14,7 +14,7 @@
 
 // Local includes
 #include "BindKernelToLua.h"
-#include "VRJLuaOutput.h"
+#include <vrjugglua/VRJLuaOutput.h>
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>

@@ -1,4 +1,4 @@
-/**	@file	BindOsgToLua.h
+/**	@file	BindKernelToLua.h
 	@brief	header
 
 	@date
@@ -12,11 +12,11 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_BindOsgToLua_h
-#define INCLUDED_vrjugglua_BindOsgToLua_h
+#ifndef INCLUDED_vrjugglua_BindKernelToLua_h
+#define INCLUDED_vrjugglua_BindKernelToLua_h
 
 // Local includes
-#include "LuaScript.h"
+#include <vrjugglua/LuaScript.h>
 
 // Library/third-party includes
 // - none
@@ -26,9 +26,10 @@
 
 namespace vrjLua {
 
-void bindOsgToLua(LuaStatePtr state);
+void bindKernelToLua(LuaStatePtr state);
 
-}// end of vrjLua namespace
+} // end of vrjLua namespace
 
 
-#endif // INCLUDED_vrjugglua_BindOsgToLua_h
+
+#endif // INCLUDED_vrjugglua_BindKernelToLua_h

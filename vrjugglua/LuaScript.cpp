@@ -20,21 +20,21 @@
 
 #ifdef LUABIND_COMBINED_COMPILE
 
-#	include "BindOsgToLua.cpp"
+#	include "binding_detail/BindOsgToLua.cpp"
 
-#	include "BindKernelToLua.cpp"
-#	include "BindSonixToLua.cpp"
-#	include "BindGadgetInterfacesToLua.cpp"
-#	include "BindRunBufferToLua.cpp"
+#	include "binding_detail/BindKernelToLua.cpp"
+#	include "binding_detail/BindSonixToLua.cpp"
+#	include "binding_detail/BindGadgetInterfacesToLua.cpp"
+#	include "binding_detail/BindRunBufferToLua.cpp"
 
 #else
 
-#	include "BindOsgToLua.h"
+#	include "binding_detail/BindOsgToLua.h"
 
-#	include "BindKernelToLua.h"
-#	include "BindSonixToLua.h"
-#	include "BindGadgetInterfacesToLua.h"
-#	include "BindRunBufferToLua.h"
+#	include "binding_detail/BindKernelToLua.h"
+#	include "binding_detail/BindSonixToLua.h"
+#	include "binding_detail/BindGadgetInterfacesToLua.h"
+#	include "binding_detail/BindRunBufferToLua.h"
 
 #endif
 

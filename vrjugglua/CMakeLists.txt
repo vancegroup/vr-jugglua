@@ -35,11 +35,6 @@ set(API
 	Internal_AnalogInterface.h
 	Internal_DigitalInterface.h
 	Internal_PositionInterface.h
-	BindKernelToLua.h
-	BindOsgToLua.h
-	BindSonixToLua.h
-	BindGadgetInterfacesToLua.h
-	BindRunBufferToLua.h
 	LuaConsole.h
 	LuaInclude.h
 	LuaRunBuffer.h
@@ -49,16 +44,25 @@ set(API
 	SynchronizedRunBuffer.h
 	VRJLua_C_Interface.h)
 
-set(LUA_BINDING_COMPONENTS
-	BindKernelToLua.cpp
-	BindOsgToLua.cpp
-	BindSonixToLua.cpp
-	BindGadgetInterfacesToLua.cpp
-	BindRunBufferToLua.cpp)
+set(LUA_BINDING_SOURCES
+	binding_detail/BindKernelToLua.h	
+	binding_detail/BindOsgToLua.h
+	binding_detail/BindSonixToLua.h
+	binding_detail/BindGadgetInterfacesToLua.h
+	binding_detail/BindRunBufferToLua.h)
+
+set(LUA_BINDING_IMPLEMENTATIONS
+	binding_detail/BindKernelToLua.cpp
+	binding_detail/BindOsgToLua.cpp
+	binding_detail/BindSonixToLua.cpp
+	binding_detail/BindGadgetInterfacesToLua.cpp
+	binding_detail/BindRunBufferToLua.cpp)
 
 if(NOT BUILD_LUABIND_COMBINED)
-	list(APPEND SOURCES ${LUA_BINDING_COMPONENTS})
+	list(APPEND LUA_BINDING_SOURCES ${LUA_BINDING_IMPLEMENTATIONS})
 endif()
+
+source_group("Binding Details" FILES ${LUA_BINDING_SOURCES})
 
 # If we have an older boost, work around it
 if(${Boost_VERSION} LESS 103500)
@@ -69,7 +73,7 @@ if(${Boost_VERSION} LESS 103500)
 	endif()
 endif()
 
-add_library(vrjugglua ${SOURCES} ${API})
+add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API})
 set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
 target_link_libraries(vrjugglua ${EXTRA_LIBS})
 stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua)

@@ -1,4 +1,4 @@
-/**	@file	BindSonixToLua.h
+/**	@file	BindPositionInterfaceToLua.h
 	@brief	header
 
 	@date
@@ -12,11 +12,11 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_BindSonixToLua_h
-#define INCLUDED_vrjugglua_BindSonixToLua_h
+#ifndef INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h
+#define INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h
 
 // Local includes
-#include "LuaScript.h"
+#include <vrjugglua/LuaScript.h>
 
 // Library/third-party includes
 // - none
@@ -26,10 +26,8 @@
 
 namespace vrjLua {
 
-void bindSonixToLua(LuaStatePtr state);
+	void bindGadgetInterfacesToLua(LuaStatePtr state);
 
-} // end of vrjLua namespace
+}// end of vrjLua namespace
 
-
-
-#endif // INCLUDED_vrjugglua_BindSonixToLua_h
+#endif // INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h

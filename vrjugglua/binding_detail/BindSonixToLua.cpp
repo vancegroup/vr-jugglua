@@ -14,7 +14,7 @@
 
 // Local includes
 #include "BindSonixToLua.h"
-#include "VRJLuaOutput.h"
+#include "../VRJLuaOutput.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>

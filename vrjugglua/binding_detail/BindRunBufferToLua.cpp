@@ -14,7 +14,7 @@
 
 // Local includes
 #include "BindRunBufferToLua.h"
-#include "SynchronizedRunBuffer.h"
+#include "../SynchronizedRunBuffer.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>

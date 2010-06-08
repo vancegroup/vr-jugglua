@@ -16,7 +16,7 @@
 #define INCLUDED_vrjugglua_BindRunBufferToLua_h
 
 // Local includes
-#include "LuaScript.h"
+#include <vrjugglua/LuaScript.h>
 
 // Library/third-party includes
 // - none

@@ -17,9 +17,9 @@
 #include "BindGadgetInterfacesToLua.h"
 #endif
 
-#include "Internal_PositionInterface.h"
-#include "Internal_DigitalInterface.h"
-#include "Internal_AnalogInterface.h"
+#include "../Internal_PositionInterface.h"
+#include "../Internal_DigitalInterface.h"
+#include "../Internal_AnalogInterface.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
