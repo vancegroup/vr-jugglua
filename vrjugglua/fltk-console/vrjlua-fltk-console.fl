@@ -42,19 +42,18 @@ widget_class FLTKConsoleUI {
     } {
       MenuItem {} {
         label {Open...}
-        callback {chooseAndRunFile();} selected
+        callback {chooseAndRunFile();}
         xywh {0 0 100 20}
       }
       MenuItem {} {
         label {Save...}
         callback {std::cout << "Pointer this: " << this << std::endl;
-std::cout << "Double parent: " << static_cast<FLTKConsoleUI*>(parent()->parent()) << std::endl;
-static_cast<FLTKConsoleUI*>(parent()->parent())->saveFile();}
+saveFile();}
         xywh {0 0 100 20} divider
       }
       MenuItem {} {
         label Quit
-        callback {hide();}
+        callback {hide();} selected
         xywh {0 0 100 20}
       }
     }
