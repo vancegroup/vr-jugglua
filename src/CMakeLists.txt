@@ -26,6 +26,11 @@ target_link_libraries(vrjlua vrjugglua)
 if(BUILD_LUA_AS_CPP)
 	set_source_files_properties(lua.c PROPERTIES LANGUAGE CXX)
 endif()
+set_property(TARGET
+	vrjlua
+	PROPERTY
+	PROJECT_LABEL
+	"vrjlua Standalone Interpreter")
 
 install(TARGETS vrjlua
 	RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
@@ -48,6 +53,12 @@ if(BUILD_FLTK_GUI)
 
     add_executable(NavTestbed ${NAVTESTBED_SRCS} ${NavTestbed_FLTK_UI_SRCS})
     target_link_libraries(NavTestbed vrjugglua ${FLTK_GUI_LIBS})
+	
+	set_property(TARGET
+		NavTestbed
+		PROPERTY
+		PROJECT_LABEL
+		"OSGNav Testbed GUI")
 
     install(TARGETS NavTestbed
 	    RUNTIME DESTINATION ${BIN_DIR})

@@ -114,6 +114,12 @@ endif()
 add_library(luabind ${LUABIND_SRCS})
 target_link_libraries(luabind lua ${LUABIND_EXTRA_LIBS})
 
+set_property(TARGET
+	luabind
+	PROPERTY
+	PROJECT_LABEL
+	"LuaBind Library")
+
 install(FILES ${LUABIND_API}
 	DESTINATION ${INCLUDE_DIR}/luabind)
 install(FILES ${LUABIND_DETAIL_API}
@@ -121,3 +127,4 @@ install(FILES ${LUABIND_DETAIL_API}
 install(TARGETS luabind
 	EXPORT vrjlua-sdk
 	ARCHIVE DESTINATION ${LIB_DIR})
+

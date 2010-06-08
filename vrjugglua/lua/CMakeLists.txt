@@ -13,6 +13,12 @@ set(LUA_FILES
 set(LUA_FILES ${LUA_FILES} PARENT_SCOPE)
 
 add_custom_target(luaFiles ALL)
+set_property(TARGET
+				luaFiles
+				PROPERTY
+				PROJECT_LABEL
+				"VR JuggLua Lua Scripts")
+
 add_custom_command(TARGET luaFiles
 			POST_BUILD
 			COMMAND

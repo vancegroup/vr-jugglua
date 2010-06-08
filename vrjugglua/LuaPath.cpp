@@ -104,8 +104,8 @@ std::string LuaPath::_findFilePath(const std::string & fn, const std::string & s
 bool LuaPath::_setJugglerEnvironment() const {
 #ifdef _WIN32
 	/// Clear these environment variables so that Juggler figures itself out.
-	bool ret = vpr::System::setenv("VJ_BASE_DIR", "");
-	ret = vpr::System::setenv("SNX_BASE_DIR", "") && ret;
+	bool ret = vpr::System::setenv("VJ_BASE_DIR", _root);
+	ret = vpr::System::setenv("SNX_BASE_DIR", _root) && ret;
 	return ret;
 #else
 	return true;

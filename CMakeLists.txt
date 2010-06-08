@@ -12,7 +12,7 @@ set(CPACK_PACKAGE_VENDOR "Iowa State University")
 set(CPACK_PACKAGE_CONTACT "Ryan Pavlik <rpavlik@iastate.edu>")
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "1")
-set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_VERSION_PATCH "2")
 set(CPACK_PACKAGE_VERSION
 	"${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
@@ -81,6 +81,7 @@ include(GetDirectoryList)
 include(EnableExtraCompilerWarnings)
 include(StampSourcesWithVersion)
 
+
 include(CTest)
 include(CreateDashboardScripts)
 
@@ -93,6 +94,13 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
 # Boost
 find_package(Boost 1.34.0 REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
+if(WIN32)
+	foreach(lib FILESYSTEM SYSTEM)
+	get_filename_component(_libname "${Boost_${lib}_LIBRARY_RELEASE}" NAME_WE)
+	get_filename_component(_libpath "${Boost_${lib}_LIBRARY_RELEASE}" PATH)
+	list(APPEND CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS "${_libpath}/${_libname}.dll")
+	endforeach()
+endif()
 
 # OpenSceneGraph
 include(SearchProgramFilesForOpenSceneGraph)
@@ -150,7 +158,7 @@ endif()
 
 if(BUILD_FLTK_GUI)
 	set(FLTK_GUI_LIBS ${FNFC_LIBRARY})
-	include_directories(${FNFC_INCLUDE_DIRS})
+	include_directories(${FNFC_INCLUDE_DIRS} ${FLTK_INCLUDE_DIR})
 endif()
 
 # Build the vrjugglua library
@@ -180,6 +188,8 @@ create_dashboard_scripts("DashboardBuildInitialCache.cmake.in")
 # Install the examples
 install(DIRECTORY examples
 	DESTINATION . COMPONENT examples)
+
+include(InstallRequiredSystemLibraries)
 
 if(WIN32)
 	set(EXPORT_DIR cmake)

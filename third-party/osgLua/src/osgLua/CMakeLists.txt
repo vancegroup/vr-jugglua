@@ -35,6 +35,12 @@ add_library(osgLua_static ${OSGLUA_SRCS} ${OSGLUA_API} ${OSGLUA_SIMPLE_API})
 set_target_properties(osgLua_static PROPERTIES PUBLIC_HEADER "${OSGLUA_API};${OSGLUA_SIMPLE_API}")
 target_link_libraries(osgLua_static lua ${OPENSCENEGRAPH_LIBRARIES} lua)
 
+set_property(TARGET
+	osgLua_static
+	PROPERTY
+	PROJECT_LABEL
+	"OsgLua Static Library")
+
 install(TARGETS osgLua_static
 	EXPORT vrjlua-sdk
 	ARCHIVE DESTINATION ${LIB_DIR}
