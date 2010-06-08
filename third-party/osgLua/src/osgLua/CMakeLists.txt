@@ -41,7 +41,9 @@ set_property(TARGET
 	PROJECT_LABEL
 	"OsgLua Static Library")
 
-install(TARGETS osgLua_static
-	EXPORT vrjlua-sdk
-	ARCHIVE DESTINATION ${LIB_DIR}
-	PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/osgLua)
+if(INSTALL_CXX_SDK)
+	install(TARGETS osgLua_static
+		EXPORT vrjlua-sdk
+		ARCHIVE DESTINATION ${LIB_DIR}
+		PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/osgLua)
+endif()

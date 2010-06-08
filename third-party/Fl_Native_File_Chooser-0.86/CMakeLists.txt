@@ -91,13 +91,15 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}"
 add_library(Fl_Native_File_Chooser ${SOURCES})
 target_link_libraries(Fl_Native_File_Chooser ${LIBS})
 
-install(TARGETS Fl_Native_File_Chooser
-	EXPORT vrjlua-sdk
-	ARCHIVE DESTINATION ${LIB_DIR})
-
-install(FILES
-	"${CMAKE_CURRENT_SOURCE_DIR}/FL/Fl_Native_File_Chooser_FLTK.H"
-	"${CMAKE_CURRENT_SOURCE_DIR}/FL/Fl_Native_File_Chooser_MAC.H"
-	"${CMAKE_CURRENT_SOURCE_DIR}/FL/Fl_Native_File_Chooser_WIN32.H"
-	"${CMAKE_CURRENT_BINARY_DIR}/FL/Fl_Native_File_Chooser.H"
-	DESTINATION ${INCLUDE_DIR}/FL)
+if(INSTALL_CXX_SDK)
+	install(TARGETS Fl_Native_File_Chooser
+		EXPORT vrjlua-sdk
+		ARCHIVE DESTINATION ${LIB_DIR})
+	
+	install(FILES
+		"${CMAKE_CURRENT_SOURCE_DIR}/FL/Fl_Native_File_Chooser_FLTK.H"
+		"${CMAKE_CURRENT_SOURCE_DIR}/FL/Fl_Native_File_Chooser_MAC.H"
+		"${CMAKE_CURRENT_SOURCE_DIR}/FL/Fl_Native_File_Chooser_WIN32.H"
+		"${CMAKE_CURRENT_BINARY_DIR}/FL/Fl_Native_File_Chooser.H"
+		DESTINATION ${INCLUDE_DIR}/FL)
+endif()

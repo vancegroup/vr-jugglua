@@ -28,6 +28,8 @@ option(BUILD_VERBOSE "Turn on lots of runtime output." off)
 option(BUILD_FLTK_GUI "Build FLTK-based GUI apps." on)
 option(BUILD_QT_GUI "Build Qt-based GUI apps." off)
 
+option(INSTALL_CXX_SDK "Should we install the headers and libraries needed for C++ development using VRJLua?" on)
+
 option(AUTOLOAD_WRAPPER_OSG "Load the osg wrapper automatically at binding time." ON)
 option(AUTOLOAD_WRAPPER_OSGDB "Load the osgDB wrapper automatically at binding time." OFF)
 option(AUTOLOAD_WRAPPER_OSGUTIL "Load the osgUtil wrapper automatically at binding time." OFF)
@@ -202,13 +204,15 @@ else()
 	set(EXPORT_DIR ${LIB_DIR}/VRJuggLua)
 endif()
 
-install(EXPORT vrjlua-sdk
-	DESTINATION ${EXPORT_DIR}
-	NAMESPACE vrjlua_exported_
-	FILE vrjlua-targets.cmake)
-configure_file(VRJuggLua-config.cmake.in VRJuggLua-config.cmake)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/VRJuggLua-config.cmake
-	DESTINATION ${EXPORT_DIR})
+if(INSTALL_CXX_SDK)
+	install(EXPORT vrjlua-sdk
+		DESTINATION ${EXPORT_DIR}
+		NAMESPACE vrjlua_exported_
+		FILE vrjlua-targets.cmake)
+	configure_file(VRJuggLua-config.cmake.in VRJuggLua-config.cmake)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/VRJuggLua-config.cmake
+		DESTINATION ${EXPORT_DIR})
+endif()
 
 # Choose desired package generators
 if(APPLE)

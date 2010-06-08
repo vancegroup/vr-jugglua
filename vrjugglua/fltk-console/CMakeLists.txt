@@ -23,9 +23,10 @@ set_property(TARGET
 	PROJECT_LABEL
 	"VRJLua FLTK Console library")
 
-install(TARGETS vrjugglua-fltk
-	EXPORT vrjlua-sdk
-	RUNTIME DESTINATION ${BIN_DIR}
-	ARCHIVE DESTINATION	${LIB_DIR}
-	PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua/fltk-console)
-
+if(INSTALL_CXX_SDK)
+	install(TARGETS vrjugglua-fltk
+		EXPORT vrjlua-sdk
+		RUNTIME DESTINATION ${BIN_DIR}
+		ARCHIVE DESTINATION	${LIB_DIR}
+		PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua/fltk-console)
+endif()

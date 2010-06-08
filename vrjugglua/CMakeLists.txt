@@ -63,8 +63,10 @@ endif()
 # If we have an older boost, work around it
 if(${Boost_VERSION} LESS 103500)
 	include_directories(bitsOfBoost143)
-	install(DIRECTORY bitsOfBoost143/boost
-		DESTINATION ${INCLUDE_DIR})
+	if(INSTALL_CXX_SDK)
+		install(DIRECTORY bitsOfBoost143/boost
+			DESTINATION ${INCLUDE_DIR})
+	endif()
 endif()
 
 add_library(vrjugglua ${SOURCES} ${API})
@@ -79,11 +81,13 @@ set_property(TARGET
 	PROJECT_LABEL
 	"VR JuggLua library")
 
-install(TARGETS vrjugglua
-	EXPORT vrjlua-sdk
-	RUNTIME DESTINATION ${BIN_DIR}
-	ARCHIVE DESTINATION	${LIB_DIR}
-	PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua)
+if(INSTALL_CXX_SDK)
+	install(TARGETS vrjugglua
+		EXPORT vrjlua-sdk
+		RUNTIME DESTINATION ${BIN_DIR}
+		ARCHIVE DESTINATION	${LIB_DIR}
+		PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua)
+endif()
 
 ###
 # Let the Lua files install themselves

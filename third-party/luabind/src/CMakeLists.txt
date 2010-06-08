@@ -120,11 +120,12 @@ set_property(TARGET
 	PROJECT_LABEL
 	"LuaBind Library")
 
-install(FILES ${LUABIND_API}
-	DESTINATION ${INCLUDE_DIR}/luabind)
-install(FILES ${LUABIND_DETAIL_API}
-	DESTINATION ${INCLUDE_DIR}/luabind/detail)
-install(TARGETS luabind
-	EXPORT vrjlua-sdk
-	ARCHIVE DESTINATION ${LIB_DIR})
-
+if(INSTALL_CXX_SDK)
+	install(FILES ${LUABIND_API}
+		DESTINATION ${INCLUDE_DIR}/luabind)
+	install(FILES ${LUABIND_DETAIL_API}
+		DESTINATION ${INCLUDE_DIR}/luabind/detail)
+	install(TARGETS luabind
+		EXPORT vrjlua-sdk
+		ARCHIVE DESTINATION ${LIB_DIR})
+endif()
