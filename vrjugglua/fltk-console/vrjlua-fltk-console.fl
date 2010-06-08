@@ -2,8 +2,11 @@
 version 1.0109 
 header_name {.h} 
 code_name {.cxx}
+decl {\#include <iostream>} {selected public
+} 
+
 widget_class FLTKConsoleUI {
-  label {VR JuggLua Console} open
+  label {VR JuggLua Console}
   xywh {2185 362 700 580} type Double resizable
   class Fl_Window visible
 } {
@@ -21,7 +24,7 @@ widget_class FLTKConsoleUI {
   }
   Fl_Return_Button {} {
     label Run
-    callback {this->runInput();} selected
+    callback {this->runInput();}
     xywh {10 550 680 30}
   }
   Fl_Menu_Bar {} {open
@@ -34,12 +37,14 @@ widget_class FLTKConsoleUI {
     } {
       MenuItem {} {
         label {Open...}
-        callback {this->chooseAndRunFile();}
+        callback {static_cast<FLTKConsoleUI*>(parent()->parent())->chooseAndRunFile();}
         xywh {0 0 100 20}
       }
       MenuItem {} {
         label {Save...}
-        callback {this->saveFile();}
+        callback {std::cout << "Pointer this: " << this << std::endl;
+std::cout << "Double parent: " << static_cast<FLTKConsoleUI*>(parent()->parent()) << std::endl;
+static_cast<FLTKConsoleUI*>(parent()->parent())->saveFile();}
         xywh {0 0 100 20} divider
       }
       MenuItem {} {
