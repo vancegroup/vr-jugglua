@@ -13,7 +13,7 @@ decl {FLTKConsoleUI* FLTKConsoleUI::_ui = NULL;} {global
 
 widget_class FLTKConsoleUI {
   label {VR JuggLua Console} open selected
-  xywh {2185 362 700 580} type Double resizable
+  xywh {2185 362 700 590} type Double resizable
   code0 {_ui = this;}
   class Fl_Window visible
 } {
