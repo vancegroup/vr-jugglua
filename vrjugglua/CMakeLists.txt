@@ -27,6 +27,7 @@ set(SOURCES
 	LuaScript.cpp
 	LuaPath.cpp
 	OsgAppProxy.cpp
+	SynchronizedRunBuffer.cpp
 	VRJLua_C_Interface.cpp)
 
 set(API
@@ -43,6 +44,7 @@ set(API
 	LuaScript.h
 	LuaPath.h
 	OsgAppProxy.h
+	SynchronizedRunBuffer.h
 	VRJLua_C_Interface.h)
 
 set(LUA_BINDING_COMPONENTS

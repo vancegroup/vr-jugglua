@@ -18,7 +18,7 @@
 // Local includes
 #include <vrjugglua/VRJLua_C_Interface.h>
 #include <vrjugglua/LuaScript.h>
-#include <vrjugglua/BindRunBufferToLua.h>
+#include <vrjugglua/SynchronizedRunBuffer.h>
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>

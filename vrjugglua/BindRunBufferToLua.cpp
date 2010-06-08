@@ -14,13 +14,10 @@
 
 // Local includes
 #include "BindRunBufferToLua.h"
-
-
+#include "SynchronizedRunBuffer.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
-
-
 
 // Standard includes
 #ifdef VERBOSE
@@ -29,26 +26,6 @@
 
 namespace vrjLua {
 using namespace luabind;
-
-
-
-	SynchronizedRunBuffer::SynchronizedRunBuffer(luabind::object const& delegate) {
-		/// Initialize run buffer's shared data ID
-		_runBuf.init(LuaRunBuffer::getGUID());
-		// Now, we have an state pointer, so we can set up the
-		// run buffer as well!
-		_runBuf->initLua(delegate.interpreter());
-	}
-	bool SynchronizedRunBuffer::addFile(const std::string & filename, bool blocking) {
-		return _runBuf->addFile(filename, blocking);
-	}
-	bool SynchronizedRunBuffer::addString(const std::string & str, bool blocking) {
-		return _runBuf->addString(str, blocking);
-	}
-	unsigned int SynchronizedRunBuffer::runBuffer() {
-		return _runBuf->runBuffer();
-	}
-
 
 void bindRunBufferToLua(LuaStatePtr state) {
 #ifdef VERBOSE
