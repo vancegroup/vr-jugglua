@@ -21,7 +21,7 @@ widget_class FLTKConsoleUI {
   }
   Fl_Return_Button {} {
     label Run
-    callback {runInput();}
+    callback {this->runInput();} selected
     xywh {10 550 680 30}
   }
   Fl_Menu_Bar {} {open
@@ -34,16 +34,17 @@ widget_class FLTKConsoleUI {
     } {
       MenuItem {} {
         label {Open...}
-        callback {chooseAndRunFile();}
+        callback {this->chooseAndRunFile();}
         xywh {0 0 100 20}
       }
       MenuItem {} {
         label {Save...}
-        callback {saveFile();} selected
+        callback {this->saveFile();}
         xywh {0 0 100 20} divider
       }
       MenuItem {} {
         label Quit
+        callback {hide();}
         xywh {0 0 100 20}
       }
     }
