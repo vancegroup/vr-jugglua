@@ -25,8 +25,16 @@
 
 using namespace vrjLua;
 
+FLTKConsole * g_console = NULL;
+
 static void stopKernel() {
 	vrj::Kernel::instance()->stop();
+}
+
+static void stopConsole(const int) {
+	if (g_console) {
+		g_console->stopThread();
+	}
 }
 
 int main(int argc, char * argv[]) {
@@ -35,12 +43,16 @@ int main(int argc, char * argv[]) {
 
 	vrj::Kernel::setUseCocoaWrapper(false);
 
+	/// Tell the kernel to shut down our console thread if it exits first
+	vrj::Kernel::instance()->addHandlerPreCallback(stopConsole);
+
 	/// Load the startup script
 	LuaScript script;
 	script.requireModule("osgnav-testbed");
 
 	/// Create the console GUI
 	FLTKConsole console(script);
+	g_console = &console;
 	console.setTitle("Scenegraph Navigation Testbed");
 	console.getRunBufFromLuaGlobal();
 	console.setExitCallback(&stopKernel);
