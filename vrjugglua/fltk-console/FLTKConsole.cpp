@@ -110,6 +110,11 @@ class FLTKConsoleView : public FLTKConsoleUI {
 			}
 		}
 
+		void appendToDisplay(std::string const& message) {
+			_codeBuf->append(message.c_str());
+			_codeBuf->append("\n");
+		}
+
 	protected:
 		FLTKConsole * _console;
 		boost::scoped_ptr<Fl_Text_Buffer> _inputBuf;
@@ -150,6 +155,10 @@ void FLTKConsole::stopThread() {
 void FLTKConsole::waitForThreadStop() {
 	stopThread();
 	_thread.join();
+}
+
+void FLTKConsole::appendToDisplay(std::string const& message) {
+	_view->appendToDisplay(message);
 }
 
 void FLTKConsole::_threadLoop() {

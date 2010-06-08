@@ -38,11 +38,16 @@ class LuaConsole {
 		bool getRunBufFromLuaGlobal();
 		bool createRunBuf();
 
+		/// @name Implementation interface
+		/// @{
 		virtual bool startThread() = 0;
 
 		virtual void stopThread() = 0;
 
 		virtual void waitForThreadStop() = 0;
+
+		virtual void appendToDisplay(std::string const& message) = 0;
+		/// @}
 
 		bool isValid() const;
 

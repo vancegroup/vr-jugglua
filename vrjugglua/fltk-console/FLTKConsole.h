@@ -35,11 +35,16 @@ class FLTKConsole : public LuaConsole {
 
 		virtual ~FLTKConsole();
 
+		/// @name Interface required by LuaConsole
+		/// @{
 		virtual bool startThread();
 
 		virtual void stopThread();
 
 		virtual void waitForThreadStop();
+
+		virtual void appendToDisplay(std::string const& message);
+		/// @}
 
 	protected:
 		void _threadLoop();
