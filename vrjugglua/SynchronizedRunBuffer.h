@@ -22,7 +22,9 @@
 // Library/third-party includes
 #include <plugins/ApplicationDataManager/UserData.h>
 
+#ifdef IN_VRJLUA_INTERNALS
 #include <luabind/object.hpp>
+#endif
 
 // Standard includes
 // - none
@@ -34,7 +36,9 @@ class SynchronizedRunBuffer {
 		/// @name Constructors
 		/// They accept different arguments as ways to get to the Lua state.
 		/// @{
+#ifdef IN_VRJLUA_INTERNALS
 		SynchronizedRunBuffer(luabind::object const& delegate);
+#endif
 		SynchronizedRunBuffer(LuaStatePtr const& state);
 		SynchronizedRunBuffer(LuaScript const& script);
 		/// @}

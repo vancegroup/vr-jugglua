@@ -46,7 +46,6 @@ mark_as_advanced(BUILD_EMBEDDED_LUA
 	BUILD_LUA_AS_CPP
 	BUILD_VERY_VERBOSE)
 
-
 # Apply definitions
 if(BUILD_VERBOSE)
 	add_definitions(-DVERBOSE)
@@ -84,6 +83,9 @@ include(GetDirectoryList)
 include(EnableExtraCompilerWarnings)
 include(StampSourcesWithVersion)
 
+include(MSVCMultipleProcessCompile)
+#include(MSVCVerboseLinking)
+
 include(CTest)
 include(CreateDashboardScripts)
 
@@ -98,9 +100,9 @@ find_package(Boost 1.34.0 REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 if(WIN32)
 	foreach(lib FILESYSTEM SYSTEM)
-	get_filename_component(_libname "${Boost_${lib}_LIBRARY_RELEASE}" NAME_WE)
-	get_filename_component(_libpath "${Boost_${lib}_LIBRARY_RELEASE}" PATH)
-	list(APPEND CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS "${_libpath}/${_libname}.dll")
+		get_filename_component(_libname "${Boost_${lib}_LIBRARY_RELEASE}" NAME_WE)
+		get_filename_component(_libpath "${Boost_${lib}_LIBRARY_RELEASE}" PATH)
+		list(APPEND CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS "${_libpath}/${_libname}.dll")
 	endforeach()
 endif()
 
@@ -114,7 +116,7 @@ get_directory_list(OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS ${OPENSCENEGRAPH_LIBRARIE
 list(APPEND RUNTIME_LIBRARY_DIRS ${OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS})
 
 # VR Juggler
-find_package(VRJuggler22 REQUIRED)
+find_package(VRJuggler22 COMPONENTS VRJOGL22 SONIX12 REQUIRED)
 
 add_definitions(${VRJUGGLER22_DEFINITIONS})
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${VRJUGGLER22_C_FLAGS}")

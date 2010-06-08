@@ -14,6 +14,7 @@
 
 // Local includes
 #include "BindRunBufferToLua.h"
+#define IN_VRJLUA_INTERNALS
 #include "../SynchronizedRunBuffer.h"
 
 // Library/third-party includes

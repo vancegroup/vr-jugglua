@@ -16,7 +16,7 @@
 #include "LuaConsole.h"
 
 // Library/third-party includes
-
+#include <luabind/object.hpp>
 
 // Standard includes
 #include <iostream>
