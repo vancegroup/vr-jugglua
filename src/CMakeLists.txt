@@ -28,7 +28,7 @@ if(BUILD_LUA_AS_CPP)
 endif()
 
 install(TARGETS vrjlua
-	RUNTIME DESTINATION ${BIN_DIR})
+	RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
 
 
 

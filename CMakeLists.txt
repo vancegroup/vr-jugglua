@@ -179,7 +179,7 @@ create_dashboard_scripts("DashboardBuildInitialCache.cmake.in")
 
 # Install the examples
 install(DIRECTORY examples
-	DESTINATION .)
+	DESTINATION . COMPONENT examples)
 
 if(WIN32)
 	set(EXPORT_DIR cmake)
