@@ -31,6 +31,15 @@
 
 namespace vrjLua {
 
+static void doNothingUponModify(int, int, int, int, const char *, void *) {
+	// Do nothing
+	// FLTK whines at shutdown if there's no modify callback for its text buffers
+}
+
+static void doNothingUponPreDelete(int, int, void*) {
+	// Do nothing
+	// FLTK whines at shutdown if there's no predelete callback for its text buffers
+}
 
 
 class FLTKConsoleView : public FLTKConsoleUI {
@@ -42,6 +51,13 @@ class FLTKConsoleView : public FLTKConsoleUI {
 				_codeBuf(new Fl_Text_Buffer()) {
 			_input->buffer(_inputBuf.get());
 			_existingCode->buffer(_codeBuf.get());
+
+			_inputBuf->add_modify_callback(doNothingUponModify, NULL);
+			_codeBuf->add_modify_callback(doNothingUponModify, NULL);
+
+			_inputBuf->add_predelete_callback(doNothingUponPreDelete, NULL);
+			_codeBuf->add_predelete_callback(doNothingUponPreDelete, NULL);
+
 			show();
 		}
 
