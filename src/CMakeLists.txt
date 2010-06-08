@@ -42,14 +42,7 @@ install(TARGETS vrjlua
 ###
 if(BUILD_FLTK_GUI)
     set(NAVTESTBED_SRCS
-        FLTKNavMain.cpp
-        FLTKNav.cpp
-        FLTKNav.h
-        NavInteractive.cpp
-        NavInteractive.h)
-
-    fltk_wrap_ui(NavTestbed NavTestbedUI.fl)
-    include_directories(${CMAKE_CURRENT_BINARY_DIR})
+        FLTKNavMain.cpp)
 
     add_executable(NavTestbed ${NAVTESTBED_SRCS} ${NavTestbed_FLTK_UI_SRCS})
     target_link_libraries(NavTestbed vrjugglua-fltk ${FLTK_GUI_LIBS})
@@ -58,7 +51,7 @@ if(BUILD_FLTK_GUI)
 		NavTestbed
 		PROPERTY
 		PROJECT_LABEL
-		"OSGNav Testbed GUI")
+		"Navigation Testbed FLTK GUI")
 
     install(TARGETS NavTestbed
 	    RUNTIME DESTINATION ${BIN_DIR})

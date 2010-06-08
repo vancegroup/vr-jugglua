@@ -1,4 +1,4 @@
-/**	@file	NavInteractive.cpp
+/**	@file	FLTKNavMain.cpp
 	@brief	implementation
 
 	@date
@@ -13,15 +13,13 @@
 */
 
 // Internal Includes
-//#include "FLTKNav.h"
 #include <vrjugglua/fltk-console/FLTKConsole.h>
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
-#include <boost/bind.hpp>
 
 // Standard includes
-#include <iostream>
+// - none;
 
 using namespace vrjLua;
 
@@ -31,11 +29,17 @@ static void stopKernel() {
 
 int main(int argc, char * argv[]) {
 	vrj::Kernel::setUseCocoaWrapper(false);
-	//FLTKNav nav;
+
+	/// Load the startup script
 	LuaScript script;
 	script.requireModule("osgnav-testbed");
+
+	/// Create the console GUI
 	FLTKConsole console(script);
+	console.setTitle("Scenegraph Navigation Testbed");
 	console.setExitCallback(&stopKernel);
+
+	/// Run it all
 	console.startThread();
 	console.waitForThreadStop();
 	return 0;
