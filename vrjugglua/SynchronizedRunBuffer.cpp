@@ -48,12 +48,26 @@ namespace vrjLua {
 		_runBuf->initLua(script.getLuaState().lock().get());
 	}
 
+	bool SynchronizedRunBuffer::isLocal() {
+		return _runBuf.isLocal();
+	}
+
 	bool SynchronizedRunBuffer::addFile(std::string const& filename, bool blocking) {
-		return _runBuf->addFile(filename, blocking);
+		if (_runBuf.isLocal()) {
+			return _runBuf->addFile(filename, blocking);
+		} else {
+			return false;
+		}
 	}
+
 	bool SynchronizedRunBuffer::addString(std::string const& str, bool blocking) {
-		return _runBuf->addString(str, blocking);
+		if (_runBuf.isLocal()) {
+			return _runBuf->addString(str, blocking);
+		} else {
+			return false;
+		}
 	}
+
 	unsigned int SynchronizedRunBuffer::runBuffer() {
 		return _runBuf->runBuffer();
 	}

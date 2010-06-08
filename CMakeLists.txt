@@ -81,7 +81,6 @@ include(GetDirectoryList)
 include(EnableExtraCompilerWarnings)
 include(StampSourcesWithVersion)
 
-
 include(CTest)
 include(CreateDashboardScripts)
 

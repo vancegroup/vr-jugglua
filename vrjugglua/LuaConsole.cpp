@@ -1,4 +1,4 @@
-/**	@file	NavInteractive.cpp
+/**	@file	LuaConsole.cpp
 	@brief	implementation
 
 	@date
@@ -13,25 +13,32 @@
 */
 
 // Internal Includes
-#include "NavInteractive.h"
+#include "LuaConsole.h"
 
 // Library/third-party includes
-LUA_C_INTERFACE_BEGIN
-#include "lauxlib.h"
-#include "lualib.h"
-LUA_C_INTERFACE_END
+
 
 // Standard includes
 #include <iostream>
 #include <stdexcept>
 
 namespace vrjLua {
-NavInteractive::NavInteractive() :
-		_runbuf(NULL) {
-	bool ret = _script.requireModule("osgnav-testbed");
-	if (!ret) {
-		throw std::runtime_error("Could not find and run file osgnav-testbed.lua - make sure Lua can find it");
-	}
+
+LuaConsole::LuaConsole() {
+	// No constructor body
+	// A new script context is automatically created
+}
+
+LuaConsole::LuaConsole(LuaScript const& script) :
+		_script(script) {
+	// No constructor body
+	// Using existing (provided) script context
+}
+
+LuaConsole::~LuaConsole() {
+}
+
+bool LuaConsole::getRunBufFromLuaGlobal() {
 
 	LuaStatePtr state = _script.getLuaState().lock();
 	if (!state) {
@@ -43,24 +50,30 @@ NavInteractive::NavInteractive() :
 		throw std::runtime_error("Could not get a lua global named runbuf!");
 	}
 
-	_runbuf = luabind::object_cast<SynchronizedRunBuffer*>(runbufLua);
+	_runbuf = luabind::object_cast<boost::shared_ptr<SynchronizedRunBuffer> >(runbufLua);
 	if (!_runbuf) {
 		throw std::runtime_error("Could not get a valid run buffer pointer from lua!");
 	}
 }
 
-NavInteractive::~NavInteractive() {
-
+bool LuaConsole::createRunBuf() {
+	boost::shared_ptr<SynchronizedRunBuffer> buf(new SynchronizedRunBuffer(_script));
+	_runbuf = buf;
+	return (_runbuf);
 }
 
-bool NavInteractive::runFile(const std::string & fn) {
+bool LuaConsole::isValid() const {
+	return (_runbuf) && (_script.isValid());
+}
+
+bool LuaConsole::runFile(std::string const& fn) {
 	if (!_runbuf) {
 		return false;
 	}
 	return _runbuf->addFile(fn);
 }
 
-bool NavInteractive::runString(const std::string & str) {
+bool LuaConsole::runString(std::string const& str) {
 	if (!_runbuf) {
 		return false;
 	}

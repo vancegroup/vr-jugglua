@@ -16,12 +16,11 @@
 #define INCLUDED_vrjugglua_LuaConsole_h
 
 // Local includes
-#include <vrjugglua/VRJLua_C_Interface.h>
 #include <vrjugglua/LuaScript.h>
-#include <vrjugglua/BindRunBufferToLua.h>
+#include <vrjugglua/SynchronizedRunBuffer.h>
 
 // Library/third-party includes
-// - none
+#include <boost/shared_ptr.hpp>
 
 // Standard includes
 #include <string>
@@ -31,13 +30,22 @@ namespace vrjLua {
 class LuaConsole {
 	public:
 		LuaConsole();
+		LuaConsole(LuaScript const& script);
+
 		~LuaConsole();
-		bool runFile(const std::string & fn);
-		bool runString(const std::string & str);
+
+		bool getRunBufFromLuaGlobal();
+		bool createRunBuf();
+
+		bool isValid() const;
+
+		bool runFile(std::string const& fn);
+		bool runString(std::string const& str);
 
 	protected:
 		LuaScript _script;
-		SynchronizedRunBuffer* _runbuf;
+
+		boost::shared_ptr<SynchronizedRunBuffer> _runbuf;
 };
 
 // -- inline implementations -- /

@@ -23,6 +23,7 @@ set(SOURCES
 	Internal_AnalogInterface.cpp
 	Internal_DigitalInterface.cpp
 	Internal_PositionInterface.cpp
+	LuaConsole.cpp
 	LuaRunBuffer.cpp
 	LuaScript.cpp
 	LuaPath.cpp
@@ -39,6 +40,7 @@ set(API
 	BindSonixToLua.h
 	BindGadgetInterfacesToLua.h
 	BindRunBufferToLua.h
+	LuaConsole.h
 	LuaInclude.h
 	LuaRunBuffer.h
 	LuaScript.h
@@ -87,3 +89,14 @@ install(TARGETS vrjugglua
 # Let the Lua files install themselves
 
 add_subdirectory(lua)
+
+###
+# Optional GUI components
+
+if(BUILD_QT_GUI)
+	#add_subdirectory(qt-console)
+endif()
+
+if(BUILD_FLTK_GUI)
+	add_subdirectory(fltk-console)
+endif()

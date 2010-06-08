@@ -18,6 +18,7 @@
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
+#include <boost/shared_ptr.hpp>
 
 // Standard includes
 #ifdef VERBOSE
@@ -32,7 +33,7 @@ void bindRunBufferToLua(LuaStatePtr state) {
 	std::cerr << "Registering vrjSync.RunBuffer object with Lua..." << std::flush << std::endl;
 #endif
 	module(state.get(), "vrjSync") [
-		class_<SynchronizedRunBuffer>("RunBuffer")
+		class_<SynchronizedRunBuffer, boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
 			.def(constructor<luabind::object>())
 			.def("addFile", &SynchronizedRunBuffer::addFile)
 			.def("addString", &SynchronizedRunBuffer::addString)
