@@ -13,21 +13,30 @@
 */
 
 // Internal Includes
-#include "FLTKNav.h"
+//#include "FLTKNav.h"
+#include <vrjugglua/fltk-console/FLTKConsole.h>
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
+#include <boost/bind.hpp>
 
 // Standard includes
 #include <iostream>
 
 using namespace vrjLua;
 
+static void stopKernel() {
+	vrj::Kernel::instance()->stop();
+}
+
 int main(int argc, char * argv[]) {
 	vrj::Kernel::setUseCocoaWrapper(false);
-	FLTKNav nav;
-
-	return nav.run();
-
-	//return 0;
+	//FLTKNav nav;
+	LuaScript script;
+	script.requireModule("osgnav-testbed");
+	FLTKConsole console(script);
+	console.setExitCallback(&stopKernel);
+	console.startThread();
+	console.waitForThreadStop();
+	return 0;
 }

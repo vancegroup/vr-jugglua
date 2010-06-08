@@ -38,6 +38,8 @@ class LuaConsole {
 		bool getRunBufFromLuaGlobal();
 		bool createRunBuf();
 
+		void setExitCallback(boost::function<void ()> callback);
+
 		/// @name Implementation interface
 		/// @{
 		virtual bool startThread() = 0;

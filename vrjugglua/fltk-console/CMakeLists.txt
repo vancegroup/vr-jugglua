@@ -13,7 +13,7 @@ fltk_wrap_ui(vrjugglua-fltk vrjlua-fltk-console.fl)
 
 add_library(vrjugglua-fltk ${SOURCES} ${API} ${vrjugglua-fltk_FLTK_UI_SRCS})
 set_target_properties(vrjugglua-fltk PROPERTIES PUBLIC_HEADER "${API}")
-target_link_libraries(vrjugglua-fltk vrjugglua ${FLTK_LIBRARIES})
+target_link_libraries(vrjugglua-fltk vrjugglua ${FLTK_GUI_LIBS})
 stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua-fltk)
 add_cppcheck(vrjugglua-fltk)
 

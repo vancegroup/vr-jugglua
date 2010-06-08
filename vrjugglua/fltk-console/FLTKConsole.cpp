@@ -153,7 +153,6 @@ void FLTKConsole::stopThread() {
 }
 
 void FLTKConsole::waitForThreadStop() {
-	stopThread();
 	_thread.join();
 }
 

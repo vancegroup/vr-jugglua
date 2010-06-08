@@ -52,7 +52,7 @@ if(BUILD_FLTK_GUI)
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
     add_executable(NavTestbed ${NAVTESTBED_SRCS} ${NavTestbed_FLTK_UI_SRCS})
-    target_link_libraries(NavTestbed vrjugglua ${FLTK_GUI_LIBS})
+    target_link_libraries(NavTestbed vrjugglua-fltk ${FLTK_GUI_LIBS})
 	
 	set_property(TARGET
 		NavTestbed
