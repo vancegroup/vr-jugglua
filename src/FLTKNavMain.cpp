@@ -55,23 +55,23 @@ int main(int argc, char * argv[]) {
 	script.requireModule("osgnav-testbed");
 
 	/// Create the console GUI
-	FLTKConsole console(script);
-	g_console = &console;
-	console.setTitle("Scenegraph Navigation Testbed");
-	console.getRunBufFromLuaGlobal();
-	console.setExitCallback(&stopKernel);
+	boost::scoped_ptr<FLTKConsole> console(new FLTKConsole(script));
+	g_console = console.get();
+	console->setTitle("Scenegraph Navigation Testbed");
+	console->getRunBufFromLuaGlobal();
+	console->setExitCallback(&stopKernel);
 
 	/// Put in instructions
-	console.appendToDisplay("-- navtransform is your root-level group node");
-	console.appendToDisplay("");
-	console.appendToDisplay("-- Simulator Mode Instructions for Navigation --");
-	console.appendToDisplay("-- In the simulator window:");
-	console.appendToDisplay("--    Hold 'shift' and move the mouse to rotate the simulated wand");
-	console.appendToDisplay("--    Click to move in the direction of the wand's tip");
-	console.appendToDisplay("");
+	console->appendToDisplay("-- navtransform is your root-level group node");
+	console->appendToDisplay("");
+	console->appendToDisplay("-- Simulator Mode Instructions for Navigation --");
+	console->appendToDisplay("-- In the simulator window:");
+	console->appendToDisplay("--    Hold 'shift' and move the mouse to rotate the simulated wand");
+	console->appendToDisplay("--    Click to move in the direction of the wand's tip");
+	console->appendToDisplay("");
 
 	/// Run it all
-	console.startThread();
-	console.waitForThreadStop();
+	console->startThread();
+	console->waitForThreadStop();
 	return 0;
 }
