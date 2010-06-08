@@ -26,6 +26,7 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-src
 option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple - shorter full rebuild time, but longer incremental build time." OFF)
 option(BUILD_VERBOSE "Turn on lots of runtime output." off)
 option(BUILD_FLTK_GUI "Build FLTK-based GUI apps." on)
+option(BUILD_QT_GUI "Build Qt-based GUI apps." off)
 
 option(AUTOLOAD_WRAPPER_OSG "Load the osg wrapper automatically at binding time." ON)
 option(AUTOLOAD_WRAPPER_OSGDB "Load the osgDB wrapper automatically at binding time." OFF)
@@ -141,6 +142,11 @@ endif()
 if(BUILD_FLTK_GUI)
 	set(CMAKE_FIND_APPBUNDLE NEVER) # Don't find Fluid.app the single-site browser
 	find_package(FLTK REQUIRED)
+endif()
+
+# Qt
+if(BUILD_QT_GUI)
+	find_package(Qt4 COMPONENTS QtCore QtGui Qt3Support REQUIRED)
 endif()
 
 ###

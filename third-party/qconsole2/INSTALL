@@ -1,0 +1,52 @@
+   qtclconsole & qpyconsole samples should be compiled and run
+on every platform Qt (3.x & 4.x) can be compiled on.
+
+qtclconsole:
+============
+
+   The only required library is the TCL library version 8.4 (an older
+version could work as well but the .pro file needs to be modified).
+
+   If the TCL library is not installed in a standard path, an environment
+variable TCL_PATH should be set to point to the TCL installation path
+(where there's its lib and include directories).
+
+To compile and run the sample, just type:
+
+qmake qtclconsole.pro
+make
+qtclconsole
+
+  If you encounter link problems "undefined reference to `__ctype_b'", just compile tclmain.cpp
+with -DFIX__CTYPE_
+
+qpyconsole:
+===========
+
+   The only required library is the Python library version 2.4 (older
+versions could work as well).
+
+   Both environment variables: PYTHON_PATH & PYTHON_VERSION should bet
+set in order to link with the python library. Example:
+
+setenv PYTHON_PATH /usr
+setenv PYTHON_VERSION 2.4
+
+To compile and run the sample, just type:
+
+qmake qpyconsole.pro
+make
+qpyconsole
+
+  If you encounter link problems "undefined reference to `__ctype_b'", just compile pymain.cpp
+with -DFIX__CTYPE_
+
+AUTHORS:
+========
+
+Houssem BDIOUI   (houssem.bdioui@gmail.com)
+Mondrian NUESSLE (nuessle@uni-mannheim.de)
+Ulrich Ring
+
+Enjoy :)
+

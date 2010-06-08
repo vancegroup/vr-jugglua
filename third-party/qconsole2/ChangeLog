@@ -1,0 +1,50 @@
+Version 2.0
+===========
+- Supports Qt4.x:
+  * qt3support classes used since new QTextEdit/QTextCursor/QTextDocument
+    classes are not flexible enough !
+  * Qt3.x still supported through usage of QT_VERSION macro
+- QConsole class:
+  * Pasting with middle mouse button possible even when clicking
+    outside of the edition zone
+  * New internal replaceCurrentCommand() method for better modularity
+  * When navigating in history, multi-line commands were not
+    totally replaced
+  * Possibility to disable the stdout/stderr interception
+  * Possibility to choose the colors of the cmd, stdout, stderr
+    and completion (as well as the font)
+  * a new loadScript() method (useful for scripting languages
+    not providing this feature)
+- QTclconsole class:
+  * Use of tclnotify.* approach allowing interpreting asynchrnous tcl
+    commands as in: after 1000 {puts hello}
+    Thanks to Ulrich Ring
+- New Python implementation (QPyConsole - thanks to Mondrian Nuessle).
+- General code review
+
+Version 1.1
+===========
+- commandsManager class:
+  * The getInstance() method can take an already created Tcl_Interp parameter
+  * removed the registerCommand() method
+  * New unregisterFunction()
+  * New set of registerVariable() methods to register C++ vars as Tcl ones
+  * Added support for "help messages" for functions and methods (accessible
+    through the new 'help' command)
+- QConsole:
+  * Fixed a bug previously allowing inserting text outside of the
+    edition zone: Bug that can happen when holding the mouse button
+    pressed outside the edition zone and typing something
+  * Possibility to select words outside of the edition zone using double clicks
+  * Overridden paste() removed : handled by the previous bug fix
+  * Disabled the popup menu
+  * New public execCommand(QString) method that executes a Tcl command
+    and dislpays back its result in the console
+  * New saveScript() method that saves succeeded commands to a file
+  * New completeCommand() method that gives suggestions to complete the current command
+- QtclConsole:
+  * Redesigned into a singleton pattern
+  * Implemented completeCommand() based on [ info commands ]
+  * New Tcl saveScript command
+- New TclCallBack class that allows registring/unregistring  C++ methods as Tcl Callbacks:
+  * Used for SetPrompt() and ShowHistory() in QtclConsole
