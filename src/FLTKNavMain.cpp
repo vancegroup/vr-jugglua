@@ -18,6 +18,8 @@
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
 
+#include <FL/Fl.H>
+
 // Standard includes
 // - none;
 
@@ -28,6 +30,9 @@ static void stopKernel() {
 }
 
 int main(int argc, char * argv[]) {
+	Fl::args(argc, argv);
+	Fl::get_system_colors();
+
 	vrj::Kernel::setUseCocoaWrapper(false);
 
 	/// Load the startup script
@@ -37,7 +42,17 @@ int main(int argc, char * argv[]) {
 	/// Create the console GUI
 	FLTKConsole console(script);
 	console.setTitle("Scenegraph Navigation Testbed");
+	console.getRunBufFromLuaGlobal();
 	console.setExitCallback(&stopKernel);
+
+	/// Put in instructions
+	console.appendToDisplay("-- navtransform is your root-level group node");
+	console.appendToDisplay("");
+	console.appendToDisplay("-- Simulator Mode Instructions for Navigation --");
+	console.appendToDisplay("-- In the simulator window:");
+	console.appendToDisplay("--    Hold 'shift' and move the mouse to rotate the simulated wand");
+	console.appendToDisplay("--    Click to move in the direction of the wand's tip");
+	console.appendToDisplay("");
 
 	/// Run it all
 	console.startThread();
