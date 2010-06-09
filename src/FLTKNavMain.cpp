@@ -41,10 +41,6 @@ int main(int argc, char * argv[]) {
 	Fl::args(argc, argv);
 	Fl::get_system_colors();
 
-#ifdef __APPLE
-	vrj::Kernel::setUseCocoaWrapper(false);
-#endif
-
 #ifndef _WIN32
 	/// Tell the kernel to shut down our console thread if it exits first
 	vrj::Kernel::instance()->addHandlerPreCallback(stopConsole);
