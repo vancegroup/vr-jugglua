@@ -21,6 +21,8 @@
 // Library/third-party includes
 #include <vpr/Thread/Thread.h>
 
+#include <boost/utility.hpp>
+
 // Standard includes
 // - none
 
@@ -28,7 +30,7 @@ class FLTKConsoleUI;
 
 namespace vrjLua {
 
-class FLTKConsole : public LuaConsole {
+class FLTKConsole : public LuaConsole, boost::noncopyable {
 	public:
 		FLTKConsole();
 		FLTKConsole(LuaScript const& script);
@@ -55,7 +57,7 @@ class FLTKConsole : public LuaConsole {
 		bool _doThreadWork();
 
 		bool _running;
-		vpr::Thread _thread;
+		vpr::Thread * _thread;
 
 		boost::shared_ptr<FLTKConsoleUI> _view;
 

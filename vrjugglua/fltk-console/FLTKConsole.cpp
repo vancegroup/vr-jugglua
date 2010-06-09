@@ -144,7 +144,8 @@ class FLTKConsoleView : public FLTKConsoleUI {
 
 FLTKConsole::FLTKConsole() :
 		LuaConsole(),
-		_running(false) {
+		_running(false),
+		_thread(NULL) {
 	// No constructor body
 	s_console = this;
 	_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
@@ -152,7 +153,8 @@ FLTKConsole::FLTKConsole() :
 
 FLTKConsole::FLTKConsole(LuaScript const& script) :
 		LuaConsole(script),
-		_running(false) {
+		_running(false),
+		_thread(NULL) {
 	// No constructor body
 	s_console = this;
 	_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
@@ -160,19 +162,25 @@ FLTKConsole::FLTKConsole(LuaScript const& script) :
 
 FLTKConsole::~FLTKConsole() {
 	stopThread();
+	if (_thread && _thread->valid()) {
+		_thread->kill();
+	}
+	delete _thread;
+	_thread = NULL;
 }
 
 bool FLTKConsole::startThread() {
-	if (_running || _thread.valid()) {
+	if (_running || _thread) {
 		/// @todo notify that the thread is already running?
 		return false;
 	}
 
 	_running = true;
 	//_thread.setFunctor(&FLTKConsole::threadEntryPoint);
-	_thread.setFunctor(boost::bind(boost::mem_fn(&FLTKConsole::_threadLoop), this));
-	_thread.start();
-	return _thread.valid();
+	//_thread.setFunctor(boost::bind(boost::mem_fn(&FLTKConsole::_threadLoop), this));
+	//_thread.start();
+	_thread = new vpr::Thread(boost::bind(&FLTKConsole::_threadLoop, this));
+	return (_thread) && (_thread->valid());
 }
 
 void FLTKConsole::stopThread() {
@@ -180,7 +188,9 @@ void FLTKConsole::stopThread() {
 }
 
 void FLTKConsole::waitForThreadStop() {
-	_thread.join();
+	if (_thread && _thread->valid()) {
+		_thread->join();
+	}
 }
 
 void FLTKConsole::appendToDisplay(std::string const& message) {
