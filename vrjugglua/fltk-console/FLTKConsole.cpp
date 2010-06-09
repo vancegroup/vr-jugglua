@@ -143,18 +143,18 @@ class FLTKConsoleView : public FLTKConsoleUI {
 
 FLTKConsole::FLTKConsole() :
 		LuaConsole(),
-		_running(false),
-		_view(new FLTKConsoleView(this)) {
+		_running(false) {
 	// No constructor body
 	s_console = this;
+	_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
 }
 
 FLTKConsole::FLTKConsole(LuaScript const& script) :
 		LuaConsole(script),
-		_running(false),
-		_view(new FLTKConsoleView(this))  {
+		_running(false) {
 	// No constructor body
 	s_console = this;
+	_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
 }
 
 FLTKConsole::~FLTKConsole() {

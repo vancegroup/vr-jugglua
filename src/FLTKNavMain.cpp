@@ -55,7 +55,7 @@ int main(int argc, char * argv[]) {
 	script.requireModule("osgnav-testbed");
 
 	/// Create the console GUI
-	boost::scoped_ptr<FLTKConsole> console(new FLTKConsole(script));
+	boost::shared_ptr<FLTKConsole> console(new FLTKConsole(script));
 	g_console = console.get();
 	console->setTitle("Scenegraph Navigation Testbed");
 	console->getRunBufFromLuaGlobal();
