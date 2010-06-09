@@ -49,9 +49,9 @@ class FLTKConsole : public LuaConsole {
 		/// @}
 
 		static void threadEntryPoint();
+		void _threadLoop();
 
 	protected:
-		void _threadLoop();
 		bool _doThreadWork();
 
 		bool _running;

@@ -18,6 +18,7 @@
 // Library/third-party includes
 #include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>
+#include <boost/mem_fn.hpp>
 
 // Standard includes
 #include <iostream>
@@ -162,15 +163,16 @@ FLTKConsole::~FLTKConsole() {
 }
 
 bool FLTKConsole::startThread() {
-	if (_running) {
+	if (_running || _thread.valid()) {
 		/// @todo notify that the thread is already running?
 		return false;
 	}
 
 	_running = true;
-	_thread.setFunctor(&FLTKConsole::threadEntryPoint);
+	//_thread.setFunctor(&FLTKConsole::threadEntryPoint);
+	_thread.setFunctor(boost::bind(boost::mem_fn(&FLTKConsole::_threadLoop), this));
 	_thread.start();
-	return true;
+	return _thread.valid();
 }
 
 void FLTKConsole::stopThread() {
