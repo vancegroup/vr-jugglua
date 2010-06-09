@@ -1,5 +1,5 @@
-/**	@file	BindSonixToLua.h
-	@brief	header
+/**	@file	binding_detail/BindSonixToLua.h
+	@brief	header exposing binding function for Sonix
 
 	@date
 	2009-2010
@@ -12,8 +12,8 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_BindSonixToLua_h
-#define INCLUDED_vrjugglua_BindSonixToLua_h
+#ifndef INCLUDED_vrjugglua_binding_detail_BindSonixToLua_h
+#define INCLUDED_vrjugglua_binding_detail_BindSonixToLua_h
 
 // Local includes
 #include <vrjugglua/LuaScript.h>
@@ -32,4 +32,4 @@ void bindSonixToLua(LuaStatePtr state);
 
 
 
-#endif // INCLUDED_vrjugglua_BindSonixToLua_h
+#endif // INCLUDED_vrjugglua_binding_detail_BindSonixToLua_h

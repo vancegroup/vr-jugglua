@@ -1,5 +1,5 @@
-/**	@file	BindPositionInterfaceToLua.h
-	@brief	header
+/**	@file	binding_detail/BindGadgetInterfacesToLua.h
+	@brief	header exposing binding function for Gadgeteer
 
 	@date
 	2009-2010
@@ -12,8 +12,8 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h
-#define INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h
+#ifndef INCLUDED_vrjugglua_binding_detail_BindGadgetInterfacesToLua_h
+#define INCLUDED_vrjugglua_binding_detail_BindGadgetInterfacesToLua_h
 
 // Local includes
 #include <vrjugglua/LuaScript.h>
@@ -30,4 +30,4 @@ namespace vrjLua {
 
 }// end of vrjLua namespace
 
-#endif // INCLUDED_vrjugglua_BindGadgetInterfacesToLua_h
+#endif // INCLUDED_vrjugglua_binding_detail_BindGadgetInterfacesToLua_h

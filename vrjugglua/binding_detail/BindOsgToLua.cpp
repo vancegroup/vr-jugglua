@@ -1,5 +1,5 @@
-/**	@file	BindOsgToLua.cpp
-	@brief	implementation
+/**	@file	binding_detail/BindOsgToLua.cpp
+	@brief	implementation of binding using osgLua
 
 	@date
 	2009-2010
@@ -41,7 +41,7 @@ void bindOsgToLua(LuaStatePtr state) {
 		return;
 	}
 #endif
-	
+
 #ifdef AUTOLOAD_WRAPPER_OSGDB
 	ret = osgLua::loadWrapper(state.get(), "osgDB");
 	if (!ret) {

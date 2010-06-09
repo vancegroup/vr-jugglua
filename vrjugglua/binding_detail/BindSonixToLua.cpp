@@ -1,5 +1,5 @@
-/**	@file	BindKernelToLua.cpp
-	@brief	implementation
+/**	@file	binding_detail/BindSonixToLua.cpp
+	@brief	implementation of Sonix binding
 
 	@date
 	2009-2010

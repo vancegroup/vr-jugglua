@@ -1,5 +1,5 @@
-/**	@file	BindKernelToLua.cpp
-	@brief	implementation
+/**	@file	binding_detail/BindKernelToLua.cpp
+	@brief	implementation of kernel and print overload binding
 
 	@date
 	2009-2010

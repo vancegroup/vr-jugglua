@@ -19,7 +19,6 @@
 
 // Library/third-party includes
 #include <vrjugglua/LuaInclude.h>
-#include <luabind/luabind.hpp>
 
 // Standard includes
 #include <functional>

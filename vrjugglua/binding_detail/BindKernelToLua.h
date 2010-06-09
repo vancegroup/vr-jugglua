@@ -1,5 +1,6 @@
-/**	@file	BindKernelToLua.h
-	@brief	header
+/**	@file	binding_detail/BindKernelToLua.h
+	@brief	header exposing binding function for vrjKernel and standard
+			components
 
 	@date
 	2009-2010
@@ -12,8 +13,8 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_BindKernelToLua_h
-#define INCLUDED_vrjugglua_BindKernelToLua_h
+#ifndef INCLUDED_vrjugglua_binding_detail_BindKernelToLua_h
+#define INCLUDED_vrjugglua_binding_detail_BindKernelToLua_h
 
 // Local includes
 #include <vrjugglua/LuaScript.h>
@@ -32,4 +33,4 @@ void bindKernelToLua(LuaStatePtr state);
 
 
 
-#endif // INCLUDED_vrjugglua_BindKernelToLua_h
+#endif // INCLUDED_vrjugglua_binding_detail_BindKernelToLua_h

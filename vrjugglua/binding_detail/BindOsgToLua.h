@@ -1,5 +1,5 @@
-/**	@file	BindOsgToLua.h
-	@brief	header
+/**	@file	binding_detail/BindOsgToLua.h
+	@brief	header exposing binding function for OSG
 
 	@date
 	2009-2010
@@ -12,8 +12,8 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_BindOsgToLua_h
-#define INCLUDED_vrjugglua_BindOsgToLua_h
+#ifndef INCLUDED_vrjugglua_binding_detail_BindOsgToLua_h
+#define INCLUDED_vrjugglua_binding_detail_BindOsgToLua_h
 
 // Local includes
 #include <vrjugglua/LuaScript.h>
@@ -31,4 +31,4 @@ void bindOsgToLua(LuaStatePtr state);
 }// end of vrjLua namespace
 
 
-#endif // INCLUDED_vrjugglua_BindOsgToLua_h
+#endif // INCLUDED_vrjugglua_binding_detail_BindOsgToLua_h

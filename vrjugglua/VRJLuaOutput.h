@@ -1,4 +1,4 @@
-/**	@file	vrjLuaOutput.h
+/**	@file	VRJLuaOutput.h
 	@brief	Output stream wrappers (extending vpr::Debug)
 
 	@date

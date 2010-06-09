@@ -1,5 +1,5 @@
-/**	@file	BindRunBufferToLua.h
-	@brief	header
+/**	@file	binding_detail/BindRunBufferToLua.h
+	@brief	header exposing binding function for SynchronizedRunBuffer
 
 	@date
 	2009-2010
@@ -12,8 +12,8 @@
 	Human-Computer Interaction Graduate Program
 */
 #pragma once
-#ifndef INCLUDED_vrjugglua_BindRunBufferToLua_h
-#define INCLUDED_vrjugglua_BindRunBufferToLua_h
+#ifndef INCLUDED_vrjugglua_binding_detail_BindRunBufferToLua_h
+#define INCLUDED_vrjugglua_binding_detail_BindRunBufferToLua_h
 
 // Local includes
 #include <vrjugglua/LuaScript.h>
@@ -33,4 +33,4 @@ void bindRunBufferToLua(LuaStatePtr state);
 
 
 
-#endif // INCLUDED_vrjugglua_BindRunBufferToLua_h
+#endif // INCLUDED_vrjugglua_binding_detail_BindRunBufferToLua_h

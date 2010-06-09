@@ -55,12 +55,12 @@ static void no_op_deleter(lua_State *L) {
 	return;
 }
 
-/// @name Manipulating global interpreter variable
-/// @{
-
 /// External global variable - ick!
 extern LuaStatePtr g_state;
 
+/// @name Manipulating global interpreter variable
+/// @see VRJLua_C_Interface.h
+/// @{
 void setInteractiveInterpreter(LuaStatePtr state) {
 	g_state = state;
 }
