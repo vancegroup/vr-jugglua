@@ -160,8 +160,10 @@ void OsgAppProxy::preFrame() {
 		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
 				<< "Assuming application failure, bailing out."
 				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+		vrj::Kernel::instance()->stop();
 		std::exit(1);
 	}
+
 	_delegationSuccessFlag = false;
 	vpr::Interval cur_time = vrj::Kernel::instance()->getUsers()[0]->getHeadUpdateTime();
 	vpr::Interval diff_time(cur_time - _lastPreFrameTime);
