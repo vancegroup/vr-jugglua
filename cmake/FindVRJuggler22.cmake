@@ -234,7 +234,7 @@ if(VRJUGGLER22_FOUND)
 	if(MSVC)
 		# Needed to make linking against boost work with 2.2.1 binaries - rp20091022
 		# BOOST_ALL_DYN_LINK
-		set(VRJUGGLER22_DEFINITIONS "-DBOOST_ALL_DYN_LINK")
+		set(VRJUGGLER22_DEFINITIONS "-DBOOST_ALL_DYN_LINK" "-DCPPDOM_DYN_LINK")
 
 		# Disable these annoying warnings
 		set(VRJUGGLER22_CXX_FLAGS "/wd4275 /wd4251 /wd4127 /wd4100 /wd4512")
