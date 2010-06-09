@@ -139,9 +139,6 @@ if((NOT "${Boost_FOUND}")
 			#set(Boost_USE_MULTITHREADED OFF)
 		endif()
 
-		# Versions of boost released since the update of FindBoost in cmake 2.8.0
-		set(Boost_ADDITIONAL_VERSION "1.41.0" "1.41")
-
 		find_package(Boost
 			1.33.1
 			${_FIND_FLAGS}
