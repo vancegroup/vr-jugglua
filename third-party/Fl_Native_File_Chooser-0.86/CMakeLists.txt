@@ -84,10 +84,12 @@ set(FNFC_LIBRARY
 set(FNFC_INCLUDE_DIRS
 	"${CMAKE_CURRENT_BINARY_DIR}"
 	"${CMAKE_CURRENT_SOURCE_DIR}"
+	${FLTK_INCLUDE_DIR}
 	PARENT_SCOPE)
 
 include_directories("${CMAKE_CURRENT_BINARY_DIR}"
-	"${CMAKE_CURRENT_SOURCE_DIR}")
+	"${CMAKE_CURRENT_SOURCE_DIR}"
+	${FLTK_INCLUDE_DIR})
 add_library(Fl_Native_File_Chooser ${SOURCES})
 target_link_libraries(Fl_Native_File_Chooser ${LIBS})
 
