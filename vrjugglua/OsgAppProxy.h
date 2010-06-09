@@ -55,7 +55,7 @@ class OsgAppProxy : public vrj::OsgApp {
 	void setActiveApplication();
 
 	/// @brief Set the Lua table serving as the app delegate
-	void setAppDelegate(luabind::object const & delegate);
+	bool setAppDelegate(luabind::object const & delegate);
 
 	/// @brief Retrieve the Lua table serving as the app delegate
 	luabind::object const & getAppDelegate();

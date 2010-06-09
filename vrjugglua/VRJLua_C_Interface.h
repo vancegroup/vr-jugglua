@@ -1,5 +1,5 @@
 /**	@file	VRJLua_C_Interface.h
-	@brief	header
+	@brief	header for the C interface to VRJuggLua
 
 	@date
 	2009-2010

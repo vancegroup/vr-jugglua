@@ -54,31 +54,33 @@ void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 }
 
 OsgAppProxy::OsgAppProxy() :
-	vrj::OsgApp(vrj::Kernel::instance()),
-	_timeDelta(-1),
-	_delegationSuccessFlag(true) {
-
+		vrj::OsgApp(vrj::Kernel::instance()),
+		_timeDelta(-1),
+		_delegationSuccessFlag(true) {
+	/// update static pointer to app object
+	_pApp = this;
 }
 
 OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
-	vrj::OsgApp(kern),
-	_timeDelta(-1),
-	_delegationSuccessFlag(true) {
+		vrj::OsgApp(kern),
+		_timeDelta(-1),
+		_delegationSuccessFlag(true) {
 	/// update static pointer to app object
 	_pApp = this;
 
 }
 
 OsgAppProxy::~OsgAppProxy() {
-
+	// Delete the delegate object so that it doesn't call a destroyed state
+	// to clean itself up later
+	_delegate = luabind::object();
 }
 
 void OsgAppProxy::setActiveApplication() {
 	vrj::Kernel::instance()->setApplication(this);
 }
 
-
-void OsgAppProxy::setAppDelegate(luabind::object const & delegate) {
+bool OsgAppProxy::setAppDelegate(luabind::object const & delegate) {
 	/// @todo test here to see if the passed delegate is suitable
 
 	if (luabind::type(delegate) == LUA_TTABLE) {
@@ -91,11 +93,12 @@ void OsgAppProxy::setAppDelegate(luabind::object const & delegate) {
 
 		// New delegate gets a fresh attempt
 		_delegationSuccessFlag = true;
-
+		return true;
 	} else {
 		VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
 			<< "Lua app tried to set an invalid app delegate: " << delegate
 			<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+		return false;
 	}
 }
 
@@ -136,15 +139,15 @@ void OsgAppProxy::initScene() {
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	vrj::OsgApp::configSceneView(newSceneViewer);
-		newSceneViewer->getLight()->setAmbient(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
-		newSceneViewer->getLight()->setDiffuse(osg::Vec4(0.9f,0.9f,0.9f,1.0f));
-		newSceneViewer->getLight()->setSpecular(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	newSceneViewer->getLight()->setAmbient(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	newSceneViewer->getLight()->setDiffuse(osg::Vec4(0.9f,0.9f,0.9f,1.0f));
+	newSceneViewer->getLight()->setSpecular(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 
-		// setup the ambient light the way I want it
-		osg::LightModel* lightmodel = new osg::LightModel;
-		lightmodel->setAmbientIntensity(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	// setup the ambient light the way I want it
+	osg::LightModel* lightmodel = new osg::LightModel;
+	lightmodel->setAmbientIntensity(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 
-		newSceneViewer->getGlobalStateSet()->setAttributeAndModes(lightmodel, osg::StateAttribute::ON);
+	newSceneViewer->getGlobalStateSet()->setAttributeAndModes(lightmodel, osg::StateAttribute::ON);
 }
 
 void OsgAppProxy::preFrame() {
@@ -215,9 +218,11 @@ bool OsgAppProxy::_forwardCallToDelegate(const char * call) {
 		}
 		return false;
 	}
+#ifdef VERY_VERBOSE
 	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_DRIVEL)
 		<< "Delegate not valid or no '" << call << "' element defined: " << _delegate
 		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_DRIVEL);
+#endif
 	return false;
 }
 
