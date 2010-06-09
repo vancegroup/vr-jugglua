@@ -72,6 +72,7 @@ int main(int argc, char * argv[]) {
 
 	/// Run it all
 	console->startThread();
+	vrj::Kernel::instance()->start();
 	console->waitForThreadStop();
 	return 0;
 }

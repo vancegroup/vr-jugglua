@@ -50,4 +50,4 @@ runbuf = vrjSync.RunBuffer(nil)
 print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
 
-vrjKernel.start()
+-- vrjKernel.start()
