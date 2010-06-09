@@ -19,6 +19,11 @@ endif()
 
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
+###
+# Let the Lua files install themselves
+
+add_subdirectory(lua)
+
 set(SOURCES
 	Internal_AnalogInterface.cpp
 	Internal_DigitalInterface.cpp
@@ -83,7 +88,10 @@ set_property(TARGET
 	vrjugglua
 	PROPERTY
 	PROJECT_LABEL
-	"VR JuggLua library")
+	"VRJLua main library")
+
+# Require the Lua files installed into the build tree
+add_dependencies(vrjugglua luaFiles)
 
 if(INSTALL_CXX_SDK)
 	install(TARGETS vrjugglua
@@ -93,10 +101,7 @@ if(INSTALL_CXX_SDK)
 		PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua)
 endif()
 
-###
-# Let the Lua files install themselves
 
-add_subdirectory(lua)
 
 ###
 # Optional GUI components

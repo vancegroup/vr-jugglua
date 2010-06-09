@@ -118,7 +118,7 @@ set_property(TARGET
 	luabind
 	PROPERTY
 	PROJECT_LABEL
-	"LuaBind Library")
+	"Third-Party: LuaBind Library")
 
 if(INSTALL_CXX_SDK)
 	install(FILES ${LUABIND_API}

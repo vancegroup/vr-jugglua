@@ -39,7 +39,7 @@ set_property(TARGET
 	osgLua_static
 	PROPERTY
 	PROJECT_LABEL
-	"OsgLua Static Library")
+	"Third-Party: OsgLua Static Library")
 
 if(INSTALL_CXX_SDK)
 	install(TARGETS osgLua_static

@@ -30,7 +30,7 @@ set_property(TARGET
 	qconsole
 	PROPERTY
 	PROJECT_LABEL
-	"QConsole Widget")
+	"Third-Party: QConsole Widget")
 
 set_target_properties(qconsole PROPERTIES PUBLIC_HEADER "${QCONSOLE_API};${MOCS}")
 

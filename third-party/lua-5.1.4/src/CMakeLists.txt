@@ -90,8 +90,7 @@ set_property(TARGET
 	lua
 	PROPERTY
 	PROJECT_LABEL
-	"Lua Core Library")
-
+	"Third-Party: Lua Core Library")
 set_target_properties(lua PROPERTIES PUBLIC_HEADER "${LUA_API}")
 
 if(INSTALL_CXX_SDK)

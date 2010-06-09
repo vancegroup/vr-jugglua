@@ -91,6 +91,12 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}"
 add_library(Fl_Native_File_Chooser ${SOURCES})
 target_link_libraries(Fl_Native_File_Chooser ${LIBS})
 
+set_property(TARGET
+	Fl_Native_File_Chooser
+	PROPERTY
+	PROJECT_LABEL
+	"Third-Party: FLTK Native File Chooser")
+
 if(INSTALL_CXX_SDK)
 	install(TARGETS Fl_Native_File_Chooser
 		EXPORT vrjlua-sdk
