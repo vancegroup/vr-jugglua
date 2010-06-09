@@ -35,7 +35,8 @@ set(LUA_SRCS
 	lundump.c
 	lvm.c
 	lzio.c
-	print.c
+	print.c)
+set(LUA_HEADERS
 	lapi.h
 	lcode.h
 	ldebug.h
@@ -55,7 +56,6 @@ set(LUA_SRCS
 	lundump.h
 	lvm.h
 	lzio.h)
-
 set(LUA_API
 	luaconf.h
 	lua.h
@@ -70,8 +70,6 @@ elseif(APPLE)
 else() # Linux
 	add_definitions(-DLUA_USE_LINUX)
 
-	# TODO: might need this for osgLua?
-	#add_definitions(-DLUA_DL_USE_RTLD_GLOBAL)
 	find_library(READLINE_LIBRARY
 		NAMES
 		readline)
@@ -80,7 +78,7 @@ else() # Linux
 	list(APPEND LUA_EXTRA_LIBS ${READLINE_LIBRARY} ${CURSES_LIBRARIES})
 endif()
 
-add_library(lua ${LUA_SRCS} ${LUA_API})
+add_library(lua ${LUA_SRCS} ${LUA_HEADERS} ${LUA_API})
 if(LUA_EXTRA_LIBS)
 	target_link_libraries(lua ${LUA_EXTRA_LIBS})
 endif()

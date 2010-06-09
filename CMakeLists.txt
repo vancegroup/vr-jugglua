@@ -57,22 +57,14 @@ if(BUILD_LUA_AS_CPP)
 	add_definitions(-DBUILD_LUA_AS_CPP)
 endif()
 
-#if(WIN32)
-	set(BIN_DIR bin/)
-	set(LUA_DIR share/vrjugglua/lua/)
-	set(INCLUDE_DIR include/)
-	set(LIB_DIR lib/)
-#else()
-#	set(BIN_DIR bin)
-#	set(LUA_DIR share/vrjugglua/lua)
-#endif()
-###
-# End options
-###
-
 ###
 # Perform build configuration of dependencies
 ###
+
+set(BIN_DIR bin/)
+set(LUA_DIR share/vrjugglua/lua/)
+set(INCLUDE_DIR include/)
+set(LIB_DIR lib/)
 
 # Locally-developed modules dist'ed with this app - always have this first.
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -84,7 +76,6 @@ include(EnableExtraCompilerWarnings)
 include(StampSourcesWithVersion)
 
 include(MSVCMultipleProcessCompile)
-#include(MSVCVerboseLinking)
 
 include(CTest)
 include(CreateDashboardScripts)
@@ -128,10 +119,10 @@ include(BundleOSGRuntime)
 include(BundleVRJ22Runtime)
 
 # Lua
-if(NOT BUILD_EMBEDDED_LUA)
+if(BUILD_EMBEDDED_LUA)
 	add_definitions(-DLUABIND_MAX_BASES=3)
 	add_definitions(-DLUABIND_MAX_ARITY=3)
-
+else()
 	find_package(Luabind REQUIRED)
 	list(APPEND EXTRA_LIBS ${LUABIND_LIBRARIES})
 	include_directories(${LUABIND_INCLUDE_DIRS})
