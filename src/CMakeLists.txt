@@ -17,6 +17,8 @@ if(${Boost_VERSION} LESS 103500)
 	include_directories(../vrjugglua/bitsOfBoost143)
 endif()
 
+include_directories(${Boost_INCLUDE_DIRS})
+include_directories(${VRJUGGLER22_INCLUDE_DIRS})
 
 ###
 # Standard Lua interpreter with VRJ and OSG automatically loaded
@@ -44,7 +46,19 @@ if(BUILD_FLTK_GUI)
     set(NAVTESTBED_SRCS
         FLTKNavMain.cpp)
 
-    add_executable(NavTestbed ${NAVTESTBED_SRCS} ${NavTestbed_FLTK_UI_SRCS})
+	if(WIN32)
+		# Threading issues if we link against a library using vpr::Thread
+		fltk_wrap_ui(NavTestbed ../vrjugglua/fltk-console/vrjlua-fltk-console.fl)
+		list(APPEND NAVTESTBED_SRCS
+			../vrjugglua/fltk-console/FLTKConsole.cpp
+			../vrjugglua/fltk-console/FLTKConsole.h
+			${NavTestbed_FLTK_UI_SRCS})
+		set(LIBS vrjugglua)
+	else()
+		set(LIBS vrjugglua-fltk)
+	endif()
+	
+    add_executable(NavTestbed ${NAVTESTBED_SRCS})
     target_link_libraries(NavTestbed vrjugglua-fltk ${FLTK_GUI_LIBS})
 	
 	set_property(TARGET

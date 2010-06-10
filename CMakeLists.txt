@@ -88,7 +88,6 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Boost
 find_package(Boost 1.34.0 REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
 if(WIN32)
 	foreach(lib FILESYSTEM SYSTEM)
 		get_filename_component(_libname "${Boost_${lib}_LIBRARY_RELEASE}" NAME_WE)
@@ -96,6 +95,7 @@ if(WIN32)
 		list(APPEND CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS "${_libpath}/${_libname}.dll")
 	endforeach()
 endif()
+
 
 # OpenSceneGraph
 include(SearchProgramFilesForOpenSceneGraph)
@@ -113,7 +113,6 @@ add_definitions(${VRJUGGLER22_DEFINITIONS})
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${VRJUGGLER22_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${VRJUGGLER22_CXX_FLAGS}")
 list(APPEND EXTRA_LIBS ${VRJUGGLER22_LIBRARIES})
-include_directories(${VRJUGGLER22_INCLUDE_DIRS})
 
 include(BundleOSGRuntime)
 include(BundleVRJ22Runtime)
@@ -202,8 +201,8 @@ if(INSTALL_CXX_SDK)
 		DESTINATION ${EXPORT_DIR}
 		NAMESPACE vrjlua_exported_
 		FILE vrjlua-targets.cmake)
-	configure_file(VRJuggLua-config.cmake.in VRJuggLua-config.cmake)
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/VRJuggLua-config.cmake
+	configure_file(VRJuggLua-config.cmake.in vrjugglua-config.cmake @ONLY)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vrjugglua-config.cmake
 		DESTINATION ${EXPORT_DIR})
 endif()
 

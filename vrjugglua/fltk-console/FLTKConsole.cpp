@@ -179,8 +179,9 @@ bool FLTKConsole::startThread() {
 	//_thread.setFunctor(&FLTKConsole::threadEntryPoint);
 	//_thread.setFunctor(boost::bind(boost::mem_fn(&FLTKConsole::_threadLoop), this));
 	//_thread.start();
-	_thread = new vpr::Thread(boost::bind(&FLTKConsole::_threadLoop, this));
-	return (_thread) && (_thread->valid());
+	//_thread = new vpr::Thread(boost::bind(&FLTKConsole::_threadLoop, this));
+	//return (_thread) && (_thread->valid());
+	return true;
 }
 
 void FLTKConsole::stopThread() {
@@ -189,7 +190,7 @@ void FLTKConsole::stopThread() {
 
 void FLTKConsole::waitForThreadStop() {
 	if (_thread && _thread->valid()) {
-		_thread->join();
+		//_thread->join();
 	}
 }
 

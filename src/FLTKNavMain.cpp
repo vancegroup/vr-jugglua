@@ -17,6 +17,9 @@
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
+#include <vpr/Thread/Thread.h>
+
+#include <boost/bind.hpp>
 
 #include <FL/Fl.H>
 
@@ -26,6 +29,7 @@
 using namespace vrjLua;
 
 FLTKConsole * g_console = NULL;
+vpr::Thread * _thread = NULL;
 
 static void stopKernel() {
 	vrj::Kernel::instance()->stop();
@@ -68,7 +72,10 @@ int main(int argc, char * argv[]) {
 
 	/// Run it all
 	console->startThread();
+	vpr::Thread thread;
+	thread.setFunctor(boost::bind(&FLTKConsole::_threadLoop, console.get()));
 	vrj::Kernel::instance()->start();
-	console->waitForThreadStop();
+	thread.join();
+	//console->waitForThreadStop();
 	return 0;
 }
