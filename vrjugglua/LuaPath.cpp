@@ -64,6 +64,8 @@ LuaPath::LuaPath() :
 	{ }
 
 void LuaPath::_init(std::string const& arg0) {
+	_valid = true;
+
 	std::vector<fs::path> startingPlaces;
 	startingPlaces.push_back(fs::complete(arg0).remove_filename());
 	startingPlaces.push_back(fs::initial_path());
@@ -74,11 +76,11 @@ void LuaPath::_init(std::string const& arg0) {
 			_luadir = (fs::path(_root) / "share/vrjugglua/lua/").string();
 		} catch (std::runtime_error & e) {
 			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
-					<< "LuaPath: " << e.what()
-					<< ", will retry with unqualified path"
-					<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
-			_root = "";
-			_luadir = "";
+				<< "LuaPath: " << e.what()
+				<< ", will retry with unqualified path"
+				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+			_root.clear();
+			_luadir.clear();
 		}
 		if (_root.empty()) {
 			try {
@@ -86,17 +88,14 @@ void LuaPath::_init(std::string const& arg0) {
 				_luadir = _root;
 			} catch (std::runtime_error & e) {
 				VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
-						<< "LuaPath: " << e.what()
-						<< ", giving up on this base directory"
-						<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
-				_root = "";
-				_luadir = "";
+					<< "LuaPath: " << e.what()
+					<< ", giving up on this base directory"
+					<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+				_root.clear();
+				_luadir.clear();
 			}
 		}
 	}
-
-	_valid = true;
-
 	fs::path jugglerTest = "share/vrjuggler-2.2/data/definitions/simulated_positional_device.jdef";
 	if (fs::exists(_root/jugglerTest)) {
 		_foundJuggler = true;
@@ -119,6 +118,10 @@ void LuaPath::_init(std::string const& arg0) {
 		}
 	}
 #endif
+
+	if (!_foundJuggler) {
+		vpr::System::getenv("VJ_BASE_DIR", _jugglerRoot);
+	}
 
 	_setJugglerEnvironment();
 }
@@ -159,8 +162,8 @@ std::string LuaPath::_findFilePath(const std::string & fn, const std::string & s
 			i < 5 && fs::exists(location) && !fs::exists(filepath);
 			++i) {
 		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
-				<< "LuaPath: Searching for file '" << fn << "' in " << location.string()
-				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
+			<< "LuaPath: Searching for file '" << fn << "' in " << location.string()
+			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
 
 		// go up one
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
@@ -172,7 +175,11 @@ std::string LuaPath::_findFilePath(const std::string & fn, const std::string & s
 		filepath = fs::path(location / fn);
 	}
 
-	if (!fs::exists(filepath)) {
+	if (fs::exists(filepath)) {
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+			<< "LuaPath: Found '" << filepath.string() << "'"
+			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
+	} else {
 		/// couldn't find it anywhere...
 		throw std::runtime_error("Could not find file " + fn);
 	}
@@ -184,11 +191,24 @@ bool LuaPath::_setJugglerEnvironment() const {
 	bool ret;
 	if (_foundJuggler) {
 		/// Set these environment variables so that Juggler figures itself out.
-		std::cout << "Found VR Juggler base: " << _jugglerRoot << std::endl;
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+			<< "LuaPath: "
+			<< "Detected appropriate VJ_BASE_DIR to be "
+			<< _jugglerRoot
+			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+			<< "LuaPath: "
+			<< "Setting VJ_BASE_DIR."
+			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
 		ret = vpr::System::setenv("VJ_BASE_DIR", _jugglerRoot);
 		//ret = vpr::System::setenv("SNX_BASE_DIR", _root) && ret;
 	} else {
-		ret = vpr::System::setenv("VJ_BASE_DIR", "");
+		ret = (!_jugglerRoot.empty());
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+			<< "LuaPath: "
+			<< "Couldn't auto-detect base dir, using what the environment has: "
+			<< _jugglerRoot
+			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
 	}
 	return ret;
 }

@@ -18,6 +18,8 @@
 #include "OsgAppProxy.h"
 #include "LuaPath.h"
 
+#include "VRJLuaOutput.h"
+
 #ifdef LUABIND_COMBINED_COMPILE
 
 #	include "binding_detail/BindOsgToLua.cpp"
@@ -97,7 +99,7 @@ LuaScript::LuaScript(lua_State * state, bool bind) :
 
 LuaScript::LuaScript(const LuaScript & other) :
 			_state(other._state) {
-#ifdef VERBOSE
+#ifdef VERY_VERBOSE
 	std::cout << "**** LuaScript copy constructor invoked" << std::endl;
 #endif
 }
@@ -114,7 +116,9 @@ LuaScript & LuaScript::operator=(const LuaScript & other) {
 bool LuaScript::runFile(const std::string & fn) {
 	int ret = luaL_dofile(_state.get(), fn.c_str());
 	if (ret != 0) {
-		std::cerr << "Could not run Lua file " << fn << std::endl;
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_ERROR)
+				<< "Could not run Lua file " << fn
+				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_ERROR);
 		return false;
 	}
 	return true;
@@ -124,7 +128,10 @@ bool LuaScript::requireModule(const std::string & mod) {
 	try {
 		luabind::call_function<void>(_state.get(), "require", mod);
 	} catch (std::exception & e) {
-		std::cerr << "Could not load Lua module " << mod << " - error: " << e.what() << std::endl;
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_ERROR)
+			<< "Could not load Lua module " << mod
+			<< " - error: " << e.what()
+			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_ERROR);
 		return false;
 	}
 	return true;
@@ -134,8 +141,14 @@ bool LuaScript::runString(const std::string & str) {
 
 	int ret = luaL_dostring(_state.get(), str.c_str());
 	if (ret != 0) {
-		std::cerr << "Could not run provided Lua string" << std::endl;
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_ERROR)
+					<< "Could not run provided Lua string "
+					<< VRJLUA_MSG_END(dbgVRJLUA, MSG_ERROR);
 		return false;
+	} else {
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+				<< "Lua string executed successfully."
+				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
 	}
 	return true;
 }

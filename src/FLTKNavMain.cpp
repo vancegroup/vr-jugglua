@@ -26,16 +26,12 @@
 
 using namespace vrjLua;
 
-static void stopKernel() {
-	vrj::Kernel::instance()->stop();
-}
-
 int main(int argc, char * argv[]) {
 	Fl::args(argc, argv);
 	Fl::get_system_colors();
 
 	/// Tell it our application path
-	LuaPath::instance(argv[0]);
+	LuaPath lp = LuaPath::instance(argv[0]);
 
 	/// Load the startup script
 	LuaScript script;
