@@ -5,12 +5,9 @@
 
 set(VRJUGGLUA_LIBRARIES vrjlua_exported_vrjugglua)
 
-message(STATUS "current list file ${CMAKE_CURRENT_LIST_FILE}")
+include(vrjlua-targets.cmake)
+
 # Compute the installation prefix relative to this file.
-get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
-
-include("${_IMPORT_PREFIX}/vrjlua-targets.cmake")
-
 get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
 get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
 if(NOT WIN32)

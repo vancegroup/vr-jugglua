@@ -175,10 +175,37 @@ endif()
 
 create_dashboard_scripts("DashboardBuildInitialCache.cmake.in")
 
+
 ###
-# End project build
+# Create config files to allow easy use of this library
 ###
 
+# Set up use from build tree
+configure_file(vrjugglua-config-build-tree.cmake.in vrjugglua-config.cmake @ONLY)
+set(BUILD_TREE_TARGETS lua osgLua_static luabind vrjugglua)
+if(BUILD_FLTK_GUI)
+	list(APPEND BUILD_TREE_TARGETS Fl_Native_File_Chooser vrjugglua-fltk)
+endif()
+export(TARGETS ${BUILD_TREE_TARGETS}
+	NAMESPACE vrjlua_buildtree_
+	FILE vrjugglua-targets.cmake)
+
+# Set up use from install tree
+if(INSTALL_CXX_SDK)
+	if(WIN32)
+		set(EXPORT_DIR cmake)
+	else()
+		set(EXPORT_DIR ${LIB_DIR}/VRJuggLua)
+	endif()
+	install(EXPORT vrjlua-sdk
+		DESTINATION ${EXPORT_DIR}
+		NAMESPACE vrjlua_exported_
+		FILE vrjlua-targets.cmake)
+	configure_file(vrjugglua-config.cmake.in vrjugglua-config-for-install.cmake @ONLY)
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vrjugglua-config-for-install.cmake
+		RENAME vrjugglua-config.cmake
+		DESTINATION ${EXPORT_DIR})
+endif()
 
 ###
 # Set packaging options (for CPack)
@@ -189,22 +216,6 @@ install(DIRECTORY examples
 	DESTINATION . COMPONENT examples)
 
 include(InstallRequiredSystemLibraries)
-
-if(WIN32)
-	set(EXPORT_DIR cmake)
-else()
-	set(EXPORT_DIR ${LIB_DIR}/VRJuggLua)
-endif()
-
-if(INSTALL_CXX_SDK)
-	install(EXPORT vrjlua-sdk
-		DESTINATION ${EXPORT_DIR}
-		NAMESPACE vrjlua_exported_
-		FILE vrjlua-targets.cmake)
-	configure_file(VRJuggLua-config.cmake.in vrjugglua-config.cmake @ONLY)
-	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vrjugglua-config.cmake
-		DESTINATION ${EXPORT_DIR})
-endif()
 
 # Choose desired package generators
 if(APPLE)

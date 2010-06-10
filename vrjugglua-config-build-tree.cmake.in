@@ -1,0 +1,27 @@
+# CMake cross-platform build system
+# 2009-2010 Ryan Pavlik <rpavlik@iastate.edu>
+# http://academic.cleardefinition.com/
+# Iowa State University HCI Graduate Program/VRAC
+
+set(VRJUGGLUA_LIBRARIES vrjlua_buildtree_vrjugglua)
+set(VRJUGGLUA_FLTK_CONSOLE_LIBRARIES vrjlua_buildtree_vrjugglua-fltk)
+
+set(VRJUGGLUA_INCLUDE_DIRS
+	"@CMAKE_CURRENT_SOURCE_DIR@"
+	"@CMAKE_CURRENT_SOURCE_DIR@/Fl_Native_File_Chooser-0.86"
+	"@CMAKE_CURRENT_SOURCE_DIR@/lua-5.1.4/src"    
+	"@CMAKE_CURRENT_SOURCE_DIR@/luabind"  
+	"@CMAKE_CURRENT_SOURCE_DIR@/osgLua/include"
+	"@CMAKE_CURRENT_SOURCE_DIR@/osgLua/src")
+
+include("@CMAKE_CURRENT_BINARY_DIR@/vrjugglua-targets.cmake")
+
+# Compute the installation prefix relative to this file.
+get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+if(NOT WIN32)
+	get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+endif()
+
+set(VRJUGGLUA_INCLUDE_DIRS "${_IMPORT_PREFIX}/include")
+set(_IMPORT_PREFIX)
