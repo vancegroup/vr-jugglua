@@ -67,7 +67,11 @@ void LuaPath::_init(std::string const& arg0) {
 	_valid = true;
 
 	std::vector<fs::path> startingPlaces;
+#ifdef BOOST_FILESYSTEM_NO_DEPRECATED
 	startingPlaces.push_back(fs::complete(arg0).remove_filename());
+#else
+	startingPlaces.push_back(fs::complete(arg0).remove_leaf());
+#endif
 	startingPlaces.push_back(fs::initial_path());
 
 	for (unsigned int i = 0; i < startingPlaces.size(); ++i) {
@@ -110,7 +114,11 @@ void LuaPath::_init(std::string const& arg0) {
 		if (!vprLibraryPath.empty()) {
 			std::cout << vprLibraryPath << std::endl;
 			try {
+#ifdef BOOST_FILESYSTEM_NO_DEPRECATED
 				_jugglerRoot = _findFilePath(jugglerTest.string(), fs::complete(vprLibraryPath).remove_filename().string());
+#else
+				_jugglerRoot = _findFilePath(jugglerTest.string(), fs::complete(vprLibraryPath).remove_leaf().string());
+#endif
 				_foundJuggler = true;
 			} catch (std::runtime_error &) {
 				// nothing
