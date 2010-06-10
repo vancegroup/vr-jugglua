@@ -50,10 +50,10 @@ int sharedObjectCallback(struct dl_phdr_info *info, size_t size, void *data) {
 
 namespace vrjLua {
 
-LuaPath& LuaPath::instance(std::string const& arg0) {
+LuaPath& LuaPath::instance(std::string const& arg0, std::string const& vrjlua_base) {
 	static LuaPath inst;
 	if (!inst._valid) {
-		inst._init(arg0);
+		inst._init(arg0, vrjlua_base);
 	}
 	return inst;
 }
@@ -63,18 +63,19 @@ LuaPath::LuaPath() :
 		_valid(false)
 	{ }
 
-void LuaPath::_init(std::string const& arg0) {
+void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 	_valid = true;
 
 	std::vector<fs::path> startingPlaces;
+	startingPlaces.push_back(fs::initial_path());
+	startingPlaces.push_back(fs::complete(vrjlua_base));
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
 	startingPlaces.push_back(fs::complete(arg0).remove_filename());
 #else
 	startingPlaces.push_back(fs::complete(arg0).remove_leaf());
 #endif
-	startingPlaces.push_back(fs::initial_path());
 
-	for (unsigned int i = 0; i < startingPlaces.size(); ++i) {
+	for (unsigned int i = 0; i < startingPlaces.size() && _root.empty(); ++i) {
 		try {
 			_root = _findFilePath("share/vrjugglua/lua/StateMachine.lua", startingPlaces[i].string());
 			_luadir = (fs::path(_root) / "share/vrjugglua/lua/").string();
@@ -112,7 +113,6 @@ void LuaPath::_init(std::string const& arg0) {
 		std::string vprLibraryPath;
 		dl_iterate_phdr(&sharedObjectCallback, &vprLibraryPath);
 		if (!vprLibraryPath.empty()) {
-			std::cout << vprLibraryPath << std::endl;
 			try {
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
 				_jugglerRoot = _findFilePath(jugglerTest.string(), fs::complete(vprLibraryPath).remove_filename().string());

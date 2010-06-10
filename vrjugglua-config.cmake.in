@@ -6,6 +6,8 @@
 set(VRJUGGLUA_LIBRARIES vrjlua_exported_vrjugglua)
 set(VRJUGGLUA_FLTK_CONSOLE_LIBRARIES vrjlua_exported_vrjugglua-fltk)
 
+set(VRJUGGLUA_BASE_DIR "@CMAKE_INSTALL_PREFIX@")
+
 include(vrjlua-targets.cmake)
 
 # Compute the installation prefix relative to this file.

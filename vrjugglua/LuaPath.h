@@ -28,7 +28,7 @@ namespace vrjLua {
 
 class LuaPath {
 	public:
-		static LuaPath& instance(std::string const& arg0 = "");
+		static LuaPath& instance(std::string const& arg0 = "", std::string const& vrjlua_base = "");
 
 		std::string getPathToLuaScript(const std::string & scriptfn) const;
 		bool prependLuaRequirePath(LuaStatePtr state) const;
@@ -37,7 +37,7 @@ class LuaPath {
 
 	protected:
 		LuaPath();
-		void _init(std::string const& arg0);
+		void _init(std::string const& arg0, std::string const& vrjlua_base);
 		std::string _findFilePath(const std::string & fn, const std::string & startingAt);
 		bool _setJugglerEnvironment() const;
 

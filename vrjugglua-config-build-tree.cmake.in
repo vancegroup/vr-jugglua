@@ -6,6 +6,8 @@
 set(VRJUGGLUA_LIBRARIES vrjlua_buildtree_vrjugglua)
 set(VRJUGGLUA_FLTK_CONSOLE_LIBRARIES vrjlua_buildtree_vrjugglua-fltk)
 
+set(VRJUGGLUA_BASE_DIR "@CMAKE_CURRENT_BINARY_DIR@")
+
 set(VRJUGGLUA_INCLUDE_DIRS
 	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/lua-5.1.4/src"
 	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/Fl_Native_File_Chooser-0.86"
