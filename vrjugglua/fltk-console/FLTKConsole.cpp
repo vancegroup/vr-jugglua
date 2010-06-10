@@ -15,22 +15,22 @@
 // Internal Includes
 #include "FLTKConsole.h"
 
+// FLTK-generated source
+#include <vrjlua-fltk-console.h>
+
 // Library/third-party includes
 #include <boost/scoped_ptr.hpp>
-#include <boost/bind.hpp>
-#include <boost/mem_fn.hpp>
+
+#include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Native_File_Chooser.H>
+
 
 // Standard includes
 #include <iostream>
 #include <stdexcept>
 
-#include <FL/Fl_Text_Buffer.H>
-#include <FL/Fl_Native_File_Chooser.H>
-#include <vrjlua-fltk-console.h>
 
 namespace vrjLua {
-
-FLTKConsole * FLTKConsole::s_console = NULL;
 
 static void doNothingUponModify(int, int, int, int, const char *, void *) {
 	// Do nothing
@@ -144,54 +144,43 @@ class FLTKConsoleView : public FLTKConsoleUI {
 
 FLTKConsole::FLTKConsole() :
 		LuaConsole(),
-		_running(false),
-		_thread(NULL) {
-	// No constructor body
-	s_console = this;
+		_running(false) {
 	_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
 }
 
 FLTKConsole::FLTKConsole(LuaScript const& script) :
 		LuaConsole(script),
-		_running(false),
-		_thread(NULL) {
-	// No constructor body
-	s_console = this;
+		_running(false){
 	_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
 }
 
 FLTKConsole::~FLTKConsole() {
 	stopThread();
-	if (_thread && _thread->valid()) {
-		_thread->kill();
-	}
-	delete _thread;
-	_thread = NULL;
 }
 
-bool FLTKConsole::startThread() {
-	if (_running || _thread) {
+bool FLTKConsole::threadLoop() {
+	if (_running) {
 		/// @todo notify that the thread is already running?
 		return false;
 	}
 
 	_running = true;
-	//_thread.setFunctor(&FLTKConsole::threadEntryPoint);
-	//_thread.setFunctor(boost::bind(boost::mem_fn(&FLTKConsole::_threadLoop), this));
-	//_thread.start();
-	//_thread = new vpr::Thread(boost::bind(&FLTKConsole::_threadLoop, this));
-	//return (_thread) && (_thread->valid());
+	bool ret = true;
+	while (_running) {
+		// Do the FLTK loop
+		ret = _doThreadWork();
+		if (!ret) {
+			// Exit originating from FLTK
+			_running = false;
+			break;
+		}
+	}
+
 	return true;
 }
 
 void FLTKConsole::stopThread() {
 	_running = false;
-}
-
-void FLTKConsole::waitForThreadStop() {
-	if (_thread && _thread->valid()) {
-		//_thread->join();
-	}
 }
 
 void FLTKConsole::appendToDisplay(std::string const& message) {
@@ -200,29 +189,6 @@ void FLTKConsole::appendToDisplay(std::string const& message) {
 
 void FLTKConsole::setTitle(std::string const& title) {
 	_view->copy_label(title.c_str());
-}
-
-void FLTKConsole::threadEntryPoint() {
-	if (s_console) {
-		std::cerr << __FUNCTION__ << ": Entering thread!" << std::endl;
-		s_console->_threadLoop();
-	} else {
-		std::cerr << __FUNCTION__ << ": Invalid console pointer!" << std::endl;
-	}
-}
-
-void FLTKConsole::_threadLoop() {
-	bool ret = true;
-	while (_running) {
-		// Do the FLTK loop
-		ret = _doThreadWork();
-		if (!ret) {
-			// Exit originating from FLTK
-			_signalThreadExit();
-			_running = false;
-			break;
-		}
-	}
 }
 
 bool FLTKConsole::_doThreadWork() {

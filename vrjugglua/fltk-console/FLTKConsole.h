@@ -19,9 +19,7 @@
 #include <vrjugglua/LuaConsole.h>
 
 // Library/third-party includes
-#include <vpr/Thread/Thread.h>
-
-#include <boost/utility.hpp>
+#include <boost/utility.hpp> // for boost::noncopyable
 
 // Standard includes
 // - none
@@ -39,29 +37,21 @@ class FLTKConsole : public LuaConsole, boost::noncopyable {
 
 		/// @name Interface required by LuaConsole
 		/// @{
-		virtual bool startThread();
+		virtual bool threadLoop();
 
 		virtual void stopThread();
-
-		virtual void waitForThreadStop();
 
 		virtual void appendToDisplay(std::string const& message);
 
 		virtual void setTitle(std::string const& title);
 		/// @}
 
-		static void threadEntryPoint();
-		void _threadLoop();
-
 	protected:
 		bool _doThreadWork();
 
 		bool _running;
-		vpr::Thread * _thread;
 
 		boost::shared_ptr<FLTKConsoleUI> _view;
-
-		static FLTKConsole * s_console;
 };
 
 // -- inline implementations -- /

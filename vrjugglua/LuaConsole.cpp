@@ -63,10 +63,6 @@ bool LuaConsole::createRunBuf() {
 	return (_runbuf);
 }
 
-void LuaConsole::setExitCallback(boost::function<void ()> callback) {
-	_exitCallback = callback;
-}
-
 bool LuaConsole::isValid() const {
 	return (_runbuf) && (_script.isValid());
 }
@@ -83,12 +79,6 @@ bool LuaConsole::runString(std::string const& str) {
 		return false;
 	}
 	return _runbuf->addString(str);
-}
-
-void LuaConsole::_signalThreadExit() {
-	if (_exitCallback) {
-		_exitCallback();
-	}
 }
 
 } // end of vrjLua namespace

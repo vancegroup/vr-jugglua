@@ -28,27 +28,13 @@
 
 using namespace vrjLua;
 
-FLTKConsole * g_console = NULL;
-vpr::Thread * _thread = NULL;
-
 static void stopKernel() {
 	vrj::Kernel::instance()->stop();
-}
-
-static void stopConsole(const int) {
-	if (g_console) {
-		g_console->stopThread();
-	}
 }
 
 int main(int argc, char * argv[]) {
 	Fl::args(argc, argv);
 	Fl::get_system_colors();
-
-#ifndef _WIN32
-	/// Tell the kernel to shut down our console thread if it exits first
-	vrj::Kernel::instance()->addHandlerPreCallback(stopConsole);
-#endif
 
 	/// Load the startup script
 	LuaScript script;
@@ -56,10 +42,10 @@ int main(int argc, char * argv[]) {
 
 	/// Create the console GUI
 	boost::shared_ptr<FLTKConsole> console(new FLTKConsole(script));
-	g_console = console.get();
 	console->setTitle("Scenegraph Navigation Testbed");
 	console->getRunBufFromLuaGlobal();
-	console->setExitCallback(&stopKernel);
+
+	assert(console->isValid());
 
 	/// Put in instructions
 	console->appendToDisplay("-- navtransform is your root-level group node");
@@ -71,11 +57,9 @@ int main(int argc, char * argv[]) {
 	console->appendToDisplay("");
 
 	/// Run it all
-	console->startThread();
-	vpr::Thread thread;
-	thread.setFunctor(boost::bind(&FLTKConsole::_threadLoop, console.get()));
+	vpr::Thread thread(boost::bind(&FLTKConsole::threadLoop, console.get()));
 	vrj::Kernel::instance()->start();
+	vrj::Kernel::instance()->waitForKernelStop();
 	thread.join();
-	//console->waitForThreadStop();
 	return 0;
 }

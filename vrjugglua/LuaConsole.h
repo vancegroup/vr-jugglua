@@ -38,15 +38,11 @@ class LuaConsole {
 		bool getRunBufFromLuaGlobal();
 		bool createRunBuf();
 
-		void setExitCallback(boost::function<void ()> callback);
-
 		/// @name Implementation interface
 		/// @{
-		virtual bool startThread() = 0;
+		virtual bool threadLoop() = 0;
 
 		virtual void stopThread() = 0;
-
-		virtual void waitForThreadStop() = 0;
 
 		virtual void appendToDisplay(std::string const& message) = 0;
 
@@ -59,14 +55,11 @@ class LuaConsole {
 		bool runString(std::string const& str);
 
 	protected:
-		void _signalThreadExit();
 
 		LuaScript _script;
 
 		boost::shared_ptr<SynchronizedRunBuffer> _runbuf;
 
-	private:
-		boost::function<void ()> _exitCallback;
 };
 
 // -- inline implementations -- /
