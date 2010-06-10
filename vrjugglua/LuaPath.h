@@ -41,6 +41,9 @@ class LuaPath {
 		std::string _root;
 		std::string _luadir;
 
+		bool _foundJuggler;
+		std::string _jugglerRoot;
+
 };
 
 // -- inline implementations -- /
