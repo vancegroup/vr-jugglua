@@ -7,12 +7,16 @@ set(VRJUGGLUA_LIBRARIES vrjlua_buildtree_vrjugglua)
 set(VRJUGGLUA_FLTK_CONSOLE_LIBRARIES vrjlua_buildtree_vrjugglua-fltk)
 
 set(VRJUGGLUA_INCLUDE_DIRS
-	"@CMAKE_CURRENT_SOURCE_DIR@"
-	"@CMAKE_CURRENT_SOURCE_DIR@/Fl_Native_File_Chooser-0.86"
-	"@CMAKE_CURRENT_SOURCE_DIR@/lua-5.1.4/src"    
-	"@CMAKE_CURRENT_SOURCE_DIR@/luabind"  
-	"@CMAKE_CURRENT_SOURCE_DIR@/osgLua/include"
-	"@CMAKE_CURRENT_SOURCE_DIR@/osgLua/src")
+	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/lua-5.1.4/src"
+	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/Fl_Native_File_Chooser-0.86"
+	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/luabind"
+	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/osgLua/include"
+	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/osgLua/src"
+	"@CMAKE_CURRENT_SOURCE_DIR@")
+
+if(${Boost_VERSION} LESS 103500)
+	list(APPEND VRJUGGLUA_INCLUDE_DIRS "@CMAKE_CURRENT_SOURCE_DIR@/vrjugglua/bitsOfBoost143")
+endif()
 
 include("@CMAKE_CURRENT_BINARY_DIR@/vrjugglua-targets.cmake")
 

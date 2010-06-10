@@ -25,7 +25,7 @@
 
 LUA_C_INTERFACE_BEGIN
 
-#include "lua.h"
+#include <lua.h>
 
 LUA_C_INTERFACE_END
 

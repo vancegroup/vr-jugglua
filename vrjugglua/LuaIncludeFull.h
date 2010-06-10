@@ -19,8 +19,8 @@
 
 LUA_C_INTERFACE_BEGIN
 
-#include "lauxlib.h"
-#include "lualib.h"
+#include <lauxlib.h>
+#include <lualib.h>
 
 LUA_C_INTERFACE_END
 
