@@ -32,7 +32,7 @@ set_property(TARGET
 	vrjlua
 	PROPERTY
 	PROJECT_LABEL
-	"vrjlua Standalone Interpreter")
+	"App: Standalone Interpreter")
 
 install(TARGETS vrjlua
 	RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
@@ -42,30 +42,15 @@ install(TARGETS vrjlua
 ###
 # FLTK-based GUIs
 ###
-if(BUILD_FLTK_GUI)
-    set(NAVTESTBED_SRCS
-        FLTKNavMain.cpp)
-
-	if(WIN32)
-		# Threading issues if we link against a library using vpr::Thread
-		fltk_wrap_ui(NavTestbed ../vrjugglua/fltk-console/vrjlua-fltk-console.fl)
-		list(APPEND NAVTESTBED_SRCS
-			../vrjugglua/fltk-console/FLTKConsole.cpp
-			../vrjugglua/fltk-console/FLTKConsole.h
-			${NavTestbed_FLTK_UI_SRCS})
-		set(LIBS vrjugglua)
-	else()
-		set(LIBS vrjugglua-fltk)
-	endif()
-	
-    add_executable(NavTestbed ${NAVTESTBED_SRCS})
-    target_link_libraries(NavTestbed vrjugglua-fltk ${FLTK_GUI_LIBS})
+if(BUILD_FLTK_GUI)	
+    add_executable(NavTestbed FLTKNavMain.cpp)
+    target_link_libraries(NavTestbed vrjugglua-fltk)
 	
 	set_property(TARGET
 		NavTestbed
 		PROPERTY
 		PROJECT_LABEL
-		"Navigation Testbed FLTK GUI")
+		"App: Nav Console FLTK")
 
     install(TARGETS NavTestbed
 	    RUNTIME DESTINATION ${BIN_DIR})

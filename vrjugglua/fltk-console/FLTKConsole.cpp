@@ -24,6 +24,7 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Native_File_Chooser.H>
 
+#include <vrj/Kernel/Kernel.h>
 
 // Standard includes
 #include <iostream>
@@ -166,16 +167,15 @@ bool FLTKConsole::threadLoop() {
 
 	_running = true;
 	bool ret = true;
-	while (_running) {
+	while (_running && vrj::Kernel::instance()->isRunning()) {
 		// Do the FLTK loop
 		ret = _doThreadWork();
 		if (!ret) {
 			// Exit originating from FLTK
-			_running = false;
 			break;
 		}
 	}
-
+	_running = false;
 	return true;
 }
 
