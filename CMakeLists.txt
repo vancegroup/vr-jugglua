@@ -181,14 +181,16 @@ create_dashboard_scripts("DashboardBuildInitialCache.cmake.in")
 ###
 
 # Set up use from build tree
-configure_file(vrjugglua-config-build-tree.cmake.in vrjugglua-config.cmake @ONLY)
 set(BUILD_TREE_TARGETS lua osgLua_static luabind vrjugglua)
 if(BUILD_FLTK_GUI)
 	list(APPEND BUILD_TREE_TARGETS Fl_Native_File_Chooser vrjugglua-fltk)
 endif()
+
+configure_file(vrjugglua-config-build-tree.cmake.in VRJuggLuaConfig.cmake @ONLY)
 export(TARGETS ${BUILD_TREE_TARGETS}
 	NAMESPACE vrjlua_buildtree_
 	FILE vrjugglua-targets.cmake)
+export(PACKAGE VRJuggLua)
 
 # Set up use from install tree
 if(INSTALL_CXX_SDK)
