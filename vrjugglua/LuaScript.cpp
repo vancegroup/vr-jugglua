@@ -152,7 +152,7 @@ void LuaScript::_applyBindings() {
 	/// Apply our bindings to this state
 
 	// Extend the lua script search path for "require"
-	LuaPath lp;
+	LuaPath& lp = LuaPath::instance();
 	lp.prependLuaRequirePath(_state);
 
 	// osgLua

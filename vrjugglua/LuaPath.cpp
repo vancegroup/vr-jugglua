@@ -50,26 +50,52 @@ int sharedObjectCallback(struct dl_phdr_info *info, size_t size, void *data) {
 
 namespace vrjLua {
 
-LuaPath::LuaPath() :
-		_foundJuggler(false)
-	{
-	fs::path initialPath = fs::initial_path();
+LuaPath& LuaPath::instance(std::string const& arg0) {
+	static LuaPath inst;
+	if (!inst._valid) {
+		inst._init(arg0);
+	}
+	return inst;
+}
 
-	try {
-		_root = _findFilePath("share/vrjugglua/lua/StateMachine.lua", initialPath.string());
-		_luadir = (fs::path(_root) / "share/vrjugglua/lua/").string();
-	} catch (std::runtime_error & e) {
-		VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
-				<< "LuaPath: " << e.what()
-				<< ", will retry with unqualified path"
-				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
-		_root = "";
-		_luadir = "";
+LuaPath::LuaPath() :
+		_foundJuggler(false),
+		_valid(false)
+	{ }
+
+void LuaPath::_init(std::string const& arg0) {
+	std::vector<fs::path> startingPlaces;
+	startingPlaces.push_back(fs::complete(arg0).remove_filename());
+	startingPlaces.push_back(fs::initial_path());
+
+	for (unsigned int i = 0; i < startingPlaces.size(); ++i) {
+		try {
+			_root = _findFilePath("share/vrjugglua/lua/StateMachine.lua", startingPlaces[i].string());
+			_luadir = (fs::path(_root) / "share/vrjugglua/lua/").string();
+		} catch (std::runtime_error & e) {
+			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+					<< "LuaPath: " << e.what()
+					<< ", will retry with unqualified path"
+					<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+			_root = "";
+			_luadir = "";
+		}
+		if (_root.empty()) {
+			try {
+				_root = _findFilePath("StateMachine.lua", startingPlaces[i].string());
+				_luadir = _root;
+			} catch (std::runtime_error & e) {
+				VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+						<< "LuaPath: " << e.what()
+						<< ", giving up on this base directory"
+						<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+				_root = "";
+				_luadir = "";
+			}
+		}
 	}
-	if (_root.empty()) {
-		_root = _findFilePath("StateMachine.lua", initialPath.string());
-		_luadir = _root;
-	}
+
+	_valid = true;
 
 	fs::path jugglerTest = "share/vrjuggler-2.2/data/definitions/simulated_positional_device.jdef";
 	if (fs::exists(_root/jugglerTest)) {
@@ -85,7 +111,7 @@ LuaPath::LuaPath() :
 		if (!vprLibraryPath.empty()) {
 			std::cout << vprLibraryPath << std::endl;
 			try {
-				_jugglerRoot = _findFilePath(jugglerTest.string(), vprLibraryPath);
+				_jugglerRoot = _findFilePath(jugglerTest.string(), fs::complete(vprLibraryPath).remove_filename().string());
 				_foundJuggler = true;
 			} catch (std::runtime_error &) {
 				// nothing
@@ -93,10 +119,6 @@ LuaPath::LuaPath() :
 		}
 	}
 #endif
-
-	if (_foundJuggler) {
-
-	}
 
 	_setJugglerEnvironment();
 }
