@@ -1,5 +1,7 @@
 #!/home/rpavlik/src/vrjugglua-build/src/vrjlua
 
+print("osgnav-testbed.lua starting up...")
+
 require("Navigator")
 require("osgTools")
 
