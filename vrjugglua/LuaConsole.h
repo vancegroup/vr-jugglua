@@ -59,7 +59,25 @@ class LuaConsole {
 		LuaScript _script;
 
 		boost::shared_ptr<SynchronizedRunBuffer> _runbuf;
+};
 
+class StubConsole : public LuaConsole {
+	public:
+		StubConsole();
+		StubConsole(LuaScript const& script);
+
+		virtual ~StubConsole();
+
+		/// @name Implementation interface
+		/// @{
+		virtual bool threadLoop();
+
+		virtual void stopThread();
+
+		virtual void appendToDisplay(std::string const& message);
+
+		virtual void setTitle(std::string const& title);
+		/// @}
 };
 
 // -- inline implementations -- /

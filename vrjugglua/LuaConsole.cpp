@@ -14,6 +14,7 @@
 
 // Internal Includes
 #include "LuaConsole.h"
+#include "VRJLuaOutput.h"
 
 // Library/third-party includes
 #include <luabind/object.hpp>
@@ -79,6 +80,52 @@ bool LuaConsole::runString(std::string const& str) {
 		return false;
 	}
 	return _runbuf->addString(str);
+}
+
+StubConsole::StubConsole() :
+		LuaConsole() {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+			<< "StubConsole instantiated."
+			<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+}
+
+StubConsole::StubConsole(LuaScript const& script) :
+		LuaConsole(script) {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+				<< "StubConsole instantiated with provided LuaScript."
+				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+}
+
+StubConsole::~StubConsole() {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+				<< "StubConsole being destroyed."
+				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+}
+
+
+bool StubConsole::threadLoop() {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+				<< "StubConsole::threadLoop called - returning immediately because we're a stub."
+				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+	return true;
+}
+
+void StubConsole::stopThread() {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+				<< "StubConsole::stopThread called - no-op because we're a stub."
+				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+}
+
+void StubConsole::appendToDisplay(std::string const& message) {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+				<< "appendToDisplay: " << message
+				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+}
+
+void StubConsole::setTitle(std::string const& title) {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+				<< "StubConsole::setTitle called with title " << title
+				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
 }
 
 } // end of vrjLua namespace
