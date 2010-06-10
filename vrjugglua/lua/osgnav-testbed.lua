@@ -1,5 +1,3 @@
-#!/home/rpavlik/src/vrjugglua-build/src/vrjlua
-
 print("osgnav-testbed.lua starting up...")
 
 require("Navigator")
@@ -52,4 +50,3 @@ runbuf = vrjSync.RunBuffer(nil)
 print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
 
--- vrjKernel.start()
