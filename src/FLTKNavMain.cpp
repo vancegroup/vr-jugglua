@@ -17,11 +17,6 @@
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
-#ifndef _WIN32
-#include <vpr/Thread/Thread.h>
-
-#include <boost/bind.hpp>
-#endif
 
 #include <FL/Fl.H>
 
@@ -59,23 +54,12 @@ int main(int argc, char * argv[]) {
 	console->appendToDisplay("");
 
 	/// Run it all
-#ifdef _WIN32
-	/// Windows doesn't like threads here for some reason,
-	/// and we can keep this control thread to ourself anyway.
-	
 	vrj::Kernel::instance()->start();
 	bool ret = console->threadLoop();
 	if (vrj::Kernel::instance()->isRunning()) {
 		vrj::Kernel::instance()->stop();
 	}
-	
+
 	vrj::Kernel::instance()->waitForKernelStop();
 	return ret ? 0 : 1;
-#else
-	vpr::Thread thread(boost::bind(&FLTKConsole::threadLoop, console.get()));
-	vrj::Kernel::instance()->start();
-	vrj::Kernel::instance()->waitForKernelStop();
-	thread.join();
-	return 0;
-#endif
 }
