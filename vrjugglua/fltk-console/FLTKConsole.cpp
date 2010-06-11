@@ -70,18 +70,11 @@ class FLTKConsoleView : public FLTKConsoleUI {
 				input = std::string(input_chars);
 				free(input_chars);
 			}
-			bool ret = _console->runString(input);
-			if (ret) {
-				// Successful - append to the text display
-				_codeBuf->append("\n");
-				_codeBuf->append(input.c_str());
-				_inputBuf->text("");
-			} else {
-				_codeBuf->append("\nExecution of input failed - check for errors and try again");
-			}
 
-			// Scroll to bottom
-			_existingCode->scroll(_existingCode->count_lines(0, _codeBuf->length(), 1), 0);
+			bool ret = _console->addString(input);
+			if (ret) {
+				_inputBuf->text("");
+			}
 		}
 
 
@@ -96,17 +89,8 @@ class FLTKConsoleView : public FLTKConsoleUI {
 				return;
 			}
 
-			bool bret = _console->runFile(fc->filename());
-			if (bret) {
-				// Successful - append to the text display
-				std::string code("require('");
-				code += fc->filename();
-				code += "')";
-				_codeBuf->append("\n-- Run file chosen in GUI\n");
-				_codeBuf->append(code.c_str());
-			} else {
-				_codeBuf->append("\n-- Execution of chosen file failed - check for errors and try again");
-			}
+			appendToDisplay("\n-- Run file chosen in GUI");
+			_console->addFile(fc->filename());
 		}
 
 		virtual void saveFile() {
@@ -126,15 +110,17 @@ class FLTKConsoleView : public FLTKConsoleUI {
 				std::string code("-- code up to here saved to file '");
 				code += fc.filename();
 				code += "'\n";
-				_codeBuf->append(code.c_str());
+				appendToDisplay(code.c_str());
 			} else {
-				_codeBuf->append("\n-- Saving to chosen file failed");
+				appendToDisplay("\n-- Saving to chosen file failed");
 			}
 		}
 
 		virtual void appendToDisplay(std::string const& message) {
 			_codeBuf->append(message.c_str());
 			_codeBuf->append("\n");
+			// Scroll to bottom
+			_existingCode->scroll(_existingCode->count_lines(0, _codeBuf->length(), 1), 0);
 		}
 
 	protected:
@@ -192,7 +178,7 @@ void FLTKConsole::setTitle(std::string const& title) {
 }
 
 bool FLTKConsole::_doThreadWork() {
-	return ((Fl::wait(0) >= 0) && (Fl::first_window() != NULL));
+	return ((Fl::wait(1.0/60.0) >= 0) && (Fl::first_window() != NULL));
 }
 
 } // end of vrjLua namespace

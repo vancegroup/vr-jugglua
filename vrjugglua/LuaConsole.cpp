@@ -25,18 +25,27 @@
 
 namespace vrjLua {
 
+LuaConsole * LuaConsole::s_console = NULL;
+
+LuaConsole * LuaConsole::getConsole() {
+	return s_console;
+}
+
 LuaConsole::LuaConsole() {
-	// No constructor body
+	s_console = this;
 	// A new script context is automatically created
 }
 
 LuaConsole::LuaConsole(LuaScript const& script) :
 		_script(script) {
-	// No constructor body
+	s_console = this;
 	// Using existing (provided) script context
 }
 
 LuaConsole::~LuaConsole() {
+	if (s_console == this) {
+		s_console = NULL;
+	}
 }
 
 bool LuaConsole::getRunBufFromLuaGlobal() {
@@ -68,18 +77,58 @@ bool LuaConsole::isValid() const {
 	return (_runbuf) && (_script.isValid());
 }
 
-bool LuaConsole::runFile(std::string const& fn) {
+bool LuaConsole::addFile(std::string const& fn) {
 	if (!_runbuf) {
 		return false;
 	}
-	return _runbuf->addFile(fn);
+	bool ret = _runbuf->addFile(fn);
+	std::string code;
+	if (ret) {
+		code = "require('";
+		code += fn;
+		code += "')\n";
+	} else {
+		code = "-- Failed attempting to add this code to the buffer: require('";
+		code += fn;
+		code += "')\n";
+	}
+	appendToDisplay(code);
+	return ret;
 }
 
-bool LuaConsole::runString(std::string const& str) {
+bool LuaConsole::addString(std::string const& str) {
 	if (!_runbuf) {
 		return false;
 	}
-	return _runbuf->addString(str);
+	bool ret = _runbuf->addString(str);
+	std::string code;
+	if (ret) {
+		code = str + "\n";
+	} else {
+		code = "-- Failed attempting to add the following code to the buffer:\n";
+		code += "--[[\n";
+		code += str;
+		code += "\n]]--\n";
+	}
+	appendToDisplay(code);
+	return ret;
+}
+
+bool LuaConsole::runBuffer() {
+	if (!_runbuf) {
+		return false;
+	}
+	bool ret = _runbuf->runBuffer();
+	if (ret) {
+		appendToDisplay("-- Successful\n");
+	} else {
+		appendToDisplay("-- Failed - please recheck code and try again\n");
+	}
+	return ret;
+}
+
+LuaScript& LuaConsole::getScript() {
+	return _script;
 }
 
 StubConsole::StubConsole() :

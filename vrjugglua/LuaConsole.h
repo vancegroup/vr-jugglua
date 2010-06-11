@@ -51,10 +51,16 @@ class LuaConsole {
 
 		bool isValid() const;
 
-		bool runFile(std::string const& fn);
-		bool runString(std::string const& str);
+		bool addFile(std::string const& fn);
+		bool addString(std::string const& str);
+
+		bool runBuffer();
+		LuaScript& getScript();
+
+		static LuaConsole * getConsole();
 
 	protected:
+		static LuaConsole * s_console;
 
 		LuaScript _script;
 
