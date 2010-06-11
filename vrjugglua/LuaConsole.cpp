@@ -151,7 +151,6 @@ StubConsole::~StubConsole() {
 				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
 }
 
-
 bool StubConsole::threadLoop() {
 	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
 				<< "StubConsole::threadLoop called - returning immediately because we're a stub."
