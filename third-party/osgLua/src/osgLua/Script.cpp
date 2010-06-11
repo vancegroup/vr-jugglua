@@ -13,6 +13,7 @@
     OpenSceneGraph Public License for more details.
 */
 
+#include <vrjugglua/LuaIncludeFull.h>
 
 #include <osgLua/Script>
 #include "osgLua.h"
@@ -21,8 +22,6 @@
 
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>
-
-#include <vrjugglua/LuaIncludeFull.h>
 
 namespace osgLua {
 

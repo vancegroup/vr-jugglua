@@ -15,10 +15,16 @@
 #ifndef INCLUDED_vrjugglua_LuaInclude_h
 #define INCLUDED_vrjugglua_LuaInclude_h
 
-#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
+#include <vrjugglua/VRJLuaConfig.h>
+
+#ifdef __cplusplus
+#ifndef BUILD_LUA_AS_CPP
 #define LUA_C_INTERFACE_BEGIN extern "C" {
 #define LUA_C_INTERFACE_END }
-#else
+#endif
+#endif
+
+#ifndef LUA_C_INTERFACE_BEGIN
 #define LUA_C_INTERFACE_BEGIN
 #define LUA_C_INTERFACE_END
 #endif

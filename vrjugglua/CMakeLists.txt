@@ -49,7 +49,8 @@ set(API
 	LuaPath.h
 	OsgAppProxy.h
 	SynchronizedRunBuffer.h
-	VRJLua_C_Interface.h)
+	VRJLua_C_Interface.h
+	"${CMAKE_CURRENT_BINARY_DIR}/VRJLuaConfig.h")
 
 set(LUA_BINDING_SOURCES
 	binding_detail/BindKernelToLua.h	

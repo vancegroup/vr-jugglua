@@ -16,12 +16,13 @@
 #ifndef OSGLUA_VALUE
 #define OSGLUA_VALUE
 
+
+#include <vrjugglua/LuaIncludeFull.h>
+
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>
 #include <osg/Referenced>
 #include <osg/ref_ptr>
-
-#include <vrjugglua/LuaIncludeFull.h>
 
 namespace osgLua {
 

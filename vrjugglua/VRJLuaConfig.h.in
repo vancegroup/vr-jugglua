@@ -1,0 +1,43 @@
+/**	@file	VRJLuaConfig.h.in
+	@brief	Config file
+
+	@date
+	2010
+
+	@author
+	Ryan Pavlik
+	<rpavlik@iastate.edu> and <abiryan@ryand.net>
+	http://academic.cleardefinition.com/
+	Iowa State University Virtual Reality Applications Center
+	Human-Computer Interaction Graduate Program
+*/
+#pragma once
+#ifndef INCLUDED_vrjugglua_VRJLuaConfig_h_GUID_42d609a1_663d_4ec1_9068_c56b6847520f
+#define INCLUDED_vrjugglua_VRJLuaConfig_h_GUID_42d609a1_663d_4ec1_9068_c56b6847520f
+
+#cmakedefine BUILD_FLTK_GUI
+#cmakedefine BUILD_QT_GUI
+
+#cmakedefine VERBOSE
+#cmakedefine VERY_VERBOSE
+
+#cmakedefine OSGLUA_LIBRARY_STATIC
+
+#ifndef BUILD_LUA_AS_CPP
+#cmakedefine BUILD_LUA_AS_CPP
+#endif
+
+#if defined(_WIN32)
+// Windows-specific defines
+
+#elif defined(__APPLE)
+#define LUA_USE_MACOSX
+
+#else
+// Assume it's Linux
+#define LUA_USE_LINUX
+
+#endif
+
+#endif // INCLUDED_vrjugglua_VRJLuaConfig_h_GUID_42d609a1_663d_4ec1_9068_c56b6847520f
+

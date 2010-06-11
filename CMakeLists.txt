@@ -48,13 +48,11 @@ mark_as_advanced(BUILD_EMBEDDED_LUA
 
 # Apply definitions
 if(BUILD_VERBOSE)
-	add_definitions(-DVERBOSE)
+	set(VERBOSE ON)
 endif()
+
 if(BUILD_VERY_VERBOSE)
-	add_definitions(-DVERY_VERBOSE)
-endif()
-if(BUILD_LUA_AS_CPP)
-	add_definitions(-DBUILD_LUA_AS_CPP)
+	set(VERY_VERBOSE ON)
 endif()
 
 ###
@@ -84,8 +82,6 @@ set(EXTRA_LIBS)
 
 set(CMAKE_DEBUG_POSTFIX  "_d")
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
-
 # Boost
 find_package(Boost 1.34.0 REQUIRED)
 if(WIN32)
@@ -95,7 +91,6 @@ if(WIN32)
 		list(APPEND CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS "${_libpath}/${_libname}.dll")
 	endforeach()
 endif()
-
 
 # OpenSceneGraph
 include(SearchProgramFilesForOpenSceneGraph)
@@ -142,6 +137,12 @@ endif()
 if(BUILD_QT_GUI)
 	find_package(Qt4 COMPONENTS QtCore QtGui Qt3Support REQUIRED)
 endif()
+
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/vrjugglua/VRJLuaConfig.h.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/vrjugglua/VRJLuaConfig.h")
+
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
 
 ###
 # Build the project

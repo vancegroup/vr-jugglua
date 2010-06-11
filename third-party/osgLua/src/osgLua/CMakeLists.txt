@@ -29,6 +29,10 @@ if(BUILD_SHARED_OSGLUA)
 	target_link_libraries(osgLua lua ${OPENSCENEGRAPH_LIBRARIES} lua)
 endif()
 
+if(BUILD_LUA_AS_CPP)
+	add_definitions(-DBUILD_LUA_AS_CPP)
+endif()
+
 # TODO: this might make it impossible to build an osgLua dll on windows
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 add_library(osgLua_static ${OSGLUA_SRCS} ${OSGLUA_API} ${OSGLUA_SIMPLE_API})
