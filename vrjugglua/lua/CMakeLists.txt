@@ -24,4 +24,6 @@ set_property(TARGET
 # Install into the install location, as well
 install_lua_target(luaFiles
 	DESTINATION
-	${LUA_DIR})
+	${LUA_DIR}
+	COMPONENT
+	runtime)

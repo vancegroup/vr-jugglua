@@ -37,8 +37,6 @@ set_property(TARGET
 install(TARGETS vrjlua
 	RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
 
-
-
 ###
 # FLTK-based GUIs
 ###
@@ -53,5 +51,5 @@ if(BUILD_FLTK_GUI)
 		"App: Nav Console FLTK")
 
     install(TARGETS NavTestbed
-	    RUNTIME DESTINATION ${BIN_DIR})
+	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
 endif()

@@ -59,10 +59,17 @@ endif()
 # Perform build configuration of dependencies
 ###
 
-set(BIN_DIR bin/)
+set(BIN_DIR bin)
+set(INCLUDE_DIR include)
 set(LUA_DIR share/vrjugglua/lua/)
-set(INCLUDE_DIR include/)
-set(LIB_DIR lib/)
+set(ARCH_DIR lib)
+if(WIN32)
+	set(LIB_DIR bin)
+	set(EXPORT_DIR cmake)
+else()
+	set(LIB_DIR lib)
+	set(EXPORT_DIR ${LIB_DIR}/VRJuggLua)
+endif()
 
 # Locally-developed modules dist'ed with this app - always have this first.
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -195,11 +202,6 @@ export(PACKAGE VRJuggLua)
 
 # Set up use from install tree
 if(INSTALL_CXX_SDK)
-	if(WIN32)
-		set(EXPORT_DIR cmake)
-	else()
-		set(EXPORT_DIR ${LIB_DIR}/VRJuggLua)
-	endif()
 	install(EXPORT vrjlua-sdk
 		DESTINATION ${EXPORT_DIR}
 		NAMESPACE vrjlua_exported_
