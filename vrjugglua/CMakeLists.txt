@@ -39,17 +39,20 @@ set(SOURCES
 	VRJLua_C_Interface.cpp)
 
 set(API
+	ConvertOsgPtrToOsgLuaPtr.h
 	Internal_AnalogInterface.h
 	Internal_DigitalInterface.h
 	Internal_PositionInterface.h
 	LuaConsole.h
+	LuaIncludeFull.h
 	LuaInclude.h
+	LuaPath.h
 	LuaRunBuffer.h
 	LuaScript.h
-	LuaPath.h
 	OsgAppProxy.h
 	SynchronizedRunBuffer.h
 	VRJLua_C_Interface.h
+	VRJLuaOutput.h
 	"${CMAKE_CURRENT_BINARY_DIR}/VRJLuaConfig.h")
 
 set(LUA_BINDING_SOURCES
