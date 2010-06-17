@@ -27,6 +27,7 @@
 
 namespace vrjLua {
 
+typedef lua_State * LuaStateRawPtr;
 typedef boost::shared_ptr<lua_State> LuaStatePtr;
 typedef boost::weak_ptr<lua_State> LuaStateWeakPtr;
 
