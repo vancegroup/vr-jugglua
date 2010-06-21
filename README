@@ -1,0 +1,23 @@
+----------
+VR JuggLua
+----------
+
+Lua bindings and high-level interface for virtual experience creation, built on VR Juggler
+
+Dependencies:
+-------------
+ - CMake 2.6 or newer (tested mainly with 2.8.1) - build system generator
+ - Boost 1.34 or newer (1.35 better, newer even better)
+ - VR Juggler 2.2.x (2.2.2 or newer recommended), built against Boost 1.34 or newer
+ - OpenSceneGraph, including osgIntrospection/wrappers (2.8.x tested)
+
+LuaBind, osgLua, and Lua 5.1.4 are included in the source tree and integrated
+in to the build - you do not need to build these separately.
+
+Maintainer:
+-----------
+Ryan Pavlik
+<rpavlik@iastate.edu> <abiryan@ryand.net>
+http://academic.cleardefinition.com/
+2009-2010 Iowa State University
+Virtual Reality Applications Center/Human-Computer Interaction Graduate Program
