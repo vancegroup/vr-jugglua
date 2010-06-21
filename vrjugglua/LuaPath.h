@@ -23,6 +23,7 @@
 
 // Standard includes
 #include <string>
+#include <vector>
 
 namespace vrjLua {
 
@@ -30,6 +31,8 @@ class LuaPath {
 	public:
 		static LuaPath& instance(std::string const& arg0 = "", std::string const& vrjlua_base = "");
 
+		bool findAppRoot(std::string const& fn);
+		std::string const& getAppRoot() const;
 		std::string getPathToLuaScript(const std::string & scriptfn) const;
 		bool prependLuaRequirePath(LuaStatePtr state) const;
 
@@ -38,11 +41,15 @@ class LuaPath {
 	protected:
 		LuaPath();
 		void _init(std::string const& arg0, std::string const& vrjlua_base);
-		std::string _findFilePath(const std::string & fn, const std::string & startingAt);
+
+		static std::string _findFilePath(std::vector<std::string> const& startingPlaces, std::string const& qualified);
+		static std::string _findFilePath(std::string const& startingAt, std::string const& fn);
+
 		bool _setJugglerEnvironment() const;
 
 		std::string _root;
 		std::string _luadir;
+		std::string _appRoot;
 
 		bool _foundJuggler;
 		std::string _jugglerRoot;

@@ -50,113 +50,22 @@ int sharedObjectCallback(struct dl_phdr_info *info, size_t size, void *data) {
 
 namespace vrjLua {
 
-LuaPath& LuaPath::instance(std::string const& arg0, std::string const& vrjlua_base) {
-	static LuaPath inst;
-	if (!inst._valid) {
-		inst._init(arg0, vrjlua_base);
-	}
-	return inst;
-}
-
-LuaPath::LuaPath() :
-		_foundJuggler(false),
-		_valid(false)
-	{ }
-
-void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
-	_valid = true;
-
-	std::vector<fs::path> startingPlaces;
-	startingPlaces.push_back(fs::initial_path());
-	startingPlaces.push_back(fs::complete(vrjlua_base));
-#ifdef BOOST_FILESYSTEM_NO_DEPRECATED
-	startingPlaces.push_back(fs::complete(arg0).remove_filename());
-#else
-	startingPlaces.push_back(fs::complete(arg0).remove_leaf());
-#endif
-
-	for (unsigned int i = 0; i < startingPlaces.size() && _root.empty(); ++i) {
+std::string LuaPath::_findFilePath(std::vector<std::string> const& startingPlaces, std::string const& qualified) {
+	std::string location;
+	for (unsigned int i = 0; i < startingPlaces.size() && location.empty(); ++i) {
 		try {
-			_root = _findFilePath("share/vrjugglua/lua/StateMachine.lua", startingPlaces[i].string());
-			_luadir = (fs::path(_root) / "share/vrjugglua/lua/").string();
+			location = _findFilePath(qualified, startingPlaces[i]);
 		} catch (std::runtime_error & e) {
 			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
 				<< "LuaPath: " << e.what()
-				<< ", will retry with unqualified path"
 				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
-			_root.clear();
-			_luadir.clear();
-		}
-		if (_root.empty()) {
-			try {
-				_root = _findFilePath("StateMachine.lua", startingPlaces[i].string());
-				_luadir = _root;
-			} catch (std::runtime_error & e) {
-				VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
-					<< "LuaPath: " << e.what()
-					<< ", giving up on this base directory"
-					<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
-				_root.clear();
-				_luadir.clear();
-			}
+			location.clear();
 		}
 	}
-	fs::path jugglerTest = "share/vrjuggler-2.2/data/definitions/simulated_positional_device.jdef";
-	if (fs::exists(_root/jugglerTest)) {
-		_foundJuggler = true;
-		_jugglerRoot = _root;
-	}
-
-
-#ifdef VPR_OS_Linux
-	if (!_foundJuggler) {
-		std::string vprLibraryPath;
-		dl_iterate_phdr(&sharedObjectCallback, &vprLibraryPath);
-		if (!vprLibraryPath.empty()) {
-			try {
-#ifdef BOOST_FILESYSTEM_NO_DEPRECATED
-				_jugglerRoot = _findFilePath(jugglerTest.string(), fs::complete(vprLibraryPath).remove_filename().string());
-#else
-				_jugglerRoot = _findFilePath(jugglerTest.string(), fs::complete(vprLibraryPath).remove_leaf().string());
-#endif
-				_foundJuggler = true;
-			} catch (std::runtime_error &) {
-				// nothing
-			}
-		}
-	}
-#endif
-
-	if (!_foundJuggler) {
-		vpr::System::getenv("VJ_BASE_DIR", _jugglerRoot);
-	}
-
-	_setJugglerEnvironment();
+	return location;
 }
 
-
-std::string LuaPath::getPathToLuaScript(const std::string & scriptfn) const {
-	return (fs::path(_luadir) / scriptfn).string();
-}
-
-bool LuaPath::prependLuaRequirePath(LuaStatePtr state) const {
-	std::ostringstream scr;
-	scr << "package.path = ";
-	// string to append
-	scr << '"';
-	scr << "?;";
-	scr << "?.lua;";
-	scr << _luadir << "?;";
-	scr << _luadir << "?.lua;";
-	scr << '"';
-	// concatenation and rest of line
-	scr << " .. package.path";
-
-	return luaL_dostring(state.get(), scr.str().c_str());
-}
-
-std::string LuaPath::_findFilePath(const std::string & fn, const std::string & startingAt) {
-
+std::string LuaPath::_findFilePath(std::string const& startingAt, const std::string & fn) {
 	// find the config file - recursively searching up.
 	fs::path location = startingAt;
 	fs::path filepath = fs::path(location / fn);
@@ -193,6 +102,106 @@ std::string LuaPath::_findFilePath(const std::string & fn, const std::string & s
 	}
 
 	return location.normalize().string();
+}
+
+
+LuaPath& LuaPath::instance(std::string const& arg0, std::string const& vrjlua_base) {
+	static LuaPath inst;
+	if (!inst._valid) {
+		inst._init(arg0, vrjlua_base);
+	}
+	return inst;
+}
+
+LuaPath::LuaPath() :
+		_foundJuggler(false),
+		_valid(false)
+	{ }
+
+void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
+	_valid = true;
+
+	std::vector<std::string> startingPlaces;
+	startingPlaces.push_back(fs::initial_path().string());
+	startingPlaces.push_back(fs::complete(vrjlua_base).string());
+#ifdef BOOST_FILESYSTEM_NO_DEPRECATED
+	startingPlaces.push_back(fs::complete(arg0).remove_filename().string());
+#else
+	startingPlaces.push_back(fs::complete(arg0).remove_leaf().string());
+#endif
+
+	_root = _findFilePath(startingPlaces, "share/vrjugglua/lua/StateMachine.lua");
+	if (!_root.empty()) {
+		_luadir = (fs::path(_root) / "share/vrjugglua/lua/").string();
+	} else {
+		_root = _findFilePath(startingPlaces, "StateMachine.lua");
+		_luadir = _root;
+	}
+
+	fs::path jugglerTest = "share/vrjuggler-2.2/data/definitions/simulated_positional_device.jdef";
+	if (fs::exists(_root/jugglerTest)) {
+		_foundJuggler = true;
+		_jugglerRoot = _root;
+	}
+
+
+#ifdef VPR_OS_Linux
+	if (!_foundJuggler) {
+		std::string vprLibraryPath;
+		dl_iterate_phdr(&sharedObjectCallback, &vprLibraryPath);
+		if (!vprLibraryPath.empty()) {
+			try {
+#ifdef BOOST_FILESYSTEM_NO_DEPRECATED
+				_jugglerRoot = _findFilePath(fs::complete(vprLibraryPath).remove_filename().string(), jugglerTest.string());
+#else
+				_jugglerRoot = _findFilePath(fs::complete(vprLibraryPath).remove_leaf().string(), jugglerTest.string());
+#endif
+				_foundJuggler = true;
+			} catch (std::runtime_error &) {
+				// nothing
+			}
+		}
+	}
+#endif
+
+	if (!_foundJuggler) {
+		vpr::System::getenv("VJ_BASE_DIR", _jugglerRoot);
+	}
+
+	_setJugglerEnvironment();
+}
+
+bool LuaPath::findAppRoot(std::string const& fn) {
+	std::vector<std::string> startingPlaces;
+	startingPlaces.push_back(fs::initial_path().string());
+	startingPlaces.push_back(_root);
+	startingPlaces.push_back(_luadir);
+	_appRoot = _findFilePath(startingPlaces, fn);
+	return (!_appRoot.empty());
+}
+
+std::string LuaPath::getPathToLuaScript(const std::string & scriptfn) const {
+	return (fs::path(_luadir) / scriptfn).string();
+}
+
+bool LuaPath::prependLuaRequirePath(LuaStatePtr state) const {
+	std::ostringstream scr;
+	scr << "package.path = ";
+	// string to append
+	scr << '"';
+	scr << "?;";
+	scr << "?.lua;";
+	if (!_appRoot.empty()) {
+		scr << _appRoot << "?;";
+		scr << _appRoot << "?.lua;";
+	}
+	scr << _luadir << "?;";
+	scr << _luadir << "?.lua;";
+	scr << '"';
+	// concatenation and rest of line
+	scr << " .. package.path";
+
+	return luaL_dostring(state.get(), scr.str().c_str());
 }
 
 bool LuaPath::_setJugglerEnvironment() const {
