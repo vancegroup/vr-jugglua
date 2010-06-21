@@ -118,13 +118,13 @@ bool LuaConsole::runBuffer() {
 	if (!_runbuf) {
 		return false;
 	}
-	bool ret = _runbuf->runBuffer();
-	if (ret) {
-		appendToDisplay("-- Successful\n");
-	} else {
-		appendToDisplay("-- Failed - please recheck code and try again\n");
+	unsigned int ret = _runbuf->runBuffer();
+#ifdef VERBOSE
+	if (ret > 0) {
+		std::cerr << "LuaConsole: ran " << ret << " entries successfully." << std::endl;
 	}
-	return ret;
+#endif
+	return true;
 }
 
 LuaScript& LuaConsole::getScript() {
