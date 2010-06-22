@@ -54,10 +54,11 @@ std::string LuaPath::_findFilePath(std::vector<std::string> const& startingPlace
 	std::string location;
 	for (unsigned int i = 0; i < startingPlaces.size() && location.empty(); ++i) {
 		try {
-			location = _findFilePath(qualified, startingPlaces[i]);
+			location = _findFilePath(startingPlaces[i], qualified);
 		} catch (std::runtime_error & e) {
 			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
 				<< "LuaPath: " << e.what()
+				<< ", was trying with starting path " << startingPlaces[i]
 				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 			location.clear();
 		}
@@ -120,13 +121,16 @@ LuaPath::LuaPath() :
 
 void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 	_valid = true;
-
+	
+	_initialPath = fs::initial_path().string();
 	std::vector<std::string> startingPlaces;
-	startingPlaces.push_back(fs::initial_path().string());
+	startingPlaces.push_back(_initialPath);
 	startingPlaces.push_back(fs::complete(vrjlua_base).string());
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
+	_exeDir = fs::complete(arg0).remove_filename().string();
 	startingPlaces.push_back(fs::complete(arg0).remove_filename().string());
 #else
+	_exeDir = fs::complete(arg0).remove_leaf().string();
 	startingPlaces.push_back(fs::complete(arg0).remove_leaf().string());
 #endif
 
@@ -173,11 +177,23 @@ void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 
 bool LuaPath::findAppRoot(std::string const& fn) {
 	std::vector<std::string> startingPlaces;
-	startingPlaces.push_back(fs::initial_path().string());
+	startingPlaces.push_back(_initialPath);
+	startingPlaces.push_back(_exeDir);
 	startingPlaces.push_back(_root);
 	startingPlaces.push_back(_luadir);
 	_appRoot = _findFilePath(startingPlaces, fn);
 	return (!_appRoot.empty());
+}
+
+std::string const& LuaPath::getAppRoot() const {
+	return _appRoot;
+}
+
+std::string const& LuaPath::getExeDir() const {
+	return _exeDir;
+}
+std::string const& LuaPath::getInitialPath() const {
+	return _initialPath;
 }
 
 std::string LuaPath::getPathToLuaScript(const std::string & scriptfn) const {
@@ -192,8 +208,8 @@ bool LuaPath::prependLuaRequirePath(LuaStatePtr state) const {
 	scr << "?;";
 	scr << "?.lua;";
 	if (!_appRoot.empty()) {
-		scr << _appRoot << "?;";
-		scr << _appRoot << "?.lua;";
+		scr << _appRoot << "/?;";
+		scr << _appRoot << "/?.lua;";
 	}
 	scr << _luadir << "?;";
 	scr << _luadir << "?.lua;";
