@@ -184,8 +184,15 @@ unsigned int LuaRunBuffer::runBuffer() {
 			_cond.signal();
 			guard.release();
 		}
-		_script.runString(current);
-		count++;
+		bool ret = _script.runString(current);
+		if (!ret) {
+			VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_ERROR)
+					<< "Could not execute this statement: "
+					<< current
+					<< VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_ERROR);
+		} else {
+			count++;
+		}
 	}
 	return count;
 }
