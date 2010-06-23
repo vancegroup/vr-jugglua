@@ -9,6 +9,7 @@ set(LUA_FILES
 	Navigator.lua
 	osgnav-testbed.lua
 	osgTools.lua
+	sleep.lua
 	StateMachine.lua
 	vrjlua-config.lua)
 
@@ -16,10 +17,10 @@ set(LUA_FILES
 add_lua_target(luaFiles "${CMAKE_BINARY_DIR}/${LUA_DIR}" ${LUA_FILES})
 
 set_property(TARGET
-		luaFiles
-		PROPERTY
-		PROJECT_LABEL
-		"VRJLua Lua Scripts")
+	luaFiles
+	PROPERTY
+	PROJECT_LABEL
+	"VRJLua Lua Scripts")
 
 # Install into the install location, as well
 install_lua_target(luaFiles
