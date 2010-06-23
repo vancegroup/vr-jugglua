@@ -114,6 +114,14 @@ bool LuaConsole::addString(std::string const& str) {
 	return ret;
 }
 
+bool LuaConsole::runFileImmediately(std::string const& fn) {
+	return _script.runFile(fn);
+}
+
+bool LuaConsole::runStringImmediately(std::string const& str) {
+	return _script.runString(str);
+}
+
 bool LuaConsole::runBuffer() {
 	if (!_runbuf) {
 		return false;

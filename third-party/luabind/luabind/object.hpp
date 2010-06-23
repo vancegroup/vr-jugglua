@@ -45,6 +45,11 @@
 #include <boost/preprocessor/iteration/iterate.hpp>
 #include <boost/utility/enable_if.hpp>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4100)
+#endif
+
 namespace luabind {
 
 namespace detail 
@@ -1403,6 +1408,9 @@ object property(GetValueWrapper const& get, SetValueWrapper const& set)
 
 
 } // namespace luabind
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #endif // LUABIND_OBJECT_050419_HPP
 

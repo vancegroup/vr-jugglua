@@ -33,6 +33,8 @@ class LuaPath {
 
 		bool findAppRoot(std::string const& fn);
 		std::string const& getAppRoot() const;
+		std::string const& getExeDir() const;
+		std::string const& getInitialPath() const;
 		std::string getPathToLuaScript(const std::string & scriptfn) const;
 		bool prependLuaRequirePath(LuaStatePtr state) const;
 
@@ -47,6 +49,8 @@ class LuaPath {
 
 		bool _setJugglerEnvironment() const;
 
+		std::string _initialPath;
+		std::string _exeDir;
 		std::string _root;
 		std::string _luadir;
 		std::string _appRoot;

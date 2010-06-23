@@ -54,6 +54,9 @@ class LuaConsole {
 		bool addFile(std::string const& fn);
 		bool addString(std::string const& str);
 
+		bool runFileImmediately(std::string const& fn);
+		bool runStringImmediately(std::string const& str);
+
 		bool runBuffer();
 		LuaScript& getScript();
 
