@@ -1,0 +1,36 @@
+--[Lua basics/differences from C++:
+No semicolons needed.
+Use a colon to perform an action on an object ( someObject:someAction() ) instead of dot
+]--
+
+-- Types of nodes:
+--  Geodes (nodes with GEometry - parts of models)
+--  Groups (any node that can have children)
+--    Transforms (groups that change how their children are drawn)
+
+-- Creating transform nodes/groups --
+
+-- Creates a new PositionAttitude transform
+someName = osg.PositionAttitudeTransform()
+
+-- Set the position to (0, 0, -10) (a three dimensional vector)
+someName:setPosition(osg.Vec3d(0, 0, -10))
+
+-- Set the rotation to be 180 degrees about the Z axis (0, 0, 1)
+
+-- A "Quat" (quaternion) is a way of specifying a 3d rotation
+-- Here, we specify angle (in radians) and axis (a vector) to create a Quat
+myQuat = osg.Quat(3.1415926, osg.Vec3d(0, 0, 1) )
+
+-- Now, we set the rotation ("attitude") to be that quat
+someName:setAttitude(myQuat)
+
+-- Adding children --
+parentnode:addChild(childnode)
+
+-- navtransform is the root node's name in NavTestbed - if you want something
+-- to show up, it has to be a child/descendent of navtransform somehow
+-- (there can be transforms in between)
+
+-- Loading a model --
+myModelVarName = osgLua.loadObjectFile("c:/path/to/modelfile.ive")
