@@ -24,9 +24,10 @@ if(			(NOT BOOST_INCLUDEDIR)
 		AND (NOT BOOST_LIBRARYDIR)
 		AND (NOT BOOST_ROOT)
 		AND (NOT BOOSTROOT))
-	
-	set(BOOST_LIBRARYDIR @Boost_LIBRARY_DIRS@)
-	set(BOOST_INCLUDEDIR @Boost_INCLUDE_DIR@)
+
+	# Try to help in case we're installed alongside Boost
+	#set(BOOST_ROOT "${_IMPORT_PREFIX}")
 endif()
+list(APPEND CMAKE_PREFIX_PATH "${_IMPORT_PREFIX}")
 
 set(VRJUGGLUA_FOUND ON)
