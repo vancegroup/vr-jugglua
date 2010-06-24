@@ -77,7 +77,8 @@ LuaScript::LuaScript(const bool create) {
 		_state = LuaStatePtr(luaL_newstate(), std::ptr_fun(lua_close));
 
 		if (!_state) {
-			throw std::bad_alloc("Failed to allocate a new Lua state in the LuaScript constructor!");
+			std::cerr << "Warning: Could not allocate a new Lua state in the LuaScript constructor!" << std::endl;
+			return;
 		}
 
 		lua_gc(_state.get(), LUA_GCSTOP, 0);  /* stop collector during initialization */
