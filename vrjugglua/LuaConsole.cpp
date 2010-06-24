@@ -25,6 +25,7 @@
 
 namespace vrjLua {
 
+/// Initialize static member
 LuaConsole * LuaConsole::s_console = NULL;
 
 LuaConsole * LuaConsole::getConsole() {
