@@ -71,6 +71,17 @@ bool LuaConsole::getRunBufFromLuaGlobal() {
 bool LuaConsole::createRunBuf() {
 	boost::shared_ptr<SynchronizedRunBuffer> buf(new SynchronizedRunBuffer(_script));
 	_runbuf = buf;
+
+	/// @todo fix global
+	/*
+	LuaStatePtr state = _script.getLuaState().lock();
+	if (!state) {
+		throw std::runtime_error("Could not get a valid lua state pointer!");
+	}
+
+	/// Set the global "runbuf" variable
+	luabind::globals(state.get())["runbuf"] = buf;
+	*/
 	return (_runbuf);
 }
 
