@@ -33,12 +33,12 @@
 
 namespace vrjLua {
 
-static void doNothingUponModify(int, int, int, int, const char *, void *) {
+void doNothingUponModify(int, int, int, int, const char *, void *) {
 	// Do nothing
 	// FLTK whines at shutdown if there's no modify callback for its text buffers
 }
 
-static void doNothingUponPreDelete(int, int, void*) {
+void doNothingUponPreDelete(int, int, void*) {
 	// Do nothing
 	// FLTK whines at shutdown if there's no predelete callback for its text buffers
 }
