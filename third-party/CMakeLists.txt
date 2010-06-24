@@ -3,6 +3,7 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 if(BUILD_EMBEDDED_LUA)
+	# Lua 5.1.4-2 (that is, patch level 2)
 	add_subdirectory(lua-5.1.4/src)
 	set(LUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/lua-5.1.4/src")
 	set(LUA_INCLUDE_DIRS ${LUA_INCLUDE_DIRS} PARENT_SCOPE)
