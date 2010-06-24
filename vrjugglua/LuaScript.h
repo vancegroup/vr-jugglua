@@ -24,6 +24,7 @@
 
 // Standard includes
 #include <string>
+#include <stdexcept>
 
 namespace vrjLua {
 
@@ -34,8 +35,13 @@ typedef boost::weak_ptr<lua_State> LuaStateWeakPtr;
 void setInteractiveInterpreter(LuaStatePtr * state);
 LuaStatePtr getInteractiveInterpreter();
 
+struct NoValidLuaState : public std::logic_error {
+	NoValidLuaState() : std::logic_error("Attempted to perform a LuaScript manipulation on a LuaScript instance without a valid state pointer!") {}
+};
+
 class LuaScript {
 	public:
+		/// @brief Default constructor, that can optionally not allocate a new state.
 		explicit LuaScript(const bool create = true);
 
 		/// @brief constructor from an externally-allocated state

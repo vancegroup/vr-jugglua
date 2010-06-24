@@ -76,6 +76,10 @@ LuaScript::LuaScript(const bool create) {
 	if (create) {
 		_state = LuaStatePtr(luaL_newstate(), std::ptr_fun(lua_close));
 
+		if (!_state) {
+			throw std::bad_alloc("Failed to allocate a new Lua state in the LuaScript constructor!");
+		}
+
 		lua_gc(_state.get(), LUA_GCSTOP, 0);  /* stop collector during initialization */
 		// Load default Lua libs
 		luaL_openlibs(_state.get());
@@ -91,6 +95,10 @@ LuaScript::LuaScript(const bool create) {
 
 LuaScript::LuaScript(lua_State * state, bool bind) :
 			_state(state, std::ptr_fun(no_op_deleter)) {
+	if (!state) {
+		std::cerr << "Warning: constructing a LuaScript from a null state pointer!" << std::endl;
+	}
+
 	// If requested, bind.
 	if (bind) {
 		_applyBindings();
@@ -99,21 +107,31 @@ LuaScript::LuaScript(lua_State * state, bool bind) :
 
 LuaScript::LuaScript(const LuaScript & other) :
 			_state(other._state) {
-#ifdef VERY_VERBOSE
+#ifdef VERBOSE
 	std::cout << "**** LuaScript copy constructor invoked" << std::endl;
 #endif
 }
 
 LuaScript::LuaScript(const LuaStatePtr & otherptr) :
 		_state(otherptr) {
+	if (!otherptr) {
+		std::cerr << "Warning: constructing a LuaScript from an empty state smart pointer!" << std::endl;
+	}
 }
 
 LuaScript & LuaScript::operator=(const LuaScript & other) {
+	if (!other._state) {
+		std::cerr << "Warning: setting a LuaScript equal to another LuaScript with an empty state smart pointer!" << std::endl;
+	}
+	// Self-assignment is OK: we're using smart pointers
 	_state = other._state;
 	return *this;
 }
 
 bool LuaScript::runFile(const std::string & fn) {
+	if (!_state) {
+		throw NoValidLuaState();
+	}
 	int ret = luaL_dofile(_state.get(), fn.c_str());
 	if (ret != 0) {
 		VRJLUA_MSG_START(dbgVRJLUA, MSG_ERROR)
@@ -125,6 +143,9 @@ bool LuaScript::runFile(const std::string & fn) {
 }
 
 bool LuaScript::requireModule(const std::string & mod) {
+	if (!_state) {
+		throw NoValidLuaState();
+	}
 	try {
 		luabind::call_function<void>(_state.get(), "require", mod);
 	} catch (std::exception & e) {
@@ -138,6 +159,9 @@ bool LuaScript::requireModule(const std::string & mod) {
 }
 
 bool LuaScript::runString(const std::string & str) {
+	if (!_state) {
+		throw NoValidLuaState();
+	}
 
 	int ret = luaL_dostring(_state.get(), str.c_str());
 	if (ret != 0) {
@@ -154,6 +178,9 @@ bool LuaScript::runString(const std::string & str) {
 }
 
 void LuaScript::_applyBindings() {
+	if (!_state) {
+		throw NoValidLuaState();
+	}
 	// Connect LuaBind to this state
 	try {
 		luabind::open(_state.get());
@@ -184,6 +211,9 @@ void LuaScript::_applyBindings() {
 }
 
 bool LuaScript::call(const std::string & func) {
+	if (!_state) {
+		throw NoValidLuaState();
+	}
 	try {
 		return luabind::call_function<bool>(_state.get(), func.c_str());
 	} catch (const std::exception & e) {
