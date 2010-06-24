@@ -21,6 +21,8 @@
 
 #include <vrj/Draw/OSG/OsgApp.h>
 #include <vrj/Kernel/Kernel.h>
+#include <vpr/Thread/Thread.h>
+#include <vpr/System.h>
 
 // Standard includes
 #ifdef VERBOSE
@@ -36,6 +38,16 @@ namespace Kernel {
 	}
 
 	void stop() {
+		if (vpr::Thread::self() != vrj::Kernel::instance()->getThread()) {
+			/// We are not the kernel control thread - do a sleep here
+			/// to reduce race condition issues with quick startup/shutdown (like in tests)
+
+			VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+				<< "vrjKernel.stop() called from outside the control thread - sleeping for 2 sec for thread safety"
+				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
+			vpr::Thread::yield();
+			vpr::System::sleep(2);
+		}
 		vrj::Kernel::instance()->stop();
 	}
 
