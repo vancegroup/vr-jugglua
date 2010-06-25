@@ -169,7 +169,7 @@ class OsgAppProxy : public vrj::OsgApp {
 
 	/// @name Proxy/Delegation internals
 	/// @{
-	bool _forwardCallToDelegate(const char * call);
+	bool _forwardCallToDelegate(const char * call, bool required = false);
 	luabind::object _delegate;
 	bool _delegationSuccessFlag;
 	/// @}
