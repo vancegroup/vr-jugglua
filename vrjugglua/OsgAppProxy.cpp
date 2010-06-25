@@ -186,7 +186,7 @@ void OsgAppProxy::latePreFrame() {
 }
 
 void OsgAppProxy::intraFrame() {
-	_forwardCallToDelegate("latePreFrame");
+	_forwardCallToDelegate("intraFrame");
 }
 
 void OsgAppProxy::postFrame() {
