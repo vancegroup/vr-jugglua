@@ -3,31 +3,42 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
-set(VRJUGGLUA_LIBRARIES vrjlua_exported_vrjugglua)
-set(VRJUGGLUA_FLTK_CONSOLE_LIBRARIES vrjlua_exported_vrjugglua-fltk)
 
-get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
-include("${_IMPORT_PREFIX}/vrjlua-targets.cmake")
+if(NOT TARGET vrjlua_exported_vrjugglua)
+	set(VRJUGGLUA_LIBRARIES vrjlua_exported_vrjugglua)
+	set(VRJUGGLUA_FLTK_CONSOLE_LIBRARIES vrjlua_exported_vrjugglua-fltk)
 
-# Compute the installation prefix relative to this file.
-get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
-get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
-if(NOT WIN32)
+	get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
+	include("${_IMPORT_PREFIX}/vrjlua-targets.cmake")
+
+	# Compute the installation prefix relative to this file.
+	get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
 	get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+	if(NOT WIN32)
+		get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+	endif()
+
+	set(VRJUGGLUA_BASE_DIR "${_IMPORT_PREFIX}")
+	set(VRJUGGLUA_INCLUDE_DIRS "${_IMPORT_PREFIX}/include")
+	set(_IMPORT_PREFIX)
+
+	if(			(NOT BOOST_INCLUDEDIR)
+			AND (NOT BOOST_LIBRARYDIR)
+			AND (NOT BOOST_ROOT)
+			AND (NOT BOOSTROOT))
+
+		# Try to help in case we're installed alongside Boost
+		#set(BOOST_ROOT "${_IMPORT_PREFIX}")
+	endif()
+	list(APPEND CMAKE_PREFIX_PATH "${_IMPORT_PREFIX}")
+
+	set(VRJUGGLERRUNTIME_BUNDLE @VRJUGGLERRUNTIME_BUNDLE@)
+
+	include(FindPackageHandleStandardArgs)
+	find_package_handle_standard_args(VRJuggLua
+		DEFAULT_MSG
+		VRJUGGLUA_LIBRARIES
+		VRJUGGLUA_FLTK_CONSOLE_LIBRARIES
+		VRJUGGLUA_INCLUDE_DIRS
+		VRJUGGLUA_BASE_DIR)
 endif()
-
-set(VRJUGGLUA_BASE_DIR "${_IMPORT_PREFIX}")
-set(VRJUGGLUA_INCLUDE_DIRS "${_IMPORT_PREFIX}/include")
-set(_IMPORT_PREFIX)
-
-if(			(NOT BOOST_INCLUDEDIR)
-		AND (NOT BOOST_LIBRARYDIR)
-		AND (NOT BOOST_ROOT)
-		AND (NOT BOOSTROOT))
-
-	# Try to help in case we're installed alongside Boost
-	#set(BOOST_ROOT "${_IMPORT_PREFIX}")
-endif()
-list(APPEND CMAKE_PREFIX_PATH "${_IMPORT_PREFIX}")
-
-set(VRJUGGLUA_FOUND ON)

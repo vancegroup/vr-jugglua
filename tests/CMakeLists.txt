@@ -11,6 +11,7 @@ set(LUA_TEST_SCRIPTS
 	minimal-osg
 	initialize-devices
 	osgapp-delegate
+	osgapp-delegate-count
 	osgapp-delegate-useful
 	osgapp-delegate-initdevices)
 

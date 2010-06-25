@@ -130,7 +130,7 @@ void OsgAppProxy::initScene() {
 		<< "Number of children before forwarding call to delegate: " << _rootNode->getNumChildren()
 		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
 
-	_forwardCallToDelegate("initScene");
+	_forwardCallToDelegate("initScene", true); // required call - exceptions propagate
 
 	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
 			<< "Number of children after forwarding call: " << _rootNode->getNumChildren()
@@ -186,7 +186,7 @@ void OsgAppProxy::latePreFrame() {
 }
 
 void OsgAppProxy::intraFrame() {
-	_forwardCallToDelegate("latePreFrame");
+	_forwardCallToDelegate("intraFrame");
 }
 
 void OsgAppProxy::postFrame() {
@@ -201,7 +201,7 @@ double OsgAppProxy::getTimeDelta() {
 	return _timeDelta;
 }
 
-bool OsgAppProxy::_forwardCallToDelegate(const char * call) {
+bool OsgAppProxy::_forwardCallToDelegate(const char * call, bool required) {
 	if (_delegate && luabind::type(_delegate[call]) == LUA_TFUNCTION) {
 		try {
 			_delegate[call](_delegate);
@@ -217,6 +217,9 @@ bool OsgAppProxy::_forwardCallToDelegate(const char * call) {
 			VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
 				<< "Top of the Lua stack (error message) is: '" << o << "'"
 				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+			if (required) {
+				throw;
+			}
 		}
 		return false;
 	}
