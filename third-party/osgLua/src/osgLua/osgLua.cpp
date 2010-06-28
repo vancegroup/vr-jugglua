@@ -1,6 +1,7 @@
 #include "osgLua.h"
 
 #include <iostream>
+#include <cstring>
 #include "Value.h"
 #include "Type.h"
 #include <osgLua/Callback>
@@ -96,7 +97,7 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		/***********************************************************/
 		/* REMOVE THIS IN THE FUTURE!!! (when solved)              */
 		/***********************************************************/
-		if (strcmp(name,"osg") == 0)
+		if (std::strcmp(name,"osg") == 0)
 		{
 			const std::type_info &tcheck =
 				osgIntrospection::Reflection::getType("osg::Vec3").
