@@ -79,11 +79,15 @@ include(DoxygenTargets)
 include(GetDirectoryList)
 include(EnableExtraCompilerWarnings)
 include(StampSourcesWithVersion)
+include(RemoveExtraConfigurations) # remove Debug and MinSizeRel
 
 include(MSVCMultipleProcessCompile)
 
 include(CTest)
 include(CreateDashboardScripts)
+
+include(SetDefaultBuildType)
+set_default_build_type(RelWithDebInfo)
 
 set(EXTRA_LIBS)
 
