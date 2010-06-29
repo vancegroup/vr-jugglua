@@ -23,7 +23,7 @@ end
 local function printInfo(instance)
 	local c = osgLua.getTypeInfo(instance)
 	if c then
-		print("name = ",c.name)
+		print("name = " .. c.name)
 		for i,v in ipairs(c.constructors) do
 	  	 print(string.format("\tconstructor(%2d) %s",i,v))
 		end
@@ -35,10 +35,20 @@ local function printInfo(instance)
 	end
 end
 
+local function isValid(instance)
+	local c = osgLua.getTypeInfo(instance)
+	if c and table.getn(c.methods) > 0 then
+		return true
+	else
+		return false
+	end
+end
+
 osgTools = {
 	addVec = addVec,
 	subVec = subVec,
 	scaleVec = scaleVec,
-	printInfo = printInfo }
+	printInfo = printInfo,
+	isValid = isValid }
 
 return osgTools
