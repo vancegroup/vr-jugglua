@@ -10,6 +10,7 @@ set(LUA_TEST_SCRIPTS
 	stop-kernel
 	minimal-osg
 	initialize-devices
+	osgnav-statemachine
 	osgapp-delegate
 	osgapp-delegate-count
 	osgapp-delegate-useful
