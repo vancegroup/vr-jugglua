@@ -70,6 +70,9 @@ std::string LuaPath::_findFilePath(std::string const& startingAt, const std::str
 	// find the config file - recursively searching up.
 	fs::path location = startingAt;
 	fs::path filepath = fs::path(location / fn);
+	VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+		<< "LuaPath: Searching for file '" << fn << "' starting in " << location.string()
+		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
 	unsigned int count = 0;
 	for (unsigned int i = 0;
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
@@ -79,9 +82,6 @@ std::string LuaPath::_findFilePath(std::string const& startingAt, const std::str
 #endif
 			i < 5 && fs::exists(location) && !fs::exists(filepath);
 			++i) {
-		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
-			<< "LuaPath: Searching for file '" << fn << "' in " << location.string()
-			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
 
 		// go up one
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
@@ -121,7 +121,7 @@ LuaPath::LuaPath() :
 
 void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 	_valid = true;
-	
+
 	_initialPath = fs::initial_path().string();
 	std::vector<std::string> startingPlaces;
 	startingPlaces.push_back(_initialPath);
