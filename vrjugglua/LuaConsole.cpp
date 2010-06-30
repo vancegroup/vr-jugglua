@@ -19,6 +19,8 @@
 // Library/third-party includes
 #include <luabind/object.hpp>
 
+#include <vrj/Kernel/Kernel.h>
+
 // Standard includes
 #include <iostream>
 #include <stdexcept>
@@ -167,14 +169,16 @@ StubConsole::StubConsole(LuaScript const& script) :
 
 StubConsole::~StubConsole() {
 	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-				<< "StubConsole being destroyed."
-				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+		<< "StubConsole being destroyed."
+		<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+	vrj::Kernel::instance()->waitForKernelStop();
 }
 
 bool StubConsole::threadLoop() {
 	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-				<< "StubConsole::threadLoop called - returning immediately because we're a stub."
+				<< "StubConsole::threadLoop called - joining the kernel thread because we're a stub."
 				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+	vrj::Kernel::instance()->waitForKernelStop();
 	return true;
 }
 

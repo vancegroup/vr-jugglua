@@ -162,6 +162,7 @@ bool FLTKConsole::threadLoop() {
 		}
 	}
 	_running = false;
+	vrj::Kernel::instance()->waitForKernelStop();
 	return true;
 }
 
