@@ -119,6 +119,12 @@ LuaPath::LuaPath() :
 		_valid(false)
 	{ }
 
+LuaPath::~LuaPath() {
+#ifdef VERBOSE
+	std::cout << "In destructor " << __FUNCTION__ << std::endl;
+#endif
+}
+
 void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 	_valid = true;
 

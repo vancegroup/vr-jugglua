@@ -53,6 +53,8 @@ class LuaScript {
 		/// @brief copy constructor - doesn't re-bind
 		LuaScript(const LuaStatePtr & other);
 
+		~LuaScript();
+
 		LuaScript & operator=(const LuaScript & other);
 
 		bool runFile(const std::string & fn);

@@ -46,6 +46,9 @@ LuaConsole::LuaConsole(LuaScript const& script) :
 }
 
 LuaConsole::~LuaConsole() {
+#ifdef VERBOSE
+	std::cout << "In destructor " << __FILE__ << std::endl;
+#endif
 	if (s_console == this) {
 		s_console = NULL;
 	}

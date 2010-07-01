@@ -36,10 +36,11 @@ namespace vrjLua {
 class LuaRunBuffer : public vpr::SerializableObject {
 	public:
 		LuaRunBuffer(unsigned int capacity = 10, bool runBlocks = false);
+		~LuaRunBuffer();
 
 		/// @brief sets the lua state
 		void initLua(lua_State * L);
-		
+
 		/// @brief Checks to see if we've been initialized
 		bool ready() const;
 

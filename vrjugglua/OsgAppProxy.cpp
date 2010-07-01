@@ -71,6 +71,9 @@ OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
 }
 
 OsgAppProxy::~OsgAppProxy() {
+#ifdef VERBOSE
+	std::cout << "In destructor " << __FUNCTION__ << std::endl;
+#endif
 	// Delete the delegate object so that it doesn't call a destroyed state
 	// to clean itself up later
 	_delegate = luabind::object();

@@ -29,6 +29,7 @@ namespace vrjLua {
 
 class LuaPath {
 	public:
+		~LuaPath();
 		static LuaPath& instance(std::string const& arg0 = "", std::string const& vrjlua_base = "");
 
 		bool findAppRoot(std::string const& fn);

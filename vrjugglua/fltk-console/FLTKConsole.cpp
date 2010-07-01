@@ -142,6 +142,9 @@ FLTKConsole::FLTKConsole(LuaScript const& script) :
 }
 
 FLTKConsole::~FLTKConsole() {
+#ifdef VERBOSE
+	std::cout << "In destructor " << __FUNCTION__ << std::endl;
+#endif
 	stopThread();
 }
 

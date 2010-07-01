@@ -46,6 +46,12 @@ LuaRunBuffer::LuaRunBuffer(unsigned int capacity, bool runBlocks) :
 
 }
 
+LuaRunBuffer::~LuaRunBuffer() {
+#ifdef VERBOSE
+	std::cout << "In destructor " << __FUNCTION__ << std::endl;
+#endif
+}
+
 void LuaRunBuffer::initLua(lua_State * L) {
 	_script = LuaScript(L, false);
 }

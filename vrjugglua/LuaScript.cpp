@@ -120,6 +120,12 @@ LuaScript::LuaScript(const LuaStatePtr & otherptr) :
 	}
 }
 
+LuaScript::~LuaScript() {
+#ifdef VERBOSE
+	std::cout << "In destructor " << __FUNCTION__ << std::endl;
+#endif
+}
+
 LuaScript & LuaScript::operator=(const LuaScript & other) {
 	if (!other._state) {
 		std::cerr << "Warning: setting a LuaScript equal to another LuaScript with an empty state smart pointer!" << std::endl;
