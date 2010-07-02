@@ -48,7 +48,7 @@ LuaRunBuffer::LuaRunBuffer(unsigned int capacity, bool runBlocks) :
 
 LuaRunBuffer::~LuaRunBuffer() {
 #ifdef VERBOSE
-	std::cout << "In destructor " << __FUNCTION__ << std::endl;
+	std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
 }
 

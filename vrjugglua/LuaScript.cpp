@@ -73,7 +73,13 @@ LuaStatePtr getInteractiveInterpreter() {
 /// @}
 
 LuaScript::LuaScript(const bool create) {
+#ifdef VERBOSE
+	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 	if (create) {
+#ifdef VERBOSE
+		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 		_state = LuaStatePtr(luaL_newstate(), std::ptr_fun(lua_close));
 
 		if (!_state) {
@@ -96,6 +102,9 @@ LuaScript::LuaScript(const bool create) {
 
 LuaScript::LuaScript(lua_State * state, bool bind) :
 			_state(state, std::ptr_fun(no_op_deleter)) {
+#ifdef VERBOSE
+	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 	if (!state) {
 		std::cerr << "Warning: constructing a LuaScript from a null state pointer!" << std::endl;
 	}
@@ -111,6 +120,9 @@ LuaScript::LuaScript(const LuaScript & other) :
 #ifdef VERBOSE
 	std::cout << "**** LuaScript copy constructor invoked" << std::endl;
 #endif
+#ifdef VERBOSE
+	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 }
 
 LuaScript::LuaScript(const LuaStatePtr & otherptr) :
@@ -118,11 +130,14 @@ LuaScript::LuaScript(const LuaStatePtr & otherptr) :
 	if (!otherptr) {
 		std::cerr << "Warning: constructing a LuaScript from an empty state smart pointer!" << std::endl;
 	}
+#ifdef VERBOSE
+	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 }
 
 LuaScript::~LuaScript() {
 #ifdef VERBOSE
-	std::cout << "In destructor " << __FUNCTION__ << std::endl;
+	std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
 }
 

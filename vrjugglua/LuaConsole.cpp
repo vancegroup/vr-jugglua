@@ -35,19 +35,25 @@ LuaConsole * LuaConsole::getConsole() {
 }
 
 LuaConsole::LuaConsole() {
+#ifdef VERBOSE
+	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 	s_console = this;
 	// A new script context is automatically created
 }
 
 LuaConsole::LuaConsole(LuaScript const& script) :
 		_script(script) {
+#ifdef VERBOSE
+	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 	s_console = this;
 	// Using existing (provided) script context
 }
 
 LuaConsole::~LuaConsole() {
 #ifdef VERBOSE
-	std::cout << "In destructor " << __FILE__ << std::endl;
+	std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
 	if (s_console == this) {
 		s_console = NULL;

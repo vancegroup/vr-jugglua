@@ -132,18 +132,24 @@ class FLTKConsoleView : public FLTKConsoleUI {
 FLTKConsole::FLTKConsole() :
 		LuaConsole(),
 		_running(false) {
+#ifdef VERBOSE
+	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 	_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
 }
 
 FLTKConsole::FLTKConsole(LuaScript const& script) :
 		LuaConsole(script),
 		_running(false){
+#ifdef VERBOSE
+	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+#endif
 	_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
 }
 
 FLTKConsole::~FLTKConsole() {
 #ifdef VERBOSE
-	std::cout << "In destructor " << __FUNCTION__ << std::endl;
+	std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
 	stopThread();
 }
