@@ -9,6 +9,7 @@ set(LUA_FILES
 	Navigator.lua
 	osgnav-testbed.lua
 	osgTools.lua
+	Scene.lua
 	sleep.lua
 	StateMachine.lua
 	vrjlua-config.lua)
