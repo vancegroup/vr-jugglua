@@ -109,6 +109,7 @@
 #include <luabind/detail/pointee_typeid.hpp>
 #include <luabind/detail/link_compatibility.hpp>
 #include <luabind/detail/inheritance.hpp>
+#include <luabind/no_dependency.hpp>
 #include <luabind/typeid.hpp>
 
 // to remove the 'this' used in initialization list-warning
@@ -373,10 +374,24 @@ namespace luabind
             >
         {};
 
+        template <class T>
+        struct reference_argument
+          : mpl::if_<
+                mpl::or_<boost::is_pointer<T>, is_primitive<T> >
+              , T
+              , typename boost::add_reference<
+                    typename boost::add_const<T>::type
+                >::type
+            >
+        {};
+
         template <class T, class Policies>
         struct inject_dependency_policy
           : mpl::if_<
-                is_primitive<T>
+                mpl::or_<
+                    is_primitive<T>
+                  , has_policy<Policies, detail::no_dependency_policy>
+                >
               , Policies
               , policy_cons<dependency_policy<0, 1>, Policies>
             >
@@ -446,10 +461,12 @@ namespace luabind
             template <class T, class D>
             object make_set(lua_State* L, D T::* mem_ptr, mpl::true_) const
             {
+                typedef typename reference_argument<D>::type argument_type;
+
                 return make_function(
                     L
                   , access_member_ptr<T, D>(mem_ptr)
-                  , mpl::vector3<void, Class&, D const&>()
+                  , mpl::vector3<void, Class&, argument_type>()
                   , set_policies
                 );
             }
