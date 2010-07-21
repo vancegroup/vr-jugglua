@@ -79,7 +79,7 @@ include(DoxygenTargets)
 include(GetDirectoryList)
 include(EnableExtraCompilerWarnings)
 include(StampSourcesWithVersion)
-include(RemoveExtraConfigurations) # remove Debug and MinSizeRel
+include(ResetConfigurations) # remove Debug and MinSizeRel
 
 include(MSVCMultipleProcessCompile)
 
