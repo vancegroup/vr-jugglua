@@ -94,7 +94,8 @@ set(EXTRA_LIBS)
 set(CMAKE_DEBUG_POSTFIX  "_d")
 
 # Boost
-find_package(Boost 1.34.0 REQUIRED)
+find_package(Boost 1.34.0 REQUIRED filesystem signals)
+list(APPEND EXTRA_LIBS ${Boost_LIBRARIES})
 if(WIN32)
 	foreach(lib FILESYSTEM SYSTEM)
 		get_filename_component(_libname "${Boost_${lib}_LIBRARY_RELEASE}" NAME_WE)
