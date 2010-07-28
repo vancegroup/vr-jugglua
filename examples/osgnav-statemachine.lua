@@ -1,5 +1,3 @@
-#!/home/rpavlik/src/vrjugglua-build/src/vrjlua
-
 require("Navigator")
 require("osgTools")
 require("StateMachine")
