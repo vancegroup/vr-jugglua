@@ -1,8 +1,5 @@
 
 local appDelegate = {}
-appDelegate.appProxy =  vrjApp.OsgAppProxy()
-appDelegate.scripts = vrjSync.RunBuffer(appDelegate)
-appDelegate.appProxy:setAppDelegate(appDelegate)
 
 function appDelegate:initScene()
 	if (self.init ~= nil) then self.init() end
@@ -22,7 +19,7 @@ function appDelegate:preFrame()
 	end
 end
 
-function appDelegate:postframe()
+function appDelegate:latePreFrame()
 	self.scripts:runBuffer()
 end
 
@@ -81,5 +78,10 @@ StateMachine = {
 	loadConfigFile = vrjKernel.loadConfigFile,
 	waitForStop = vrjKernel.waitForKernelStop,
 	runApp = runApp}
+	
+	
+appDelegate.appProxy =  vrjApp.OsgAppProxy()
+appDelegate.scripts = vrjSync.RunBuffer(appDelegate)
+appDelegate.appProxy:setAppDelegate(appDelegate)
 
 return StateMachine
