@@ -20,6 +20,8 @@ foreach(script ${LUA_TEST_SCRIPTS})
     add_test(NAME
         vrjlua-run-${script}_lua
         COMMAND
-        vrjlua
+        ${GENERIC_LAUNCHER_COMMAND}
+        --debugger
+        $<TARGET_FILE:vrjlua>
         "${LUA_TEST_DIR}/${script}.lua")
 endforeach()
