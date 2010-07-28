@@ -75,7 +75,7 @@ end
 
 ------------------ Start up the app -----------------------
 
-print("Loading config files into kernel")
+print("Loading config files into kernel in osgnav-statemachine.lua")
 StateMachine.loadConfigFile("standalone.jconf")
 
 StateMachine.setInitFunction(init)
