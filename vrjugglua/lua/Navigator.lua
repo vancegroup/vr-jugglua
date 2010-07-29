@@ -97,7 +97,7 @@ local function create(max_vel, max_rot_vel, seconds_to_max, seconds_to_stop)
 	function nav:getTranslation(dt)
 		-- get the new velocity
 		local vel = self.translation.ease:getUpdatedVelocity(self:getGoalVel(), dt)
-		print("New vel: " .. tostring(vel))
+		
 		-- Scale the velocity by time and multiply by the direction
 		-- of the wand
 		local mvmt = dt * vel
