@@ -387,6 +387,10 @@ int main (int argc, char **argv) {
     l_message(argv[0], "cannot create state: not enough memory");
     return EXIT_FAILURE;
   }
+
+  /* Tell LuaPath our runtime directory */
+  set_exec_path(argv[0]);
+
   s.argc = argc;
   s.argv = argv;
   status = lua_cpcall(L, &pmain, &s);

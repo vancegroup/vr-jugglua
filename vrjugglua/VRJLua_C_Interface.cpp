@@ -16,6 +16,7 @@
 #include "VRJLua_C_Interface.h"
 
 #include "LuaScript.h"
+#include "LuaPath.h"
 
 // Library/third-party includes
 #include <vrjugglua/LuaInclude.h>
@@ -73,3 +74,6 @@ void setInteractiveInterpreter(lua_State * state) {
 	vrjLua::g_state = vrjLua::LuaStatePtr(state, std::ptr_fun(vrjLua::no_op_deleter));
 }
 
+void set_exec_path(const char* argv0) {
+	vrjLua::LuaPath::instance(argv0);
+}

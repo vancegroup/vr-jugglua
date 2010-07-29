@@ -24,6 +24,8 @@ int luaopen_vrjugglua(lua_State *L);
 int luaopen_libvrjugglua(lua_State *L);
 int add_file_and_line(lua_State* L);
 
+void set_exec_path(const char* argv0);
+
 LUA_C_INTERFACE_END
 
 
