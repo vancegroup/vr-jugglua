@@ -58,6 +58,35 @@ namespace luabind
     struct default_converter<osg::Group* const&>
       : default_converter<osg::Group*>
     {};
+
+
+    template <>
+    struct default_converter<osg::Matrix>
+      : native_converter_base<osg::Matrix>
+    {
+        static int compute_score(lua_State* L, int index)
+        {
+			/// @todo actually figure out what's good and what's not
+        	return -1;
+            return lua_type(L, index) == LUA_TUSERDATA ? 0 : -1;
+        }
+
+        osg::Group* from(lua_State* L, int index)
+        {
+        	/// @todo implement
+            return NULL;
+        }
+
+        void to(lua_State* L, osg::Matrix const& x)
+        {
+        	osgLua::Value::push(L, x);
+        }
+    };
+
+    template <>
+    struct default_converter<osg::Matrix const&>
+      : default_converter<osg::Matrix>
+    {};
 }
 
 
