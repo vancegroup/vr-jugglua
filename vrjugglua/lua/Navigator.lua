@@ -128,7 +128,7 @@ local function create(max_vel, max_rot_vel, seconds_to_max, seconds_to_stop)
 		
 		--xform:setAttitude(osg.Quat(self.rot,  self.rot_axis))
 		--xform:setPosition(self.position)
-		xform:preMult(delta)
+		xform:postMult(delta)
 		
 	end
 	return nav
