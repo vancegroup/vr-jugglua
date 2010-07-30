@@ -33,7 +33,7 @@ inline gmtl::Matrix44f PositionInterface::_getData(const float scale) {
 	return _iface->getData(scale);
 }
 
-osg::Matrix PositionInterface::getMatrix() {
+osg::Matrixd PositionInterface::getMatrix() {
 	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
 }
 
