@@ -30,3 +30,6 @@ if(BUILD_QT_GUI)
 	set(QCONSOLE_LIBRARY ${QCONSOLE_LIBRARY} PARENT_SCOPE)
 	set(QCONSOLE_INCLUDE_DIRS ${QCONSOLE_INCLUDE_DIRS} PARENT_SCOPE)
 endif()
+
+# Lua stdlib release 15
+add_subdirectory(stdlib/modules)

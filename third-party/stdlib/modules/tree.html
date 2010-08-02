@@ -1,0 +1,33 @@
+<html><head></head><body>
+<p>
+<h1>tree<br></h1>
+</p><hr>
+<p>
+<strong>new:</strong> <em>Make a table into a tree<br></em>
+&nbsp;&nbsp;<strong>t</strong>: table<br>
+<strong>returns</strong><br>
+&nbsp;&nbsp;<strong>tr</strong>: tree<br>
+</p><hr>
+<p>
+<strong>__index:</strong> <em>Tree __index metamethod<br></em>
+&nbsp;&nbsp;<strong>tr</strong>: tree<br>
+&nbsp;&nbsp;<strong>i</strong>: non-table, or list of indices {i1 ... in}<br>
+<strong>returns</strong><br>
+&nbsp;&nbsp;<strong>v</strong>: tr[i]...[in] if i is a table, or tr[i] otherwise<br>
+</p><hr>
+<p>
+<strong>__newindex:</strong> <em>Tree __newindex metamethod<br></em>
+Sets tr[i1]...[in] = v if i is a table, or tr[i] = v otherwise<br>
+&nbsp;&nbsp;<strong>tr</strong>: tree<br>
+&nbsp;&nbsp;<strong>i</strong>: non-table, or list of indices {i1 ... in}<br>
+&nbsp;&nbsp;<strong>v</strong>: value<br>
+</p><hr>
+<p>
+<strong>clone:</strong> <em>Make a deep copy of a tree, including any<br></em>
+metatables<br>
+&nbsp;&nbsp;<strong>t</strong>: table<br>
+&nbsp;&nbsp;<strong>nometa</strong>: if non-nil don't copy metatables<br>
+<strong>returns</strong><br>
+&nbsp;&nbsp;<strong>u</strong>: copy of table<br>
+</p><hr>
+</body></html>
