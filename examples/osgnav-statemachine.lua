@@ -6,7 +6,11 @@ require("StateMachine")
 function init()
 	print("Setting up scenegraph")
 	navtransform = osg.PositionAttitudeTransform()
-	navtransform:addChild(osgLua.loadObjectFile('cessna.osg'))
+	if arg[1] == nil then
+		navtransform:addChild(osgLua.loadObjectFile('/home/users/rpavlik/src/vrjugglua/examples/cessna.osg'))
+	else
+		navtransform:addChild(osgLua.loadObjectFile(arg[1]))
+	end
 
 	print("Attaching to scene")
 	StateMachine.getScene():addChild(navtransform)
