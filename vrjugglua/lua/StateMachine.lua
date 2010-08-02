@@ -53,6 +53,14 @@ local function getScene()
 	return appDelegate.appProxy:getScene()
 end
 
+local function getNodeTrackingPositionOnly(device)
+	appDelegate.appProxy:getNodeTrackingPositionOnly(device)
+end
+
+local function getNodeTrackingPose(device)
+	appDelegate.appProxy:getNodeTrackingPose(device)
+end
+
 local function setInitFunction(f)
 	appDelegate.init = f
 end
@@ -75,6 +83,8 @@ StateMachine = {
 	moveDirectlyToState = moveDirectlyToState,
 	createStateTransition = createStateTransition,
 	getScene = getScene,
+	getNodeTrackingPositionOnly = getNodeTrackingPositionOnly,
+	getNodeTrackingPose = getNodeTrackingPose,
 	loadConfigFile = vrjKernel.loadConfigFile,
 	waitForStop = vrjKernel.waitForKernelStop,
 	runApp = runApp}
@@ -83,5 +93,9 @@ StateMachine = {
 appDelegate.appProxy =  vrjApp.OsgAppProxy()
 appDelegate.scripts = vrjSync.RunBuffer(appDelegate)
 appDelegate.appProxy:setAppDelegate(appDelegate)
+
+StateMachine.addModelSearchPath = function(path)
+	appDelegate.appProxy:addModelSearchPath(path)
+end
 
 return StateMachine

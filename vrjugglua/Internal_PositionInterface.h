@@ -36,7 +36,7 @@ namespace Internal {
 		public:
 			PositionInterface(const std::string & device);
 
-			osg::Matrix getMatrix();
+			osg::Matrixd getMatrix();
 			osg::Vec3d getPosition();
 			osg::Vec3d getForwardVector();
 
