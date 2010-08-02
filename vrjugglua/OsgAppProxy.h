@@ -39,6 +39,9 @@ class OsgAppProxy : public vrj::OsgApp {
 	/// @brief Lua binding call
 	static void bindToLua(LuaStatePtr & state);
 
+	/// @brief Wrapper to call from lua to add search paths for models
+	void addModelSearchPath(std::string const& path);
+
 	/// @brief Standard constructor
 	OsgAppProxy(vrj::Kernel* kern);
 
@@ -64,6 +67,9 @@ class OsgAppProxy : public vrj::OsgApp {
 		@returns a pointer to the scene root group.
 	*/
 	virtual osg::Group* getScene();
+
+	osg::Group* getNodeTrackingPositionOnly(std::string const& device);
+	osg::Group* getNodeTrackingPose(std::string const& device);
 
 	/** Interval between the most recent (current) preFrame and the previous.
 
@@ -180,6 +186,22 @@ class OsgAppProxy : public vrj::OsgApp {
 	*/
 	vpr::Interval _lastPreFrameTime;
 	double _timeDelta;
+
+	struct PositionTrackingNode {
+		osg::ref_ptr<osg::Group> node;
+		gadget::PositionInterface device;
+		std::string deviceName;
+		bool positionOnly;
+		PositionTrackingNode(std::string const& devName, bool posOnly = false);
+
+		bool is(std::string const& devName, bool posOnly) const {
+			return deviceName == devName && posOnly == positionOnly;
+		}
+
+		void update();
+	};
+
+	std::vector<boost::shared_ptr<PositionTrackingNode> > _trackNodes;
 };
 
 // -- inline implementations -- //

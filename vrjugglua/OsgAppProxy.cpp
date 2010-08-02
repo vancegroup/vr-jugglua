@@ -18,11 +18,15 @@
 #include "ConvertOsgPtrToOsgLuaPtr.h"
 
 #include "VRJLuaOutput.h"
+#include <util/osg/gmtlToOsgMatrix.h>
 
 // Library/third-party includes
 #include <luabind/class.hpp>
 
 #include <osg/LightModel>
+
+#include <osgDB/Registry>
+#include <osg/MatrixTransform>
 
 // Standard includes
 #include <cstring>
@@ -48,7 +52,10 @@ void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 				.def("getAppDelegate", & OsgAppProxy::getAppDelegate)
 				.def("setActiveApplication", & OsgAppProxy::setActiveApplication)
 				.def("getScene", & OsgAppProxy::getScene)
+				.def("getNodeTrackingPositionOnly", &OsgAppProxy::getNodeTrackingPositionOnly)
+				.def("getNodeTrackingPose", &OsgAppProxy::getNodeTrackingPose)
 				.def("getTimeDelta", & OsgAppProxy::getTimeDelta)
+				.def("addModelSearchPath", &OsgAppProxy::addModelSearchPath)
 	   ];
 	}
 }
@@ -140,6 +147,10 @@ void OsgAppProxy::initScene() {
 			<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
 }
 
+void OsgAppProxy::addModelSearchPath(std::string const& path) {
+	osgDB::Registry::instance()->getDataFilePathList().push_back(path);
+}
+
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	vrj::OsgApp::configSceneView(newSceneViewer);
 	newSceneViewer->getLight()->setAmbient(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
@@ -176,6 +187,11 @@ void OsgAppProxy::preFrame() {
 
 	_timeDelta = diff_time.secd();
 
+	const unsigned int n = _trackNodes.size();
+	for (unsigned int i = 0; i < n; ++i) {
+		_trackNodes[i]->update();
+	}
+
 	_forwardCallToDelegate("preFrame");
 
 	_lastPreFrameTime = cur_time;
@@ -198,6 +214,50 @@ void OsgAppProxy::postFrame() {
 
 osg::Group* OsgAppProxy::getScene() {
 	return _rootNode.get();
+}
+
+OsgAppProxy::PositionTrackingNode::PositionTrackingNode(std::string const& devName, bool posOnly) :
+		deviceName(devName),
+		positionOnly(posOnly) {
+	device.init(deviceName);
+	node = new osg::MatrixTransform;
+}
+
+void OsgAppProxy::PositionTrackingNode::update() {
+	osg::Matrix mat(util::osg::toOsgMatrix(device->getData(gadget::PositionUnitConversion::ConvertToMeters)));
+	if (positionOnly) {
+		osg::Matrix transMat;
+		transMat.setTrans(mat.getTrans());
+		dynamic_cast<osg::MatrixTransform*>(node.get())->setMatrix(transMat);
+	} else {
+		dynamic_cast<osg::MatrixTransform*>(node.get())->setMatrix(mat);
+	}
+}
+
+osg::Group* OsgAppProxy::getNodeTrackingPositionOnly(std::string const& device) {
+	for (unsigned int i = 0; i < _trackNodes.size(); ++i) {
+		if (_trackNodes[i]->is(device, true)) {
+			std::cout << "Found existing node tracking the position of " << device << " with node="<<_trackNodes[i]->node.get()<<std::endl;
+			return _trackNodes[i]->node.get();
+		}
+	}
+	boost::shared_ptr<PositionTrackingNode> temp(new PositionTrackingNode(device, true));
+	std::cout << "Creating node tracking the position of " << device << " with node="<<temp->node.get()<<std::endl;
+	_trackNodes.push_back(temp);
+	return temp->node.get();
+}
+
+osg::Group* OsgAppProxy::getNodeTrackingPose(std::string const& device) {
+	for (unsigned int i = 0; i < _trackNodes.size(); ++i) {
+		if (_trackNodes[i]->is(device, false)) {
+			std::cout << "Found existing node tracking the full pose of " << device << " with node="<<_trackNodes[i]->node.get()<<std::endl;
+			return _trackNodes[i]->node.get();
+		}
+	}
+	boost::shared_ptr<PositionTrackingNode> temp(new PositionTrackingNode(device, false));
+	std::cout << "Creating node tracking the full pose of " << device << " with node="<<temp->node.get()<<std::endl;
+	_trackNodes.push_back(temp);
+	return temp->node.get();
 }
 
 double OsgAppProxy::getTimeDelta() {
