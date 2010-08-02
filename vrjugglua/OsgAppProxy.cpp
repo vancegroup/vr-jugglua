@@ -153,13 +153,13 @@ void OsgAppProxy::addModelSearchPath(std::string const& path) {
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	vrj::OsgApp::configSceneView(newSceneViewer);
-	newSceneViewer->getLight()->setAmbient(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
-	newSceneViewer->getLight()->setDiffuse(osg::Vec4(0.9f,0.9f,0.9f,1.0f));
-	newSceneViewer->getLight()->setSpecular(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	newSceneViewer->getLight()->setAmbient(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
+	newSceneViewer->getLight()->setDiffuse(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
+	newSceneViewer->getLight()->setSpecular(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
 
 	// setup the ambient light the way I want it
 	osg::LightModel* lightmodel = new osg::LightModel;
-	lightmodel->setAmbientIntensity(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	lightmodel->setAmbientIntensity(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
 
 	newSceneViewer->getGlobalStateSet()->setAttributeAndModes(lightmodel, osg::StateAttribute::ON);
 }
