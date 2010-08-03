@@ -24,6 +24,7 @@
 #include <osgIntrospection/Type>
 
 #include <iostream>
+#include <sstream>
 #include <vrjugglua/LuaIncludeFull.h>
 
 namespace osgLua {
@@ -60,11 +61,33 @@ namespace osgLua {
 				Value::push(L, mi->invoke(vl));
 				return 1;
 			}
-			else
+
+			// Maybe it's an enum
+			if (type.isEnum())
 			{
-				luaL_error(L, "Class %s do not have static method %s",
-					tname,method);
+				// create a table with the values
+				const osgIntrospection::EnumLabelMap &map =
+					type.getEnumLabels();
+				for( osgIntrospection::EnumLabelMap::const_iterator
+					i = map.begin(); i != map.end(); ++i)
+				{
+					if (i->second == method) {
+
+						osgIntrospection::Value v;
+						std::istringstream s(i->second);
+						std::stringstream os;
+
+						type.getReaderWriter()->readTextValue(s, v);
+
+						Value::push(L, v);
+						return 1;
+					}
+				}
 			}
+
+
+			luaL_error(L, "Class %s do not have static method %s",
+				tname,method);
 		}
 		catch (osgIntrospection::Exception &e)
 		{
@@ -91,30 +114,35 @@ namespace osgLua {
 		std::string tbase( lua_tostring(L, lua_upvalueindex(1)) );
 		const char *name = luaL_checkstring(L, 2);
 		std::string base(tbase+"::"+name);
-		
+
 		// traverse the namespace
 		try
 		{
-			const osgIntrospection::Type &type = 
+			const osgIntrospection::Type &type =
 				osgIntrospection::Reflection::getType(base);
 
 			// is it an enum ?
+			/// @todo Make methods that require an enum accept a long
+/*
 			if (type.isEnum())
 			{
 				// create a table with the values
-				const osgIntrospection::EnumLabelMap &map = 
+				const osgIntrospection::EnumLabelMap &map =
 					type.getEnumLabels();
+				//Type::push(L, base.c_str());
 
 				lua_newtable(L);
 				for( osgIntrospection::EnumLabelMap::const_iterator
 					i = map.begin(); i != map.end(); ++i)
 				{
 					lua_pushinteger(L, i->first);
+
 					lua_setfield(L, -2, i->second.c_str());
 				}
 				return 1;
 			}
-			
+*/
+
 			// if not... push the type
 			Type::push(L, base.c_str());
 			return 1;
