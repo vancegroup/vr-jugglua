@@ -14,6 +14,7 @@
 
 // Internal Includes
 #include "Internal_PositionInterface.h"
+#include "ConvertOsgPtrToOsgLuaPtr.h"
 
 #include <util/osg/gmtlToOsgMatrix.h>
 
