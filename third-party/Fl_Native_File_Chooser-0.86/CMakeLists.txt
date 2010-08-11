@@ -48,7 +48,7 @@ if(APPLE)
 		NavCreateGetFileDialog
 		${MACOSX_Carbon_FRAMEWORK}
 		CARBON_COMPILES)
-	if(CARBON_INCLUDES) # AND CARBON_COMPILES)
+	if(CARBON_INCLUDES AND NOT CMAKE_SIZEOF_VOID_P EQUAL 8) # AND CARBON_COMPILES)
 		# TODO: Make this pass when it compiles correctly, and fails when it doesn't
 		set(HAVE_CARBON YES)
 		list(APPEND LIBS "${MACOSX_CoreFoundation_FRAMEWORK}")
