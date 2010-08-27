@@ -24,7 +24,15 @@
 #include <osgUtil/SceneView>
 
 // VR Juggler includes
-#include <vrj/Draw/OSG/OsgApp.h>
+#include <vrj/vrjParam.h>
+
+#if __VJ_version < 2003011
+#	include <vrj/Draw/OSG/OsgApp.h>
+	typedef vrj::OsgApp OsgApp;
+#else
+#	include <vrj/Draw/OSG/App.h>
+	typedef vrj::osg::App OsgApp;
+#endif
 
 // LuaBind includes
 #include <luabind/object.hpp>
@@ -34,7 +42,7 @@
 
 namespace vrjLua {
 
-class OsgAppProxy : public vrj::OsgApp {
+class OsgAppProxy : public OsgApp {
 	public:
 	/// @brief Lua binding call
 	static void bindToLua(LuaStatePtr & state);
