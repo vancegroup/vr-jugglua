@@ -21,6 +21,7 @@
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <boost/program_options.hpp>
 
 // Standard includes
 #include <string>
@@ -62,6 +63,10 @@ class LuaScript {
 		LuaStateWeakPtr getLuaState() const;
 
 		bool isValid() const;
+
+		static boost::program_options::options_description getVrjOptionsDescriptions();
+		static void initVrjKernel(boost::program_options::variables_map const& vm);
+		static void initVrjKernel(int argc, char* argv[]);
 
 	protected:
 		void _applyBindings();

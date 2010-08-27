@@ -32,8 +32,91 @@
 namespace vrjLua {
 using namespace luabind;
 
+// Static member
+bool KernelState::_init = false;
+
+
+bool KernelState::hasInitialized() {
+	return _init;
+}
+
+#if __VJ_version >= 2003000
+// Juggler 3.x - initialize the kernel
+boost::program_options::options_description KernelState::getVrjOptionsDescriptions() {
+	boost::program_options::options_description desc("VR Juggler 3.x Options").add(vrj::Kernel::getClusterOptions()).add(vrj::Kernel::getConfigOptions());
+	return desc
+}
+
+void KernelState::init(boost::program_options::variables_map vm) {
+	if (_init) {
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+		<< "Warning: vrjKernel.init called a second time!"
+		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+	}
+	vrj::Kernel::instance()->init(vm)
+	_init = true
+}
+
+void KernelState::init(int argc, char* argv[]) {
+	if (_init) {
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+		<< "Warning: vrjKernel.init called a second time!"
+		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+	}
+	vrj::Kernel::instance()->init(argc, argv);
+	_init = true;
+}
+
+/// Fallback - if we have no other source of info
+void KernelState::initVrjKernel() {
+	if (_init) {
+		VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+		<< "Warning: vrjKernel.init called a second time!"
+		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+	}
+
+	VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+	<< "Warning: your application is not cluster-capable as compiled (VR Juggler 3.x) because you did not initialize the kernel with command line arguments!"
+	<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+	boost::program_options::variable_map vm;
+	vrj::Kernel::init(vm);
+	_init = true;
+}
+
+#else
+// Juggler 2.2 - stub methods
+boost::program_options::options_description KernelState::getVrjOptionsDescriptions() {
+	return boost::program_options::options_description();
+}
+
+void KernelState::init(boost::program_options::variables_map /*vm*/) {
+	// no-op
+	_init = true;
+}
+
+void KernelState::init(int /*argc*/, char* /*argv*/[]) {
+	// no-op
+	_init = true;
+}
+
+void KernelState::init() {
+	// no-op
+	VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+	<< "Warning: your application will not cluster-capable with VR Juggler 3.x because you did not initialize the kernel with command line arguments!"
+	<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+
+	_init = true;
+}
+#endif
+
 namespace Kernel {
 	void start() {
+		if (!KernelState::hasInitialized()) {
+			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+			<< "Warning: vrjKernel.start called before vrjKernel.init - your app will not support clustering in VR Juggler 3.x!"
+			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+			KernelState::init();
+		}
 		vrj::Kernel::instance()->start();
 	}
 

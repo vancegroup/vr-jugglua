@@ -233,4 +233,16 @@ LuaStateWeakPtr LuaScript::getLuaState() const {
 	return _state;
 }
 
+boost::program_options::options_description LuaScript::getVrjOptionsDescriptions() {
+	return KernelState::getVrjOptionsDescriptions();
+}
+
+void LuaScript::initVrjKernel(boost::program_options::variables_map const& vm) {
+	KernelState::init(vm);
+}
+
+void LuaScript::initVrjKernel(int argc, char* argv[]) {
+	KernelState::init(argc, argv);
+}
+
 } // end of vrjLua namespace

@@ -29,6 +29,19 @@ namespace vrjLua {
 
 void bindKernelToLua(LuaStatePtr state);
 
+/// @brief Class for internal use - use the static methods in LuaScript.h
+class KernelState {
+	public:
+		static void init(boost::program_options::variables_map vm);
+		static void init(int argc, char* argv[]);
+		static void init();
+		static bool hasInitialized();
+		static boost::program_options::options_description getVrjOptionsDescriptions();
+
+	protected:
+		static bool _init;
+};
+
 } // end of vrjLua namespace
 
 
