@@ -28,21 +28,6 @@
 
 namespace osgLua {
 
-	static osgIntrospection::Value accept(osgIntrospection::Value node, osgIntrospection::Value visitor) {
-		osgIntrospection::ValueList vl;
-		vl.push_back(*osgIntrospection::variant_cast<osg::NodeVisitor*>(visitor));
-
-		std::string name("accept");
-		const osgIntrospection::MethodInfo *method = 0;
-		const osgIntrospection::Type &type = node.getType();
-		method = type.getCompatibleMethod (name,vl, true);
-		if (method)
-		{
-			method->invoke(node, vl);
-		}
-		return new osgIntrospection::Value();
-	}
-
 	Value::Value( const osgIntrospection::Value &v ) : _value(v)
 	{
 		
@@ -251,17 +236,24 @@ namespace osgLua {
 				}
 			}
 			*/
+
 			if (!method)
 			{
-				// Visitor workaround
-				if (value->get().getInstanceType().isSubclassOf(osgIntrospection::Reflection::getType("osg::Node")) &&
-						name == "accept" &&
-						vl.size() == 1 &&
-						vl[0].getInstanceType().isSubclassOf(osgIntrospection::Reflection::getType("osg::NodeVisitor"))) {
-					Value::push(L, accept(value->get(), vl[0]));
-					return 1;
-				}
+				if (vl.back().getType().isNonConstPointer() &&
+						vl.back().getInstanceType().isSubclassOf(osgIntrospection::Reflection::getType("osg::NodeVisitor"))) {
+					// OK, we have a pointer to a visitor, let's search again after dereferencing
+					osgIntrospection::Value vPointer = vl.back();
+					vl.pop_back();
+					// Dereference the pointer
+					vl.push_back(*osgIntrospection::variant_cast<osg::NodeVisitor*>(vPointer));
 
+					// Search again for the method
+					method = type.getCompatibleMethod (name,vl, true);
+				}
+			}
+			if (!method)
+			{
+				// Couldn't find a method
 				int top = lua_gettop(L);
 				lua_pushfstring(L, "Error method %s::%s(",
 					type.getName().c_str(),
@@ -277,9 +269,11 @@ namespace osgLua {
 				lua_pushstring(L,") not found");
 				lua_concat(L,lua_gettop(L) - top);
 				lua_error(L);
+
 			}
-			osgIntrospection::Value returnedval = 
-				method->invoke(value->get(), vl);		
+
+			// OK, we got a method!
+			osgIntrospection::Value returnedval = method->invoke(value->get(), vl);
 			Value::push(L, returnedval);
 			return 1;
 		}
