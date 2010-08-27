@@ -61,6 +61,10 @@ set(LUA_API
 	lua.h
 	lualib.h
 	lauxlib.h)
+set(LUA_INTERP_SOURCES
+	lua.c)
+set(LUAC_SOURCES
+	luac.c)
 
 set(LUA_EXTRA_LIBS)
 if(WIN32)
@@ -82,8 +86,17 @@ add_library(lua ${LUA_SRCS} ${LUA_HEADERS} ${LUA_API})
 if(LUA_EXTRA_LIBS)
 	target_link_libraries(lua ${LUA_EXTRA_LIBS})
 endif()
+
+if(BUILD_LUA_UTILS)
+	add_executable(lua-interp ${LUA_INTERP_SOURCES})
+	target_link_libraries(lua-interp lua)
+
+	add_executable(luac ${LUAC_SOURCES})
+	target_link_libraries(luac lua)
+endif()
+
 if(BUILD_LUA_AS_CPP)
-	set_source_files_properties(${LUA_SRCS} PROPERTIES LANGUAGE CXX)
+	set_source_files_properties(${LUA_SRCS} ${LUA_INTERP_SOURCES} ${LUAC_SOURCES} PROPERTIES LANGUAGE CXX)
 endif()
 
 set_property(TARGET

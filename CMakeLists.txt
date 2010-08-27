@@ -36,12 +36,14 @@ option(AUTOLOAD_WRAPPER_OSGUTIL "Load the osgUtil wrapper automatically at bindi
 
 # Define advanced options
 option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app - highly recommended." ON)
+option(BUILD_LUA_UTILS "Build a stock, standalone lua-interpreter and luac" ON)
 option(BUILD_SHARED_OSGLUA "Whether to also build a DLL/.so version of osgLua." OFF)
 option(BUILD_LUA_AS_CPP "Build Lua as C++, rather than C - recommended." ON)
 option(BUILD_VERY_VERBOSE "Turn on excessive amounts of runtime output." OFF)
 
 # Mark some as advanced
 mark_as_advanced(BUILD_EMBEDDED_LUA
+	BUILD_LUA_UTILS
 	BUILD_SHARED_OSGLUA
 	BUILD_LUA_AS_CPP
 	BUILD_VERY_VERBOSE)
