@@ -216,7 +216,7 @@ create_target_launcher(vrjlua
     "${CMAKE_CURRENT_BINARY_DIR}"
 	ENVIRONMENT
 	${VRJUGGLER22_ENVIRONMENT})
-    
+
 create_generic_launcher(genericlauncher
 	RUNTIME_LIBRARY_DIRS
 	${RUNTIME_LIBRARY_DIRS}
