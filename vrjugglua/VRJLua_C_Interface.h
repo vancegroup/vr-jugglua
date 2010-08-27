@@ -19,7 +19,6 @@
 
 LUA_C_INTERFACE_BEGIN
 
-void setInteractiveInterpreter(lua_State * state);
 int luaopen_vrjugglua(lua_State *L);
 int luaopen_libvrjugglua(lua_State *L);
 int add_file_and_line(lua_State* L);

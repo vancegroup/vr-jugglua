@@ -344,9 +344,6 @@ static int pmain (lua_State *L) {
   int has_i = 0, has_v = 0, has_e = 0;
   globalL = L;
 
-  /* Let VR JuggLua know which interpreter state we want to use */
-  setInteractiveInterpreter(L);
-
   if (argv[0] && argv[0][0]) progname = argv[0];
   lua_gc(L, LUA_GCSTOP, 0);  /* stop collector during initialization */
   luaL_openlibs(L);  /* open libraries */

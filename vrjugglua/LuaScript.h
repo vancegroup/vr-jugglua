@@ -32,9 +32,6 @@ typedef lua_State * LuaStateRawPtr;
 typedef boost::shared_ptr<lua_State> LuaStatePtr;
 typedef boost::weak_ptr<lua_State> LuaStateWeakPtr;
 
-void setInteractiveInterpreter(LuaStatePtr * state);
-LuaStatePtr getInteractiveInterpreter();
-
 struct NoValidLuaState : public std::logic_error {
 	NoValidLuaState() : std::logic_error("Attempted to perform a LuaScript manipulation on a LuaScript instance without a valid state pointer!") {}
 };

@@ -57,21 +57,6 @@ static void no_op_deleter(lua_State *L) {
 	return;
 }
 
-/// External global variable - ick!
-extern LuaStatePtr g_state;
-
-/// @name Manipulating global interpreter variable
-/// @see VRJLua_C_Interface.h
-/// @{
-void setInteractiveInterpreter(LuaStatePtr state) {
-	g_state = state;
-}
-
-LuaStatePtr getInteractiveInterpreter() {
-	return g_state;
-}
-/// @}
-
 LuaScript::LuaScript(const bool create) {
 #ifdef VERBOSE
 	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
