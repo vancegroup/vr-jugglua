@@ -190,6 +190,12 @@ add_subdirectory(vrjugglua)
 add_subdirectory(src)
 
 add_doxygen(Doxyfile)
+
+if(APPLE)
+	string(REPLACE "/usr/local/lib;" "" RUNTIME_LIBRARY_DIRS "${RUNTIME_LIBRARY_DIRS}")
+	string(REPLACE "/usr/lib;" "" RUNTIME_LIBRARY_DIRS "${RUNTIME_LIBRARY_DIRS}")
+endif()
+
 include(CreateLaunchers)
 create_default_target_launcher(NavTestbed
 	FORWARD_ARGS
