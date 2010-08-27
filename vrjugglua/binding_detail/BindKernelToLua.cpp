@@ -156,7 +156,7 @@ namespace Kernel {
 				<< VRJLUA_MSG_END(dbgVRJLUA_APP, MSG_STATUS);
 	}
 
-} // end of Internal namespace
+} // end of Kernel namespace
 
 void bindKernelToLua(LuaStatePtr state) {
 #ifdef VERBOSE

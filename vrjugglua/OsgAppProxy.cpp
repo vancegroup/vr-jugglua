@@ -62,16 +62,16 @@ void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 
 OsgAppProxy::OsgAppProxy() :
 		vrj::OsgApp(vrj::Kernel::instance()),
-		_timeDelta(-1),
-		_delegationSuccessFlag(true) {
+		_delegationSuccessFlag(true),
+		_timeDelta(-1) {
 	/// update static pointer to app object
 	_pApp = this;
 }
 
 OsgAppProxy::OsgAppProxy(vrj::Kernel* kern/*, int & argc, char** argv*/) :
 		vrj::OsgApp(kern),
-		_timeDelta(-1),
-		_delegationSuccessFlag(true) {
+		_delegationSuccessFlag(true),
+		_timeDelta(-1) {
 	/// update static pointer to app object
 	_pApp = this;
 
