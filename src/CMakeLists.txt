@@ -28,6 +28,14 @@ target_link_libraries(vrjlua vrjugglua)
 if(BUILD_LUA_AS_CPP)
 	set_source_files_properties(lua.c PROPERTIES LANGUAGE CXX)
 endif()
+if(MSVC)
+    # Silence warning from Lua distribution's code
+    set_property(TARGET
+        vrjlua
+        PROPERTY
+        COMPILE_DEFINITIONS
+        _CRT_SECURE_NO_WARNINGS)
+endif()
 set_property(TARGET
 	vrjlua
 	PROPERTY
