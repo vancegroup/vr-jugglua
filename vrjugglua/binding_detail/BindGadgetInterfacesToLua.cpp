@@ -78,6 +78,11 @@ void bindGadgetInterfacesToLua(LuaStatePtr state) {
 					.def(constructor<const std::string &>())
 					.def("getMatrix", & Internal::PositionInterface::getMatrix)
 					.def("getPosition", & Internal::PositionInterface::getPosition)
+					.def("getOrientation", & Internal::PositionInterface::getOrientation)
+					.def("getQuatX", & Internal::PositionInterface::getQuatX)
+					.def("getQuatY", & Internal::PositionInterface::getQuatY)
+					.def("getQuatZ", & Internal::PositionInterface::getQuatZ)
+					.def("getQuatW", & Internal::PositionInterface::getQuatW)
 					.def("getForwardVector", & Internal::PositionInterface::getForwardVector);
 
 	luabind::scope digital = class_<Internal::DigitalInterface,

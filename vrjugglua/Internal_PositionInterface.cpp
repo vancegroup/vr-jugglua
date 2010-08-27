@@ -14,6 +14,7 @@
 
 // Internal Includes
 #include "Internal_PositionInterface.h"
+#include "ConvertOsgPtrToOsgLuaPtr.h"
 
 #include <util/osg/gmtlToOsgMatrix.h>
 
@@ -40,6 +41,23 @@ osg::Matrixd PositionInterface::getMatrix() {
 osg::Vec3d PositionInterface::getPosition() {
 	gmtl::Vec3d xlate = gmtl::makeTrans<gmtl::Vec3d>(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
 	return osg::Vec3d(xlate[0], xlate[1], xlate[2]);
+}
+
+osg::Vec4d PositionInterface::getOrientation() {
+	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate().asVec4();
+}
+
+double PositionInterface::getQuatX() {
+	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[0];
+}
+			double PositionInterface::getQuatY() {
+	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[1];
+}
+			double PositionInterface::getQuatZ()  {
+	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[2];
+}
+			double PositionInterface::getQuatW() {
+	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[3];
 }
 
 osg::Vec3d PositionInterface::getForwardVector() {

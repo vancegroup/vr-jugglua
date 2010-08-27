@@ -61,8 +61,8 @@ namespace luabind
 
 
     template <>
-    struct default_converter<osg::Matrix>
-      : native_converter_base<osg::Matrix>
+    struct default_converter<osg::Matrixd>
+      : native_converter_base<osg::Matrixd>
     {
         static int compute_score(lua_State* L, int index)
         {
@@ -77,15 +77,15 @@ namespace luabind
             return NULL;
         }
 
-        void to(lua_State* L, osg::Matrix const& x)
+        void to(lua_State* L, osg::Matrixd const& x)
         {
         	osgLua::Value::push(L, x);
         }
     };
 
     template <>
-    struct default_converter<osg::Matrix const&>
-      : default_converter<osg::Matrix>
+    struct default_converter<osg::Matrixd const&>
+      : default_converter<osg::Matrixd>
     {};
 }
 
