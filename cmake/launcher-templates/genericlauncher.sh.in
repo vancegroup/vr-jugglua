@@ -8,7 +8,8 @@ if [ $1 == "--debugger" ]; then
 	shift
 	echo "r $@" > $bindir/gdbscript
 	echo "bt" >> $bindir/gdbscript
-	gdb $cmd -command=$bindir/gdbscript -batch --return-child-result
+	echo "quit $_exitcode" >> $bindir/gdbscript
+	gdb $cmd -command=$bindir/gdbscript -batch @GDB_RETURN_CHILD_RESULT@
 else
 	$@
 fi
