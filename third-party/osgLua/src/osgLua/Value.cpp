@@ -22,9 +22,27 @@
 #include <osgIntrospection/ConstructorInfo>
 #include <osgIntrospection/Utility>
 #include <osgIntrospection/ExtendedTypeInfo>
+#include <osgIntrospection/variant_cast>
+
+#include <osg/NodeVisitor>
 
 namespace osgLua {
-	
+
+	static osgIntrospection::Value accept(osgIntrospection::Value node, osgIntrospection::Value visitor) {
+		osgIntrospection::ValueList vl;
+		vl.push_back(*osgIntrospection::variant_cast<osg::NodeVisitor*>(visitor));
+
+		std::string name("accept");
+		const osgIntrospection::MethodInfo *method = 0;
+		const osgIntrospection::Type &type = node.getType();
+		method = type.getCompatibleMethod (name,vl, true);
+		if (method)
+		{
+			method->invoke(node, vl);
+		}
+		return new osgIntrospection::Value();
+	}
+
 	Value::Value( const osgIntrospection::Value &v ) : _value(v)
 	{
 		
@@ -235,6 +253,15 @@ namespace osgLua {
 			*/
 			if (!method)
 			{
+				// Visitor workaround
+				if (value->get().getInstanceType().isSubclassOf(osgIntrospection::Reflection::getType("osg::Node")) &&
+						name == "accept" &&
+						vl.size() == 1 &&
+						vl[0].getInstanceType().isSubclassOf(osgIntrospection::Reflection::getType("osg::NodeVisitor"))) {
+					Value::push(L, accept(value->get(), vl[0]));
+					return 1;
+				}
+
 				int top = lua_gettop(L);
 				lua_pushfstring(L, "Error method %s::%s(",
 					type.getName().c_str(),
