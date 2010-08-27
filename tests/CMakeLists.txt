@@ -14,7 +14,8 @@ set(LUA_TEST_SCRIPTS
 	osgapp-delegate
 	osgapp-delegate-count
 	osgapp-delegate-useful
-	osgapp-delegate-initdevices)
+	osgapp-delegate-initdevices
+	osg-accept-visitor)
 
 foreach(script ${LUA_TEST_SCRIPTS})
     add_test(NAME
