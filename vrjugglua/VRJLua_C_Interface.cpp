@@ -57,23 +57,6 @@ int add_file_and_line(lua_State* L)
 	return 1;
 }
 
-namespace vrjLua {
-/// @brief no-op deleter for externally-provided state pointers
-static void no_op_deleter(lua_State *L) {
-	return;
-}
-
-/// @name Manipulating global interpreter variable
-/// @{
-LuaStatePtr g_state;
-/// @}
-
-} // end of namespace vrjLua
-
-void setInteractiveInterpreter(lua_State * state) {
-	vrjLua::g_state = vrjLua::LuaStatePtr(state, std::ptr_fun(vrjLua::no_op_deleter));
-}
-
 void set_exec_path(const char* argv0) {
 	vrjLua::LuaPath::instance(argv0);
 }
