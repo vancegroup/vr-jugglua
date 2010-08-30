@@ -1,10 +1,7 @@
 group = osg.Group()
-visitor = osg.ComputeBoundsVisitor()
-print("About to send the visitor in.")
-group:accept(visitor)
-print("OK, sent the visitor in!")
 
-print("About to grab the bbox")
-bbox = visitor:getBoundingBox()
-minX = bbox:minX()
-print("OK, grabbed the bbox")
+bbox = getBoundingBox(group)
+
+for k,v in pairs(bbox) do
+	print(tostring(k) .. ": " .. tostring(v))
+end
