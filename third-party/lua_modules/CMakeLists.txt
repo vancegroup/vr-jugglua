@@ -8,3 +8,4 @@ if(BUILD_EMBEDDED_LUA)
 endif()
 
 add_subdirectory(squish)
+add_subdirectory(verse)
