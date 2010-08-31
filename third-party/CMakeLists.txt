@@ -33,3 +33,5 @@ endif()
 
 # Lua stdlib release 15
 add_subdirectory(stdlib/modules)
+
+add_subdirectory(lua_modules)
