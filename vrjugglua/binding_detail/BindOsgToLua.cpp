@@ -14,15 +14,21 @@
 
 // Local includes
 #include "BindOsgToLua.h"
+#include "OsgHelpers.h"
+#include "../LuaIncludeFull.h"
 
 // Library/third-party includes
 #include <osgLua/osgLua.h>
-#include <luabind/function.hpp>
+#include <osgLua/Value.h>
+
 
 // Standard includes
 #include <iostream>
 
+
 namespace vrjLua {
+
+
 
 void bindOsgToLua(LuaStatePtr state) {
 #ifdef VERBOSE
@@ -57,6 +63,8 @@ void bindOsgToLua(LuaStatePtr state) {
 		return;
 	}
 #endif
+
+	manuallyBindOsgHelpers(state);
 }
 
 }// end of vrjLua namespace

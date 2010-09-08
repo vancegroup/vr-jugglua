@@ -60,7 +60,9 @@ set(LUA_BINDING_SOURCES
 	binding_detail/BindOsgToLua.h
 	binding_detail/BindSonixToLua.h
 	binding_detail/BindGadgetInterfacesToLua.h
-	binding_detail/BindRunBufferToLua.h)
+	binding_detail/BindRunBufferToLua.h
+	binding_detail/OsgHelpers.h
+	binding_detail/OsgHelpers.cpp)
 
 set(LUA_BINDING_IMPLEMENTATIONS
 	binding_detail/BindKernelToLua.cpp
