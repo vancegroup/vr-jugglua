@@ -47,21 +47,11 @@ int computeBoundingBox(lua_State *L) {
 		lua_error(L);
 	}
 
-	osgIntrospection::Type const& t = v->get().getInstanceType();
 	osg::Node * node;
-/*
-	if (t.isSubclassOf(osgIntrospection::Reflection::getType("osg::Node"))) {
-		if (v->getType().isPointer()) {
-		*/
-			node = osgIntrospection::variant_cast<osg::Node*>(v->get());
-			/*
-		} else if (v->getType().isReference()) {
-			osg::Node& n = osgIntrospection::variant_cast<osg::Node&>(v->get());
-			node = &n;
-		}
-	}*/
+
+	node = osgIntrospection::variant_cast<osg::Node*>(v->get());
+
 	if (!node) {
-		//throw new std::runtime_error("Could not convert argument 1 to an osg::Node* !");
 		lua_pushstring(L, "Could not convert argument 1 to an osg::Node* !");
 		lua_error(L);
 	}
@@ -110,12 +100,6 @@ int computeBoundingBox(lua_State *L) {
 	return 1;
 
 }
-
-static const struct luaL_reg osgHelpers [] = {
-      {"computeBoundingBox", &computeBoundingBox},
-      {NULL, NULL}  /* sentinel */
-    };
-
 
 void manuallyBindOsgHelpers(LuaStatePtr state) {
 	lua_register(state.get(), "getBoundingBox", &computeBoundingBox);
