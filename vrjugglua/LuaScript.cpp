@@ -57,6 +57,8 @@ static void no_op_deleter(lua_State *L) {
 	return;
 }
 
+bool LuaScript::exitOnError = false;
+
 LuaScript::LuaScript(const bool create) {
 #ifdef VERBOSE
 	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
@@ -215,6 +217,14 @@ void LuaScript::_applyBindings() {
 
 	// Set up traceback...
 	luabind::set_pcall_callback(&add_file_and_line);
+
+	// set up global for debug mode
+	/// @todo make this work
+	/*
+	luabind::module(_state.get(), "vrjlua")[
+										   def_readwrite(&LuaScript::exitOnError)
+										   ];
+	*/
 }
 
 bool LuaScript::call(const std::string & func) {
