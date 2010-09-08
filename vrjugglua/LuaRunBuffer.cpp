@@ -41,8 +41,8 @@ inline bool LuaRunBuffer::ready() const {
 LuaRunBuffer::LuaRunBuffer(unsigned int capacity, bool runBlocks) :
 		_script(false),
 		_buf(capacity),
-		_runBlock(runBlocks),
-		_maxRun(capacity) {
+		_maxRun(capacity),
+		_runBlock(runBlocks) {
 
 }
 

@@ -73,7 +73,7 @@ std::string LuaPath::_findFilePath(std::string const& startingAt, const std::str
 	VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
 		<< "LuaPath: Searching for file '" << fn << "' starting in " << location.string()
 		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
-	unsigned int count = 0;
+
 	for (unsigned int i = 0;
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
 			location.has_parent_path() &&

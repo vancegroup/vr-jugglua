@@ -149,11 +149,14 @@ bool LuaConsole::runBuffer() {
 	if (!_runbuf) {
 		return false;
 	}
-	unsigned int ret = _runbuf->runBuffer();
+	
 #ifdef VERBOSE
+	unsigned int ret = _runbuf->runBuffer();
 	if (ret > 0) {
 		std::cerr << "LuaConsole: ran " << ret << " entries successfully." << std::endl;
 	}
+#else
+	_runbuf->runBuffer();
 #endif
 	return true;
 }
