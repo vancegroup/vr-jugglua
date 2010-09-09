@@ -44,6 +44,8 @@ void bindOsgToLua(LuaStatePtr state) {
 	ret = osgLua::loadWrapper(state.get(), "osg");
 	if (!ret) {
 		std::cerr << "Could not load Lua wrapper for osg!" << std::endl;
+		lua_pushstring(state.get(), "Could not load Lua wrapper for osg!");
+		lua_error(state.get());
 		return;
 	}
 #endif
@@ -52,6 +54,8 @@ void bindOsgToLua(LuaStatePtr state) {
 	ret = osgLua::loadWrapper(state.get(), "osgDB");
 	if (!ret) {
 		std::cerr << "Could not load Lua wrapper for osgDB!" << std::endl;
+		lua_pushstring(state.get(), "Could not load Lua wrapper for osgDB!");
+		lua_error(state.get());
 		return;
 	}
 #endif
@@ -60,6 +64,8 @@ void bindOsgToLua(LuaStatePtr state) {
 	ret = osgLua::loadWrapper(state.get(), "osgUtil");
 	if (!ret) {
 		std::cerr << "Could not load Lua wrapper for osgUtil!" << std::endl;
+		lua_pushstring(state.get(), "Could not load Lua wrapper for osgUtil!");
+		lua_error(state.get());
 		return;
 	}
 #endif
