@@ -11,6 +11,8 @@ function Axis(coords)
 	return osg.Vec3d(coords[1], coords[2], coords[3])
 end
 
+Vec3 = Axis
+
 function AngleAxis(angle, axis)
 	return osg.Quat(angle, axis)
 end
@@ -32,8 +34,8 @@ function Transform(args)
 		t:setAttitude(args.orientation)
 	end
 	
-	if args.scale ~= nil and isnumber(args.scale) then
-		t:setScale(args.scale)
+	if args.scale ~= nil then
+		t:setScale(osg.Vec3d(args.scale, args.scale, args.scale))
 	end
 	
 	if args.children ~= nil then
@@ -43,6 +45,8 @@ function Transform(args)
 			end
 		end
 	end
+	
+	return t
 end
 
 function Model(filename)
