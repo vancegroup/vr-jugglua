@@ -118,12 +118,13 @@ namespace osgLua {
 		// traverse the namespace
 		try
 		{
+			/*
 			const osgIntrospection::Type &type =
 				osgIntrospection::Reflection::getType(base);
 
 			// is it an enum ?
 			/// @todo Make methods that require an enum accept a long
-/*
+
 			if (type.isEnum())
 			{
 				// create a table with the values
