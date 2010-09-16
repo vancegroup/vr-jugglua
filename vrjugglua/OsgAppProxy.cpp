@@ -281,7 +281,8 @@ bool OsgAppProxy::_forwardCallToDelegate(const char * call, bool required) {
 				<< "Top of the Lua stack (error message) is: '" << o << "'"
 				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
 			if (required) {
-				throw;
+				//throw;
+				vrj::Kernel::instance()->stop();
 			}
 		}
 		return false;
