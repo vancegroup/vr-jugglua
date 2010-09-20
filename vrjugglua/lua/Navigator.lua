@@ -69,12 +69,12 @@ local function create(max_vel, max_rot_vel, seconds_to_max, seconds_to_stop)
 	end
 	
 	if seconds_to_max == nil then
-		seconds_to_max = 15
+		seconds_to_max = 3
 		print("Using default seconds_to_max of " .. tostring(seconds_to_max))
 	end
 	
 	if seconds_to_stop == nil then
-		seconds_to_stop = 15
+		seconds_to_stop = 1
 		print("Using default seconds_to_stop slope of " .. tostring(seconds_to_stop))
 	end
 	
