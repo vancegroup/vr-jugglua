@@ -104,18 +104,13 @@ bool LuaConsole::addFile(std::string const& fn) {
 	if (!_runbuf) {
 		return false;
 	}
-	bool ret = _runbuf->addFile(fn);
 	std::string code;
-	if (ret) {
-		code = "require('";
-		code += fn;
-		code += "')\n";
-	} else {
-		code = "-- Failed attempting to add this code to the buffer: require('";
-		code += fn;
-		code += "')\n";
-	}
-	appendToDisplay(code);
+	code = "dofile('";
+	code += fn;
+	code += "')\n";
+
+	bool ret = addString(code);
+
 	return ret;
 }
 
