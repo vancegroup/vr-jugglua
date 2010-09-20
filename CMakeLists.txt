@@ -161,6 +161,11 @@ endif()
 # Qt
 if(BUILD_QT_GUI)
 	find_package(Qt4 COMPONENTS QtCore QtGui Qt3Support REQUIRED)
+	if(WIN32)
+		list(APPEND RUNTIME_LIBRARY_DIRS ${QT_LIBRARY_DIR}/../bin)
+	else()
+		list(APPEND RUNTIME_LIBRARY_DIRS ${QT_LIBRARY_DIR})
+	endif()
 endif()
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/vrjugglua/VRJLuaConfig.h.in"

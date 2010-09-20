@@ -48,15 +48,39 @@ install(TARGETS vrjlua
 ###
 # FLTK-based GUIs
 ###
-if(BUILD_FLTK_GUI)	
-    add_executable(NavTestbed FLTKNavMain.cpp)
-    target_link_libraries(NavTestbed vrjugglua-fltk)
+if(BUILD_FLTK_GUI)
+	if(NOT BUILD_QT_GUI)
+		set(FLTK_GUI_APP NavTestbed)
+	else()
+		set(FLTK_GUI_APP FLTKNavTestbed)
+	endif()
+    add_executable(${FLTK_GUI_APP} FLTKNavMain.cpp)
+    target_link_libraries(${FLTK_GUI_APP} vrjugglua-fltk)
+	
+	set_property(TARGET
+		${FLTK_GUI_APP}
+		PROPERTY
+		PROJECT_LABEL
+		"App: Nav Console FLTK")
+
+    install(TARGETS ${FLTK_GUI_APP}
+	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
+endif()
+
+###
+# FLTK-based GUIs
+###
+if(BUILD_QT_GUI)
+	include(${QT_USE_FILE})
+	
+    add_executable(NavTestbed QTNavMain.cpp)
+    target_link_libraries(NavTestbed vrjugglua-qt)
 	
 	set_property(TARGET
 		NavTestbed
 		PROPERTY
 		PROJECT_LABEL
-		"App: Nav Console FLTK")
+		"App: Nav Console QT")
 
     install(TARGETS NavTestbed
 	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)

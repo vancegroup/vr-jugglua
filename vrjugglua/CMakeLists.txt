@@ -114,7 +114,7 @@ endif()
 # Optional GUI components
 
 if(BUILD_QT_GUI)
-	#add_subdirectory(qt-console)
+	add_subdirectory(qt-console)
 endif()
 
 if(BUILD_FLTK_GUI)
