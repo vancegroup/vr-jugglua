@@ -32,6 +32,10 @@ function osgnav:latePreFrame()
 	runbuf:runBuffer()
 end
 
+
+print("Setting up run buffer")
+runbuf = vrjSync.RunBuffer(nil)
+
 print("App delegate defined, now creating OsgAppProxy")
 osgnav.appProxy = vrjApp.OsgAppProxy()
 
@@ -43,9 +47,6 @@ require("vrjlua-config")
 
 print("Setting up scenegraph")
 navtransform = osg.PositionAttitudeTransform()
-
-print("Setting up run buffer")
-runbuf = vrjSync.RunBuffer(nil)
 
 print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
