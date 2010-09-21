@@ -77,11 +77,6 @@ macro(_launcher_system_settings)
 		set(_pathdelim ":")
 		set(USERFILE_PLATFORM ${CMAKE_SYSTEM_NAME}${BITS})
 		set(_suffix "sh")
-		if(APPLE)
-			#set(GDB_RETURN_CHILD_RESULT "Program received signal
-		else()
-			set(GDB_RETURN_CHILD_RESULT --return-child-result)
-		endif()
 	endif()
 	
 	if(WIN32 AND NOT USERFILE_REMOTE_MACHINE)
