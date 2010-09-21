@@ -9,13 +9,10 @@ include(${QT_USE_FILE})
 
 set(SOURCES
 	QTConsole.cpp)
-	#QTConsoleView.cpp)
 	
 set(MOCS
 	QTConsole.h)
 
-set(API)
-	#QTConsole.h)
 	
 set(UIS QTConsoleMainWindow.ui)
 
@@ -33,7 +30,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(vrjugglua-qt
 	${SOURCES}
-	${API}
 	${GENERATED_SOURCES}
 	${UIS}
 	${MOCS}

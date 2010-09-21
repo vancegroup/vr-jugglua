@@ -249,6 +249,9 @@ set(BUILD_TREE_TARGETS lua osgLua_static luabind vrjugglua)
 if(BUILD_FLTK_GUI)
 	list(APPEND BUILD_TREE_TARGETS Fl_Native_File_Chooser vrjugglua-fltk)
 endif()
+if(BUILD_QT_GUI)
+	list(APPEND BUILD_TREE_TARGETS vrjugglua-qt)
+endif()
 
 configure_file(vrjugglua-config-build-tree.cmake.in VRJuggLuaConfig.cmake @ONLY)
 export(TARGETS ${BUILD_TREE_TARGETS}
