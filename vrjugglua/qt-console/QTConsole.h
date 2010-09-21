@@ -24,8 +24,8 @@
 #include <boost/utility.hpp> // for boost::noncopyable
 #include <boost/shared_ptr.hpp>
 
-#include <QMainWindow.h>
-#include <QApplication.h>
+#include <QMainWindow>
+#include <QApplication>
 
 // Standard includes
 // - none
@@ -34,21 +34,21 @@ namespace Ui {
 }
 
 namespace vrjLua {
-	
+
 
 class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
-	
+
 	Q_OBJECT
 
 	public:
-		
+
 		QTConsole();
 		QTConsole(LuaScript const& script);
 		QTConsole(QApplication* app);
 		QTConsole(QApplication* app, LuaScript const& script);
 
 		static void setup(int & argc, char * argv[]);
-		
+
 
 		virtual ~QTConsole();
 
@@ -63,9 +63,9 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		virtual void setTitle(std::string const& title);
 		/// @}
 
-	
+
 	private Q_SLOTS:
-	
+
 		void on_actionFileOpen_triggered();
 		void on_actionFileSave_triggered();
 		void on_actionFileExit_triggered();
@@ -75,7 +75,7 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		bool _doThreadWork();
 
 		bool _running;
-		
+
 		int _argc;
 
 		QApplication * _app;
