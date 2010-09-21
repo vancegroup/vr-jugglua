@@ -28,6 +28,7 @@
 
 // Standard includes
 #include <iostream>
+#include <fstream>
 #include <stdexcept>
 
 
@@ -65,20 +66,26 @@ void QTConsole::on_actionFileOpen_triggered() {
 }
 
 void QTConsole::on_actionFileSave_triggered() {
-	/*
+	
 	QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save VRJ Lua File..."),
             QString(),
             tr("VRJ Lua Files (*.vrjlua;*.lua);;All Files (*)"));
 
 	if (!fileName.isEmpty() && !fileName.isNull()) {
-		addFile(fileName.toStdString());
+		std::ofstream df(fileName.toStdString().c_str());
+		df << _ui->plainTextEdit->toPlainText().toStdString() << std::endl;
+		df.close();
+		std::string code("-- code up to here saved to file '");
+		code += fileName.toStdString();
+		code += "'\n";
+		appendToDisplay(code);
 	}
-	*/
+	
 }
 		
 void QTConsole::on_actionFileExit_triggered() {
-
+	close();
 }
 
 void QTConsole::on_buttonRun_clicked() {
