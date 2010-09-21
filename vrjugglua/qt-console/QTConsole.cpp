@@ -22,7 +22,8 @@
 // Library/third-party includes
 #include <boost/scoped_ptr.hpp>
 
-#include <QFileDialog.h>
+#include <QFileDialog>
+#include <QScrollBar>
 
 #include <vrj/Kernel/Kernel.h>
 
@@ -119,6 +120,8 @@ void QTConsole::appendToDisplay(std::string const& message) {
 	QString text = _ui->plainTextEditLog->toPlainText();
 	text.append(QString::fromStdString(message + "\n"));
 	_ui->plainTextEditLog->setPlainText(text);
+	QScrollBar *sb = _ui->plainTextEditLog->verticalScrollBar();
+	sb->setValue(sb->maximum());
 }
 
 void QTConsole::setTitle(std::string const& title) {
