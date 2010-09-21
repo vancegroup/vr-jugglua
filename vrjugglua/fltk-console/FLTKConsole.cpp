@@ -129,6 +129,11 @@ class FLTKConsoleView : public FLTKConsoleUI {
 		boost::scoped_ptr<Fl_Text_Buffer> _codeBuf;
 };
 
+void FLTKConsole::setup(int & argc, char * argv[]) {
+	Fl::args(argc, argv);
+	Fl::get_system_colors();
+}
+
 FLTKConsole::FLTKConsole() :
 		LuaConsole(),
 		_running(false) {

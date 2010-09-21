@@ -35,6 +35,28 @@
 
 namespace vrjLua {
 
+	boost::shared_ptr<QApplication> QTConsole::s_app;
+
+void QTConsole::setup(int & argc, char * argv[]) {
+	boost::shared_ptr<QApplication> app(new QApplication(argc, argv));
+	s_app = app;
+}
+
+QTConsole::QTConsole() :
+		_app(s_app.get()),
+		_running(false),
+		_ui(new Ui::MainWindow()){
+	_ui->setupUi(this);
+}
+
+QTConsole::QTConsole(LuaScript const& script) :
+		LuaConsole(script),
+		_app(s_app.get()),
+		_running(false),
+		_ui(new Ui::MainWindow()){
+	_ui->setupUi(this);
+}
+
 QTConsole::QTConsole(QApplication* app) :
 	_app(app),
 	_running(false),
@@ -42,7 +64,7 @@ QTConsole::QTConsole(QApplication* app) :
 		_ui->setupUi(this);
 }
 
-QTConsole::QTConsole(QApplication* app, LuaScript const& script):
+QTConsole::QTConsole(QApplication* app, LuaScript const& script) :
 	LuaConsole(script),
 	_app(app),
 	_running(false),

@@ -41,8 +41,14 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 	Q_OBJECT
 
 	public:
+		
+		QTConsole();
+		QTConsole(LuaScript const& script);
 		QTConsole(QApplication* app);
 		QTConsole(QApplication* app, LuaScript const& script);
+
+		static void setup(int & argc, char * argv[]);
+		
 
 		virtual ~QTConsole();
 
@@ -72,7 +78,8 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		
 		int _argc;
 
-		QApplication* _app;
+		QApplication * _app;
+		static boost::shared_ptr<QApplication> s_app;
 		boost::shared_ptr<Ui::MainWindow> _ui;
 
 };

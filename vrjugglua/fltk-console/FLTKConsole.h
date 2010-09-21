@@ -33,6 +33,8 @@ class FLTKConsole : public LuaConsole, boost::noncopyable {
 		FLTKConsole();
 		FLTKConsole(LuaScript const& script);
 
+		static void setup(int & argc, char * argv[]);
+
 		virtual ~FLTKConsole();
 
 		/// @name Interface required by LuaConsole

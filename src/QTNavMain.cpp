@@ -27,7 +27,7 @@ using namespace vrjLua;
 
 int main(int argc, char * argv[]) {
 	bool ret;
-	QApplication app(argc, argv);
+	//QApplication app(argc, argv);
 
 	/// Tell it our application path
 	LuaPath lp = LuaPath::instance(argv[0]);
@@ -41,7 +41,8 @@ int main(int argc, char * argv[]) {
 	}
 
 	/// Create the console GUI
-	boost::shared_ptr<QTConsole> console(new QTConsole(&app, script));
+	QTConsole::setup(argc, argv);
+	boost::shared_ptr<QTConsole> console(new QTConsole(script));
 	console->setTitle("Scenegraph Navigation Testbed");
 	console->getRunBufFromLuaGlobal();
 
