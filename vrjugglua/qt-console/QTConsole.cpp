@@ -41,6 +41,7 @@ QTConsole::QTConsole(QApplication* app) :
 }
 
 QTConsole::QTConsole(QApplication* app, LuaScript const& script):
+	LuaConsole(script),
 	_app(app),
 	_running(false),
 	_ui(new Ui::MainWindow()) {
