@@ -73,7 +73,7 @@ QTConsole::QTConsole(QApplication* app, LuaScript const& script) :
 	_app(app),
 	_running(false),
 	_ui(new Ui::MainWindow()) {
-		
+
 		_ui->setupUi(this);
 }
 
@@ -93,7 +93,7 @@ void QTConsole::on_actionFileOpen_triggered() {
 }
 
 void QTConsole::on_actionFileSave_triggered() {
-	
+
 	QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save VRJ Lua File..."),
             QString(),
@@ -108,9 +108,9 @@ void QTConsole::on_actionFileSave_triggered() {
 		code += "'\n";
 		appendToDisplay(code);
 	}
-	
+
 }
-		
+
 void QTConsole::on_actionFileExit_triggered() {
 	close();
 }
