@@ -7,6 +7,7 @@
 if(NOT TARGET vrjlua_exported_vrjugglua)
 	set(VRJUGGLUA_LIBRARIES vrjlua_exported_vrjugglua)
 	set(VRJUGGLUA_FLTK_CONSOLE_LIBRARIES vrjlua_exported_vrjugglua-fltk)
+	set(VRJUGGLUA_QT_CONSOLE_LIBRARIES vrjlua_exported_vrjugglua-qt)
 
 	get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
 	include("${_IMPORT_PREFIX}/vrjlua-targets.cmake")

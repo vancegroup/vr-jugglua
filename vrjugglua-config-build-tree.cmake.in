@@ -5,6 +5,7 @@
 
 set(VRJUGGLUA_LIBRARIES vrjlua_buildtree_vrjugglua)
 set(VRJUGGLUA_FLTK_CONSOLE_LIBRARIES vrjlua_buildtree_vrjugglua-fltk)
+set(VRJUGGLUA_QT_CONSOLE_LIBRARIES vrjlua_buildtree_vrjugglua-qt)
 
 set(VRJUGGLUA_BASE_DIR "@CMAKE_CURRENT_BINARY_DIR@")
 
