@@ -81,7 +81,7 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		int _argc;
 
 		QApplication * _app;
-		static boost::shared_ptr<QApplication> s_app;
+		static QApplication * s_app;
 		boost::shared_ptr<Ui::MainWindow> _ui;
 
 };

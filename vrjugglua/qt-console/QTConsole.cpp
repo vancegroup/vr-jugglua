@@ -36,25 +36,28 @@
 
 namespace vrjLua {
 
-	boost::shared_ptr<QApplication> QTConsole::s_app;
+QApplication* QTConsole::s_app = NULL;
+
+static const int POLLING_INTERVAL = 100;
 
 void QTConsole::setup(int & argc, char * argv[]) {
-	boost::shared_ptr<QApplication> app(new QApplication(argc, argv));
-	s_app = app;
+	s_app = new QApplication(argc, argv);
 }
 
 QTConsole::QTConsole() :
-		_app(s_app.get()),
+		_app(s_app),
 		_running(false),
 		_ui(new Ui::MainWindow()){
+	assert(_app);
 	_ui->setupUi(this);
 }
 
 QTConsole::QTConsole(LuaScript const& script) :
 		LuaConsole(script),
-		_app(s_app.get()),
+		_app(s_app),
 		_running(false),
 		_ui(new Ui::MainWindow()){
+	assert(_app);
 	_ui->setupUi(this);
 }
 
