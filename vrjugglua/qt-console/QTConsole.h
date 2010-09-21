@@ -71,6 +71,8 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		void on_actionFileExit_triggered();
 		void on_buttonRun_clicked();
 
+		void checkRunningState();
+
 	protected:
 		bool _doThreadWork();
 

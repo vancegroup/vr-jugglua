@@ -24,6 +24,7 @@
 
 #include <QFileDialog>
 #include <QScrollBar>
+#include <QTimer>
 
 #include <vrj/Kernel/Kernel.h>
 
@@ -117,6 +118,12 @@ void QTConsole::on_buttonRun_clicked() {
 	addString(code);
 }
 
+void QTConsole::checkRunningState() {
+	if (!_running || !vrj::Kernel::instance()->isRunning()) {
+		close();
+	}
+}
+
 bool QTConsole::threadLoop() {
 	if (_running) {
 		/// @todo notify that the thread is already running?
@@ -125,6 +132,9 @@ bool QTConsole::threadLoop() {
 
 	_running = true;
 
+	boost::shared_ptr<QTimer> timer(new QTimer(this));
+	connect(timer.get(), SIGNAL(timeout()), this, SLOT(checkRunningState()));
+	timer->start(POLLING_INTERVAL);
 	show();
 	_app->exec();
 
@@ -135,7 +145,7 @@ bool QTConsole::threadLoop() {
 }
 
 void QTConsole::stopThread() {
-	//_running = false;
+	_running = false;
 }
 
 void QTConsole::appendToDisplay(std::string const& message) {
