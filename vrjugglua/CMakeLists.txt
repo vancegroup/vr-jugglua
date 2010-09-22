@@ -36,7 +36,8 @@ set(SOURCES
 	LuaPath.cpp
 	OsgAppProxy.cpp
 	SynchronizedRunBuffer.cpp
-	VRJLua_C_Interface.cpp)
+	VRJLua_C_Interface.cpp
+	VRJLuaConfig.h.in)
 
 set(API
 	ConvertOsgPtrToOsgLuaPtr.h
@@ -52,8 +53,12 @@ set(API
 	OsgAppProxy.h
 	SynchronizedRunBuffer.h
 	VRJLua_C_Interface.h
-	VRJLuaOutput.h
+	VRJLuaOutput.h)
+
+set(GENERATED
 	"${CMAKE_CURRENT_BINARY_DIR}/VRJLuaConfig.h")
+	
+source_group("Generated Files - Do Not Edit" FILES ${GENERATED})
 
 set(LUA_BINDING_SOURCES
 	binding_detail/BindKernelToLua.h	
@@ -86,8 +91,8 @@ if(Boost_VERSION LESS 103500)
 	endif()
 endif()
 
-add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API})
-set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
+add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API} ${GENERATED})
+set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API};${GENERATED}")
 target_link_libraries(vrjugglua ${EXTRA_LIBS})
 stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua)
 add_cppcheck(vrjugglua)
