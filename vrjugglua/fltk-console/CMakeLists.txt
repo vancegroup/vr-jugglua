@@ -4,12 +4,14 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 set(SOURCES
-	FLTKConsole.cpp)
+	FLTKConsole.cpp
+	vrjlua-fltk-console.fl)
 
 set(API
 	FLTKConsole.h)
 
 fltk_wrap_ui(vrjugglua-fltk vrjlua-fltk-console.fl)
+source_group("FLTK Generated Files - Do Not Edit" FILES ${vrjugglua-fltk_FLTK_UI_SRCS})
 
 add_library(vrjugglua-fltk ${SOURCES} ${API} ${vrjugglua-fltk_FLTK_UI_SRCS})
 set_target_properties(vrjugglua-fltk PROPERTIES PUBLIC_HEADER "${API}")
