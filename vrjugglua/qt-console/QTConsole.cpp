@@ -85,7 +85,7 @@ void QTConsole::on_actionFileOpen_triggered() {
 	QString fileName = QFileDialog::getOpenFileName(this,
             tr("Open VRJ Lua File..."),
             QString(),
-            tr("VRJ Lua Files (*.vrjlua;*.lua);;All Files (*)"));
+            tr("VRJ Lua Files (*.vrjlua *.lua);;All Files (*)"));
 
 	if (!fileName.isEmpty() && !fileName.isNull()) {
 		addFile(fileName.toStdString());
@@ -97,7 +97,7 @@ void QTConsole::on_actionFileSave_triggered() {
 	QString fileName = QFileDialog::getSaveFileName(this,
             tr("Save VRJ Lua File..."),
             QString(),
-            tr("VRJ Lua Files (*.vrjlua;*.lua);;All Files (*)"));
+            tr("VRJ Lua Files (*.vrjlua *.lua);;All Files (*)"));
 
 	if (!fileName.isEmpty() && !fileName.isNull()) {
 		std::ofstream df(fileName.toStdString().c_str());
