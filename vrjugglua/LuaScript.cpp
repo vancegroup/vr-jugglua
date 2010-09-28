@@ -45,6 +45,9 @@
 
 #include <luabind/luabind.hpp>
 
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+
 // Standard includes
 #include <functional>
 #include <iostream>
@@ -198,7 +201,7 @@ void LuaScript::_applyBindings() {
 
 	// Extend the lua script search path for "require"
 	LuaPath& lp = LuaPath::instance();
-	lp.prependLuaRequirePath(_state);
+	lp.updateLuaRequirePath(_state);
 
 	// osgLua
 	bindOsgToLua(_state);
@@ -265,5 +268,38 @@ void LuaScript::doPrint(std::string const& str) {
 	}
 }
 
+
+void LuaPath::_populateSearchPathsVector(LuaStatePtr state) {
+	luabind::object package = luabind::globals(state.get())["package"];
+	std::string input = luabind::object_cast<std::string>(package["path"]);
+	boost::algorithm::split(_searchPaths, input, boost::is_any_of(";"));
+
+	// Remove the items we'll add ourselves.
+	std::deque<std::string>::iterator it = std::find(_searchPaths.begin(), _searchPaths.end(), "?");
+	while (it != _searchPaths.end()) {
+		_searchPaths.erase(it);
+		it = std::find(_searchPaths.begin(), _searchPaths.end(), "?");
+	}
+
+	it = std::find(_searchPaths.begin(), _searchPaths.end(), "?.lua");
+	while (it != _searchPaths.end()) {
+		_searchPaths.erase(it);
+		it = std::find(_searchPaths.begin(), _searchPaths.end(), "?.lua");
+	}
+
+	_searchPaths.push_front(_luadir + "?.lua");
+	_searchPaths.push_front(_luadir + "?");
+}
+
+void LuaPath::_setLuaSearchPaths(LuaStatePtr state) {
+	std::ostringstream scr;
+	scr << "?;";
+	scr << "?.lua;";
+	for (unsigned int i = 0; i < _searchPaths.size(); ++i) {
+		scr << _searchPaths[i] << ";";
+	}
+	luabind::object package = luabind::globals(state.get())["package"];
+	package["path"] = scr.str();
+}
 
 } // end of vrjLua namespace

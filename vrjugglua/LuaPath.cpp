@@ -206,24 +206,18 @@ std::string LuaPath::getPathToLuaScript(const std::string & scriptfn) const {
 	return (fs::path(_luadir) / scriptfn).string();
 }
 
-bool LuaPath::prependLuaRequirePath(LuaStatePtr state) const {
-	std::ostringstream scr;
-	scr << "package.path = ";
-	// string to append
-	scr << '"';
-	scr << "?;";
-	scr << "?.lua;";
-	if (!_appRoot.empty()) {
-		scr << _appRoot << "/?;";
-		scr << _appRoot << "/?.lua;";
-	}
-	scr << _luadir << "?;";
-	scr << _luadir << "?.lua;";
-	scr << '"';
-	// concatenation and rest of line
-	scr << " .. package.path";
 
-	return luaL_dostring(state.get(), scr.str().c_str());
+void LuaPath::addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash) {
+	_searchPaths.push_front(dirEndingInSlash + "?.lua");
+	_searchPaths.push_front(dirEndingInSlash + "?");
+	updateLuaRequirePath(state);
+}
+
+void LuaPath::updateLuaRequirePath(LuaStatePtr state) {
+	if (_searchPaths.size() == 0) {
+		_populateSearchPathsVector(state);
+	}
+	_setLuaSearchPaths(state);
 }
 
 bool LuaPath::_setJugglerEnvironment() const {
