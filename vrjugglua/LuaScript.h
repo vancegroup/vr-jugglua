@@ -60,6 +60,9 @@ class LuaScript {
 		bool requireModule(const std::string & mod);
 		bool call(const std::string & func);
 
+		void setPrintFunction(boost::function<void (std::string const&)> func);
+		static void doPrint(std::string const& str);
+
 		LuaStateWeakPtr getLuaState() const;
 
 		bool isValid() const;
@@ -71,6 +74,7 @@ class LuaScript {
 		static void initVrjKernel(int argc, char* argv[]);
 
 	protected:
+		static boost::function<void (std::string const&)> _printFunc;
 		void _applyBindings();
 		LuaStatePtr _state;
 };

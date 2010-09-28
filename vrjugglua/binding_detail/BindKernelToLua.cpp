@@ -150,12 +150,6 @@ namespace Kernel {
 		return vrj::Kernel::instance()->isRunning();
 	}
 
-	void safePrint(const std::string & s) {
-		VRJLUA_MSG_START(dbgVRJLUA_APP, MSG_STATUS)
-				<< s
-				<< VRJLUA_MSG_END(dbgVRJLUA_APP, MSG_STATUS);
-	}
-
 } // end of Kernel namespace
 
 void bindKernelToLua(LuaStatePtr state) {
@@ -169,7 +163,7 @@ void bindKernelToLua(LuaStatePtr state) {
 		def("loadConfigFile", &Kernel::loadConfigFile),
 		def("waitForKernelStop", &Kernel::waitForKernelStop),
 		def("isRunning", &Kernel::isRunning),
-		def("safePrint", &Kernel::safePrint)
+		def("safePrint", &LuaScript::doPrint) /// @todo move this into a more generic/shared namesapce
 	];
 
 	// Hide the print function, using the threadsafe one.

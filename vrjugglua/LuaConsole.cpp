@@ -19,6 +19,8 @@
 // Library/third-party includes
 #include <luabind/object.hpp>
 
+#include <boost/algorithm/string/replace.hpp>
+
 #include <vrj/Kernel/Kernel.h>
 
 // Standard includes
@@ -34,11 +36,21 @@ LuaConsole * LuaConsole::getConsole() {
 	return s_console;
 }
 
+static void consolePrintFunction(std::string const& str) {
+	LuaConsole * ptr = LuaConsole::getConsole();
+	if (ptr) {
+		std::string modified = str;
+		boost::algorithm::replace_all(modified, "\n", "\n-- ");
+		ptr->appendToDisplay("-- " + modified);
+	}
+}
+
 LuaConsole::LuaConsole() {
 #ifdef VERBOSE
 	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
 	s_console = this;
+	_script.setPrintFunction(consolePrintFunction);
 	// A new script context is automatically created
 }
 
@@ -48,6 +60,7 @@ LuaConsole::LuaConsole(LuaScript const& script) :
 	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
 	s_console = this;
+	_script.setPrintFunction(consolePrintFunction);
 	// Using existing (provided) script context
 }
 
@@ -57,6 +70,7 @@ LuaConsole::~LuaConsole() {
 #endif
 	if (s_console == this) {
 		s_console = NULL;
+		_script.setPrintFunction(boost::function<void (std::string const&)>());
 	}
 }
 

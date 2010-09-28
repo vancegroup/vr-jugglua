@@ -58,6 +58,7 @@ static void no_op_deleter(lua_State *L) {
 }
 
 bool LuaScript::exitOnError = false;
+boost::function<void (std::string const&)> LuaScript::_printFunc;
 
 LuaScript::LuaScript(const bool create) {
 #ifdef VERBOSE
@@ -239,6 +240,10 @@ bool LuaScript::call(const std::string & func) {
 	}
 }
 
+void LuaScript::setPrintFunction(boost::function<void (std::string const&)> func) {
+	_printFunc = func;
+}
+
 LuaStateWeakPtr LuaScript::getLuaState() const {
 	return _state;
 }
@@ -254,5 +259,16 @@ void LuaScript::initVrjKernel(boost::program_options::variables_map const& vm) {
 void LuaScript::initVrjKernel(int argc, char* argv[]) {
 	KernelState::init(argc, argv);
 }
+
+void LuaScript::doPrint(std::string const& str) {
+	if (_printFunc) {
+		_printFunc(str);
+	} else {
+		VRJLUA_MSG_START(dbgVRJLUA_APP, MSG_STATUS)
+				<< str
+				<< VRJLUA_MSG_END(dbgVRJLUA_APP, MSG_STATUS);
+	}
+}
+
 
 } // end of vrjLua namespace
