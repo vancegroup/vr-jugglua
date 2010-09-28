@@ -136,14 +136,18 @@ bool QTConsole::threadLoop() {
 	_running = true;
 
 	boost::shared_ptr<QTimer> timer(new QTimer(this));
+	connect(this, SIGNAL(textDisplaySignal(QString const&)), this, SLOT(addTextToDisplay(QString const&)));
 	connect(timer.get(), SIGNAL(timeout()), this, SLOT(checkRunningState()));
 	timer->start(POLLING_INTERVAL);
 	show();
 	_app->exec();
 
 	_running = false;
-	vrj::Kernel::instance()->stop();
-	vrj::Kernel::instance()->waitForKernelStop();
+	vrj::Kernel * kern = vrj::Kernel::instance();
+	if (kern) {
+		kern->stop();
+		kern->waitForKernelStop();
+	}
 	return true;
 }
 
@@ -152,11 +156,16 @@ void QTConsole::stopThread() {
 }
 
 void QTConsole::appendToDisplay(std::string const& message) {
+	Q_EMIT textDisplaySignal(QString::fromStdString(message));
+}
+
+void QTConsole::addTextToDisplay(QString const& message) {
 	QString text = _ui->plainTextEditLog->toPlainText();
-	text.append(QString::fromStdString(message + "\n"));
+	text.append(message + "\n");
 	_ui->plainTextEditLog->setPlainText(text);
 	QScrollBar *sb = _ui->plainTextEditLog->verticalScrollBar();
 	sb->setValue(sb->maximum());
+
 }
 
 void QTConsole::setTitle(std::string const& title) {

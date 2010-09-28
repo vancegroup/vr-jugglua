@@ -64,6 +64,9 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		/// @}
 
 
+	Q_SIGNALS:
+		void textDisplaySignal(QString const& message);
+
 	private Q_SLOTS:
 
 		void on_actionFileOpen_triggered();
@@ -72,6 +75,7 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		void on_buttonRun_clicked();
 
 		void checkRunningState();
+		void addTextToDisplay(QString const& message);
 
 	protected:
 		bool _doThreadWork();
