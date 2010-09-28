@@ -159,7 +159,7 @@ bool LuaScript::requireModule(const std::string & mod) {
 	try {
 		luabind::call_function<void>(_state.get(), "require", mod);
 	} catch (std::exception & e) {
-		doPrint(std::string("Could not load Lua module ") + mod + " - error: " + e.what());
+		doPrint(std::string("vrjLua ERROR: Could not load Lua module ") + mod + " - error: " + e.what());
 		return false;
 	}
 	return true;
@@ -172,7 +172,7 @@ bool LuaScript::runString(const std::string & str) {
 
 	int ret = luaL_dostring(_state.get(), str.c_str());
 	if (ret != 0) {
-		doPrint("Could not run provided Lua string");
+		doPrint("vrjLua ERROR: Could not run provided Lua string");
 		return false;
 	} else {
 		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
