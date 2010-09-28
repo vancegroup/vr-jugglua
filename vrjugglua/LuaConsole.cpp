@@ -154,6 +154,10 @@ bool LuaConsole::runStringImmediately(std::string const& str) {
 	return _script.runString(str);
 }
 
+bool LuaConsole::requireModuleImmediately(std::string const& module) {
+	return _script.requireModule(module);
+}
+
 bool LuaConsole::runBuffer() {
 	if (!_runbuf) {
 		return false;

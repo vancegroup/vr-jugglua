@@ -57,6 +57,8 @@ class LuaConsole {
 		bool runFileImmediately(std::string const& fn);
 		bool runStringImmediately(std::string const& str);
 
+		bool requireModuleImmediately(std::string const& module);
+
 		bool runBuffer();
 		LuaScript& getScript();
 
