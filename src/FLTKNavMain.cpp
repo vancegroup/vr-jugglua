@@ -44,15 +44,6 @@ int main(int argc, char * argv[]) {
 
 	assert(console->isValid());
 
-	/// Put in instructions
-	console->appendToDisplay("-- navtransform is your root-level group node");
-	console->appendToDisplay("");
-	console->appendToDisplay("-- Simulator Mode Instructions for Navigation --");
-	console->appendToDisplay("-- In the simulator window:");
-	console->appendToDisplay("--    Hold 'shift' and move the mouse to rotate the simulated wand");
-	console->appendToDisplay("--    Click to move in the direction of the wand's tip");
-	console->appendToDisplay("");
-
 	/// Run it all
 	vrj::Kernel::instance()->start();
 	bool ret = console->threadLoop();
