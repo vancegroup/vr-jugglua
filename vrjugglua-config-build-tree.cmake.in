@@ -31,6 +31,12 @@ if(Boost_VERSION LESS 103500)
 	list(APPEND VRJUGGLUA_INCLUDE_DIRS "@CMAKE_CURRENT_SOURCE_DIR@/vrjugglua/bitsOfBoost143")
 endif()
 
+function(install_vrjugglua_lua_files)
+	install(DIRECTORY "${VRJUGGLUA_BASE_DIR}/share/vrjugglua/lua/"
+		DESTINATION "share/vrjugglua/lua/"
+		${ARGN})
+endfunction()
+
 include("@CMAKE_CURRENT_BINARY_DIR@/vrjugglua-targets.cmake")
 
 set(VRJUGGLUA_FOUND ON)
