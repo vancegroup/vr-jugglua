@@ -145,10 +145,12 @@ bool LuaScript::runFile(const std::string & fn) {
 	if (!_state) {
 		throw NoValidLuaState();
 	}
-	int ret = luaL_dofile(_state.get(), fn.c_str());
-	if (ret != 0) {
+	try {
+		luabind::call_function<void>(_state.get(), "dofile", fn);
+	} catch (std::exception & e) {
+		doPrint(std::string("vrjLua ERROR: Could not run Lua file ") + fn + " - error: " + e.what());
 		VRJLUA_MSG_START(dbgVRJLUA, MSG_ERROR)
-				<< "Could not run Lua file " << fn
+				<< "Could not run Lua file " << fn << " - error: " << e.what()
 				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_ERROR);
 		return false;
 	}
