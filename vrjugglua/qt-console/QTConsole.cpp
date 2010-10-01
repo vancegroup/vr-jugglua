@@ -40,6 +40,8 @@ QApplication* QTConsole::s_app = NULL;
 
 static const int POLLING_INTERVAL = 100;
 
+static const int LOG_UPDATE_INTERVAL = 250;
+
 void QTConsole::setup(int & argc, char * argv[]) {
 	s_app = new QApplication(argc, argv);
 }
@@ -50,6 +52,7 @@ QTConsole::QTConsole() :
 		_ui(new Ui::MainWindow()){
 	assert(_app);
 	_ui->setupUi(this);
+	_ui->plainTextDebugLog->hide();
 }
 
 QTConsole::QTConsole(LuaScript const& script) :
@@ -59,22 +62,26 @@ QTConsole::QTConsole(LuaScript const& script) :
 		_ui(new Ui::MainWindow()){
 	assert(_app);
 	_ui->setupUi(this);
+	_ui->plainTextDebugLog->hide();
 }
 
 QTConsole::QTConsole(QApplication* app) :
-	_app(app),
-	_running(false),
-	_ui(new Ui::MainWindow()) {
-		_ui->setupUi(this);
+		_app(app),
+		_running(false),
+		_ui(new Ui::MainWindow()) {
+	assert(_app);
+	_ui->setupUi(this);
+	_ui->plainTextDebugLog->hide();
 }
 
 QTConsole::QTConsole(QApplication* app, LuaScript const& script) :
-	LuaConsole(script),
-	_app(app),
-	_running(false),
-	_ui(new Ui::MainWindow()) {
-
-		_ui->setupUi(this);
+		LuaConsole(script),
+		_app(app),
+		_running(false),
+		_ui(new Ui::MainWindow()) {
+	assert(_app);
+	_ui->setupUi(this);
+	_ui->plainTextDebugLog->hide();
 }
 
 QTConsole::~QTConsole() {
@@ -121,6 +128,15 @@ void QTConsole::on_buttonRun_clicked() {
 	addString(code);
 }
 
+void QTConsole::updateDebugLog() {
+	QString newText = QString::fromStdString(_log.str());
+	if (newText != _ui->plainTextDebugLog->toPlainText()) {
+		_ui->plainTextDebugLog->setPlainText(newText);
+		_ui->plainTextDebugLog->moveCursor(QTextCursor::End);
+		_ui->plainTextDebugLog->ensureCursorVisible();
+	}
+}
+
 void QTConsole::checkRunningState() {
 	if (!_running || !vrj::Kernel::instance()->isRunning()) {
 		close();
@@ -139,6 +155,16 @@ bool QTConsole::threadLoop() {
 	connect(this, SIGNAL(textDisplaySignal(QString const&)), this, SLOT(addTextToDisplay(QString const&)));
 	connect(timer.get(), SIGNAL(timeout()), this, SLOT(checkRunningState()));
 	timer->start(POLLING_INTERVAL);
+
+	
+	boost::shared_ptr<QTimer> logTimer(new QTimer(this));
+	if (_loggingActive) {
+		connect(logTimer.get(), SIGNAL(timeout()), this, SLOT(updateDebugLog()));
+		logTimer->start(LOG_UPDATE_INTERVAL);
+	} else {
+		_ui->actionShow_debug_log->setEnabled(false);
+	}
+
 	show();
 	_app->exec();
 
@@ -160,12 +186,7 @@ void QTConsole::appendToDisplay(std::string const& message) {
 }
 
 void QTConsole::addTextToDisplay(QString const& message) {
-	QString text = _ui->plainTextEditLog->toPlainText();
-	text.append(message + "\n");
-	_ui->plainTextEditLog->setPlainText(text);
-	QScrollBar *sb = _ui->plainTextEditLog->verticalScrollBar();
-	sb->setValue(sb->maximum());
-
+	_ui->plainTextEditLog->appendPlainText(message);
 }
 
 void QTConsole::setTitle(std::string const& title) {

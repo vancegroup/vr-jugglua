@@ -63,6 +63,9 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		virtual void setTitle(std::string const& title);
 		/// @}
 
+		bool supportsAlternateLogging() const { return true; }
+
+
 
 	Q_SIGNALS:
 		void textDisplaySignal(QString const& message);
@@ -75,6 +78,7 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		void on_buttonRun_clicked();
 
 		void checkRunningState();
+		void updateDebugLog();
 		void addTextToDisplay(QString const& message);
 
 	protected:

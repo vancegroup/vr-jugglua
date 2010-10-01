@@ -25,6 +25,7 @@
 
 // Standard includes
 #include <string>
+#include <sstream>
 
 namespace vrjLua {
 
@@ -38,6 +39,9 @@ class LuaConsole {
 		bool getRunBufFromLuaGlobal();
 		bool createRunBuf();
 
+		void captureStdOut();
+		void captureStdErr();
+
 		/// @name Implementation interface
 		/// @{
 		virtual bool threadLoop() = 0;
@@ -50,6 +54,8 @@ class LuaConsole {
 		/// @}
 
 		bool isValid() const;
+
+		virtual bool supportsAlternateLogging() const { return false; }
 
 		bool addFile(std::string const& fn);
 		bool addString(std::string const& str);
@@ -66,6 +72,10 @@ class LuaConsole {
 
 	protected:
 		static LuaConsole * s_console;
+
+		bool _loggingActive;
+
+		std::ostringstream _log;
 
 		LuaScript _script;
 

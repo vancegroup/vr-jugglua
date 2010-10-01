@@ -45,7 +45,8 @@ static void consolePrintFunction(std::string const& str) {
 	}
 }
 
-LuaConsole::LuaConsole() {
+LuaConsole::LuaConsole() :
+	_loggingActive(false) {
 #ifdef VERBOSE
 	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
@@ -55,6 +56,7 @@ LuaConsole::LuaConsole() {
 }
 
 LuaConsole::LuaConsole(LuaScript const& script) :
+		_loggingActive(false),
 		_script(script) {
 #ifdef VERBOSE
 	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
@@ -144,6 +146,20 @@ bool LuaConsole::addString(std::string const& str) {
 	}
 	appendToDisplay(code);
 	return ret;
+}
+
+void LuaConsole::captureStdOut() {
+	if (this->supportsAlternateLogging()) {
+		_loggingActive = true;
+		std::cout.rdbuf(_log.rdbuf());
+	}
+}
+
+void LuaConsole::captureStdErr() {
+	if (this->supportsAlternateLogging()) {
+		_loggingActive = true;
+		std::cout.rdbuf(_log.rdbuf());
+	}
 }
 
 bool LuaConsole::runFileImmediately(std::string const& fn) {
