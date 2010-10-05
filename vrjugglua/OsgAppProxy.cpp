@@ -156,7 +156,7 @@ void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	osg::ref_ptr<osg::Light> light = newSceneViewer->getLight();
 	if (light) {
 		light->setAmbient(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
-		light->setDiffuse(osg::Vec4(0.0f,0.0f,0.0f,0.0f));
+		light->setDiffuse(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
 		light->setSpecular(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
 	}
 

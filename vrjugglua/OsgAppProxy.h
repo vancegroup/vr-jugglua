@@ -219,8 +219,8 @@ inline OsgAppProxy* OsgAppProxy::getApp() {
 }
 
 inline unsigned int OsgAppProxy::getSceneViewDefaults() {
-	return (osgUtil::SceneView::SKY_LIGHT | osgUtil::SceneView::COMPILE_GLOBJECTS_AT_INIT);
-	//return osgUtil::SceneView::NO_SCENEVIEW_LIGHT;
+	//return (osgUtil::SceneView::SKY_LIGHT | osgUtil::SceneView::COMPILE_GLOBJECTS_AT_INIT);
+	return osgUtil::SceneView::NO_SCENEVIEW_LIGHT;
 }
 
 } // end of vrjLua namespace
