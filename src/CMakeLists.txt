@@ -54,7 +54,7 @@ if(BUILD_FLTK_GUI)
 	else()
 		set(FLTK_GUI_APP FLTKNavTestbed)
 	endif()
-    add_executable(${FLTK_GUI_APP} FLTKNavMain.cpp)
+    add_executable(${FLTK_GUI_APP} MACOSX_BUNDLE FLTKNavMain.cpp)
     target_link_libraries(${FLTK_GUI_APP} vrjugglua-fltk)
 	
 	set_property(TARGET
@@ -64,7 +64,8 @@ if(BUILD_FLTK_GUI)
 		"App: Nav Console FLTK")
 
     install(TARGETS ${FLTK_GUI_APP}
-	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
+	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime
+		BUNDLE DESTINATION . COMPONENT runtime)
 endif()
 
 ###
@@ -73,7 +74,7 @@ endif()
 if(BUILD_QT_GUI)
 	include(${QT_USE_FILE})
 	
-    add_executable(NavTestbed QTNavMain.cpp)
+    add_executable(NavTestbed MACOSX_BUNDLE QTNavMain.cpp)
     target_link_libraries(NavTestbed vrjugglua-qt)
 	
 	set_property(TARGET
@@ -83,5 +84,25 @@ if(BUILD_QT_GUI)
 		"App: Nav Console QT")
 
     install(TARGETS NavTestbed
-	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
+	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime
+		BUNDLE DESTINATION . COMPONENT runtime)
 endif()
+
+
+###
+# Set up and provide installation commands (needed for packaging to work)
+###
+
+include("BundleOSGPlugins")
+
+#install_osg_plugins(OSG_PLUGINS)
+
+if(APPLE AND TARGET NavTestbed)
+	install_vrjuggler22_data_files(./NavTestbed.app)
+	install_vrjuggler22_gadgeteer_drivers(./NavTestbed.app VRJUGGLER22_INSTALLED_PLUGINS)
+else()
+	install_vrjuggler22_data_files(.)
+	install_vrjuggler22_gadgeteer_drivers(. VRJUGGLER22_INSTALLED_PLUGINS)
+endif()
+
+fixup_vrjuggler_app_bundle("NavTestbed" "bin" "${RUNTIME_LIBRARIES};${VRJUGGLER22_INSTALLED_PLUGINS};${OSGDB_PLUGINS_RELEASE};${OSGWRAPPER_PLUGINS_RELEASE}" "${RUNTIME_LIBRARY_DIRS}")
