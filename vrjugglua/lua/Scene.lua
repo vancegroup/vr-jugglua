@@ -7,6 +7,18 @@ function Radians(r)
 	return r
 end
 
+ScaleFrom = {
+	yards = 0.9144,
+	feet = 0.3048,
+	inches = 0.0254,
+	mm = 0.001,
+	millimeters = 0.001,
+	cm = 0.01,
+	centimeters = 0.01,
+	meters = 1.0,
+	m = 1.0
+}
+
 function Axis(coords)
 	return osg.Vec3d(coords[1], coords[2], coords[3])
 end
