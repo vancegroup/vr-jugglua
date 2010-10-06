@@ -51,6 +51,7 @@ int main(int argc, char * argv[]) {
 #ifdef BUILD_WITHOUT_TERMINAL
 		console->appendToDisplay("-- Could not load osgnav-testbed module: see View->Show debug log for potential clues.");
 		console->appendToDisplay("-- Application will not function properly - exit when finished viewing log.");
+		/// @todo tell the console to disable any active interaction (run button, open menu item, etc)
 		console->threadLoop();
 #endif
 		return 1;
