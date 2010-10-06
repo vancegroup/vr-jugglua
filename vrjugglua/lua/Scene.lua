@@ -61,15 +61,15 @@ function Lighting(a)
 	local t = osg.LightSource()
 	local light = osg.Light()
 	if a.ambient then
-		light:setAmbient(osg.Vec4(a.ambient, a.ambient, a.ambient, a.ambient))
+		light:setAmbient(osg.Vec4(a.ambient, a.ambient, a.ambient, 1.0))
 	end
 	
 	if a.diffuse then
-		light:setDiffuse(osg.Vec4(a.diffuse, a.diffuse, a.diffuse, a.diffuse))
+		light:setDiffuse(osg.Vec4(a.diffuse, a.diffuse, a.diffuse, 1.0))
 	end
 	
 	if a.specular then
-		light:setSpecular(osg.Vec4(a.specular, a.specular, a.specular, a.specular))
+		light:setSpecular(osg.Vec4(a.specular, a.specular, a.specular, 1.0))
 	end
 	t:setLight(light)
 	
