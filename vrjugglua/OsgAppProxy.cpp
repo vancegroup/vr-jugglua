@@ -153,18 +153,24 @@ void OsgAppProxy::addModelSearchPath(std::string const& path) {
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	vrj::OsgApp::configSceneView(newSceneViewer);
+	/*
 	osg::ref_ptr<osg::Light> light = newSceneViewer->getLight();
 	if (light) {
-		light->setAmbient(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
-		light->setDiffuse(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
-		light->setSpecular(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
+		light->setAmbient(osg::Vec4(0.0f,0.0f,0.0f,1.0f));
+		light->setDiffuse(osg::Vec4(0.5f,0.5f,0.5f,1.0f));
+		light->setSpecular(osg::Vec4(0.5f,0.5f,0.5f,1.0f));
 	}
+	*/
 
 	// setup the ambient light the way I want it
+	/*
 	osg::LightModel* lightmodel = new osg::LightModel;
 	lightmodel->setAmbientIntensity(osg::Vec4(0.5f,0.5f,0.5f,0.5f));
 
 	newSceneViewer->getGlobalStateSet()->setAttributeAndModes(lightmodel, osg::StateAttribute::ON);
+	*/
+
+	
 }
 
 void OsgAppProxy::preFrame() {
@@ -213,6 +219,11 @@ void OsgAppProxy::intraFrame() {
 
 void OsgAppProxy::postFrame() {
 	_forwardCallToDelegate("postFrame");
+}
+
+unsigned int OsgAppProxy::getSceneViewDefaults() {
+	return (osgUtil::SceneView::SKY_LIGHT | osgUtil::SceneView::COMPILE_GLOBJECTS_AT_INIT);
+	//return osgUtil::SceneView::NO_SCENEVIEW_LIGHT;
 }
 
 osg::Group* OsgAppProxy::getScene() {
