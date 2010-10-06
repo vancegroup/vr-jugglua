@@ -48,6 +48,11 @@ int main(int argc, char * argv[]) {
 	ret = script.requireModule("osgnav-testbed");
 	if (!ret) {
 		std::cout << "Could not load osgnav-testbed module!" << std::endl;
+#ifdef BUILD_WITHOUT_TERMINAL
+		console->appendToDisplay("-- Could not load osgnav-testbed module: see View->Show debug log for potential clues.");
+		console->appendToDisplay("-- Application will not function properly - exit when finished viewing log.");
+		console->threadLoop();
+#endif
 		return 1;
 	}
 
