@@ -32,13 +32,8 @@ int main(int argc, char * argv[]) {
 	/// Tell it our application path
 	LuaPath lp = LuaPath::instance(argv[0]);
 
-	/// Load the startup script
+	/// Create the script object
 	LuaScript script;
-	ret = script.requireModule("osgnav-testbed");
-	if (!ret) {
-		std::cout << "Could not load osgnav-testbed module!" << std::endl;
-		return 1;
-	}
 
 	/// Create the console GUI
 	QTConsole::setup(argc, argv);
@@ -48,6 +43,15 @@ int main(int argc, char * argv[]) {
 	console->captureStdOut();
 	console->captureStdErr();
 #endif
+
+	/// Load the startup script
+	ret = script.requireModule("osgnav-testbed");
+	if (!ret) {
+		std::cout << "Could not load osgnav-testbed module!" << std::endl;
+		return 1;
+	}
+
+	
 	console->getRunBufFromLuaGlobal();
 
 	assert(console->isValid());
