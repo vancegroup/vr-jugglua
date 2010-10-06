@@ -44,6 +44,10 @@ int main(int argc, char * argv[]) {
 	QTConsole::setup(argc, argv);
 	boost::shared_ptr<QTConsole> console(new QTConsole(script));
 	console->setTitle("Scenegraph Navigation Testbed");
+#ifdef BUILD_WITHOUT_TERMINAL
+	console->captureStdOut();
+	console->captureStdErr();
+#endif
 	console->getRunBufFromLuaGlobal();
 
 	assert(console->isValid());

@@ -69,13 +69,30 @@ if(BUILD_FLTK_GUI)
 endif()
 
 ###
-# FLTK-based GUIs
+# Qt-based GUIs
 ###
 if(BUILD_QT_GUI)
 	include(${QT_USE_FILE})
 	
-    add_executable(NavTestbed MACOSX_BUNDLE QTNavMain.cpp)
-    target_link_libraries(NavTestbed vrjugglua-qt)
+	set(BUILD_WITHOUT_TERMINAL OFF)
+	set(QT_EXTRA_LIBS)
+	set(QT_EXE_OPTIONS)
+	if(WIN32)
+		if(QT_QTMAIN_LIBRARY)
+			set(BUILD_WITHOUT_TERMINAL ON)
+			set(QT_EXTRA_LIBS ${QT_QTMAIN_LIBRARY})
+			set(QT_EXE_OPTIONS WIN32)
+		endif()
+	else()
+		set(BUILD_WITHOUT_TERMINAL ON)
+	endif()
+	
+	if(BUILD_WITHOUT_TERMINAL)
+		add_definitions(-DBUILD_WITHOUT_TERMINAL)
+	endif()	
+	
+    add_executable(NavTestbed MACOSX_BUNDLE ${QT_EXE_OPTIONS} QTNavMain.cpp)
+    target_link_libraries(NavTestbed vrjugglua-qt ${QT_EXTRA_LIBS})    
 	
 	set_property(TARGET
 		NavTestbed
