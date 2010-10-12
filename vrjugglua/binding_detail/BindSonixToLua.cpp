@@ -55,14 +55,15 @@ void bindSonixToLua(LuaStatePtr state) {
 			.def(constructor<const std::string &>())
 			.def("configure", &snx::SoundHandle::configure)
 			.def("remove", &snx::SoundHandle::remove)
-			.def("getName", &snx::SoundHandle::getName)
+			.def_readonly("name", &snx::SoundHandle::getName)
 			.def("trigger", &snx::SoundHandle::trigger)
-			.def("isPlaying", &snx::SoundHandle::isPlaying)
+			.def_readonly("isPlaying", &snx::SoundHandle::isPlaying)
 			.def("stop", &snx::SoundHandle::stop)
 			.def("pause", &snx::SoundHandle::pause)
 			.def("unpause", &snx::SoundHandle::unpause)
-			.def("isPaused", &snx::SoundHandle::isPaused)
+			.def_readonly("isPaused", &snx::SoundHandle::isPaused)
 			.property("ambient", &snx::SoundHandle::isAmbient, &snx::SoundHandle::setAmbient)
+			.property("retriggerable", &snx::SoundHandle::isRetriggerable, &snx::SoundHandle::setRetriggerable)
 			.def("setPosition", &snx::SoundHandle::setPosition)
 	];
 
