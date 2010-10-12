@@ -28,6 +28,7 @@
 #	include "binding_detail/BindSonixToLua.cpp"
 #	include "binding_detail/BindGadgetInterfacesToLua.cpp"
 #	include "binding_detail/BindRunBufferToLua.cpp"
+#	include "binding_detail/BindvrjLuaToLua.cpp"
 
 #else
 
@@ -37,6 +38,7 @@
 #	include "binding_detail/BindSonixToLua.h"
 #	include "binding_detail/BindGadgetInterfacesToLua.h"
 #	include "binding_detail/BindRunBufferToLua.h"
+#	include "binding_detail/BindvrjLuaToLua.h"
 
 #endif
 
@@ -213,6 +215,7 @@ void LuaScript::_applyBindings() {
 	bindSonixToLua(_state);
 	bindGadgetInterfacesToLua(_state);
 	bindRunBufferToLua(_state);
+	BindvrjLuaToLua(_state);
 
 	OsgAppProxy::bindToLua(_state);
 

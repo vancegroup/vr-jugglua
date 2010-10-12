@@ -66,6 +66,7 @@ set(LUA_BINDING_SOURCES
 	binding_detail/BindSonixToLua.h
 	binding_detail/BindGadgetInterfacesToLua.h
 	binding_detail/BindRunBufferToLua.h
+	binding_detail/BindvrjLuaToLua.h
 	binding_detail/OsgHelpers.h
 	binding_detail/OsgHelpers.cpp)
 
@@ -74,7 +75,8 @@ set(LUA_BINDING_IMPLEMENTATIONS
 	binding_detail/BindOsgToLua.cpp
 	binding_detail/BindSonixToLua.cpp
 	binding_detail/BindGadgetInterfacesToLua.cpp
-	binding_detail/BindRunBufferToLua.cpp)
+	binding_detail/BindRunBufferToLua.cpp
+	binding_detail/BindvrjLuaToLua.cpp)
 
 if(NOT BUILD_LUABIND_COMBINED)
 	list(APPEND LUA_BINDING_SOURCES ${LUA_BINDING_IMPLEMENTATIONS})
