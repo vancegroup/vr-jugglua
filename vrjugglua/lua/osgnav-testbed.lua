@@ -2,6 +2,7 @@ print("osgnav-testbed.lua starting up...")
 
 require("Navigator")
 require("osgTools")
+require("Scene")
 
 osgnav = {position = osg.Vec3d(0, 0, 0)}
 
