@@ -181,13 +181,17 @@ void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 	_setJugglerEnvironment();
 }
 
-bool LuaPath::findAppRoot(std::string const& fn) {
+std::string LuaPath::findFilePath(std::string const& fn) {
 	std::vector<std::string> startingPlaces;
 	startingPlaces.push_back(_initialPath);
 	startingPlaces.push_back(_exeDir);
 	startingPlaces.push_back(_root);
 	startingPlaces.push_back(_luadir);
-	_appRoot = _findFilePath(startingPlaces, fn);
+	return _findFilePath(startingPlaces, fn);
+}
+
+bool LuaPath::findAppRoot(std::string const& fn) {
+	_appRoot = findFilePath(fn);
 	return (!_appRoot.empty());
 }
 

@@ -33,6 +33,7 @@ class LuaPath {
 		~LuaPath();
 		static LuaPath& instance(std::string const& arg0 = "", std::string const& vrjlua_base = "");
 
+		std::string findFilePath(std::string const& fn);
 		bool findAppRoot(std::string const& fn);
 		std::string const& getAppRoot() const;
 		std::string const& getExeDir() const;
