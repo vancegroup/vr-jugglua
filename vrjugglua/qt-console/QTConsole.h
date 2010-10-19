@@ -82,11 +82,7 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		void addTextToDisplay(QString const& message);
 
 	protected:
-		bool _doThreadWork();
-
 		bool _running;
-
-		int _argc;
 
 		QApplication * _app;
 		static QApplication * s_app;

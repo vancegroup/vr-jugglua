@@ -193,9 +193,4 @@ void QTConsole::setTitle(std::string const& title) {
 	setWindowTitle(QString::fromStdString(title));
 }
 
-bool QTConsole::_doThreadWork() {
-	//return ((Fl::wait(1.0/60.0) >= 0) && (Fl::first_window() != NULL));
-	return true;
-}
-
 } // end of vrjLua namespace
