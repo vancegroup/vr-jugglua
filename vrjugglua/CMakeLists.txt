@@ -57,11 +57,11 @@ set(API
 
 set(GENERATED
 	"${CMAKE_CURRENT_BINARY_DIR}/VRJLuaConfig.h")
-	
+
 source_group("Generated Files - Do Not Edit" FILES ${GENERATED})
 
 set(LUA_BINDING_SOURCES
-	binding_detail/BindKernelToLua.h	
+	binding_detail/BindKernelToLua.h
 	binding_detail/BindOsgToLua.h
 	binding_detail/BindSonixToLua.h
 	binding_detail/BindGadgetInterfacesToLua.h

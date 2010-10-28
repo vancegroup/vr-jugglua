@@ -42,7 +42,7 @@ class LuaPath {
 
 		void addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash);
 		void updateLuaRequirePath(LuaStatePtr state);
-		
+
 
 	protected:
 		LuaPath();

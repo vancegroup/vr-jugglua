@@ -170,7 +170,7 @@ void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
 	newSceneViewer->getGlobalStateSet()->setAttributeAndModes(lightmodel, osg::StateAttribute::ON);
 	*/
 
-	
+
 }
 
 void OsgAppProxy::preFrame() {

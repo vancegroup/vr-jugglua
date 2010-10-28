@@ -9,11 +9,11 @@ include(${QT_USE_FILE})
 
 set(SOURCES
 	QTConsole.cpp)
-	
+
 set(MOCS
 	QTConsole.h)
 
-	
+
 set(UIS QTConsoleMainWindow.ui)
 
 #set(RESOURCES QTConsoleResources.qrc)

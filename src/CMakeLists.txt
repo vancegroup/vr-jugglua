@@ -56,7 +56,7 @@ if(BUILD_FLTK_GUI)
 	endif()
     add_executable(${FLTK_GUI_APP} MACOSX_BUNDLE FLTKNavMain.cpp)
     target_link_libraries(${FLTK_GUI_APP} vrjugglua-fltk)
-	
+
 	set_property(TARGET
 		${FLTK_GUI_APP}
 		PROPERTY
@@ -73,7 +73,7 @@ endif()
 ###
 if(BUILD_QT_GUI)
 	include(${QT_USE_FILE})
-	
+
 	set(BUILD_WITHOUT_TERMINAL OFF)
 	set(QT_EXTRA_LIBS)
 	set(QT_EXE_OPTIONS)
@@ -86,14 +86,14 @@ if(BUILD_QT_GUI)
 	else()
 		set(BUILD_WITHOUT_TERMINAL ON)
 	endif()
-	
+
 	if(BUILD_WITHOUT_TERMINAL)
 		add_definitions(-DBUILD_WITHOUT_TERMINAL)
-	endif()	
-	
+	endif()
+
     add_executable(NavTestbed MACOSX_BUNDLE ${QT_EXE_OPTIONS} QTNavMain.cpp)
-    target_link_libraries(NavTestbed vrjugglua-qt ${QT_EXTRA_LIBS})    
-	
+    target_link_libraries(NavTestbed vrjugglua-qt ${QT_EXTRA_LIBS})
+
 	set_property(TARGET
 		NavTestbed
 		PROPERTY

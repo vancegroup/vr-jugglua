@@ -156,7 +156,7 @@ bool QTConsole::threadLoop() {
 	connect(timer.get(), SIGNAL(timeout()), this, SLOT(checkRunningState()));
 	timer->start(POLLING_INTERVAL);
 
-	
+
 	boost::shared_ptr<QTimer> logTimer(new QTimer(this));
 	if (_loggingActive) {
 		connect(logTimer.get(), SIGNAL(timeout()), this, SLOT(updateDebugLog()));

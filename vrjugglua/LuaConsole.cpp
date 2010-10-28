@@ -178,7 +178,7 @@ bool LuaConsole::runBuffer() {
 	if (!_runbuf) {
 		return false;
 	}
-	
+
 #ifdef VERBOSE
 	unsigned int ret = _runbuf->runBuffer();
 	if (ret > 0) {
