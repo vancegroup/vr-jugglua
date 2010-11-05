@@ -18,7 +18,7 @@
 #include "ConvertOsgPtrToOsgLuaPtr.h"
 
 #include "VRJLuaOutput.h"
-#include <util/osg/gmtlToOsgMatrix.h>
+#include <util/gmtlToOsgMatrix.h>
 
 // Library/third-party includes
 #include <luabind/class.hpp>
@@ -238,7 +238,7 @@ OsgAppProxy::PositionTrackingNode::PositionTrackingNode(std::string const& devNa
 }
 
 void OsgAppProxy::PositionTrackingNode::update() {
-	osg::Matrix mat(util::osg::toOsgMatrix(device->getData(gadget::PositionUnitConversion::ConvertToMeters)));
+	osg::Matrix mat(util::toOsgMatrix(device->getData(gadget::PositionUnitConversion::ConvertToMeters)));
 	if (positionOnly) {
 		osg::Matrix transMat;
 		transMat.setTrans(mat.getTrans());

@@ -16,7 +16,7 @@
 #include "Internal_PositionInterface.h"
 #include "ConvertOsgPtrToOsgLuaPtr.h"
 
-#include <util/osg/gmtlToOsgMatrix.h>
+#include <util/gmtlToOsgMatrix.h>
 
 // Library/third-party includes
 #include <gmtl/Generate.h>
@@ -35,7 +35,7 @@ inline gmtl::Matrix44f PositionInterface::_getData(const float scale) {
 }
 
 osg::Matrixd PositionInterface::getMatrix() {
-	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
+	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters));
 }
 
 osg::Vec3d PositionInterface::getPosition() {
@@ -44,20 +44,20 @@ osg::Vec3d PositionInterface::getPosition() {
 }
 
 osg::Vec4d PositionInterface::getOrientation() {
-	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate().asVec4();
+	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate().asVec4();
 }
 
 double PositionInterface::getQuatX() {
-	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[0];
+	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[0];
 }
 			double PositionInterface::getQuatY() {
-	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[1];
+	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[1];
 }
 			double PositionInterface::getQuatZ()  {
-	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[2];
+	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[2];
 }
 			double PositionInterface::getQuatW() {
-	return util::osg::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[3];
+	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[3];
 }
 
 osg::Vec3d PositionInterface::getForwardVector() {

@@ -12,8 +12,8 @@
 */
 
 #pragma once
-#ifndef _util_osg_gmtlToOsgMatrix_h_
-#define _util_osg_gmtlToOsgMatrix_h_
+#ifndef INCLUDED_gmtlToOsgMatrix_h_GUID_8edbb1ee_508f_43e1_858e_c11b7604eb0f
+#define INCLUDED_gmtlToOsgMatrix_h_GUID_8edbb1ee_508f_43e1_858e_c11b7604eb0f
 
 // Internal Includes
 // - none
@@ -28,16 +28,19 @@
 
 namespace util {
 
-namespace osg {
+/// @addtogroup FreeFunctions Free Functions
+/// @{
 
+/// Given a GMTL matrix, produce an equivalent OSG matrix
 inline ::osg::Matrix toOsgMatrix(const gmtl::Matrix44f & r) {
 	::osg::Matrix temp;
 	temp.set(r.getData());
 	return temp;
 }
 
-} // end of osg namespace
+/// @}
 
 } // end of util namespace
 
-#endif // _util_osg_gmtlToOsgMatrix_h_
+#endif // INCLUDED_gmtlToOsgMatrix_h_GUID_8edbb1ee_508f_43e1_858e_c11b7604eb0f
+
