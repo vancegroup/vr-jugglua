@@ -45,11 +45,6 @@
 #include <boost/preprocessor/iteration/iterate.hpp>
 #include <boost/utility/enable_if.hpp>
 
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 4100)
-#endif
-
 namespace luabind {
 
 namespace detail 
@@ -230,7 +225,7 @@ LUABIND_BINARY_OP_DEF(<, lua_lessthan)
       value_wrapper_traits<ValueWrapper>::unwrap(interpreter
         , static_cast<ValueWrapper const&>(v));
 		char const* p = lua_tostring(interpreter, -1);
-		int len = lua_strlen(interpreter, -1);
+        std::size_t len = lua_strlen(interpreter, -1);
 		std::copy(p, p + len, std::ostream_iterator<char>(os));
 		return os;
 	}
@@ -262,7 +257,7 @@ LUABIND_BINARY_OP_DEF(<, lua_lessthan)
   typename enable_binary<bool,LHS,RHS>::type 
   operator!=(LHS const& lhs, RHS const& rhs)
   {
-      return !(lhs < rhs);
+      return !(lhs == rhs);
   }
 
   template<class ValueWrapper, class Arguments>
@@ -1408,9 +1403,6 @@ object property(GetValueWrapper const& get, SetValueWrapper const& set)
 
 
 } // namespace luabind
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
 
 #endif // LUABIND_OBJECT_050419_HPP
 

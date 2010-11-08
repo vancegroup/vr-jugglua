@@ -45,6 +45,7 @@ set(LUABIND_API
 	../luabind/lua_include.hpp
 	../luabind/make_function.hpp
 	../luabind/nil.hpp
+	../luabind/no_dependency.hpp
 	../luabind/object.hpp
 	../luabind/open.hpp
 	../luabind/operator.hpp
@@ -78,7 +79,6 @@ set(LUABIND_DETAIL_API
 	../luabind/detail/enum_maker.hpp
 	../luabind/detail/format_signature.hpp
 	../luabind/detail/garbage_collector.hpp
-	../luabind/detail/get_signature.hpp
 	../luabind/detail/has_get_pointer.hpp
 	../luabind/detail/inheritance.hpp
 	../luabind/detail/instance_holder.hpp
@@ -103,16 +103,14 @@ set(LUABIND_DETAIL_API
 	../luabind/detail/yes_no.hpp)
 
 set(LUABIND_EXTRA_LIBS)
-if(WIN32)
+if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251")
-elseif(APPLE)
-
-else() # Linux
+elseif(CMAKE_COMPILER_IS_GNUCXX)
 	list(APPEND LUABIND_EXTRA_LIBS m)
 endif()
 
 add_library(luabind ${LUABIND_SRCS})
-target_link_libraries(luabind lua ${LUABIND_EXTRA_LIBS})
+target_link_libraries(luabind ${LUA_LIBRARIES} ${LUABIND_EXTRA_LIBS})
 
 set_property(TARGET
 	luabind
