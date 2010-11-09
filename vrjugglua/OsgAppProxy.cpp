@@ -15,7 +15,7 @@
 // Internal Includes
 #include "OsgAppProxy.h"
 
-#include "ConvertOsgPtrToOsgLuaPtr.h"
+#include "osgLuaBind.h"
 
 #include "VRJLuaOutput.h"
 #include <util/gmtlToOsgMatrix.h>

@@ -13,6 +13,9 @@
 */
 
 // Local includes
+#ifndef LUABIND_COMBINED_COMPILE
+#include "osgLuaBind.h"
+#endif
 #include "BindKernelToLua.h"
 #include <vrjugglua/VRJLuaOutput.h>
 

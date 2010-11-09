@@ -40,7 +40,7 @@ set(SOURCES
 	VRJLuaConfig.h.in)
 
 set(API
-	ConvertOsgPtrToOsgLuaPtr.h
+	osgLuaBind.h
 	Internal_AnalogInterface.h
 	Internal_DigitalInterface.h
 	Internal_PositionInterface.h

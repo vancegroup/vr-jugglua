@@ -13,6 +13,9 @@
 */
 
 // Local includes
+#ifndef LUABIND_COMBINED_COMPILE
+#include "osgLuaBind.h"
+#endif
 #include "OsgHelpers.h"
 
 #include "../LuaIncludeFull.h"

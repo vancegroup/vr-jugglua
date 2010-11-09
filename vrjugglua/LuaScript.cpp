@@ -22,6 +22,8 @@
 
 #ifdef LUABIND_COMBINED_COMPILE
 
+#	include "osgLuaBind.h"
+
 #	include "binding_detail/BindOsgToLua.cpp"
 
 #	include "binding_detail/BindKernelToLua.cpp"
