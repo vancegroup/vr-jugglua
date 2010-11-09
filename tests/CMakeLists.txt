@@ -27,3 +27,9 @@ foreach(script ${LUA_TEST_SCRIPTS})
         $<TARGET_FILE:vrjlua>
         "${LUA_TEST_DIR}/${script}.lua")
 endforeach()
+
+add_boost_test(OsgPointers
+	SOURCES
+	OsgPointers.cpp
+	LIBRARIES
+	vrjugglua)
