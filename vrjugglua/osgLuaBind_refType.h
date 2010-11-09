@@ -21,7 +21,11 @@
 // - none
 
 // Standard includes
-// - none
+#include <iostream>
+
+#ifndef _STRINGIFY
+#define _STRINGIFY(X) #X
+#endif
 
 namespace luabind
 {
@@ -32,6 +36,18 @@ namespace luabind
         static int compute_score(lua_State* L, int index)
         {
 			/// @todo actually figure out what's good and what's not
+			osgLua::Value * v = osgLua::Value::get(L, index);
+			if (!v) {
+				return -1;
+			}
+			static const osgIntrospection::Type& destType =
+				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
+			if (v->get().getType() == destType) {
+				std::cout << "Exact match for type named " << _STRINGIFY(OSG_QUALIFIED_TYPENAME) << std::endl;
+				return 1;
+			} else if (v->get().getType().isSubclassOf(destType)) {
+				return 0;
+			}
         	return -1;
             return lua_type(L, index) == LUA_TUSERDATA ? 0 : -1;
         }
