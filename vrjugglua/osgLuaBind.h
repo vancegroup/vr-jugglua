@@ -51,4 +51,8 @@
 #include <osg/Vec4d>
 #include "osgLuaBind_valType.h"
 
+#define OSG_QUALIFIED_TYPENAME osg::Quat
+#include <osg/Quat>
+#include "osgLuaBind_valType.h"
+
 #endif // INCLUDED_vrjugglua_osgLuaBind_h
