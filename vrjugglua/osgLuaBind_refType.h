@@ -51,12 +51,22 @@ namespace luabind
         	return -1;
             return lua_type(L, index) == LUA_TUSERDATA ? 0 : -1;
         }
+        
+        int match(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index)
+		{
+		    return compute_score(L, index);
+		}
 
         OSG_QUALIFIED_TYPENAME* from(lua_State* L, int index)
         {
         	/// @todo implement
             return NULL;
         }
+        
+        OSG_QUALIFIED_TYPENAME* apply(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index)
+		{
+			return from(L, index);
+		}
 
         void to(lua_State* L, OSG_QUALIFIED_TYPENAME* const& x)
         {
