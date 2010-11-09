@@ -27,44 +27,12 @@
 
 #include <osgLua/Value.h>
 
-#include <osg/Vec3d>
+
 
 // Standard includes
 #ifdef VERBOSE
 #include <iostream>
 #endif
-
-namespace luabind
-{
-    template <>
-    struct default_converter<osg::Vec3d>
-      : native_converter_base<osg::Vec3d>
-    {
-        static int compute_score(lua_State* L, int index)
-        {
-			/// @todo actually figure out what's good and what's not
-        	return -1;
-            return lua_type(L, index) == LUA_TUSERDATA ? 0 : -1;
-        }
-
-        osg::Vec3d from(lua_State* L, int index)
-        {
-        	/// @todo implement
-            return osg::Vec3d();
-        }
-
-        void to(lua_State* L, osg::Vec3d const& x)
-        {
-        	osgLua::Value::push(L, x);
-        }
-    };
-
-    template <>
-    struct default_converter<osg::Vec3d const&>
-      : default_converter<osg::Vec3d>
-    {};
-}
-
 
 namespace vrjLua {
 
