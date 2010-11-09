@@ -18,6 +18,13 @@ testapp = {
 
 		print("Setting up digital interface")
 		self.button = gadget.DigitalInterface("VJButton0")
+		
+		self.transform = osg.MatrixTransform()
+		geode = osg.Geode()
+		shape = osg.ShapeDrawable()
+		shape:setShape( osg.Sphere(osg.Vec3(0,0,0),15) )
+		geode:addDrawable(shape)
+		self.transform:addChild(geode)
 
 
 		-- If we get this far, set up a shutdown preframe
@@ -27,6 +34,7 @@ testapp = {
 			local pos = self.head:getPosition()
 			print(string.format("Position: %f, %f, %f", pos:x(), pos:y(), pos:z()))
 			local mat = self.head:getMatrix()
+			self.transform:setMatrix(mat)
 			
 			self.counter = self.counter + 1
 			print("Counter at " .. tostring(self.counter))
