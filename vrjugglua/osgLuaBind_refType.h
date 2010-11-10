@@ -34,15 +34,21 @@ namespace luabind
 			/// @todo actually figure out what's good and what's not
 			osgLua::Value * v = osgLua::Value::get(L, index);
 			if (!v) {
+				std::cout << "Not a osgLua value" << std::endl;
 				return -1;
 			}
 			static const osgIntrospection::Type& destType =
 				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
-			if (v->get().getType() == destType) {
+			const osgIntrospection::Type& type = v->get().getType();
+				
+			std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
+			std::cout << "Value type: " << v->get().getType().getQualifiedName() << std::endl;
+			
+			if (type == destType) {
 				std::cout << "Exact match for type!" << std::endl;
 				return 1;
-			} else if (v->get().getType().isSubclassOf(destType)) {
-				std::cout << "Subclass match for type." << std::endl;
+			} else if (osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME*>(v->get()) != NULL) {
+				std::cout << "Convertible match for type." << std::endl;
 				return 0;
 			}
         	return -1;
