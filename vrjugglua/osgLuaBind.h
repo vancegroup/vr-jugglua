@@ -36,15 +36,15 @@ namespace luabind
 		static int compute_score(lua_State* L, int index) {
 			osgLua::Value * v = osgLua::Value::get(L, index);
 			if (!v) {
-				//std::cout << "Not a osgLua value" << std::endl;
+				std::cout << "Not a osgLua value" << std::endl;
 				return -1;
 			}
 			static const osgIntrospection::Type& destType =
 				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
 			const osgIntrospection::Type& type = v->get().getType();
 
-			//std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
-			//std::cout << "Value type: " << v->get().getType().getQualifiedName() << std::endl;
+			std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
+			std::cout << "Value type: " << v->get().getType().getQualifiedName() << std::endl;
 
 			if (type == destType) {
 				std::cout << "Exact match for type!" << std::endl;
