@@ -36,4 +36,5 @@ add_boost_test(OsgPointers
 	TESTS
 	ExactMatch
 	SingleConversion
-	MultipleConversion)
+	MultipleConversion
+	InvalidConversion)

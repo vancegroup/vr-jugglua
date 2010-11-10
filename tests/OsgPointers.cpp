@@ -56,3 +56,8 @@ BOOST_AUTO_TEST_CASE(MultipleConversion) {
 	BOOST_CHECK(f.s.runString("node = osg.PositionAttitudeTransform(); nodeFunc(node)"));
 }
 
+BOOST_AUTO_TEST_CASE(InvalidConversion) {
+	Fixture f;
+	BOOST_CHECK_EQUAL(f.s.runString("node = osg.Matrix(); nodeFunc(node)"), false);
+}
+
