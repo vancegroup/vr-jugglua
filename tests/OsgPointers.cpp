@@ -40,8 +40,19 @@ struct Fixture {
 
 };
 
-BOOST_AUTO_TEST_CASE(DefaultConstruction) {
+BOOST_AUTO_TEST_CASE(ExactMatch) {
 	Fixture f;
-	f.s.runString("node = osg.Node(); nodeFunc(node)");
+	BOOST_CHECK(f.s.runString("node = osg.Node(); nodeFunc(node)"));
+}
+
+
+BOOST_AUTO_TEST_CASE(SingleConversion) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("node = osg.Group(); nodeFunc(node)"));
+}
+
+BOOST_AUTO_TEST_CASE(MultipleConversion) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("node = osg.PositionAttitudeTransform(); nodeFunc(node)"));
 }
 

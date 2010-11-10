@@ -32,4 +32,8 @@ add_boost_test(OsgPointers
 	SOURCES
 	OsgPointers.cpp
 	LIBRARIES
-	vrjugglua)
+	vrjugglua
+	TESTS
+	ExactMatch
+	SingleConversion
+	MultipleConversion)
