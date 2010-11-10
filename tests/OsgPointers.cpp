@@ -19,7 +19,7 @@
 
 // Standard includes
 #include <iostream>
-
+#include <iomanip>
 
 using namespace boost::unit_test;
 using namespace vrjLua;
@@ -33,12 +33,26 @@ void vecFunc(osg::Vec3d vec) {
 	std::cout << "Got the vector " << vec.x() << "," << vec.y() << "," << vec.z() << std::endl;
 }
 
+void matrixFunc(osg::Matrixd mat) {
+	std::cout << "Got the matrix:" << std::endl;
+	for (unsigned int row = 0; row < 4; ++row) {
+		for (unsigned int col = 0; col < 4; ++col) {
+			std::cout << std::setw(10) << mat(row, col);
+			if (col != 3) {
+				std::cout << ", ";
+			}
+		}
+		std::cout << std::endl;
+	}
+}
+
 struct Fixture {
 	Fixture() {
 		LuaStatePtr ptr(s.getLuaState().lock());
 		module(ptr.get())[
 			def("nodeFunc", &nodeFunc),
-			def("vecFunc", &vecFunc)
+			def("vecFunc", &vecFunc),
+			def("matrixFunc", &matrixFunc)
 		];
 	}
 	LuaScript s;
@@ -96,4 +110,36 @@ BOOST_AUTO_TEST_CASE(ValInvalidValConversion) {
 	Fixture f;
 	BOOST_CHECK(!f.s.runString("vec = osg.Matrix(); vecFunc(vec)"));
 }
+
+
+BOOST_AUTO_TEST_CASE(MatrixExactMatch) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("mat = osg.Matrixd(); matrixFunc(mat)"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixSingleConversion) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("mat = osg.Matrix(); matrixFunc(mat)"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixSingleConversionFromFloat) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("mat = osg.Matrixf(); matrixFunc(mat)"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixExactMatchFromRef) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("mat = osg.RefMatrixd(); matrixFunc(mat)"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixSingleConversionFromRef) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("mat = osg.RefMatrix(); matrixFunc(mat)"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixSingleConversionFromFloatRef) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("mat = osg.RefMatrixf(); matrixFunc(mat)"));
+}
+
 

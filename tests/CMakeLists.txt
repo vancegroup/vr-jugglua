@@ -43,4 +43,10 @@ add_boost_test(OsgPointers
 	ValSingleConversion
 	ValSingleConversionFromFloat
 	ValInvalidConversion
-	ValInvalidValConversion)
+	ValInvalidValConversion
+	MatrixExactMatch
+	MatrixSingleConversion
+	MatrixSingleConversionFromFloat
+	MatrixExactMatchFromRef
+	MatrixSingleConversionFromRef
+	MatrixSingleConversionFromFloatRef)
