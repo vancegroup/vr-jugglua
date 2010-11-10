@@ -76,6 +76,10 @@ namespace luabind
 		OSG_QUALIFIED_TYPENAME* apply(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index) {
 			return from(L, index);
 		}
+		
+		void apply(lua_State* L, OSG_QUALIFIED_TYPENAME* const& value) {
+			to(L, value);
+		}
 
 		void to(lua_State* L, OSG_QUALIFIED_TYPENAME* const& x) {
 			osgLua::Value::push(L, x);
