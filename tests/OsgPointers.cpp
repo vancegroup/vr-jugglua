@@ -29,35 +29,62 @@ void nodeFunc(osg::Node * node) {
 	std::cout << "Got the pointer " << node << std::endl;
 }
 
+void vecFunc(osg::Vec3d vec) {
+	std::cout << "Got the vector " << vec.x() << "," << vec.y() << "," << vec.z() << std::endl;
+}
+
 struct Fixture {
 	Fixture() {
 		LuaStatePtr ptr(s.getLuaState().lock());
 		module(ptr.get())[
-			def("nodeFunc", &nodeFunc)
+			def("nodeFunc", &nodeFunc),
+			def("vecFunc", &vecFunc)
 		];
 	}
 	LuaScript s;
 
 };
 
-BOOST_AUTO_TEST_CASE(ExactMatch) {
+BOOST_AUTO_TEST_CASE(RefExactMatch) {
 	Fixture f;
 	BOOST_CHECK(f.s.runString("node = osg.Node(); nodeFunc(node)"));
 }
 
 
-BOOST_AUTO_TEST_CASE(SingleConversion) {
+BOOST_AUTO_TEST_CASE(RefSingleConversion) {
 	Fixture f;
 	BOOST_CHECK(f.s.runString("node = osg.Group(); nodeFunc(node)"));
 }
 
-BOOST_AUTO_TEST_CASE(MultipleConversion) {
+BOOST_AUTO_TEST_CASE(RefMultipleConversion) {
 	Fixture f;
 	BOOST_CHECK(f.s.runString("node = osg.PositionAttitudeTransform(); nodeFunc(node)"));
 }
 
-BOOST_AUTO_TEST_CASE(InvalidConversion) {
+BOOST_AUTO_TEST_CASE(RefInvalidConversion) {
 	Fixture f;
-	BOOST_CHECK_EQUAL(f.s.runString("node = osg.Matrix(); nodeFunc(node)"), false);
+	BOOST_CHECK(!f.s.runString("node = osg.Matrix(); nodeFunc(node)"));
+}
+
+BOOST_AUTO_TEST_CASE(ValExactMatch) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("vec = osg.Vec3d(); vecFunc(vec)"));
+}
+
+
+BOOST_AUTO_TEST_CASE(ValSingleConversion) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("vec = osg.Vec3(); vecFunc(vec)"));
+}
+
+BOOST_AUTO_TEST_CASE(ValSingleConversionFromFloat) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("vec = osg.Vec3f(); vecFunc(vec)"));
+}
+
+
+BOOST_AUTO_TEST_CASE(ValInvalidConversion) {
+	Fixture f;
+	BOOST_CHECK(!f.s.runString("vec = osg.Node(); vecFunc(vec)"));
 }
 

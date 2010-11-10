@@ -34,7 +34,11 @@ add_boost_test(OsgPointers
 	LIBRARIES
 	vrjugglua
 	TESTS
-	ExactMatch
-	SingleConversion
-	MultipleConversion
-	InvalidConversion)
+	RefExactMatch
+	RefSingleConversion
+	RefMultipleConversion
+	RefInvalidConversion
+	ValExactMatch
+	ValSingleConversion
+	ValSingleConversionFromFloat
+	ValInvalidConversion)
