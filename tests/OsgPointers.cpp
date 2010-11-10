@@ -66,11 +66,16 @@ BOOST_AUTO_TEST_CASE(RefInvalidConversion) {
 	BOOST_CHECK(!f.s.runString("node = osg.Matrix(); nodeFunc(node)"));
 }
 
+BOOST_AUTO_TEST_CASE(RefInvalidRefConversion) {
+	Fixture f;
+	BOOST_CHECK(!f.s.runString("node = osg.RefMatrix(); nodeFunc(node)"));
+}
+
+
 BOOST_AUTO_TEST_CASE(ValExactMatch) {
 	Fixture f;
 	BOOST_CHECK(f.s.runString("vec = osg.Vec3d(); vecFunc(vec)"));
 }
-
 
 BOOST_AUTO_TEST_CASE(ValSingleConversion) {
 	Fixture f;
@@ -82,9 +87,13 @@ BOOST_AUTO_TEST_CASE(ValSingleConversionFromFloat) {
 	BOOST_CHECK(f.s.runString("vec = osg.Vec3f(); vecFunc(vec)"));
 }
 
-
 BOOST_AUTO_TEST_CASE(ValInvalidConversion) {
 	Fixture f;
 	BOOST_CHECK(!f.s.runString("vec = osg.Node(); vecFunc(vec)"));
+}
+
+BOOST_AUTO_TEST_CASE(ValInvalidValConversion) {
+	Fixture f;
+	BOOST_CHECK(!f.s.runString("vec = osg.Matrix(); vecFunc(vec)"));
 }
 
