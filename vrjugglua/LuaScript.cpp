@@ -181,7 +181,16 @@ bool LuaScript::runString(const std::string & str) {
 
 	int ret = luaL_dostring(_state.get(), str.c_str());
 	if (ret != 0) {
-		doPrint("vrjLua ERROR: Could not run provided Lua string");
+		std::string err;
+		try {
+			luabind::object o(luabind::from_stack(_state.get(), -1));
+			err = "  Lua returned this error message: " + luabind::object_cast<std::string>(o);
+		} catch (...) {
+			// do nothing - couldn't get an error string
+			err = "  Furthermore, we couldn't get error details from Lua.";
+		}
+			
+		doPrint("vrjLua ERROR: Could not run provided Lua string." + err);
 		return false;
 	} else {
 		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
