@@ -145,42 +145,8 @@ LuaScript & LuaScript::operator=(const LuaScript & other) {
 	return *this;
 }
 
-bool LuaScript::runFile(const std::string & fn) {
-	if (!_state) {
-		throw NoValidLuaState();
-	}
-	try {
-		luabind::call_function<void>(_state.get(), "dofile", fn);
-	} catch (std::exception & e) {
-		doPrint(std::string("vrjLua ERROR: Could not run Lua file ") + fn + " - error: " + e.what());
-		VRJLUA_MSG_START(dbgVRJLUA, MSG_ERROR)
-				<< "Could not run Lua file " << fn << " - error: " << e.what()
-				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_ERROR);
-		return false;
-	}
-	return true;
-}
-
-bool LuaScript::requireModule(const std::string & mod) {
-	if (!_state) {
-		throw NoValidLuaState();
-	}
-	try {
-		luabind::call_function<void>(_state.get(), "require", mod);
-	} catch (std::exception & e) {
-		doPrint(std::string("vrjLua ERROR: Could not load Lua module ") + mod + " - error: " + e.what());
-		return false;
-	}
-	return true;
-}
-
-bool LuaScript::runString(const std::string & str) {
-	if (!_state) {
-		throw NoValidLuaState();
-	}
-
-	int ret = luaL_dostring(_state.get(), str.c_str());
-	if (ret != 0) {
+bool LuaScript::_handleLuaReturnCode(int returnVal, std::string const& failureMsg, std::string const& successMsg) {
+	if (returnVal != 0) {
 		std::string err;
 		try {
 			luabind::object o(luabind::from_stack(_state.get(), -1));
@@ -190,14 +156,55 @@ bool LuaScript::runString(const std::string & str) {
 			err = "  Furthermore, we couldn't get error details from Lua.";
 		}
 			
-		doPrint("vrjLua ERROR: Could not run provided Lua string." + err);
+		doPrint(failureMsg + err);
 		return false;
 	} else {
+		if (!successMsg.empty()) {
+			VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+				<< successMsg
+				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
+		}
+		return true;
+	}
+}
+
+bool LuaScript::runFile(const std::string & fn, bool silentSuccess) {
+	if (!_state) {
+		throw NoValidLuaState();
+	}
+	int ret = luaL_dofile(_state.get(), fn.c_str());
+	return _handleLuaReturnCode(ret,
+		std::string("vrjLua ERROR: Could not run Lua file ") + fn + ".",
+		silentSuccess ? "" : std::string("Successfully ran Lua file ") + fn);
+}
+
+bool LuaScript::requireModule(const std::string & mod, bool silentSuccess) {
+	if (!_state) {
+		throw NoValidLuaState();
+	}
+	try {
+		luabind::call_function<void>(_state.get(), "require", mod);
+	} catch (std::exception & e) {
+		doPrint(std::string("vrjLua ERROR: Could not load Lua module ") + mod + " - error: " + e.what());
+		return false;
+	}
+	if (!silentSuccess) {
 		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
-			<< "Lua string executed successfully."
+			<< "Successfully loaded Lua module " << mod
 			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
 	}
 	return true;
+}
+
+bool LuaScript::runString(const std::string & str, bool silentSuccess) {
+	if (!_state) {
+		throw NoValidLuaState();
+	}
+
+	int ret = luaL_dostring(_state.get(), str.c_str());
+	return _handleLuaReturnCode(ret,
+		"vrjLua ERROR: Could not run provided Lua string.",
+		silentSuccess ? "" : "Lua string executed successfully.");
 }
 
 void LuaScript::_applyBindings() {
@@ -242,12 +249,18 @@ void LuaScript::_applyBindings() {
 	*/
 }
 
-bool LuaScript::call(const std::string & func) {
+bool LuaScript::call(const std::string & func, bool silentSuccess) {
 	if (!_state) {
 		throw NoValidLuaState();
 	}
 	try {
 		return luabind::call_function<bool>(_state.get(), func.c_str());
+		
+		if (!silentSuccess) {
+			VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+				<< "Successfully called Lua function  " << func
+				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
+		}
 	} catch (const std::exception & e) {
 		std::cerr << "Caught exception calling '" << func << "': " << e.what() << std::endl;
 		throw;

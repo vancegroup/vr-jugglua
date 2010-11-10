@@ -55,10 +55,10 @@ class LuaScript {
 
 		LuaScript & operator=(const LuaScript & other);
 
-		bool runFile(const std::string & fn);
-		bool runString(const std::string & str);
-		bool requireModule(const std::string & mod);
-		bool call(const std::string & func);
+		bool runFile(const std::string & fn, bool silentSuccess = true);
+		bool runString(const std::string & str, bool silentSuccess = false);
+		bool requireModule(const std::string & mod, bool silentSuccess = true);
+		bool call(const std::string & func, bool silentSuccess = true);
 
 		void setPrintFunction(boost::function<void (std::string const&)> func);
 		static void doPrint(std::string const& str);
@@ -75,6 +75,7 @@ class LuaScript {
 
 	protected:
 		static boost::function<void (std::string const&)> _printFunc;
+		bool _handleLuaReturnCode(int returnVal, std::string const& failureMsg, std::string const& successMsg = "");
 		void _applyBindings();
 		LuaStatePtr _state;
 };
