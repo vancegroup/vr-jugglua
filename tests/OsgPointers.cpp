@@ -42,5 +42,6 @@ struct Fixture {
 
 BOOST_AUTO_TEST_CASE(DefaultConstruction) {
 	Fixture f;
+	f.s.runString("node = osg.Node(); nodeFunc(node)");
 }
 
