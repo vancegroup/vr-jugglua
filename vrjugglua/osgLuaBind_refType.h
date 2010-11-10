@@ -23,10 +23,6 @@
 // Standard includes
 #include <iostream>
 
-#ifndef _STRINGIFY
-#define _STRINGIFY(X) #X
-#endif
-
 namespace luabind
 {
     template <>
@@ -43,9 +39,10 @@ namespace luabind
 			static const osgIntrospection::Type& destType =
 				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
 			if (v->get().getType() == destType) {
-				std::cout << "Exact match for type named " << _STRINGIFY(OSG_QUALIFIED_TYPENAME) << std::endl;
+				std::cout << "Exact match for type!" << std::endl;
 				return 1;
 			} else if (v->get().getType().isSubclassOf(destType)) {
+				std::cout << "Subclass match for type." << std::endl;
 				return 0;
 			}
         	return -1;
@@ -59,8 +56,11 @@ namespace luabind
 
         OSG_QUALIFIED_TYPENAME* from(lua_State* L, int index)
         {
-        	/// @todo implement
-            return NULL;
+        	osgLua::Value * v = osgLua::Value::get(L, index);
+			if (!v) {
+				return NULL;
+			}
+        	return osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME*>(v->get());
         }
         
         OSG_QUALIFIED_TYPENAME* apply(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index)
