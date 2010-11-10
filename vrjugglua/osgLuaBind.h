@@ -1,5 +1,6 @@
 /**	@file	osgLuaBind.h
-	@brief	header
+	@brief	header with template specializations providing Luabind-compatible
+		conversions to/from osgLua values
 
 	@date
 	2009-2010
