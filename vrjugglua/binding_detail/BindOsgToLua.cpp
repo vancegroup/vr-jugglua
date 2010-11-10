@@ -14,7 +14,7 @@
 
 // Local includes
 #ifndef LUABIND_COMBINED_COMPILE
-#include "osgLuaBind.h"
+#include <vrjugglua/osgLuaBind.h>
 #endif
 #include "BindOsgToLua.h"
 #include "OsgHelpers.h"
