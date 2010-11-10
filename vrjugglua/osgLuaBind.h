@@ -46,17 +46,22 @@ namespace luabind
 			std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
 			std::cout << "Value type: " << v->get().getType().getQualifiedName() << std::endl;
 
-			if (type == destType) {
-				std::cout << "Exact match for type!" << std::endl;
-				return 2;
-			} else if (osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME*>(v->get()) != NULL) {
-				if (osgIntrospection::requires_conversion<OSG_QUALIFIED_TYPENAME*>(v->get())) {
-					std::cout << "Convertible match for type." << std::endl;
-					return 0;
-				} else {
-					std::cout << "Polymorphic match for type." << std::endl;
-					return 1;
+			try {
+				if (type == destType) {
+					std::cout << "Exact match for type!" << std::endl;
+					return 2;
+				} else if (osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME*>(v->get()) != NULL) {
+					if (osgIntrospection::requires_conversion<OSG_QUALIFIED_TYPENAME*>(v->get())) {
+						std::cout << "Convertible match for type." << std::endl;
+						return 0;
+					} else {
+						std::cout << "Polymorphic match for type." << std::endl;
+						return 1;
+					}
 				}
+			} catch (...) {
+				/// @todo make this catch only osgIntrospection exceptions
+				return -1;
 			}
 			return -1;
 		}
