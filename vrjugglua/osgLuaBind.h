@@ -88,24 +88,32 @@ namespace luabind
 		static int compute_score(lua_State* L, int index) {
 			osgLua::Value * v = osgLua::Value::get(L, index);
 			if (!v) {
-				//std::cout << "Not a osgLua value" << std::endl;
+				std::cout << "Not a osgLua value" << std::endl;
 				return -1;
 			}
 			static const osgIntrospection::Type& destType =
 				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME>());
 			const osgIntrospection::Type& type = v->get().getType();
 
-			//std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
-			//std::cout << "Value type: " << v->get().getType().getQualifiedName() << std::endl;
+			std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
+			std::cout << "Value type: " << type.getQualifiedName() << std::endl;
 
 			if (type == destType) {
-				//std::cout << "Exact match for type!" << std::endl;
+				std::cout << "Exact match for type!" << std::endl;
+				return 2;
+			} else if (type.isSubclassOf(destType)) {
+				std::cout << "Convertible match for type." << std::endl;
 				return 1;
-			} else if (osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME>(v->get()) != NULL) {
-				//std::cout << "Convertible match for type." << std::endl;
-				return 0;
+			} else {
+				// attempting conversion
+				try {
+					OSG_QUALIFIED_TYPENAME temp = osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME>(v->get());
+				} catch (...) {
+					return -1;
+				}
+				
+				return 0; // OK, convertible, so better than nothing
 			}
-			return -1;
 		}
 
 		OSG_QUALIFIED_TYPENAME from(lua_State* L, int index) {
