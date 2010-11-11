@@ -157,6 +157,17 @@ namespace luabind
 		struct default_converter<T* const&> \
 		  : default_converter<T*> \
 		{}; \
+		\
+		namespace detail {\
+			template <> \
+			struct type_to_string<T*> \
+			{ \
+				static void get(lua_State* L) \
+				{ \
+				    lua_pushstring(L, #T " *"); \
+				} \
+			}; \
+		}\
     }
 #endif
 
@@ -181,6 +192,17 @@ CREATE_OSGLUA_REFERENCE_CONVERTER(osg::Group);
 		struct default_converter<T const&> \
 		  : default_converter<T> \
 		{}; \
+		\
+		namespace detail {\
+			template <> \
+			struct type_to_string<T> \
+			{ \
+				static void get(lua_State* L) \
+				{ \
+				    lua_pushstring(L, #T); \
+				} \
+			}; \
+		}\
     }
 #endif
 
