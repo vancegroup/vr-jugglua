@@ -240,6 +240,15 @@ namespace luabind
 				    lua_pushstring(L, #T " *"); \
 				} \
 			}; \
+			\
+			template <> \
+			struct type_to_string< osg::ref_ptr<T> > \
+			{ \
+				static void get(lua_State* L) \
+				{ \
+				    lua_pushstring(L, "osg::ref_ptr<" #T ">"); \
+				} \
+			}; \
 		}\
     }
 #endif
