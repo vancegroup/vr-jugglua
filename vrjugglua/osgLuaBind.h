@@ -90,6 +90,74 @@ namespace luabind
 			osgLua::Value::push(L, x);
 		}
 	};
+	
+	template<typename OSG_QUALIFIED_TYPENAME>
+	struct osglua_ref_refptr_converter_base : native_converter_base< osg::ref_ptr<OSG_QUALIFIED_TYPENAME> > {
+		static int compute_score(lua_State* L, int index) {
+			osgLua::Value * v = osgLua::Value::get(L, index);
+			if (!v) {
+				std::cout << "Not a osgLua value" << std::endl;
+				return -1;
+			}
+			static const osgIntrospection::Type& destType =
+				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
+			const osgIntrospection::Type& type = v->get().getType();
+
+			std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
+			std::cout << "Value type: " << v->get().getType().getQualifiedName() << std::endl;
+
+			try {
+				if (type == destType) {
+					std::cout << "Exact match for type!" << std::endl;
+					return 2;
+				} else if (osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME*>(v->get()) != NULL) {
+					if (osgIntrospection::requires_conversion<OSG_QUALIFIED_TYPENAME*>(v->get())) {
+						std::cout << "Convertible match for type." << std::endl;
+						return 0;
+					} else {
+						std::cout << "Polymorphic match for type." << std::endl;
+						return 1;
+					}
+				}
+			} catch (...) {
+				/// @todo make this catch only osgIntrospection exceptions
+				return -1;
+			}
+			return -1;
+		}
+
+		int match(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index) {
+			return compute_score(L, index);
+		}
+		
+		int match(lua_State* L, detail::by_value<osg::ref_ptr<OSG_QUALIFIED_TYPENAME> >&, int index) {
+			return compute_score(L, index);
+		}
+
+		osg::ref_ptr<OSG_QUALIFIED_TYPENAME> from(lua_State* L, int index) {
+			osgLua::Value * v = osgLua::Value::get(L, index);
+			if (!v) {
+				return osg::ref_ptr<OSG_QUALIFIED_TYPENAME>();
+			}
+			return osg::ref_ptr<OSG_QUALIFIED_TYPENAME>(osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME*>(v->get()));
+		}
+
+		osg::ref_ptr<OSG_QUALIFIED_TYPENAME> apply(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index) {
+			return from(L, index);
+		}
+		
+		osg::ref_ptr<OSG_QUALIFIED_TYPENAME> apply(lua_State* L, detail::by_value<osg::ref_ptr<OSG_QUALIFIED_TYPENAME> >&, int index) {
+			return from(L, index);
+		}
+		
+		void apply(lua_State* L, osg::ref_ptr<OSG_QUALIFIED_TYPENAME> const& value) {
+			to(L, value);
+		}
+
+		void to(lua_State* L, osg::ref_ptr<OSG_QUALIFIED_TYPENAME> const& x) {
+			osgLua::Value::push(L, x.get());
+		}
+	};
 
 	/// Base class for converting osg value types to/from osgLua values
 	template<typename OSG_QUALIFIED_TYPENAME>
@@ -156,6 +224,11 @@ namespace luabind
 		template <> \
 		struct default_converter<T* const&> \
 		  : default_converter<T*> \
+		{}; \
+		\
+		template <> \
+		struct default_converter< osg::ref_ptr<T> > \
+		  : osglua_ref_refptr_converter_base<T> \
 		{}; \
 		\
 		namespace detail {\
