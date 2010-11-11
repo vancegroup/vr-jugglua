@@ -39,6 +39,11 @@ add_boost_test(OsgPointers
 	RefMultipleConversion
 	RefInvalidConversion
 	RefInvalidRefConversion
+	RefPtrExactMatch
+	RefPtrSingleConversion
+	RefPtrMultipleConversion
+	RefPtrInvalidConversion
+	RefPtrInvalidRefConversion
 	ValExactMatch
 	ValSingleConversion
 	ValSingleConversionFromFloat

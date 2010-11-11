@@ -29,6 +29,10 @@ void nodeFunc(osg::Node * node) {
 	std::cout << "Got the pointer " << node << std::endl;
 }
 
+void groupFunc(osg::ref_ptr<osg::Group> group) {
+	std::cout << "Got the pointer " << group.get() << std::endl;
+}
+
 void vecFunc(osg::Vec3d vec) {
 	std::cout << "Got the vector " << vec.x() << "," << vec.y() << "," << vec.z() << std::endl;
 }
@@ -51,6 +55,7 @@ struct Fixture {
 		LuaStatePtr ptr(s.getLuaState().lock());
 		module(ptr.get())[
 			def("nodeFunc", &nodeFunc),
+			def("groupFunc", &groupFunc),
 			def("vecFunc", &vecFunc),
 			def("matrixFunc", &matrixFunc)
 		];
@@ -83,6 +88,33 @@ BOOST_AUTO_TEST_CASE(RefInvalidConversion) {
 BOOST_AUTO_TEST_CASE(RefInvalidRefConversion) {
 	Fixture f;
 	BOOST_CHECK(!f.s.runString("node = osg.RefMatrix(); nodeFunc(node)"));
+}
+
+
+BOOST_AUTO_TEST_CASE(RefPtrExactMatch) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("node = osg.Group(); groupFunc(node)"));
+}
+
+
+BOOST_AUTO_TEST_CASE(RefPtrSingleConversion) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("node = osg.Transform(); groupFunc(node)"));
+}
+
+BOOST_AUTO_TEST_CASE(RefPtrMultipleConversion) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("node = osg.PositionAttitudeTransform(); groupFunc(node)"));
+}
+
+BOOST_AUTO_TEST_CASE(RefPtrInvalidConversion) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("node = osg.Matrix(); groupFunc(node)"));
+}
+
+BOOST_AUTO_TEST_CASE(RefPtrInvalidRefConversion) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("node = osg.RefMatrix(); groupFunc(node)"));
 }
 
 
