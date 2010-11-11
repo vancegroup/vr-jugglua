@@ -109,12 +109,12 @@ BOOST_AUTO_TEST_CASE(RefPtrMultipleConversion) {
 
 BOOST_AUTO_TEST_CASE(RefPtrInvalidConversion) {
 	Fixture f;
-	BOOST_CHECK(f.s.runString("node = osg.Matrix(); groupFunc(node)"));
+	BOOST_CHECK(!f.s.runString("node = osg.Matrix(); groupFunc(node)"));
 }
 
 BOOST_AUTO_TEST_CASE(RefPtrInvalidRefConversion) {
 	Fixture f;
-	BOOST_CHECK(f.s.runString("node = osg.RefMatrix(); groupFunc(node)"));
+	BOOST_CHECK(!f.s.runString("node = osg.RefMatrix(); groupFunc(node)"));
 }
 
 
