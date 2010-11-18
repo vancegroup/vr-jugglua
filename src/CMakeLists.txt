@@ -112,7 +112,7 @@ endif()
 
 include("BundleOSGPlugins")
 
-#install_osg_plugins(OSG_PLUGINS)
+install_osg_plugins(OSG_PLUGINS)
 
 if(APPLE AND TARGET NavTestbed)
 	install_vrjuggler22_data_files(./NavTestbed.app)
@@ -122,4 +122,6 @@ else()
 	install_vrjuggler22_plugins(. VRJUGGLER22_INSTALLED_PLUGINS)
 endif()
 
-fixup_vrjuggler_app_bundle("NavTestbed" "bin" "${RUNTIME_LIBRARIES};${VRJUGGLER22_INSTALLED_PLUGINS};${OSGDB_PLUGINS_RELEASE};${OSGWRAPPER_PLUGINS_RELEASE}" "${RUNTIME_LIBRARY_DIRS}")
+if(TARGET NavTestbed)
+	fixup_vrjuggler_app_bundle("NavTestbed" "bin" "${RUNTIME_LIBRARIES};${VRJUGGLER22_INSTALLED_PLUGINS};${OSG_PLUGINS}" "${RUNTIME_LIBRARY_DIRS}")
+endif()
