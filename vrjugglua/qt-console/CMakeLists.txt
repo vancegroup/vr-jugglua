@@ -12,7 +12,8 @@ set(SOURCES
 
 set(MOCS
 	QTConsole.h)
-
+set(API
+	${MOCS})
 
 set(UIS QTConsoleMainWindow.ui)
 
