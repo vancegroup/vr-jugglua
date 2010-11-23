@@ -33,6 +33,8 @@
 #include <cstdlib>
 
 namespace vrjLua {
+
+static const double FEET_PER_METER = 3.2808399;
 /// Initialize static member variable
 OsgAppProxy* OsgAppProxy::_pApp = NULL;
 
@@ -134,8 +136,11 @@ void OsgAppProxy::initScene() {
 		std::exit(1);
 	}
 
-	// Create the top level node of the tree
-	_rootNode = new osg::Group();
+	// Create the top level node of the tree, transforming
+	// so that user apps use meters.
+	_rootNode = new osg::PositionAttitudeTransform();
+	_rootNode->setScale(osg::Vec3d(FEET_PER_METER, FEET_PER_METER, FEET_PER_METER));
+
 	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
 		<< "Number of children before forwarding call to delegate: " << _rootNode->getNumChildren()
 		<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
