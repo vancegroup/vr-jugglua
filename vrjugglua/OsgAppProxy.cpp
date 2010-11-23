@@ -27,6 +27,7 @@
 
 #include <osgDB/Registry>
 #include <osg/MatrixTransform>
+#include <osg/PositionAttitudeTransform>
 
 // Standard includes
 #include <cstring>
@@ -138,8 +139,9 @@ void OsgAppProxy::initScene() {
 
 	// Create the top level node of the tree, transforming
 	// so that user apps use meters.
-	_rootNode = new osg::PositionAttitudeTransform();
-	_rootNode->setScale(osg::Vec3d(FEET_PER_METER, FEET_PER_METER, FEET_PER_METER));
+	osg::ref_ptr<osg::PositionAttitudeTransform> xform = new osg::PositionAttitudeTransform();
+	xform->setScale(osg::Vec3d(FEET_PER_METER, FEET_PER_METER, FEET_PER_METER));
+	_rootNode = xform.get();
 
 	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
 		<< "Number of children before forwarding call to delegate: " << _rootNode->getNumChildren()
