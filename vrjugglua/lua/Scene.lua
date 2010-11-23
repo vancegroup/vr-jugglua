@@ -128,3 +128,15 @@ function Model(filename)
 		return nil
 	end
 end
+
+function Sphere(a)
+	local pos = osg.Vec3(0.0, 0.0, 0.0)
+	if a.position then
+		pos:set(unpack(a.position))
+	end
+	
+	local drbl = osg.ShapeDrawable(osg.Sphere(pos, a.radius or 1.0))
+	local geode = osg.Geode()
+	geode:addDrawable(drbl)
+	return geode
+end
