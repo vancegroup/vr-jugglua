@@ -45,28 +45,24 @@ void bindGadgetInterfacesToLua(LuaStatePtr state) {
 	luabind::scope position = class_<Internal::PositionInterface,
 			boost::shared_ptr<Internal::PositionInterface> >("PositionInterface")
 					.def(constructor<const std::string &>())
-					.def("getMatrix", & Internal::PositionInterface::getMatrix)
-					.def("getPosition", & Internal::PositionInterface::getPosition)
-					.def("getOrientation", & Internal::PositionInterface::getOrientation)
-					.def("getQuatX", & Internal::PositionInterface::getQuatX)
-					.def("getQuatY", & Internal::PositionInterface::getQuatY)
-					.def("getQuatZ", & Internal::PositionInterface::getQuatZ)
-					.def("getQuatW", & Internal::PositionInterface::getQuatW)
-					.def("getForwardVector", & Internal::PositionInterface::getForwardVector);
+					.def_readonly("matrix", & Internal::PositionInterface::getMatrix)
+					.def_readonly("position", & Internal::PositionInterface::getPosition)
+					.def_readonly("orientation", & Internal::PositionInterface::getOrientation)
+					.def_readonly("forwardVector", & Internal::PositionInterface::getForwardVector);
 
 	luabind::scope digital = class_<Internal::DigitalInterface,
 				boost::shared_ptr<Internal::DigitalInterface> >("DigitalInterface")
 					.def(constructor<const std::string &>())
-					.def("isPressed", & Internal::DigitalInterface::isPressed)
-					.def("isAChange", & Internal::DigitalInterface::isAChange)
-					.def("wasJustPressed", & Internal::DigitalInterface::wasJustPressed)
-					.def("wasJustReleased", & Internal::DigitalInterface::wasJustReleased);
+					.def_readonly("isPressed", & Internal::DigitalInterface::isPressed)
+					.def_readonly("isAChange", & Internal::DigitalInterface::isAChange)
+					.def_readonly("wasJustPressed", & Internal::DigitalInterface::wasJustPressed)
+					.def_readonly("wasJustReleased", & Internal::DigitalInterface::wasJustReleased);
 
 	luabind::scope analog = class_<Internal::AnalogInterface,
 			boost::shared_ptr<Internal::AnalogInterface> >("AnalogInterface")
 					.def(constructor<const std::string &>())
-					.def("getData", & Internal::AnalogInterface::getData)
-					.def("getCentered", & Internal::AnalogInterface::getCentered);
+					.def_readonly("data", & Internal::AnalogInterface::getData)
+					.def_readonly("centered", & Internal::AnalogInterface::getCentered);
 
 	module(state.get(), "gadget") [
 		position,
