@@ -30,7 +30,6 @@ if(APPLE AND CMAKE_SIZEOF_VOID_P EQUAL 8)
 endif()
 
 # Define Simple Options
-option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple - shorter full rebuild time, but longer incremental build time." OFF)
 option(BUILD_VERBOSE "Turn on lots of runtime output." off)
 if(NOT HIDE_FLTK)
 	option(BUILD_FLTK_GUI "Build FLTK-based GUI apps." on)

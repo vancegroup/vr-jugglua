@@ -20,29 +20,14 @@
 
 #include "VRJLuaOutput.h"
 
-#ifdef LUABIND_COMBINED_COMPILE
+#include "osgLuaBind.h"
+#include "binding_detail/BindOsgToLua.inl"
 
-#	include "osgLuaBind.h"
-
-#	include "binding_detail/BindOsgToLua.cpp"
-
-#	include "binding_detail/BindKernelToLua.cpp"
-#	include "binding_detail/BindSonixToLua.cpp"
-#	include "binding_detail/BindGadgetInterfacesToLua.cpp"
-#	include "binding_detail/BindRunBufferToLua.cpp"
-#	include "binding_detail/BindvrjLuaToLua.cpp"
-
-#else
-
-#	include "binding_detail/BindOsgToLua.h"
-
-#	include "binding_detail/BindKernelToLua.h"
-#	include "binding_detail/BindSonixToLua.h"
-#	include "binding_detail/BindGadgetInterfacesToLua.h"
-#	include "binding_detail/BindRunBufferToLua.h"
-#	include "binding_detail/BindvrjLuaToLua.h"
-
-#endif
+#include "binding_detail/BindKernelToLua.inl"
+#include "binding_detail/BindSonixToLua.inl"
+#include "binding_detail/BindGadgetInterfacesToLua.inl"
+#include "binding_detail/BindRunBufferToLua.inl"
+#include "binding_detail/BindvrjLuaToLua.inl"
 
 // Library/third-party includes
 #include <vrjugglua/LuaInclude.h>
