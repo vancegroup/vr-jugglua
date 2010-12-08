@@ -105,7 +105,7 @@ set(CMAKE_DEBUG_POSTFIX  "_d")
 
 # Boost
 # program_options added for the VR Juggler 3.0 compatibility work
-find_package(Boost 1.34.0 REQUIRED filesystem signals program_options)
+find_package(Boost 1.35.0 REQUIRED filesystem signals program_options)
 list(APPEND EXTRA_LIBS ${Boost_LIBRARIES})
 if(WIN32)
 	foreach(lib FILESYSTEM SYSTEM)

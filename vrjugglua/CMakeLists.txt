@@ -78,15 +78,6 @@ set(LUA_BINDING_SOURCES
 
 source_group("Binding Details" FILES ${LUA_BINDING_SOURCES})
 
-# If we have an older boost, work around it
-if(Boost_VERSION LESS 103500)
-	include_directories(bitsOfBoost143)
-	if(INSTALL_CXX_SDK)
-		install(DIRECTORY bitsOfBoost143/boost
-			DESTINATION ${INCLUDE_DIR})
-	endif()
-endif()
-
 add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API} ${GENERATED})
 set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API};${GENERATED}")
 target_link_libraries(vrjugglua ${EXTRA_LIBS})
