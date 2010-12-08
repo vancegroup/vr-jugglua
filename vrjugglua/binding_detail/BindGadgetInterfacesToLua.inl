@@ -45,24 +45,24 @@ void bindGadgetInterfacesToLua(LuaStatePtr state) {
 	luabind::scope position = class_<Internal::PositionInterface,
 			boost::shared_ptr<Internal::PositionInterface> >("PositionInterface")
 					.def(constructor<const std::string &>())
-					.def_readonly("matrix", & Internal::PositionInterface::getMatrix)
-					.def_readonly("position", & Internal::PositionInterface::getPosition)
-					.def_readonly("orientation", & Internal::PositionInterface::getOrientation)
-					.def_readonly("forwardVector", & Internal::PositionInterface::getForwardVector);
+					.property("matrix", & Internal::PositionInterface::getMatrix)
+					.property("position", & Internal::PositionInterface::getPosition)
+					.property("orientation", & Internal::PositionInterface::getOrientation)
+					.property("forwardVector", & Internal::PositionInterface::getForwardVector);
 
 	luabind::scope digital = class_<Internal::DigitalInterface,
 				boost::shared_ptr<Internal::DigitalInterface> >("DigitalInterface")
 					.def(constructor<const std::string &>())
-					.def_readonly("isPressed", & Internal::DigitalInterface::isPressed)
-					.def_readonly("isAChange", & Internal::DigitalInterface::isAChange)
-					.def_readonly("wasJustPressed", & Internal::DigitalInterface::wasJustPressed)
-					.def_readonly("wasJustReleased", & Internal::DigitalInterface::wasJustReleased);
+					.property("isPressed", & Internal::DigitalInterface::isPressed)
+					.property("isAChange", & Internal::DigitalInterface::isAChange)
+					.property("wasJustPressed", & Internal::DigitalInterface::wasJustPressed)
+					.property("wasJustReleased", & Internal::DigitalInterface::wasJustReleased);
 
 	luabind::scope analog = class_<Internal::AnalogInterface,
 			boost::shared_ptr<Internal::AnalogInterface> >("AnalogInterface")
 					.def(constructor<const std::string &>())
-					.def_readonly("data", & Internal::AnalogInterface::getData)
-					.def_readonly("centered", & Internal::AnalogInterface::getCentered);
+					.property("data", & Internal::AnalogInterface::getData)
+					.property("centered", & Internal::AnalogInterface::getCentered);
 
 	module(state.get(), "gadget") [
 		position,

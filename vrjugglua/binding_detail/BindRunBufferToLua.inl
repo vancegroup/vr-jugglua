@@ -39,7 +39,7 @@ void bindRunBufferToLua(LuaStatePtr state) {
 			.def("addFile", &SynchronizedRunBuffer::addFile)
 			.def("addString", &SynchronizedRunBuffer::addString)
 			.def("runBuffer", &SynchronizedRunBuffer::runBuffer)
-			.def_readonly("local", &SynchronizedRunBuffer::isLocal)
+			.property("local", &SynchronizedRunBuffer::isLocal)
 	];
 
 }
