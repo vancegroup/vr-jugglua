@@ -22,11 +22,20 @@ set(CPACK_SOURCE_PACKAGE_FILE_NAME "${PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-src
 # Set up options
 ###
 
+set(DEFAULT_QT_GUI off)
+if(APPLE AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+	# FLTK on Mac OS X 64-bit doesn't exist
+	set(HIDE_FLTK TRUE)
+	set(DEFAULT_QT_GUI on)
+endif()
+
 # Define Simple Options
 option(BUILD_LUABIND_COMBINED "Compile all luabind wrappers in a single CPP rather than multiple - shorter full rebuild time, but longer incremental build time." OFF)
 option(BUILD_VERBOSE "Turn on lots of runtime output." off)
-option(BUILD_FLTK_GUI "Build FLTK-based GUI apps." on)
-option(BUILD_QT_GUI "Build Qt-based GUI apps." off)
+if(NOT HIDE_FLTK)
+	option(BUILD_FLTK_GUI "Build FLTK-based GUI apps." on)
+endif()
+option(BUILD_QT_GUI "Build Qt-based GUI apps." DEFAULT_QT_GUI)
 
 option(INSTALL_CXX_SDK "Should we install the headers and libraries needed for C++ development using VRJLua?" on)
 
