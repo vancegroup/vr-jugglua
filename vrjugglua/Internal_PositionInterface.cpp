@@ -46,19 +46,6 @@ osg::Vec4d PositionInterface::getOrientation() {
 	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate().asVec4();
 }
 
-double PositionInterface::getQuatX() {
-	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[0];
-}
-			double PositionInterface::getQuatY() {
-	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[1];
-}
-			double PositionInterface::getQuatZ()  {
-	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[2];
-}
-			double PositionInterface::getQuatW() {
-	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate()[3];
-}
-
 osg::Vec3d PositionInterface::getForwardVector() {
 	gmtl::Vec4f fwd;
 	gmtl::xform(fwd, _iface->getData(gadget::PositionUnitConversion::ConvertToMeters), gmtl::Vec4f(0, 0, -1, 0));
