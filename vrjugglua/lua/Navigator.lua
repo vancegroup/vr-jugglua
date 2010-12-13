@@ -138,12 +138,12 @@ end
 local function useWandTranslation(nav, wand, button)
 	function nav:getTransVector()
 		local fwd = osg.Vec3d()
-		fwd:set(wand:getForwardVector())	
+		fwd:set(wand.forwardVector)
 		fwd:normalize()
 		return fwd
 	end
 	function nav:getGoalVel()
-		if button:isPressed() == true then
+		if button.isPressed then
 			-- Set our goal velocity
 			return self.max_vel
 		else
@@ -155,7 +155,7 @@ end
 
 local function useGamepadTranslation(nav, axisX, axisY, axisZ)
 	function nav:getTransVector()
-		local fwd = osg.Vec3d(axisX.getCentered(), axisY.getCentered, axisZ.getCentered)
+		local fwd = osg.Vec3d(axisX.centered, axisY.centered, axisZ.centered)
 		fwd:normalize()
 		return fwd
 	end
