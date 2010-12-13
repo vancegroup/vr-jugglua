@@ -13,10 +13,6 @@ endif()
 
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
-if(${Boost_VERSION} LESS 103500)
-	include_directories(../vrjugglua/bitsOfBoost143)
-endif()
-
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${VRJUGGLER_INCLUDE_DIRS})
 
