@@ -19,7 +19,7 @@ endif()
 
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
-include_directories(${VRJUGGLER22_INCLUDE_DIRS})
+include_directories(${VRJUGGLER_INCLUDE_DIRS})
 
 ###
 # Let the Lua files install themselves

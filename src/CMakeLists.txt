@@ -18,7 +18,7 @@ if(${Boost_VERSION} LESS 103500)
 endif()
 
 include_directories(${Boost_INCLUDE_DIRS})
-include_directories(${VRJUGGLER22_INCLUDE_DIRS})
+include_directories(${VRJUGGLER_INCLUDE_DIRS})
 
 ###
 # Standard Lua interpreter with VRJ and OSG automatically loaded
@@ -113,15 +113,22 @@ endif()
 include("BundleOSGPlugins")
 
 install_osg_plugins(OSG_PLUGINS)
+macro(installJuggler apploc)
+	if(BUILD_WITH_VRJ30)
+		install_vrjuggler30_data_files(${apploc})
+		install_vrjuggler30_plugins(${apploc} VRJUGGLER_INSTALLED_PLUGINS)
+	else()
+		install_vrjuggler22_data_files(${apploc})
+		install_vrjuggler22_plugins(${apploc} VRJUGGLER_INSTALLED_PLUGINS)
+	endif()
+endmacro()
 
 if(APPLE AND TARGET NavTestbed)
-	install_vrjuggler22_data_files(./NavTestbed.app)
-	install_vrjuggler22_plugins(./NavTestbed.app VRJUGGLER22_INSTALLED_PLUGINS)
+	installJuggler(./NavTestbed.app)
 else()
-	install_vrjuggler22_data_files(.)
-	install_vrjuggler22_plugins(. VRJUGGLER22_INSTALLED_PLUGINS)
+	installJuggler(.)
 endif()
 
 if(TARGET NavTestbed)
-	fixup_vrjuggler_app_bundle("NavTestbed" "bin" "${RUNTIME_LIBRARIES};${VRJUGGLER22_INSTALLED_PLUGINS};${OSG_PLUGINS}" "${RUNTIME_LIBRARY_DIRS}")
+	fixup_vrjuggler_app_bundle("NavTestbed" "bin" "${RUNTIME_LIBRARIES};${VRJUGGLER_INSTALLED_PLUGINS};${OSG_PLUGINS}" "${RUNTIME_LIBRARY_DIRS}")
 endif()
