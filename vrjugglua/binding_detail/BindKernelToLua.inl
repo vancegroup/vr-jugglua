@@ -46,8 +46,9 @@ bool KernelState::hasInitialized() {
 #if __VJ_version >= 2003000
 // Juggler 3.x - initialize the kernel
 boost::program_options::options_description KernelState::getVrjOptionsDescriptions() {
-	boost::program_options::options_description desc("VR Juggler 3.x Options").add(vrj::Kernel::getClusterOptions()).add(vrj::Kernel::getConfigOptions());
-	return desc
+	boost::program_options::options_description desc("VR Juggler 3.x Options");
+	desc.add(vrj::Kernel::instance()->getClusterOptions()).add(vrj::Kernel::instance()->getConfigOptions());
+	return desc;
 }
 
 void KernelState::init(boost::program_options::variables_map vm) {
@@ -56,8 +57,8 @@ void KernelState::init(boost::program_options::variables_map vm) {
 		<< "Warning: vrjKernel.init called a second time!"
 		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 	}
-	vrj::Kernel::instance()->init(vm)
-	_init = true
+	vrj::Kernel::instance()->init(vm);
+	_init = true;
 }
 
 void KernelState::init(int argc, char* argv[]) {
@@ -71,7 +72,7 @@ void KernelState::init(int argc, char* argv[]) {
 }
 
 /// Fallback - if we have no other source of info
-void KernelState::initVrjKernel() {
+void KernelState::init() {
 	if (_init) {
 		VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
 		<< "Warning: vrjKernel.init called a second time!"
@@ -81,8 +82,8 @@ void KernelState::initVrjKernel() {
 	VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
 	<< "Warning: your application is not cluster-capable as compiled (VR Juggler 3.x) because you did not initialize the kernel with command line arguments!"
 	<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
-	boost::program_options::variable_map vm;
-	vrj::Kernel::init(vm);
+	boost::program_options::variables_map vm;
+	vrj::Kernel::instance()->init(vm);
 	_init = true;
 }
 
