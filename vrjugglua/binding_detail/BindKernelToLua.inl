@@ -22,10 +22,17 @@
 // Library/third-party includes
 #include <luabind/luabind.hpp>
 
-#include <vrj/Draw/OSG/OsgApp.h>
 #include <vrj/Kernel/Kernel.h>
 #include <vpr/Thread/Thread.h>
 #include <vpr/System.h>
+
+#if __VJ_version < 2003011
+#	include <vrj/Draw/OSG/OsgApp.h>
+	typedef vrj::OsgApp OsgApp;
+#else
+#	include <vrj/Draw/OSG/App.h>
+	typedef vrj::osg::App OsgApp;
+#endif
 
 // Standard includes
 #ifdef VERBOSE
@@ -143,7 +150,7 @@ namespace Kernel {
 	}
 
 	void setApplication(luabind::object app) {
-		vrj::Kernel::instance()->setApplication(luabind::object_cast<vrj::OsgApp*>(app));
+		vrj::Kernel::instance()->setApplication(luabind::object_cast<OsgApp*>(app));
 	}
 
 	void loadConfigFile(const std::string & fn) {
