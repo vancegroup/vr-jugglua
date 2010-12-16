@@ -7,6 +7,7 @@ include(LuaTargets)
 
 set(LUA_FILES
 	Navigator.lua
+	nav-testbed-launcher.lua
 	osgnav-testbed.lua
 	osgTools.lua
 	Scene.lua
