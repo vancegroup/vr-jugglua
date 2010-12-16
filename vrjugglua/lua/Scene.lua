@@ -92,6 +92,29 @@ function Lighting(a)
 	return t
 end
 
+function AmbientIntensity(a)
+	local node
+	if #a == 1 then
+		node = a[1]
+	else
+		node = osg.Group()
+		for _,v in ipairs(a) do
+			node:addChild(v)
+		end
+	end
+	
+	local state = node:getOrCreateStateSet()
+	local lightmodel = osg.LightModel()
+	local val = a.intensity or 1.0
+	
+	lightmodel:setAmbientIntensity(osg.Vec4(val, val, val, 1.0))
+
+	state:setAttributeAndModes(lightmodel)
+	node:setStateSet(state)
+	
+	return node
+end
+
 function Transform(args)
 	local t = osg.PositionAttitudeTransform()
 	if args.position ~= nil then
