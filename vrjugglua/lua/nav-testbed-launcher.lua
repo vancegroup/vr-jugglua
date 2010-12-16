@@ -65,3 +65,8 @@ print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
 
 
+print("Starting kernel")
+vrjKernel.start()
+
+print("Waiting for kernel stop")
+vrjKernel.waitForKernelStop()
