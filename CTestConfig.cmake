@@ -8,6 +8,6 @@ set(CTEST_PROJECT_NAME "vrjugglua")
 set(CTEST_NIGHTLY_START_TIME "00:00:00 EST")
 
 set(CTEST_DROP_METHOD "http")
-set(CTEST_DROP_SITE "indigo.student.iastate.edu")
-set(CTEST_DROP_LOCATION "/CDash/submit.php?project=vrjugglua")
+set(CTEST_DROP_SITE "cdash.cleardefinition.com")
+set(CTEST_DROP_LOCATION "/submit.php?project=vrjugglua")
 set(CTEST_DROP_SITE_CDASH TRUE)
