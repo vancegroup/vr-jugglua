@@ -1,4 +1,5 @@
 print("Loading lua file")
+print("CTEST_FULL_OUTPUT")
 
 function initScene()
 	print("in initScene()")

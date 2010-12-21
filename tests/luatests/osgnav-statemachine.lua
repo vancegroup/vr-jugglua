@@ -2,6 +2,8 @@ require("Navigator")
 require("osgTools")
 StateMachine = require("StateMachine")
 
+print("CTEST_FULL_OUTPUT")
+
 -- Define application-wide data --
 function myinit()
 	print("Setting up scenegraph")

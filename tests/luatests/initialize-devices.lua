@@ -1,4 +1,5 @@
 print("In Lua script initialize-devices.lua")
+print("CTEST_FULL_OUTPUT")
 
 vrjKernel.loadConfigFile("standalone.jconf")
 vrjKernel.start()

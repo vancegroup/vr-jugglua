@@ -1,4 +1,5 @@
 print("Loading lua file")
+print("CTEST_FULL_OUTPUT")
 
 testapp = {preFrameCounter = 0,
 	latePreFrameCounter = 0,

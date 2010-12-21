@@ -1,4 +1,5 @@
 group = osg.Group()
+print("CTEST_FULL_OUTPUT")
 
 bbox = getBoundingBox(group)
 
