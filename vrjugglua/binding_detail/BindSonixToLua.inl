@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindSonixToLua.cpp
+/**	@file	binding_detail/BindSonixToLua.inl
 	@brief	implementation of Sonix binding
 
 	@date

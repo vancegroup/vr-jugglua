@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindGadgetInterfacesToLua.cpp
+/**	@file	binding_detail/BindGadgetInterfacesToLua.inl
 	@brief	implementation of Gadgeteer device bindings
 
 	@date

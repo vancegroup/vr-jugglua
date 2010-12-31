@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindRunBufferToLua.cpp
+/**	@file	binding_detail/BindRunBufferToLua.inl
 	@brief	implementation exposing binding function for the run buffer
 
 	@date

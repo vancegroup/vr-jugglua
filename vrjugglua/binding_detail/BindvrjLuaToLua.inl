@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindvrjLuaToLua.cpp
+/**	@file	binding_detail/BindvrjLuaToLua.inl
 	@brief	implementation of convenience binding
 
 	@date

@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindOsgToLua.cpp
+/**	@file	binding_detail/BindOsgToLua.inl
 	@brief	implementation of binding using osgLua
 
 	@date
