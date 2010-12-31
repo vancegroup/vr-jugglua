@@ -89,6 +89,8 @@ class StubConsole : public LuaConsole {
 
 		virtual ~StubConsole();
 
+		static void setup(int & argc, char * argv[]);
+
 		/// @name Implementation interface
 		/// @{
 		virtual bool threadLoop();

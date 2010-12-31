@@ -194,6 +194,18 @@ LuaScript& LuaConsole::getScript() {
 	return _script;
 }
 
+
+void StubConsole::setup(int & argc, char * argv[]) {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+		<< "StubConsole::setup called with these arguments:"
+		<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+	for (int i = 0; i < argc; ++i) {
+		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+			<< "   '" << argv[i] << "'"
+			<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+	}
+}
+
 StubConsole::StubConsole() :
 		LuaConsole() {
 	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
