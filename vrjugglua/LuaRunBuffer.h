@@ -20,7 +20,7 @@
 
 // Library/third-party includes
 
-// Requires Boost 1.35 or newer, but we've bundled these too
+// Requires Boost 1.35 or newer
 #include <boost/circular_buffer.hpp>
 #include <boost/scoped_ptr.hpp>
 
