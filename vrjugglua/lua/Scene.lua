@@ -73,11 +73,19 @@ function Lighting(a)
 	end
 	t:setLight(light)
 	
-	if a.children ~= nil then
-		for _, v in ipairs(a.children) do
+	-- Add nodes in the "children" list
+	if args.children ~= nil then
+		for _, v in ipairs(args.children) do
 			if v ~= nil then
 				t:addChild(v)
 			end
+		end
+	end
+	
+	-- Add nodes just tacked on the end of the list.
+	for _, v in ipairs(args) do
+		if v ~= nil then
+			t:addChild(v)
 		end
 	end
 	
@@ -105,11 +113,19 @@ function Transform(args)
 		t:setScale(osg.Vec3d(args.scale, args.scale, args.scale))
 	end
 
+	-- Add nodes in the "children" list
 	if args.children ~= nil then
 		for _, v in ipairs(args.children) do
 			if v ~= nil then
 				t:addChild(v)
 			end
+		end
+	end
+	
+	-- Add nodes just tacked on the end of the list.
+	for _, v in ipairs(args) do
+		if v ~= nil then
+			t:addChild(v)
 		end
 	end
 
