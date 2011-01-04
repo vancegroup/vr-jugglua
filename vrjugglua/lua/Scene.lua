@@ -74,8 +74,8 @@ function Lighting(a)
 	t:setLight(light)
 	
 	-- Add nodes in the "children" list
-	if args.children ~= nil then
-		for _, v in ipairs(args.children) do
+	if a.children ~= nil then
+		for _, v in ipairs(a.children) do
 			if v ~= nil then
 				t:addChild(v)
 			end
@@ -83,7 +83,7 @@ function Lighting(a)
 	end
 	
 	-- Add nodes just tacked on the end of the list.
-	for _, v in ipairs(args) do
+	for _, v in ipairs(a) do
 		if v ~= nil then
 			t:addChild(v)
 		end
