@@ -25,28 +25,27 @@
 namespace vrjLua {
 
 	SynchronizedRunBuffer::SynchronizedRunBuffer(luabind::object const& delegate) {
-		/// Initialize run buffer's shared data ID
-		_runBuf.init(LuaRunBuffer::getGUID());
-		// Now, we have an state pointer, so we can set up the
-		// run buffer as well!
-		_runBuf->initLua(delegate.interpreter());
+		_state = delegate.interpreter();
 	}
 
 
 	SynchronizedRunBuffer::SynchronizedRunBuffer(LuaStatePtr const& state) {
-		/// Initialize run buffer's shared data ID
-		_runBuf.init(LuaRunBuffer::getGUID());
-		// Now, we have an state pointer, so we can set up the
-		// run buffer as well!
-		_runBuf->initLua(state.get());
+		/// @todo own this state? How?
+		_state = state.get();
 	}
 
 	SynchronizedRunBuffer::SynchronizedRunBuffer(LuaScript const& script) {
+		
+		/// @todo own this state? How?
+		_state = script.getLuaState().lock().get();
+	}
+	
+	void SynchronizedRunBuffer::init() {
+		
 		/// Initialize run buffer's shared data ID
 		_runBuf.init(LuaRunBuffer::getGUID());
-		// Now, we have an state pointer, so we can set up the
-		// run buffer as well!
-		_runBuf->initLua(script.getLuaState().lock().get());
+		// Tell the run buffer what our state pointer is.
+		_runBuf->initLua(_state);
 	}
 
 	bool SynchronizedRunBuffer::isLocal() {

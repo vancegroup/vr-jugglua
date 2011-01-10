@@ -42,6 +42,9 @@ class SynchronizedRunBuffer {
 		SynchronizedRunBuffer(LuaStatePtr const& state);
 		SynchronizedRunBuffer(LuaScript const& script);
 		/// @}
+		
+		/// @brief Initialize application shared data, in initScene
+		void init();
 
 		/// @brief are we the data-local (master) node?
 		bool isLocal();
@@ -58,6 +61,7 @@ class SynchronizedRunBuffer {
 
 	protected:
 		cluster::UserData<LuaRunBuffer> _runBuf;
+		lua_State * _state;
 };
 
 } // end of vrjLua namespace

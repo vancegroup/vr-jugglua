@@ -36,6 +36,7 @@ void bindRunBufferToLua(LuaStatePtr state) {
 	module(state.get(), "vrjSync") [
 		class_<SynchronizedRunBuffer, boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
 			.def(constructor<luabind::object>())
+			.def("init", &SynchronizedRunBuffer::init)
 			.def("addFile", &SynchronizedRunBuffer::addFile)
 			.def("addString", &SynchronizedRunBuffer::addString)
 			.def("runBuffer", &SynchronizedRunBuffer::runBuffer)

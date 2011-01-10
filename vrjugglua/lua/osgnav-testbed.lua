@@ -7,6 +7,8 @@ require("Scene")
 osgnav = {position = osg.Vec3d(0, 0, 0)}
 
 function osgnav:initScene()
+	runbuf:init()
+
 	--print("Setting up position interface")
 	local wand = gadget.PositionInterface("VJWand")
 
