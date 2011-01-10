@@ -118,7 +118,7 @@ bool LuaConsole::isValid() const {
 
 bool LuaConsole::addFile(std::string const& fn) {
 	if (!_runbuf) {
-		return false;
+		throw std::runtime_error("Could not get the run buffer to add a file to!");
 	}
 	std::string code;
 	code = "dofile('";
@@ -132,7 +132,7 @@ bool LuaConsole::addFile(std::string const& fn) {
 
 bool LuaConsole::addString(std::string const& str) {
 	if (!_runbuf) {
-		return false;
+		throw std::runtime_error("Could not get the run buffer to add a string to!");
 	}
 	bool ret = _runbuf->addString(str);
 	std::string code;
