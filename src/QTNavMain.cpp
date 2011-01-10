@@ -36,8 +36,16 @@ int main(int argc, char * argv[]) {
 	LuaScript script;
 
 	/// Create the console GUI
-	QTConsole::setup(argc, argv);
-	boost::shared_ptr<QTConsole> console(new QTConsole(script));
+	boost::shared_ptr<LuaConsole> console;
+	if (argc > 1 && std::string(argv[1]) == "--stub") {
+		std::cout << "Creating stub console, as requested..." << std::endl;
+		boost::shared_ptr<LuaConsole> temp(new StubConsole(script));
+		console = temp;
+	} else {
+		QTConsole::setup(argc, argv);
+		boost::shared_ptr<LuaConsole> temp(new QTConsole(script));
+		console = temp;
+	}
 	console->setTitle("Scenegraph Navigation Testbed");
 #ifdef BUILD_WITHOUT_TERMINAL
 	console->captureStdOut();
