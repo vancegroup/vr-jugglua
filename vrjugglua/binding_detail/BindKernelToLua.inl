@@ -121,12 +121,19 @@ void KernelState::init() {
 #endif
 
 namespace Kernel {
-	void start() {
+	
+	void start(bool waiting = false) {
 		if (!KernelState::hasInitialized()) {
 			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
 			<< "Warning: vrjKernel.start called before vrjKernel.init - your app will not support clustering in VR Juggler 3.x!"
 			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 			KernelState::init();
+		}
+		
+		if (!waiting) {
+			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
+				<< "Warning: vrjKernel.start called: possible race condition if you run Lua code in the frame loop! (Use vrjKernel.enter to avoid this)"
+				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 		}
 		vrj::Kernel::instance()->start();
 	}
@@ -148,6 +155,11 @@ namespace Kernel {
 	void waitForKernelStop() {
 		vrj::Kernel::instance()->waitForKernelStop();
 	}
+	
+	void enter() {
+		start(true);
+		waitForKernelStop();	
+	}
 
 	void setApplication(luabind::object app) {
 		vrj::Kernel::instance()->setApplication(luabind::object_cast<OsgApp*>(app));
@@ -168,6 +180,7 @@ void bindKernelToLua(LuaStatePtr state) {
 	std::cerr << "Registering vrjKernel module functions with Lua..." << std::flush << std::endl;
 #endif
 	module(state.get(), "vrjKernel") [
+		def("enter", &Kernel::enter),
 		def("start", &Kernel::start),
 		def("stop", &Kernel::stop),
 		def("setApplication", &Kernel::setApplication),
