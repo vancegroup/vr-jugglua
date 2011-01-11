@@ -15,6 +15,7 @@
 // Local includes
 #include "BindvrjLuaToLua.h"
 #include <vrjugglua/VRJLuaOutput.h>
+#include <vrjugglua/LuaPath.h>
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
@@ -33,12 +34,17 @@ static void appendToModelSearchPath(std::string const& path) {
 	osgDB::Registry::instance()->getDataFilePathList().push_back(path);
 }
 
+static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
+	LuaPath::instance().addLuaRequirePath(borrowStatePtr(s), path);
+}
+
 void BindvrjLuaToLua(LuaStatePtr state) {
 #ifdef VERBOSE
 	std::cerr << "Registering vrjLua module functions with Lua..." << std::flush << std::endl;
 #endif
 	module(state.get(), "vrjLua") [
-		def("appendToModelSearchPath", &appendToModelSearchPath)
+		def("appendToModelSearchPath", &appendToModelSearchPath),
+		def("appendToLuaRequirePath", &appendToLuaRequirePath)
 	];
 
 
