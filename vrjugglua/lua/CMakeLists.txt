@@ -6,6 +6,7 @@
 include(LuaTargets)
 
 set(LUA_FILES
+	Actions.lua
 	Navigator.lua
 	nav-testbed-launcher.lua
 	osgnav-testbed.lua
