@@ -36,6 +36,9 @@ end
 
 function osgnav:latePreFrame()
 	runbuf:runBuffer()
+	if Actions then
+		Actions.updateFrameActions()
+	end
 end
 
 
