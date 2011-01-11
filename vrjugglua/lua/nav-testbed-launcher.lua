@@ -64,9 +64,6 @@ navtransform = osg.PositionAttitudeTransform()
 print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
 
+print("Entering kernel")
+vrjKernel.enter()
 
-print("Starting kernel")
-vrjKernel.start()
-
-print("Waiting for kernel stop")
-vrjKernel.waitForKernelStop()
