@@ -1,4 +1,6 @@
-Actions = {}
+Actions = {
+	_frameActions = {};
+	}
 
 function Actions.addNodeAction(node, func)
 	local co = coroutine.create(func)
