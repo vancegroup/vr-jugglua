@@ -29,6 +29,7 @@ namespace osgLua {
 	namespace metamethods {
 		int add(lua_State *L);
 		int sub(lua_State *L);
+		int unmVec(lua_State *L);
 		int scaleVec(lua_State *L);
 		int tostring(lua_State *L);
 		int eq(lua_State *L);

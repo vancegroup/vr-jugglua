@@ -156,6 +156,8 @@ namespace osgLua {
 		  		lua_setfield(L, -2, "__add"); \
 		  		lua_pushcfunction(L, &metamethods::sub); \
 		  		lua_setfield(L, -2, "__sub"); \
+		  		lua_pushcfunction(L, &metamethods::unmVec); \
+		  		lua_setfield(L, -2, "__unm"); \
 		  		lua_pushcfunction(L, &metamethods::scaleVec); \
 		  		lua_setfield(L, -2, "__mul"); \
 		  		lua_pushcfunction(L, &metamethods::eq); \
