@@ -1,6 +1,6 @@
 Actions = {
 	_frameActions = {};
-	}
+}
 
 function Actions.addNodeAction(node, func)
 	local co = coroutine.create(func)
@@ -27,7 +27,6 @@ function Actions.updateFrameActions()
 	local keepers = {}
 	for _, v in ipairs(Actions._frameActions) do
 		coroutine.resume(v, osgnav.appProxy:getTimeDelta())
-			print("Live action!")
-		end
+		print("Live action!")
 	end
 end
