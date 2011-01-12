@@ -29,7 +29,7 @@ namespace osgLua {
 	namespace metamethods {
 		int add(lua_State *L);
 		int sub(lua_State *L);
-		int mul(lua_State *L);
+		int scaleVec(lua_State *L);
 		int tostring(lua_State *L);
 		int eq(lua_State *L);
 		int lt(lua_State *L);
@@ -50,8 +50,8 @@ namespace osgLua {
 		}
 		
 		template<class T>
-		T scaleVector(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
-			return osgIntrospection::variant_cast<T>(a) * osgIntrospection::variant_cast<double>(b);
+		T scaleVector(osgIntrospection::Value const& vector, double scalar) {
+			return osgIntrospection::variant_cast<T>(vector) * scalar;
 		}
 		
 		template<class T>

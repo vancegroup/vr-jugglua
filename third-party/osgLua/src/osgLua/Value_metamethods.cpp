@@ -135,8 +135,61 @@ namespace osgLua {
 		return 0;
 	}
 	
-	int metamethods::mul(lua_State *L) {
-		/// @todo
+	int metamethods::scaleVec(lua_State *L) {
+		static const osgIntrospection::Type& tdouble = 
+		  		osgIntrospection::Reflection::getType(extended_typeid<double>());
+		
+		double scalar;
+		Value * vector = Value::get(L,1);
+		if (vector == 0) {
+			if (!lua_isnumber(L, 1)) {
+				luaL_error(L, "%s:%d Expected a number but get %s",
+					__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) );
+			}
+			scalar = lua_tonumber(L, 1);
+			vector = Value::get(L,2);	
+		} else {
+			if (!lua_isnumber(L, 2)) {
+				luaL_error(L, "%s:%d Expected a number but get %s",
+					__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) );
+			}
+			scalar = lua_tonumber(L, 2);
+		}
+
+		if (vector == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
+		}
+		
+		const osgIntrospection::Type &vecType = vector->getType();
+		bool success = false;
+		#define VECTOR_MATH(TYPE, NAME) \
+		std::cout << "Before " << #TYPE << std::endl; \
+		static const osgIntrospection::Type& NAME = \
+	  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
+	  	if (!success && vecType == NAME) { \
+	  		std::cout << "Match!" << std::endl; \
+	  		success = true; \
+	  		osgIntrospection::Value ret = detail::scaleVector<TYPE>(vector->get(), scalar); \
+	  		std::cout << "Result is of type " << ret.getType().getQualifiedName() << ", pushing... " << std::endl; \
+	  		Value::push(L, ret); \
+	  	}
+	  	
+	  	VECTOR_MATH(osg::Vec4d, tvec4d)
+	  	VECTOR_MATH(osg::Vec4, tvec4)
+	  	VECTOR_MATH(osg::Vec4f, tvec4f)
+
+	  	VECTOR_MATH(osg::Vec3d, tvec3d)
+	  	VECTOR_MATH(osg::Vec3, tvec3)
+	  	VECTOR_MATH(osg::Vec3f, tvec3f)
+	  	
+	  	#undef VECTOR_MATH
+		
+		if (success) {
+			return 1;
+		} else {
+			luaL_error(L,"[%s:%d] Could not scale vector instance of %s",__FILE__,__LINE__, vecType.getQualifiedName().c_str());
+		}
 		return 0;
 	}
 	
