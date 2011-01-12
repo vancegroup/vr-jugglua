@@ -9,7 +9,9 @@ set(OSGLUA_SRCS
 	osgLua.cpp
 	Script.cpp
 	Type.cpp
-	Value.cpp)
+	Value.cpp
+	Value_metamethods.cpp
+	Value_metamethods.h)
 
 set(OSGLUA_API
 	lua_functions.h

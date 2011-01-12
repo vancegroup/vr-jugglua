@@ -56,10 +56,6 @@ namespace osgLua {
 		static int index(lua_State *L);
 
 		static int methodCall(lua_State *L);
-		static int add(lua_State *L);
-		static int sub(lua_State *L);
-		static int mul(lua_State *L);
-		static int tostring(lua_State *L);
 		
 	};
 

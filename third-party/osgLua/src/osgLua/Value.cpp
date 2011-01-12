@@ -14,6 +14,7 @@
 */
 
 #include "Value.h"
+#include "Value_metamethods.h"
 #include "Type.h"
 #include "lua_functions.h"
 
@@ -30,29 +31,6 @@
 #include <osg/Vec4>
 
 namespace osgLua {
-
-	namespace detail {
-		template<class T>
-		T addVectors(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
-			return osgIntrospection::variant_cast<T>(a) + osgIntrospection::variant_cast<T>(b);
-		}
-		
-		template<class T>
-		T subtractVectors(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
-			return osgIntrospection::variant_cast<T>(a) - osgIntrospection::variant_cast<T>(b);
-		}
-		
-		template<class T>
-		T scaleVector(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
-			return osgIntrospection::variant_cast<T>(a) * osgIntrospection::variant_cast<double>(b);
-		}
-		
-		template<class T>
-		T multMatrices(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
-			return osgIntrospection::variant_cast<T>(a) * osgIntrospection::variant_cast<T>(b);
-		}
-	
-	} // end of namespace detail
 
 	Value::Value( const osgIntrospection::Value &v ) : _value(v)
 	{
@@ -166,7 +144,7 @@ namespace osgLua {
 			
 			if (original.getType().getReaderWriter()) {
 				/// If we know how to turn it into a string
-				lua_pushcfunction(L, Value::tostring);
+				lua_pushcfunction(L, metamethods::tostring);
 				lua_setfield(L, -2, "__tostring");
 			}
 			
@@ -174,11 +152,11 @@ namespace osgLua {
 			static const osgIntrospection::Type& NAME = \
 		  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
 		  	if (original.getType() == NAME) { \
-		  		lua_pushcfunction(L, &Value::add); \
+		  		lua_pushcfunction(L, &metamethods::add); \
 		  		lua_setfield(L, -2, "__add"); \
-		  		lua_pushcfunction(L, &Value::sub); \
+		  		lua_pushcfunction(L, &metamethods::sub); \
 		  		lua_setfield(L, -2, "__sub"); \
-		  		lua_pushcfunction(L, &Value::mul); \
+		  		lua_pushcfunction(L, &metamethods::mul); \
 		  		lua_setfield(L, -2, "__mul"); \
 		  	}
 		  	
@@ -338,123 +316,6 @@ namespace osgLua {
 		}
 		return 0;
 			
-	}
-	
-	int Value::add(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
-		
-		Value *b = Value::get(L,2);
-		if (b == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
-		}
-		
-		
-		
-		const osgIntrospection::Type &typeA = a->getType();
-		const osgIntrospection::Type &typeB = b->getType();
-		std::cout << "Finished grabbing params: " << typeA.getQualifiedName() << ", " << typeB.getQualifiedName() << std::endl;
-
-		bool success = false;
-		#define VECTOR_MATH(TYPE, NAME) \
-		std::cout << "Before " << #TYPE << std::endl; \
-		static const osgIntrospection::Type& NAME = \
-	  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-	  	if (!success && typeA == NAME && typeB == NAME) { \
-	  		std::cout << "Match!" << std::endl; \
-	  		success = true; \
-	  		osgIntrospection::Value ret = detail::addVectors<TYPE>(a->get(), b->get()); \
-	  		std::cout << "Result is of type " << ret.getType().getQualifiedName() << ", pushing... " << std::endl; \
-	  		Value::push(L, ret); \
-	  	}
-	  	
-	  	VECTOR_MATH(osg::Vec4d, tvec4d)
-	  	VECTOR_MATH(osg::Vec4, tvec4)
-	  	VECTOR_MATH(osg::Vec4f, tvec4f)
-
-	  	VECTOR_MATH(osg::Vec3d, tvec3d)
-	  	VECTOR_MATH(osg::Vec3, tvec3)
-	  	VECTOR_MATH(osg::Vec3f, tvec3f)
-	  	
-	  	#undef VECTOR_MATH
-	  	
-	  	if (success) {
-			return 1;
-		} else {
-			luaL_error(L,"[%s:%d] Could not add instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
-		}
-		return 0;
-		
-	}
-	
-	int Value::sub(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
-		
-		Value *b = Value::get(L,2);
-		if (b == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
-		}
-		
-		
-		
-		const osgIntrospection::Type &typeA = a->getType();
-		const osgIntrospection::Type &typeB = b->getType();
-		std::cout << "Finished grabbing params: " << typeA.getQualifiedName() << ", " << typeB.getQualifiedName() << std::endl;
-
-		bool success = false;
-		#define VECTOR_MATH(TYPE, NAME) \
-		std::cout << "Before " << #TYPE << std::endl; \
-		static const osgIntrospection::Type& NAME = \
-	  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-	  	if (!success && typeA == NAME && typeB == NAME) { \
-	  		std::cout << "Match!" << std::endl; \
-	  		success = true; \
-	  		osgIntrospection::Value ret = detail::subtractVectors<TYPE>(a->get(), b->get()); \
-	  		std::cout << "Result is of type " << ret.getType().getQualifiedName() << ", pushing... " << std::endl; \
-	  		Value::push(L, ret); \
-	  	}
-	  	
-	  	VECTOR_MATH(osg::Vec4d, tvec4d)
-	  	VECTOR_MATH(osg::Vec4, tvec4)
-	  	VECTOR_MATH(osg::Vec4f, tvec4f)
-
-	  	VECTOR_MATH(osg::Vec3d, tvec3d)
-	  	VECTOR_MATH(osg::Vec3, tvec3)
-	  	VECTOR_MATH(osg::Vec3f, tvec3f)
-	  	
-	  	#undef VECTOR_MATH
-	  	
-	  	if (success) {
-			return 1;
-		} else {
-			luaL_error(L,"[%s:%d] Could not subtract instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
-		}
-		return 0;
-	}
-	
-	int Value::mul(lua_State *L) {
-		/// @todo
-		return 0;
-	}
-	
-	int Value::tostring(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
-		
-		lua_pushstring(L, a->get().toString().c_str());
-		return 1;
 	}
 
 	int Value::getTypeInfo(lua_State *L)
