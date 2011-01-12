@@ -164,6 +164,12 @@ namespace osgLua {
 			lua_pushcfunction(L, Value::index);
 			lua_setfield(L, -2, "__index");
 			
+			if (original.getType().getReaderWriter()) {
+				/// If we know how to turn it into a string
+				lua_pushcfunction(L, Value::tostring);
+				lua_setfield(L, -2, "__tostring");
+			}
+			
 			#define VECTOR_MATH(TYPE, NAME) \
 			static const osgIntrospection::Type& NAME = \
 		  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
@@ -438,6 +444,17 @@ namespace osgLua {
 	int Value::mul(lua_State *L) {
 		/// @todo
 		return 0;
+	}
+	
+	int Value::tostring(lua_State *L) {
+		Value *a = Value::get(L,1);
+		if (a == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
+		}
+		
+		lua_pushstring(L, a->get().toString().c_str());
+		return 1;
 	}
 
 	int Value::getTypeInfo(lua_State *L)
