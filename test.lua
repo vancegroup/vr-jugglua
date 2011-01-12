@@ -30,12 +30,12 @@ docstring = createConcat(
 )]]
 
 function docstring(docs)
-	return createConcat(
-		function(a, f)
-			docstrings[f] = {docs}
-			return f
-		end
-	)
+	local mt = {}
+	function mt.__concat(a, f)
+		docstrings[f] = {docs}
+		return f
+	end
+	return setmetatable({}, mt)
 end
 
 
