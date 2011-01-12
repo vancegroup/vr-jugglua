@@ -36,6 +36,9 @@ end
 
 function osgnav:latePreFrame()
 	runbuf:runBuffer()
+	if Actions then
+		Actions.updateFrameActions()
+	end
 end
 
 
@@ -64,9 +67,6 @@ navtransform = osg.PositionAttitudeTransform()
 print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
 
+print("Entering kernel")
+vrjKernel.enter()
 
-print("Starting kernel")
-vrjKernel.start()
-
-print("Waiting for kernel stop")
-vrjKernel.waitForKernelStop()

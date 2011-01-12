@@ -32,9 +32,9 @@ testapp = {
 		-- If we fail before here, the proxy will shut down with an error
 		self.preFrame = function (self)
 			print("In preFrame")
-			local pos = self.head:getPosition()
+			local pos = self.head.position
 			print(string.format("Position: %f, %f, %f", pos:x(), pos:y(), pos:z()))
-			local mat = self.head:getMatrix()
+			local mat = self.head.matrix
 			self.transform:setMatrix(mat)
 			
 			self.counter = self.counter + 1

@@ -60,8 +60,11 @@ class SynchronizedRunBuffer {
 		unsigned int runBuffer();
 
 	protected:
+		bool _init;
 		cluster::UserData<LuaRunBuffer> _runBuf;
 		lua_State * _state;
+		
+		void _checkInit();
 };
 
 } // end of vrjLua namespace

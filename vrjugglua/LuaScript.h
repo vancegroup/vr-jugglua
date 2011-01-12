@@ -29,9 +29,17 @@
 
 namespace vrjLua {
 
+inline void state_no_op_deleter(lua_State *L) {
+	return;
+}
+
 typedef lua_State * LuaStateRawPtr;
 typedef boost::shared_ptr<lua_State> LuaStatePtr;
 typedef boost::weak_ptr<lua_State> LuaStateWeakPtr;
+
+inline LuaStatePtr borrowStatePtr(LuaStateRawPtr ptr) {
+	return LuaStatePtr(ptr, std::ptr_fun(state_no_op_deleter));
+}
 
 struct NoValidLuaState : public std::logic_error {
 	NoValidLuaState() : std::logic_error("Attempted to perform a LuaScript manipulation on a LuaScript instance without a valid state pointer!") {}
