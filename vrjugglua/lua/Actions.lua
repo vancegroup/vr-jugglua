@@ -27,9 +27,7 @@ function Actions.updateFrameActions()
 	local keepers = {}
 	for _, v in ipairs(Actions._frameActions) do
 		coroutine.resume(v, osgnav.appProxy:getTimeDelta())
-		if coroutine.status(v) ~= 'dead' then
-			table.insert(keepers, v)
+			print("Live action!")
 		end
 	end
-
 end
