@@ -121,8 +121,8 @@ void KernelState::init() {
 #endif
 
 namespace Kernel {
-	
-	void start(bool waiting = false) {
+
+	void doStart(bool waiting = false) {
 		if (!KernelState::hasInitialized()) {
 			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
 			<< "Warning: vrjKernel.start called before vrjKernel.init - your app will not support clustering in VR Juggler 3.x!"
@@ -136,6 +136,10 @@ namespace Kernel {
 				<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 		}
 		vrj::Kernel::instance()->start();
+	}
+	
+	void start() {
+		doStart();
 	}
 
 	void stop() {
@@ -157,7 +161,7 @@ namespace Kernel {
 	}
 	
 	void enter() {
-		start(true);
+		doStart(true);
 		waitForKernelStop();	
 	}
 
