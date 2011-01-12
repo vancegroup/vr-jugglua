@@ -26,6 +26,8 @@ end
 function Actions.updateFrameActions()
 	local keepers = {}
 	for _, v in ipairs(Actions._frameActions) do
+		--print(coroutine.status(v))
+		--- TODO handle errors here
 		coroutine.resume(v, osgnav.appProxy:getTimeDelta())
 		if coroutine.status(v) ~= 'dead' then
 			table.insert(keepers, v)
