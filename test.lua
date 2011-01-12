@@ -1,19 +1,20 @@
-local mt = {__concat =
-  function(a,f)
-    return function(...)
-      print("decorator", table.concat(a, ","), ...)
-      return f(...)
-    end
-  end
-}
-
-function typecheck(...)
-  return setmetatable({...}, mt)
+local docstrings = setmetatable({}, {__mode = "kv"})
+local function createConcat(decorationFunc)
+	local mt = {__concat = decorationFunc}
+	return function(...)
+		return setmetatable({...}, mt)
+	end
 end
 
-function docstring(...)
-  return setmetatable({...}, mt)
-end
+docstring = createConcat(function(a,f)
+	    return function(...)
+	      print("decorator", table.concat(a, ","), ...)
+	      return f(...)
+	    end
+	  end
+)
+
+typecheck = docstring
 
 a = docstring[[This is an example]] .. function()
 	print("this is the function")
