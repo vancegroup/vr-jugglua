@@ -143,7 +143,7 @@ local function useWandTranslation(nav, wand, button)
 		return fwd
 	end
 	function nav:getGoalVel()
-		if button.isPressed then
+		if button.pressed then
 			-- Set our goal velocity
 			return self.max_vel
 		else

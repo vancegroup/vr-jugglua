@@ -53,10 +53,10 @@ void bindGadgetInterfacesToLua(LuaStatePtr state) {
 	luabind::scope digital = class_<Internal::DigitalInterface,
 				boost::shared_ptr<Internal::DigitalInterface> >("DigitalInterface")
 					.def(constructor<const std::string &>())
-					.property("isPressed", & Internal::DigitalInterface::isPressed)
-					.property("isAChange", & Internal::DigitalInterface::isAChange)
-					.property("wasJustPressed", & Internal::DigitalInterface::wasJustPressed)
-					.property("wasJustReleased", & Internal::DigitalInterface::wasJustReleased);
+					.property("pressed", & Internal::DigitalInterface::isPressed)
+					.property("justChanged", & Internal::DigitalInterface::isAChange)
+					.property("justPressed", & Internal::DigitalInterface::wasJustPressed)
+					.property("justReleased", & Internal::DigitalInterface::wasJustReleased);
 
 	luabind::scope analog = class_<Internal::AnalogInterface,
 			boost::shared_ptr<Internal::AnalogInterface> >("AnalogInterface")
