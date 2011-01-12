@@ -29,6 +29,7 @@
 
 #include <osg/Vec3>
 #include <osg/Vec4>
+#include <osg/Matrix>
 
 namespace osgLua {
 
@@ -177,6 +178,24 @@ namespace osgLua {
 		  	VECTOR_MATH(osg::Vec3f, tvec3f)
 		  	
 		  	#undef VECTOR_MATH
+		  	
+		  	#define MATRIX_MATH(TYPE, NAME) \
+			static const osgIntrospection::Type& NAME = \
+		  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
+		  	if (original.getType() == NAME) { \
+		  		lua_pushcfunction(L, &metamethods::eq); \
+		  		lua_setfield(L, -2, "__eq"); \
+		  		lua_pushcfunction(L, &metamethods::lt); \
+		  		lua_setfield(L, -2, "__lt"); \
+		  		lua_pushcfunction(L, &metamethods::le); \
+		  		lua_setfield(L, -2, "__le"); \
+		  	}
+
+		  	MATRIX_MATH(osg::Matrixd, tmatrixd)
+		  	MATRIX_MATH(osg::Matrix, tmatrix)
+		  	MATRIX_MATH(osg::Matrixf, tmatrixf)
+		  	
+		  	#undef MATRIX_MATH
 		  		
 		}
 		lua_setmetatable(L, -2);
