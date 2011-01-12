@@ -176,12 +176,13 @@ namespace osgLua {
 		  		lua_setfield(L, -2, "__mul"); \
 		  	}
 		  	
-		  	VECTOR_MATH(osg::Vec3, tvec3)
-		  	VECTOR_MATH(osg::Vec3d, tvec3d)
-		  	VECTOR_MATH(osg::Vec3f, tvec3f)
-		  	VECTOR_MATH(osg::Vec4, tvec4)
 		  	VECTOR_MATH(osg::Vec4d, tvec4d)
+		  	VECTOR_MATH(osg::Vec4, tvec4)
 		  	VECTOR_MATH(osg::Vec4f, tvec4f)
+
+		  	VECTOR_MATH(osg::Vec3d, tvec3d)
+		  	VECTOR_MATH(osg::Vec3, tvec3)
+		  	VECTOR_MATH(osg::Vec3f, tvec3f)
 		  	
 		  	#undef VECTOR_MATH
 		  		
