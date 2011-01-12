@@ -29,7 +29,9 @@ docstring = createConcat(
 	end
 )]]
 
-function docstring(docs)
+function docstring(docs, ...)
+	print("arg to docstring: " .. docs)
+	print("Extra args to docstring: " .. arg.n)
 	local mt = {}
 	function mt.__concat(a, f)
 		docstrings[f] = {docs}
@@ -56,6 +58,15 @@ print(a())
 
 print("before calling help a")
 help(a)
+
+print("before defining b")
+
+--docstring[[a second documented func]] ..
+function b()
+	print("this is the second function")
+end
+
+---docstring([[a second documented func]]) .. b
 
 print("before defining random")
 random =
