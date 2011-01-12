@@ -436,6 +436,7 @@ namespace osgLua {
 	}
 	
 	int Value::mul(lua_State *L) {
+		/// @todo
 		return 0;
 	}
 
