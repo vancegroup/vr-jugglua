@@ -150,5 +150,76 @@ namespace osgLua {
 		lua_pushstring(L, a->get().toString().c_str());
 		return 1;
 	}
+	
+	
+	int metamethods::eq(lua_State *L) {
+		Value *a = Value::get(L,1);
+		if (a == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
+		}
+		
+		Value *b = Value::get(L,2);
+		if (b == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
+		}
+		bool ret;
+		try {
+			ret = a->get() == b->get();
+		} catch(osgIntrospection::Exception &e) {
+			luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+		}
+		
+		lua_pushboolean(L, ret);
+		
+		return 1;
+	}
+	int metamethods::lt(lua_State *L) {
+		Value *a = Value::get(L,1);
+		if (a == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
+		}
+		
+		Value *b = Value::get(L,2);
+		if (b == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
+		}
+		bool ret;
+		try {
+			ret = a->get() < b->get();
+		} catch(osgIntrospection::Exception &e) {
+			luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+		}
+		
+		lua_pushboolean(L, ret);
+		
+		return 1;
+	}
+	int metamethods::le(lua_State *L) {
+		Value *a = Value::get(L,1);
+		if (a == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
+		}
+		
+		Value *b = Value::get(L,2);
+		if (b == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
+		}
+		bool ret;
+		try {
+			ret = a->get() <= b->get();
+		} catch(osgIntrospection::Exception &e) {
+			luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+		}
+		
+		lua_pushboolean(L, ret);
+		
+		return 1;
+	}
 
 } // end of osgLua namespace

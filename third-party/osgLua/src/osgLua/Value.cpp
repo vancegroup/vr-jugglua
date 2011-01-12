@@ -158,6 +158,12 @@ namespace osgLua {
 		  		lua_setfield(L, -2, "__sub"); \
 		  		lua_pushcfunction(L, &metamethods::mul); \
 		  		lua_setfield(L, -2, "__mul"); \
+		  		lua_pushcfunction(L, &metamethods::eq); \
+		  		lua_setfield(L, -2, "__eq"); \
+		  		lua_pushcfunction(L, &metamethods::lt); \
+		  		lua_setfield(L, -2, "__lt"); \
+		  		lua_pushcfunction(L, &metamethods::le); \
+		  		lua_setfield(L, -2, "__le"); \
 		  	}
 		  	
 		  	VECTOR_MATH(osg::Vec4d, tvec4d)
