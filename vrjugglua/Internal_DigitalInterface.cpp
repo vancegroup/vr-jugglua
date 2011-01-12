@@ -32,21 +32,21 @@ DigitalInterface::DigitalInterface(const DigitalInterface & other) :
 	_iface(other._iface) {
 }
 
-bool DigitalInterface::isPressed() {
+bool DigitalInterface::pressed() {
 	return (_iface->getData() == gadget::Digital::TOGGLE_ON ||
 			_iface->getData() == gadget::Digital::ON);
 }
 
-bool DigitalInterface::isAChange() {
+bool DigitalInterface::justChanged() {
 	return (_iface->getData() == gadget::Digital::TOGGLE_ON ||
 			_iface->getData() == gadget::Digital::TOGGLE_OFF);
 }
 
-bool DigitalInterface::wasJustPressed() {
+bool DigitalInterface::justPressed() {
 	return (_iface->getData() == gadget::Digital::TOGGLE_ON);
 }
 
-bool DigitalInterface::wasJustReleased() {
+bool DigitalInterface::justReleased() {
 	return (_iface->getData() == gadget::Digital::TOGGLE_OFF);
 }
 
