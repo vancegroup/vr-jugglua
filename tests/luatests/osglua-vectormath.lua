@@ -7,10 +7,12 @@ print(c)
 
 local d = b - a
 print(d)
-print(a == d)
+assert(a == d)
 
 local e = b * 2
 print(e)
 assert(e == 2 * b)
+
+print(-a)
 
 print("Done!")
