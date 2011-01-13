@@ -118,8 +118,6 @@ namespace osgLua {
 		
 		template<class T>
 		int scale(lua_State *L) {
-			static const osgIntrospection::Type& tdouble =
-		  		osgIntrospection::Reflection::getType(extended_typeid<double>());
 
 			double scalar;
 			Value * vector = Value::get(L,1);
