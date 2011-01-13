@@ -32,11 +32,11 @@ namespace Internal {
 			DigitalInterface(const std::string & device);
 			DigitalInterface(const DigitalInterface & other);
 
-			bool isPressed();
-			bool isAChange();
+			bool pressed();
+			bool justChanged();
 
-			bool wasJustPressed();
-			bool wasJustReleased();
+			bool justPressed();
+			bool justReleased();
 
 		protected:
 			gadget::DigitalInterface _iface;

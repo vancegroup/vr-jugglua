@@ -30,6 +30,7 @@ if(APPLE AND CMAKE_SIZEOF_VOID_P EQUAL 8)
 endif()
 
 # Define Simple Options
+option(BUILD_DOCS "Add a target to build documentation" on)
 option(BUILD_VERBOSE "Turn on lots of runtime output." off)
 option(BUILD_WITH_VRJ30 "Use VR Juggler 3.0 instead of 2.2" off)
 if(NOT HIDE_FLTK)
@@ -203,7 +204,10 @@ add_subdirectory(vrjugglua)
 # Build the applications
 add_subdirectory(src)
 
-add_doxygen(Doxyfile)
+# Build documentation
+if(BUILD_DOCS)
+	add_doxygen(Doxyfile)
+endif()
 
 if(APPLE)
 	string(REPLACE "/usr/local/lib;" "" RUNTIME_LIBRARY_DIRS "${RUNTIME_LIBRARY_DIRS}")

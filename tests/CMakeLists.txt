@@ -16,7 +16,11 @@ set(LUA_TEST_SCRIPTS
 	osgapp-delegate-useful
 	osgapp-delegate-initdevices
 	osgapp-delegate-devicedata
-	osg-accept-visitor)
+	osg-accept-visitor
+	osglua-enums
+	osglua-matrixmath
+	osglua-props
+	osglua-vectormath)
 
 foreach(script ${LUA_TEST_SCRIPTS})
     add_test(NAME

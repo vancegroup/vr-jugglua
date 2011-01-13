@@ -38,7 +38,7 @@ namespace Internal {
 
 			osg::Matrixd getMatrix();
 			osg::Vec3d getPosition();
-			osg::Vec4d getOrientation();
+			osg::Quat getOrientation();
 			osg::Vec3d getForwardVector();
 
 		protected:

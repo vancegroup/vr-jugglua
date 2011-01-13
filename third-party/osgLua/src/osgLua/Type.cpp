@@ -61,7 +61,7 @@ namespace osgLua {
 				Value::push(L, mi->invoke(vl));
 				return 1;
 			}
-
+/** @todo remove this old enum code? 
 			// Maybe it's an enum
 			if (type.isEnum())
 			{
@@ -84,7 +84,7 @@ namespace osgLua {
 					}
 				}
 			}
-
+*/
 
 			luaL_error(L, "Class %s do not have static method %s",
 				tname,method);
@@ -118,7 +118,7 @@ namespace osgLua {
 		// traverse the namespace
 		try
 		{
-			/*
+			
 			const osgIntrospection::Type &type =
 				osgIntrospection::Reflection::getType(base);
 
@@ -142,7 +142,7 @@ namespace osgLua {
 				}
 				return 1;
 			}
-*/
+
 
 			// if not... push the type
 			Type::push(L, base.c_str());

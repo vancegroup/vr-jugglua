@@ -36,6 +36,7 @@ namespace osgLua {
 
 		static void push(lua_State *L,const osgIntrospection::Value &v);
 		static Value* get(lua_State *L, int index);
+		static Value* getRequired(lua_State *L, int index);
 
 		static int getTypeInfo(lua_State *L);
 		static int getTypes(lua_State *L);
@@ -54,8 +55,10 @@ namespace osgLua {
 		static Value* rawGet(lua_State *L, int index);
 		static int gc(lua_State *L);
 		static int index(lua_State *L);
+		static int newindex(lua_State *L);
 
 		static int methodCall(lua_State *L);
+		
 	};
 
 	osgIntrospection::Value getValue(lua_State *L, int index);

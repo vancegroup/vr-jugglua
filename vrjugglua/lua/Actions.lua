@@ -1,6 +1,6 @@
 Actions = {
 	_frameActions = {};
-	}
+}
 
 function Actions.addNodeAction(node, func)
 	local co = coroutine.create(func)
@@ -26,10 +26,12 @@ end
 function Actions.updateFrameActions()
 	local keepers = {}
 	for _, v in ipairs(Actions._frameActions) do
+		--print(coroutine.status(v))
+		--- TODO handle errors here
 		coroutine.resume(v, osgnav.appProxy:getTimeDelta())
 		if coroutine.status(v) ~= 'dead' then
 			table.insert(keepers, v)
 		end
 	end
-
+	Actions._frameActions = keepers
 end

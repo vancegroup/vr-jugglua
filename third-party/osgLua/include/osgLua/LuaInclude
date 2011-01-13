@@ -13,22 +13,15 @@
     OpenSceneGraph Public License for more details.
 */
 
-#include <osgIntrospection/Reflection>
-#include <osgIntrospection/MethodInfo>
-#include <osgIntrospection/ConstructorInfo>
-#include <osgIntrospection/Utility>
-#include <osgIntrospection/Value>
-#include <osgIntrospection/Type>
+#ifndef OSGLUA_LUAINCLUDE_
+#define OSGLUA_LUAINCLUDE_
 
-#include <osgLua/LuaInclude>
+#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
+extern "C" {
+#endif
+	#include "lua.h"
+#if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
+}
+#endif
 
-namespace osgLua {
-
-	void pushParameter(lua_State *L, const osgIntrospection::ParameterInfo *p);
-	void pushMethodInfo(lua_State *L, const osgIntrospection::MethodInfo *mi);
-	void pushConstructorInfo(lua_State *L, 
-		const osgIntrospection::ConstructorInfo *ci);
-	void pushTypeInfo(lua_State *L, const osgIntrospection::Type *type);
-
-
-} // end of osgLua namespace
+#endif

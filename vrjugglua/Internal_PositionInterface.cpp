@@ -42,8 +42,8 @@ osg::Vec3d PositionInterface::getPosition() {
 	return osg::Vec3d(xlate[0], xlate[1], xlate[2]);
 }
 
-osg::Vec4d PositionInterface::getOrientation() {
-	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate().asVec4();
+osg::Quat PositionInterface::getOrientation() {
+	return util::toOsgMatrix(_iface->getData(gadget::PositionUnitConversion::ConvertToMeters)).getRotate();
 }
 
 osg::Vec3d PositionInterface::getForwardVector() {

@@ -14,17 +14,23 @@
 */
 
 #include "Value.h"
+#include "Value_metamethods.h"
 #include "Type.h"
 #include "lua_functions.h"
 
 #include <osgIntrospection/Reflection>
 #include <osgIntrospection/MethodInfo>
 #include <osgIntrospection/ConstructorInfo>
+#include <osgIntrospection/PropertyInfo>
 #include <osgIntrospection/Utility>
 #include <osgIntrospection/ExtendedTypeInfo>
 #include <osgIntrospection/variant_cast>
 
 #include <osg/NodeVisitor>
+
+#include <osg/Vec3>
+#include <osg/Vec4>
+#include <osg/Matrix>
 
 namespace osgLua {
 
@@ -136,7 +142,53 @@ namespace osgLua {
 			lua_pushcfunction(L, Value::gc);
 			lua_setfield(L, -2, "__gc");	
 			lua_pushcfunction(L, Value::index);
-			lua_setfield(L, -2, "__index");	
+			lua_setfield(L, -2, "__index");
+			lua_pushcfunction(L, Value::newindex);
+			lua_setfield(L, -2, "__newindex");
+			
+			if (original.getType().getReaderWriter()) {
+				/// If we know how to turn it into a string
+				lua_pushcfunction(L, metamethods::tostring);
+				lua_setfield(L, -2, "__tostring");
+			}
+			
+			/// Bind mathematically-inclined values specially
+		  	bool success = false;
+			#define BIND_VECTOR(TYPE) \
+			if (!success) { \
+		  		success = Vector::bind_metamethods<TYPE>(L, original); \
+		  	}
+		  	
+		  	BIND_VECTOR(osg::Vec4d)
+		  	BIND_VECTOR(osg::Vec4f)
+		  	BIND_VECTOR(osg::Vec4ub)
+		  	BIND_VECTOR(osg::Vec4s)
+		  	BIND_VECTOR(osg::Vec4)
+		  	BIND_VECTOR(osg::Vec3d)
+		  	BIND_VECTOR(osg::Vec3f)
+		  	BIND_VECTOR(osg::Vec3s)
+		  	BIND_VECTOR(osg::Vec3b)
+		  	BIND_VECTOR(osg::Vec3)
+		  	BIND_VECTOR(osg::Vec2d)
+		  	BIND_VECTOR(osg::Vec2f)
+		  	BIND_VECTOR(osg::Vec2b)
+		  	BIND_VECTOR(osg::Vec2s)
+		  	BIND_VECTOR(osg::Vec2)
+		  	
+		  	#undef BIND_VECTOR
+
+
+			#define BIND_MATRIX(TYPE) \
+			if (!success) { \
+		  		success = Matrix::bind_metamethods<TYPE>(L, original); \
+		  	}
+		  	
+		  	BIND_MATRIX(osg::Matrixd)
+		  	BIND_MATRIX(osg::Matrixf)
+		  	BIND_MATRIX(osg::Matrix)
+		  	
+		  	#undef BIND_MATRIX
+		  		
 		}
 		lua_setmetatable(L, -2);
 
@@ -171,6 +223,16 @@ namespace osgLua {
 		return 0;
 	}
 	
+	Value* Value::getRequired(lua_State *L, int index )
+	{
+		Value *a = Value::get(L,index);
+		if (a == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, index)) ) ;
+		}
+		return a;
+	}
+	
 	int Value::gc(lua_State *L)
 	{
 		Value *v = rawGet(L,1);
@@ -191,12 +253,77 @@ namespace osgLua {
 			}
 			//std::string cname = type.getQualifiedName();
 			
+			const char * memberName = lua_tostring(L, 2);
+			std::string memName(memberName);
+			osgIntrospection::PropertyInfoList props;
+			type.getAllProperties(props);
+			if (props.size() > 0) {
+				for (unsigned int i = 0; i < props.size(); ++i) {
+					if (props[i]->getName() == memName) {
+						if (props[i]->isIndexed()) {
+							/// @todo implement indexed properties
+							luaL_error(L, "Indexed properties are not yet implemented in osgLua");
+						} else if (!props[i]->canGet()) {
+							luaL_error(L, "Property %s defined as not gettable", props[i]->getName().c_str());
+						} else {
+							//std::cout << "Getting a property named " << props[i]->getName() << std::endl;
+							osgIntrospection::Value propVal = props[i]->getValue(v->get());
+							Value::push(L, propVal);
+							return 1;
+						}
+					}
+				}
+			}
+			
 			lua_pushvalue(L,2); // copy the name
 			lua_pushcclosure(L, Value::methodCall,1);
 			return 1;
 		}
 		// maybe ... if is an integer... access indexed data
 		return 0;
+	}
+	
+	int Value::newindex(lua_State *L) {
+		
+		Value *v = rawGet(L,1);
+		
+		Value *newVal = get(L,3);
+		if (lua_isstring(L,2))
+		{
+			const osgIntrospection::Type &type = v->getType();
+			if (!type.isDefined())
+			{
+				luaL_error(L, "Type not defined %s", 
+					type.getStdTypeInfo().name());
+			}
+			//std::string cname = type.getQualifiedName();
+			
+			const char * memberName = lua_tostring(L, 2);
+			std::string memName(memberName);
+			osgIntrospection::PropertyInfoList props;
+			type.getAllProperties(props);
+			if (props.size() > 0) {
+				for (unsigned int i = 0; i < props.size(); ++i) {
+					if (props[i]->getName() == memName) {
+						if (props[i]->isIndexed()) {
+							/// @todo implement indexed properties
+							luaL_error(L, "Indexed properties are not yet implemented in osgLua");
+						} else if (!props[i]->canSet()) {
+							luaL_error(L, "Property %s defined as not settable", props[i]->getName().c_str());
+						} else {
+							std::cout << "Setting a property named " << props[i]->getName() << std::endl;
+							props[i]->setValue(v->get(), newVal->get());
+							return 0;
+						}
+					}
+				}
+			}
+			
+			luaL_error(L, "No property %s defined in %s", memberName, type.getQualifiedName().c_str());
+		
+		}
+		// maybe ... if is an integer... access indexed data
+		return 0;	
 	}
 	
 	int Value::methodCall(lua_State *L)

@@ -74,7 +74,7 @@ local function runApp()
 	appDelegate.appProxy:setActiveApplication()
 
 	print("Starting kernel")
-	vrjKernel.start()
+	vrjKernel.enter()
 end
 
 StateMachine = {
