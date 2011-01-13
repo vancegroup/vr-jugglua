@@ -149,35 +149,31 @@ namespace osgLua {
 				lua_setfield(L, -2, "__tostring");
 			}
 			
-			#define VECTOR_MATH(TYPE, NAME) \
-			static const osgIntrospection::Type& NAME = \
-		  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-		  	if (original.getType() == NAME) { \
-		  		lua_pushcfunction(L, &metamethods::add); \
-		  		lua_setfield(L, -2, "__add"); \
-		  		lua_pushcfunction(L, &metamethods::sub); \
-		  		lua_setfield(L, -2, "__sub"); \
-		  		lua_pushcfunction(L, &metamethods::unmVec); \
-		  		lua_setfield(L, -2, "__unm"); \
-		  		lua_pushcfunction(L, &metamethods::scaleVec); \
-		  		lua_setfield(L, -2, "__mul"); \
-		  		lua_pushcfunction(L, &metamethods::eq); \
-		  		lua_setfield(L, -2, "__eq"); \
-		  		lua_pushcfunction(L, &metamethods::lt); \
-		  		lua_setfield(L, -2, "__lt"); \
-		  		lua_pushcfunction(L, &metamethods::le); \
-		  		lua_setfield(L, -2, "__le"); \
+		  	bool success = false;
+		  	if (!success) {
+		  		success = Vector::bind_metamethods<osg::Vec4d>(L, original);
 		  	}
 		  	
-		  	VECTOR_MATH(osg::Vec4d, tvec4d)
-		  	VECTOR_MATH(osg::Vec4, tvec4)
-		  	VECTOR_MATH(osg::Vec4f, tvec4f)
-
-		  	VECTOR_MATH(osg::Vec3d, tvec3d)
-		  	VECTOR_MATH(osg::Vec3, tvec3)
-		  	VECTOR_MATH(osg::Vec3f, tvec3f)
+		  	if (!success) {
+		  		success = Vector::bind_metamethods<osg::Vec4>(L, original);
+		  	}
 		  	
-		  	#undef VECTOR_MATH
+		  	if (!success) {
+		  		success = Vector::bind_metamethods<osg::Vec4f>(L, original);
+		  	}
+		  	
+		  	if (!success) {
+		  		success = Vector::bind_metamethods<osg::Vec3d>(L, original);
+		  	}
+		  	
+		  	if (!success) {
+		  		success = Vector::bind_metamethods<osg::Vec3>(L, original);
+		  	}
+		  	
+		  	if (!success) {
+		  		success = Vector::bind_metamethods<osg::Vec3f>(L, original);
+		  	}
+
 		  	
 		  	#define MATRIX_MATH(TYPE, NAME) \
 			static const osgIntrospection::Type& NAME = \
@@ -229,6 +225,16 @@ namespace osgLua {
 		}
 		lua_settop(L,top);
 		return 0;
+	}
+	
+	Value* Value::getRequired(lua_State *L, int index )
+	{
+		Value *a = Value::get(L,index);
+		if (a == 0) {
+			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
+				__FILE__,__LINE__, lua_typename(L,lua_type(L, index)) ) ;
+		}
+		return a;
 	}
 	
 	int Value::gc(lua_State *L)

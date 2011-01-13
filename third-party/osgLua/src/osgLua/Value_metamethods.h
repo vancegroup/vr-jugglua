@@ -16,7 +16,7 @@
 #ifndef OSGLUA_VALUE_METAMETHODS
 #define OSGLUA_VALUE_METAMETHODS
 
-
+#include "Value.h"
 #include <vrjugglua/LuaIncludeFull.h>
 
 #include <osgIntrospection/Value>
@@ -25,22 +25,7 @@
 #include <osg/ref_ptr>
 
 namespace osgLua {
-	
-	namespace metamethods {
-		/// @todo make these templates so we don't have to re-figure out the type
-		int add(lua_State *L);
-		int sub(lua_State *L);
-		int unmVec(lua_State *L);
-		int scaleVec(lua_State *L);
-		
-		int tostring(lua_State *L);
-		
-		int eq(lua_State *L);
-		int lt(lua_State *L);
-		int le(lua_State *L);
-	}
-	
-	
+
 
 	namespace detail {
 		template<class T>
@@ -64,6 +49,121 @@ namespace osgLua {
 		}
 	
 	} // end of namespace detail
+
+	
+	namespace metamethods {
+		int tostring(lua_State *L);
+		
+		int eq(lua_State *L);
+		int lt(lua_State *L);
+		int le(lua_State *L);
+	}
+	
+	namespace Vector {
+	
+		template<class T>
+		int add(lua_State *L) {
+			Value *a = Value::getRequired(L,1);
+			Value *b = Value::getRequired(L,2);
+
+			const osgIntrospection::Type &typeA = a->getType();
+			const osgIntrospection::Type &typeB = b->getType();
+
+			static const osgIntrospection::Type& myType = 
+		  		osgIntrospection::Reflection::getType(extended_typeid<T>());
+			if (typeA == myType && typeB == myType) {
+		  		osgIntrospection::Value ret = detail::addVectors<T>(a->get(), b->get());
+		  		Value::push(L, ret);
+		  		return 1;
+		  	} else {
+				luaL_error(L,"[%s:%d] Could not add instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+			}
+			return 0;
+		}
+		
+		template<class T>
+		int sub(lua_State *L) {
+			Value *a = Value::getRequired(L,1);
+			Value *b = Value::getRequired(L,2);
+
+			const osgIntrospection::Type &typeA = a->getType();
+			const osgIntrospection::Type &typeB = b->getType();
+
+			static const osgIntrospection::Type& myType = 
+		  		osgIntrospection::Reflection::getType(extended_typeid<T>());
+			if (typeA == myType && typeB == myType) {
+		  		osgIntrospection::Value ret = detail::subtractVectors<T>(a->get(), b->get());
+		  		Value::push(L, ret);
+		  		return 1;
+		  	} else {
+				luaL_error(L,"[%s:%d] Could not subtract instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+			}
+			return 0;
+		}
+		
+		template<class T>
+		int unm(lua_State *L) {
+			Value *a = Value::getRequired(L,1);
+	  		osgIntrospection::Value ret = detail::scaleVector<T>(a->get(), -1);
+	  		Value::push(L, ret);
+	  		return 1;
+		}
+		
+		template<class T>
+		int scale(lua_State *L) {
+			static const osgIntrospection::Type& tdouble =
+		  		osgIntrospection::Reflection::getType(extended_typeid<double>());
+
+			double scalar;
+			Value * vector = Value::get(L,1);
+			if (vector == 0) {
+				if (!lua_isnumber(L, 1)) {
+					luaL_error(L, "%s:%d Expected a number but get %s",
+						__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) );
+				}
+				scalar = lua_tonumber(L, 1);
+				vector = Value::getRequired(L,2);
+			} else {
+				if (!lua_isnumber(L, 2)) {
+					luaL_error(L, "%s:%d Expected a number but get %s",
+						__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) );
+				}
+				scalar = lua_tonumber(L, 2);
+			}
+			
+			osgIntrospection::Value ret = detail::scaleVector<T>(vector->get(), scalar);
+	  		Value::push(L, ret);
+	  		return 1;
+	  	}
+	  	
+	  	template<class T>
+	  	bool bind_metamethods(lua_State *L, const osgIntrospection::Value &original) {
+	  		static const osgIntrospection::Type& myType = 
+		  		osgIntrospection::Reflection::getType(extended_typeid<T>()); 
+		  	if (original.getType() == myType) { 
+		  		lua_pushcfunction(L, &Vector::add<T>); 
+		  		lua_setfield(L, -2, "__add"); 
+		  		lua_pushcfunction(L, &Vector::sub<T>); 
+		  		lua_setfield(L, -2, "__sub"); 
+		  		lua_pushcfunction(L, &Vector::unm<T>); 
+		  		lua_setfield(L, -2, "__unm"); 
+		  		lua_pushcfunction(L, &Vector::scale<T>);
+		  		lua_setfield(L, -2, "__mul"); 
+		  		lua_pushcfunction(L, &metamethods::eq); 
+		  		lua_setfield(L, -2, "__eq"); 
+		  		lua_pushcfunction(L, &metamethods::lt); 
+		  		lua_setfield(L, -2, "__lt"); 
+		  		lua_pushcfunction(L, &metamethods::le); 
+		  		lua_setfield(L, -2, "__le"); 
+		  		return true;
+		  	} else {
+		  		return false;
+		  	}
+	  	}
+	}
+	
+	
+	
 
 } // end of osgLua namespace
 

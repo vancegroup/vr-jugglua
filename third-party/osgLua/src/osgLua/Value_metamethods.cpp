@@ -34,214 +34,17 @@
 
 namespace osgLua {
 
-	int metamethods::add(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
-
-		Value *b = Value::get(L,2);
-		if (b == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
-		}
-
-
-
-		const osgIntrospection::Type &typeA = a->getType();
-		const osgIntrospection::Type &typeB = b->getType();
-
-		bool success = false;
-		#define VECTOR_MATH(TYPE, NAME) \
-		static const osgIntrospection::Type& NAME = \
-	  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-	  	if (!success && typeA == NAME && typeB == NAME) { \
-	  		success = true; \
-	  		osgIntrospection::Value ret = detail::addVectors<TYPE>(a->get(), b->get()); \
-	  		Value::push(L, ret); \
-	  	}
-
-	  	VECTOR_MATH(osg::Vec4d, tvec4d)
-	  	VECTOR_MATH(osg::Vec4, tvec4)
-	  	VECTOR_MATH(osg::Vec4f, tvec4f)
-
-	  	VECTOR_MATH(osg::Vec3d, tvec3d)
-	  	VECTOR_MATH(osg::Vec3, tvec3)
-	  	VECTOR_MATH(osg::Vec3f, tvec3f)
-
-	  	#undef VECTOR_MATH
-
-	  	if (success) {
-			return 1;
-		} else {
-			luaL_error(L,"[%s:%d] Could not add instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
-		}
-		return 0;
-
-	}
-
-	int metamethods::sub(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
-
-		Value *b = Value::get(L,2);
-		if (b == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
-		}
-
-
-
-		const osgIntrospection::Type &typeA = a->getType();
-		const osgIntrospection::Type &typeB = b->getType();
-
-		bool success = false;
-		#define VECTOR_MATH(TYPE, NAME) \
-		static const osgIntrospection::Type& NAME = \
-	  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-	  	if (!success && typeA == NAME && typeB == NAME) { \
-	  		success = true; \
-	  		osgIntrospection::Value ret = detail::subtractVectors<TYPE>(a->get(), b->get()); \
-	  		Value::push(L, ret); \
-	  	}
-
-	  	VECTOR_MATH(osg::Vec4d, tvec4d)
-	  	VECTOR_MATH(osg::Vec4, tvec4)
-	  	VECTOR_MATH(osg::Vec4f, tvec4f)
-
-	  	VECTOR_MATH(osg::Vec3d, tvec3d)
-	  	VECTOR_MATH(osg::Vec3, tvec3)
-	  	VECTOR_MATH(osg::Vec3f, tvec3f)
-
-	  	#undef VECTOR_MATH
-
-	  	if (success) {
-			return 1;
-		} else {
-			luaL_error(L,"[%s:%d] Could not subtract instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
-		}
-		return 0;
-	}
-
-
-	int metamethods::unmVec(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
-
-		const osgIntrospection::Type &typeA = a->getType();
-		bool success = false;
-		#define VECTOR_MATH(TYPE, NAME) \
-		static const osgIntrospection::Type& NAME = \
-	  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-	  	if (!success && typeA == NAME) { \
-	  		success = true; \
-	  		osgIntrospection::Value ret = detail::scaleVector<TYPE>(a->get(), -1); \
-	  		Value::push(L, ret); \
-	  	}
-
-	  	VECTOR_MATH(osg::Vec4d, tvec4d)
-	  	VECTOR_MATH(osg::Vec4, tvec4)
-	  	VECTOR_MATH(osg::Vec4f, tvec4f)
-
-	  	VECTOR_MATH(osg::Vec3d, tvec3d)
-	  	VECTOR_MATH(osg::Vec3, tvec3)
-	  	VECTOR_MATH(osg::Vec3f, tvec3f)
-
-	  	#undef VECTOR_MATH
-
-	  	if (success) {
-			return 1;
-		} else {
-			luaL_error(L,"[%s:%d] Could not apply unary minus to instance of %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str());
-		}
-		return 0;
-	}
-
-	int metamethods::scaleVec(lua_State *L) {
-		static const osgIntrospection::Type& tdouble =
-		  		osgIntrospection::Reflection::getType(extended_typeid<double>());
-
-		double scalar;
-		Value * vector = Value::get(L,1);
-		if (vector == 0) {
-			if (!lua_isnumber(L, 1)) {
-				luaL_error(L, "%s:%d Expected a number but get %s",
-					__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) );
-			}
-			scalar = lua_tonumber(L, 1);
-			vector = Value::get(L,2);
-		} else {
-			if (!lua_isnumber(L, 2)) {
-				luaL_error(L, "%s:%d Expected a number but get %s",
-					__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) );
-			}
-			scalar = lua_tonumber(L, 2);
-		}
-
-		if (vector == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
-		}
-
-		const osgIntrospection::Type &vecType = vector->getType();
-		bool success = false;
-		#define VECTOR_MATH(TYPE, NAME) \
-		static const osgIntrospection::Type& NAME = \
-	  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-	  	if (!success && vecType == NAME) { \
-	  		success = true; \
-	  		osgIntrospection::Value ret = detail::scaleVector<TYPE>(vector->get(), scalar); \
-	  		Value::push(L, ret); \
-	  	}
-
-	  	VECTOR_MATH(osg::Vec4d, tvec4d)
-	  	VECTOR_MATH(osg::Vec4, tvec4)
-	  	VECTOR_MATH(osg::Vec4f, tvec4f)
-
-	  	VECTOR_MATH(osg::Vec3d, tvec3d)
-	  	VECTOR_MATH(osg::Vec3, tvec3)
-	  	VECTOR_MATH(osg::Vec3f, tvec3f)
-
-	  	#undef VECTOR_MATH
-
-		if (success) {
-			return 1;
-		} else {
-			luaL_error(L,"[%s:%d] Could not scale vector instance of %s",__FILE__,__LINE__, vecType.getQualifiedName().c_str());
-		}
-		return 0;
-	}
-
 	int metamethods::tostring(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
+		Value *a = Value::getRequired(L,1);
 
 		lua_pushstring(L, a->get().toString().c_str());
 		return 1;
 	}
 
 	int metamethods::eq(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
+		Value *a = Value::getRequired(L,1);
+		Value *b = Value::getRequired(L,2);
 
-		Value *b = Value::get(L,2);
-		if (b == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
-		}
 		bool ret;
 		try {
 			ret = a->get() == b->get();
@@ -255,17 +58,9 @@ namespace osgLua {
 	}
 
 	int metamethods::lt(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
+		Value *a = Value::getRequired(L,1);
 
-		Value *b = Value::get(L,2);
-		if (b == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
-		}
+		Value *b = Value::getRequired(L,2);
 		bool ret;
 		try {
 			ret = a->get() < b->get();
@@ -279,17 +74,9 @@ namespace osgLua {
 	}
 
 	int metamethods::le(lua_State *L) {
-		Value *a = Value::get(L,1);
-		if (a == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
-		}
+		Value *a = Value::getRequired(L,1);
 
-		Value *b = Value::get(L,2);
-		if (b == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) ) ;
-		}
+		Value *b = Value::getRequired(L,2);
 		bool ret;
 		try {
 			ret = a->get() <= b->get();
