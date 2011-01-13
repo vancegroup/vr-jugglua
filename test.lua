@@ -3,6 +3,7 @@ require("help")
 
 a = help.docstring[[This is an example]] .. function()
 	print("this is the function")
+	return "function return value"
 end
 
 print("Before calling a")
