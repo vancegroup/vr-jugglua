@@ -33,6 +33,7 @@
 #include <vrjugglua/LuaInclude.h>
 
 #include <luabind/luabind.hpp>
+#include <luabind/class_info.hpp>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -199,8 +200,9 @@ void LuaScript::_applyBindings() {
 	// Connect LuaBind to this state
 	try {
 		luabind::open(_state.get());
+		luabind::bind_class_info(_state.get());
 	} catch (const std::exception & e) {
-		std::cerr << "Caught exception connecting luabind: " << e.what() << std::endl;
+		std::cerr << "Caught exception connecting luabind and class_info: " << e.what() << std::endl;
 		throw;
 	}
 
