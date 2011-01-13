@@ -21,6 +21,7 @@ set(OSGLUA_API
 
 set(OSGLUA_SIMPLE_API
 	../../include/osgLua/Callback
+	../../include/osgLua/LuaInclude
 	../../include/osgLua/Script)
 
 source_group(API FILES ${OSGLUA_SIMPLE_API})
