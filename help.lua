@@ -1,22 +1,31 @@
-local docstrings = setmetatable({}, {__mode = "kv"})
 local mt = {}
-local helpExtensions = {}
 help = setmetatable({}, mt)
+local docstrings = setmetatable({}, {__mode = "kv"})
+local helpExtensions = {}
 
 function mt:__call(obj,...)
-	print(arg.n)
 	local helpContent = help.lookup(obj)
 	
 	if helpContent then
-		print("Help:", helpContent)
+		print("Help:\t" .. help.formatHelp(helpContent))
 	else
 		print("No help available!")	
 	end
 end
 
+function help.formatHelp(h)
+  if type(h) == "string" then
+    return h
+  elseif type(h) == "table" then
+    return table.concat(h, ",")
+  else
+    return h
+  end
+end
+
 function help.lookup(obj)
 	if docstrings[obj] then
-		 return table.concat(docstrings[obj], ",")
+		 return docstrings[obj]
 	end
 	for _, v in ipairs(helpExtensions) do
 		local helpContent = v(obj)
@@ -24,21 +33,20 @@ function help.lookup(obj)
 			return helpContent
 		end
 	end
+	return nil
 end
 
-function help.docstring(docs, ...)
-	print("arg to docstring: " .. docs)
-	print("Extra args to docstring: " .. arg.n)
+function help.docstring(docs)
 	local mt = {}
 	-- handle the .. operator for inline documentation
 	function mt.__concat(a, f)
-		docstrings[f] = {docs, unpack(arg)}
+		docstrings[f] = docs
 		return f
 	end
 	
 	-- hanadle the () operator for after-the-fact docs
 	function mt:__call(f)
-		docstrings[f] = {docs, unpack(arg)}
+		docstrings[f] = docs
 		return f
 	end
 	return setmetatable({}, mt)
@@ -46,4 +54,12 @@ end
 
 function help.addHelpExtension(func)
 	table.insert(helpExtensions, func)
+end
+
+if class_info then
+  --require("helpLuabind")
+end
+
+if osgLua then
+  --require("helpOsgLua")
 end
