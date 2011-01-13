@@ -55,6 +55,7 @@ namespace osgLua {
 		static Value* rawGet(lua_State *L, int index);
 		static int gc(lua_State *L);
 		static int index(lua_State *L);
+		static int newindex(lua_State *L);
 
 		static int methodCall(lua_State *L);
 		

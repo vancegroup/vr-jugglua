@@ -143,6 +143,8 @@ namespace osgLua {
 			lua_setfield(L, -2, "__gc");	
 			lua_pushcfunction(L, Value::index);
 			lua_setfield(L, -2, "__index");
+			lua_pushcfunction(L, Value::newindex);
+			lua_setfield(L, -2, "__newindex");
 			
 			if (original.getType().getReaderWriter()) {
 				/// If we know how to turn it into a string
@@ -281,6 +283,49 @@ namespace osgLua {
 		}
 		// maybe ... if is an integer... access indexed data
 		return 0;
+	}
+	
+	int Value::newindex(lua_State *L) {
+		
+		Value *v = rawGet(L,1);
+		
+		Value *newVal = get(L,3);
+		if (lua_isstring(L,2))
+		{
+			const osgIntrospection::Type &type = v->getType();
+			if (!type.isDefined())
+			{
+				luaL_error(L, "Type not defined %s", 
+					type.getStdTypeInfo().name());
+			}
+			//std::string cname = type.getQualifiedName();
+			
+			const char * memberName = lua_tostring(L, 2);
+			std::string memName(memberName);
+			osgIntrospection::PropertyInfoList props;
+			type.getAllProperties(props);
+			if (props.size() > 0) {
+				for (unsigned int i = 0; i < props.size(); ++i) {
+					if (props[i]->getName() == memName) {
+						if (props[i]->isIndexed()) {
+							/// @todo implement indexed properties
+							luaL_error(L, "Indexed properties are not yet implemented in osgLua");
+						} else if (!props[i]->canSet()) {
+							luaL_error(L, "Property %s defined as not settable", props[i]->getName().c_str());
+						} else {
+							std::cout << "Setting a property named " << props[i]->getName() << std::endl;
+							props[i]->setValue(v->get(), newVal->get());
+							return 0;
+						}
+					}
+				}
+			}
+			
+			luaL_error(L, "No property %s defined in %s", memberName, type.getQualifiedName().c_str());
+		
+		}
+		// maybe ... if is an integer... access indexed data
+		return 0;	
 	}
 	
 	int Value::methodCall(lua_State *L)
