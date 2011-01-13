@@ -6,7 +6,17 @@ local function createConcat(decorationFunc)
 	end
 end
 
+local mt = {}
+local help = setmetatable({}, mt)
 
+function mt:__call(obj,...)
+	print(arg.n)
+	if docstrings[obj] then
+		print("Help:", table.concat(docstrings[obj], ","))
+	else
+		print("No help available!")
+	end
+end
 
 decorator = createConcat(function(a,f)
 	    return function(...)
@@ -29,27 +39,23 @@ docstring = createConcat(
 	end
 )]]
 
-function docstring(docs, ...)
+function help.docstring(docs, ...)
 	print("arg to docstring: " .. docs)
 	print("Extra args to docstring: " .. arg.n)
 	local mt = {}
 	function mt.__concat(a, f)
-		docstrings[f] = {docs}
+		docstrings[f] = {docs, unpack(arg)}
+		return f
+	end
+	function mt:__call(f)
+		docstrings[f] = {docs, unpack(arg)}
 		return f
 	end
 	return setmetatable({}, mt)
 end
 
 
-function help(f)
-	if docstrings[f] then
-		print("Help:", table.concat(docstrings[f], ","))
-	else
-		print("No help available!")
-	end
-end
-
-a = docstring[[This is an example]] .. function()
+a = help.docstring[[This is an example]] .. function()
 	print("this is the function")
 end
 
@@ -66,11 +72,13 @@ function b()
 	print("this is the second function")
 end
 
----docstring([[a second documented func]]) .. b
+help.docstring([[a second documented func]])(b)
+
+help(b)
 
 print("before defining random")
 random =
-  docstring[[Compute random number.]] ..
+  help.docstring[[Compute random number.]] ..
   decorator("number", '->', "number") ..
   function(n)
     return math.random(n)
