@@ -149,6 +149,7 @@ namespace osgLua {
 				lua_setfield(L, -2, "__tostring");
 			}
 			
+			/// Bind mathematically-inclined values specially
 		  	bool success = false;
 		  	if (!success) {
 		  		success = Vector::bind_metamethods<osg::Vec4d>(L, original);
@@ -174,24 +175,16 @@ namespace osgLua {
 		  		success = Vector::bind_metamethods<osg::Vec3f>(L, original);
 		  	}
 
-		  	
-		  	#define MATRIX_MATH(TYPE, NAME) \
-			static const osgIntrospection::Type& NAME = \
-		  		osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-		  	if (original.getType() == NAME) { \
-		  		lua_pushcfunction(L, &metamethods::eq); \
-		  		lua_setfield(L, -2, "__eq"); \
-		  		lua_pushcfunction(L, &metamethods::lt); \
-		  		lua_setfield(L, -2, "__lt"); \
-		  		lua_pushcfunction(L, &metamethods::le); \
-		  		lua_setfield(L, -2, "__le"); \
+		  	if (!success) {
+		  		success = Matrix::bind_metamethods<osg::Matrixd>(L, original);
 		  	}
-
-		  	MATRIX_MATH(osg::Matrixd, tmatrixd)
-		  	MATRIX_MATH(osg::Matrix, tmatrix)
-		  	MATRIX_MATH(osg::Matrixf, tmatrixf)
+		  	if (!success) {
+		  		success = Matrix::bind_metamethods<osg::Matrix>(L, original);
+		  	}
+		  	if (!success) {
+		  		success = Matrix::bind_metamethods<osg::Matrixf>(L, original);
+		  	}
 		  	
-		  	#undef MATRIX_MATH
 		  		
 		}
 		lua_setmetatable(L, -2);
