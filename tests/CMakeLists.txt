@@ -19,6 +19,7 @@ set(LUA_TEST_SCRIPTS
 	osg-accept-visitor
 	osglua-enums
 	osglua-matrixmath
+	osglua-props
 	osglua-vectormath)
 
 foreach(script ${LUA_TEST_SCRIPTS})

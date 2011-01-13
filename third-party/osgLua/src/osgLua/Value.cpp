@@ -21,6 +21,7 @@
 #include <osgIntrospection/Reflection>
 #include <osgIntrospection/MethodInfo>
 #include <osgIntrospection/ConstructorInfo>
+#include <osgIntrospection/PropertyInfo>
 #include <osgIntrospection/Utility>
 #include <osgIntrospection/ExtendedTypeInfo>
 #include <osgIntrospection/variant_cast>
@@ -251,6 +252,28 @@ namespace osgLua {
 					type.getStdTypeInfo().name());
 			}
 			//std::string cname = type.getQualifiedName();
+			
+			const char * memberName = lua_tostring(L, 2);
+			std::string memName(memberName);
+			osgIntrospection::PropertyInfoList props;
+			type.getAllProperties(props);
+			if (props.size() > 0) {
+				for (unsigned int i = 0; i < props.size(); ++i) {
+					if (props[i]->getName() == memName) {
+						if (props[i]->isIndexed()) {
+							/// @todo implement indexed properties
+							luaL_error(L, "Indexed properties are not yet implemented in osgLua");
+						} else if (!props[i]->canGet()) {
+							luaL_error(L, "Property %s defined as not gettable", props[i]->getName().c_str());
+						} else {
+							//std::cout << "Getting a property named " << props[i]->getName() << std::endl;
+							osgIntrospection::Value propVal = props[i]->getValue(v->get());
+							Value::push(L, propVal);
+							return 1;
+						}
+					}
+				}
+			}
 			
 			lua_pushvalue(L,2); // copy the name
 			lua_pushcclosure(L, Value::methodCall,1);
