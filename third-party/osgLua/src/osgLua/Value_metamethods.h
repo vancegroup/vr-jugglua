@@ -24,6 +24,13 @@
 #include <osg/Referenced>
 #include <osg/ref_ptr>
 
+#include <osg/Vec4>
+#include <osg/Vec3>
+#include <osg/Vec4f>
+#include <osg/Vec3f>
+#include <osg/Vec4d>
+#include <osg/Vec3d>
+
 namespace osgLua {
 
 
@@ -162,6 +169,23 @@ namespace osgLua {
 	} // end of Vector namespace
 	
 	namespace Matrix {
+		template<class Mat, class Vec>
+		bool xform(lua_State *L, Value *a, Value *b) {
+			const osgIntrospection::Type &typeA = a->getType();
+			const osgIntrospection::Type &typeB = b->getType();
+			static const osgIntrospection::Type& vecType = 
+		  		osgIntrospection::Reflection::getType(extended_typeid<Vec>());
+			static const osgIntrospection::Type& matType = 
+		  		osgIntrospection::Reflection::getType(extended_typeid<Mat>());
+			if (typeA == vecType && typeB == matType) {
+				Vec result = osgIntrospection::variant_cast<Vec>(a->get()) * osgIntrospection::variant_cast<Mat>(b->get());
+		  		osgIntrospection::Value ret = result;
+		  		Value::push(L, ret);
+		  		return true;
+		  	}
+		  	return false;
+		}
+		
 		template<class T>
 		int mul(lua_State *L) {
 			Value *a = Value::getRequired(L,1);
@@ -173,12 +197,34 @@ namespace osgLua {
 			static const osgIntrospection::Type& myType = 
 		  		osgIntrospection::Reflection::getType(extended_typeid<T>());
 			if (typeA == myType && typeB == myType) {
+				/// matrix multiplication
 		  		osgIntrospection::Value ret = detail::multMatrices<T>(a->get(), b->get());
 		  		Value::push(L, ret);
 		  		return 1;
-		  	} else {
-				luaL_error(L,"[%s:%d] Could not multiply instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
-			}
+		  	}
+	  		if (typeB == myType) {
+	  			/// transform vector by matrix
+	  			if (xform<T, osg::Vec3f>(L, a, b)) {
+	  				return 1;
+	  			}
+	  			if (xform<T, osg::Vec3d>(L, a, b)) {
+	  				return 1;
+	  			}
+	  			if (xform<T, osg::Vec3>(L, a, b)) {
+	  				return 1;
+	  			}
+	  			if (xform<T, osg::Vec4f>(L, a, b)) {
+	  				return 1;
+	  			}
+	  			if (xform<T, osg::Vec4d>(L, a, b)) {
+	  				return 1;
+	  			}
+	  			if (xform<T, osg::Vec4>(L, a, b)) {
+	  				return 1;
+	  			}
+	  		}
+		  		
+		  	luaL_error(L,"[%s:%d] Could not multiply instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
 			return 0;
 		}
 		
