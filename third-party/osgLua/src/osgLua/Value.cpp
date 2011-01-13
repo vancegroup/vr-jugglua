@@ -156,11 +156,11 @@ namespace osgLua {
 		  	}
 		  	
 		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec4>(L, original);
+		  		success = Vector::bind_metamethods<osg::Vec4f>(L, original);
 		  	}
 		  	
 		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec4f>(L, original);
+		  		success = Vector::bind_metamethods<osg::Vec4>(L, original);
 		  	}
 		  	
 		  	if (!success) {
@@ -168,21 +168,23 @@ namespace osgLua {
 		  	}
 		  	
 		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec3>(L, original);
+		  		success = Vector::bind_metamethods<osg::Vec3f>(L, original);
 		  	}
 		  	
 		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec3f>(L, original);
+		  		success = Vector::bind_metamethods<osg::Vec3>(L, original);
 		  	}
 
 		  	if (!success) {
 		  		success = Matrix::bind_metamethods<osg::Matrixd>(L, original);
 		  	}
-		  	if (!success) {
-		  		success = Matrix::bind_metamethods<osg::Matrix>(L, original);
-		  	}
+
 		  	if (!success) {
 		  		success = Matrix::bind_metamethods<osg::Matrixf>(L, original);
+		  	}
+
+		  	if (!success) {
+		  		success = Matrix::bind_metamethods<osg::Matrix>(L, original);
 		  	}
 		  	
 		  		
