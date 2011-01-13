@@ -183,18 +183,56 @@ namespace osgLua {
 		}
 		
 		template<class T>
+		int eq(lua_State *L) {
+			Value *a = Value::getRequired(L,1);
+			Value *b = Value::getRequired(L,2);
+
+			const osgIntrospection::Type &typeA = a->getType();
+			const osgIntrospection::Type &typeB = b->getType();
+
+			static const osgIntrospection::Type& myType = 
+		  		osgIntrospection::Reflection::getType(extended_typeid<T>());
+			if (typeA == myType && typeB == myType) {
+				bool ret = ( osgIntrospection::variant_cast<T>(a->get()) == osgIntrospection::variant_cast<T>(b->get()) );  		
+				lua_pushboolean(L, ret);
+		  		return 1;
+		  	} else {
+				luaL_error(L,"[%s:%d] Could not compare instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+			}
+			return 0;
+		}
+		
+		template<class T>
+		int lt(lua_State *L) {
+			Value *a = Value::getRequired(L,1);
+			Value *b = Value::getRequired(L,2);
+
+			const osgIntrospection::Type &typeA = a->getType();
+			const osgIntrospection::Type &typeB = b->getType();
+
+			static const osgIntrospection::Type& myType = 
+		  		osgIntrospection::Reflection::getType(extended_typeid<T>());
+			if (typeA == myType && typeB == myType) {
+				bool ret = ( osgIntrospection::variant_cast<T>(a->get()) < osgIntrospection::variant_cast<T>(b->get()) );  		
+				lua_pushboolean(L, ret);
+		  		return 1;
+		  	} else {
+				luaL_error(L,"[%s:%d] Could not compare instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+			}
+			return 0;
+		}
+		
+		template<class T>
 	  	bool bind_metamethods(lua_State *L, const osgIntrospection::Value &original) {
 	  		static const osgIntrospection::Type& myType = 
 		  		osgIntrospection::Reflection::getType(extended_typeid<T>()); 
 		  	if (original.getType() == myType) { 
 		  		lua_pushcfunction(L, &Matrix::mul<T>); 
 		  		lua_setfield(L, -2, "__mul"); 
-		  		lua_pushcfunction(L, &metamethods::eq); 
+		  		lua_pushcfunction(L, &Matrix::eq<T>); 
 		  		lua_setfield(L, -2, "__eq"); 
-		  		lua_pushcfunction(L, &metamethods::lt); 
+		  		lua_pushcfunction(L, &Matrix::lt<T>); 
 		  		lua_setfield(L, -2, "__lt"); 
-		  		lua_pushcfunction(L, &metamethods::le); 
-		  		lua_setfield(L, -2, "__le"); 
 		  		return true;
 		  	}
 		  	return false;
