@@ -154,42 +154,40 @@ namespace osgLua {
 			
 			/// Bind mathematically-inclined values specially
 		  	bool success = false;
-		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec4d>(L, original);
+			#define BIND_VECTOR(TYPE) \
+			if (!success) { \
+		  		success = Vector::bind_metamethods<TYPE>(L, original); \
 		  	}
 		  	
-		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec4f>(L, original);
-		  	}
+		  	BIND_VECTOR(osg::Vec4d)
+		  	BIND_VECTOR(osg::Vec4f)
+		  	BIND_VECTOR(osg::Vec4ub)
+		  	BIND_VECTOR(osg::Vec4s)
+		  	BIND_VECTOR(osg::Vec4)
+		  	BIND_VECTOR(osg::Vec3d)
+		  	BIND_VECTOR(osg::Vec3f)
+		  	BIND_VECTOR(osg::Vec3s)
+		  	BIND_VECTOR(osg::Vec3b)
+		  	BIND_VECTOR(osg::Vec3)
+		  	BIND_VECTOR(osg::Vec2d)
+		  	BIND_VECTOR(osg::Vec2f)
+		  	BIND_VECTOR(osg::Vec2b)
+		  	BIND_VECTOR(osg::Vec2s)
+		  	BIND_VECTOR(osg::Vec2)
 		  	
-		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec4>(L, original);
-		  	}
-		  	
-		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec3d>(L, original);
-		  	}
-		  	
-		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec3f>(L, original);
-		  	}
-		  	
-		  	if (!success) {
-		  		success = Vector::bind_metamethods<osg::Vec3>(L, original);
-		  	}
+		  	#undef BIND_VECTOR
 
-		  	if (!success) {
-		  		success = Matrix::bind_metamethods<osg::Matrixd>(L, original);
-		  	}
 
-		  	if (!success) {
-		  		success = Matrix::bind_metamethods<osg::Matrixf>(L, original);
-		  	}
-
-		  	if (!success) {
-		  		success = Matrix::bind_metamethods<osg::Matrix>(L, original);
+			#define BIND_MATRIX(TYPE) \
+			if (!success) { \
+		  		success = Matrix::bind_metamethods<TYPE>(L, original); \
 		  	}
 		  	
+		  	BIND_MATRIX(osg::Matrixd)
+		  	BIND_MATRIX(osg::Matrixf)
+		  	BIND_MATRIX(osg::Matrix)
+		  	
+		  	#undef BIND_MATRIX
 		  		
 		}
 		lua_setmetatable(L, -2);
