@@ -125,6 +125,29 @@ function help.addHelpExtension(func)
 	table.insert(helpExtensions, func)
 end
 
+-- Docstring for the help function
+-- because you know somebody will try help(help)
+help.docstring[[help(obj)
+
+Display as much helpful information as possible about obj.
+There will be more information if you define docstrings for
+your objects. Try help(help.docstring) for info.]](help)
+
+-- Gets a bit weird here - documentation for help.docstring
+help.docstring[[Define documentation for an object.
+
+You can pass just a string, or args = {}, methods = {}, etc.
+
+If setting a variable, like
+  a = function() code goes here end
+you can call
+  a = help.docstring\[\[your docs \]\] .. function() code goes here end.
+
+If you are documenting some object a "after the fact", the object that help.docstring
+returns can be called with an argument:
+  help.docstring\[\[your docs\]\](a)
+]](help.docstring)
+
 if class_info then
   require("helpLuabind")
 end
