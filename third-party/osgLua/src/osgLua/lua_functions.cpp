@@ -129,6 +129,7 @@ namespace osgLua {
 				}
 				lua_setfield(L, table, "constructors");
 			}
+			/// @todo add properties here
 		}
 		else
 		{
