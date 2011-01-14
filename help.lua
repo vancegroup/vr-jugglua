@@ -97,32 +97,32 @@ function mt:__call(...)
 end
 
 function help.formatHelp(h)
-  if type(h) == "string" then
-    return h
-  elseif type(h) == "table" then
-    local keys = {}
-    local str = ""
-    for i, v in ipairs(h) do
-      keys[i] = true
-      str = str .. "\n" .. v
-    end
-    for k,v in pairs(h) do
-      if not keys[k] then
-        if type(v) == "table" then
-          str = string.format("%s\n%s = {", str, k)
-          for _, val in ipairs(v) do
-            str = str .. "\n\t" .. tostring(val)
-          end
-          str = str .. "\n}\n"
-        else
-          str = str .. string.format("\n%s = %s", k, tostring(v))
-        end
-      end
-    end
-    return str
-  else
-    return h
-  end
+	if type(h) == "string" then
+		return h
+	elseif type(h) == "table" then
+		local keys = {}
+		local str = ""
+		for i, v in ipairs(h) do
+			keys[i] = true
+			str = str .. "\n" .. v
+		end
+		for k,v in pairs(h) do
+			if not keys[k] then
+				if type(v) == "table" then
+					str = string.format("%s\n%s = {", str, k)
+					for _, val in ipairs(v) do
+						str = str .. "\n\t" .. tostring(val)
+					end
+					str = str .. "\n}\n"
+				else
+					str = str .. string.format("\n%s = %s", k, tostring(v))
+				end
+			end
+		end
+		return str
+	else
+		return h
+	end
 end
 
 function help.lookup(obj)
@@ -188,13 +188,13 @@ end
 -- Assume that a class_info method means that luabind has been
 -- opened in this state and that class_info has been registered
 if class_info then
-  require("helpLuabind")
+	require("helpLuabind")
 end
 
 -- If there's something called osgLua, assume it is osgLua the
 -- introspection-based OpenSceneGraph-wrapper
 if osgLua then
-  require("helpOsgLua")
+	require("helpOsgLua")
 end
 
 --[[ begin documentation ]]
@@ -231,31 +231,31 @@ Define documentation for an object.
 
 You can pass just a string:
  help.docstring[[
-  Help goes here free-form.
+	Help goes here free-form.
  ]]
 or provide more structured help:
  help.docstring{
-  [[
-  Help goes here.
-  ]],
-  args = {"this", "that", "the other"},
-  methods = {"doThis", "doThat", "doOther"}
+	[[
+	Help goes here.
+	]],
+	args = {"this", "that", "the other"},
+	methods = {"doThis", "doThat", "doOther"}
  }
 
 No particular structure/requirement for the arguments
 you pass - just make them useful.
 
 If setting a variable, like
-  a = function() code goes here end
+	a = function() code goes here end
 you can call
-  a = help.docstring[[your docs]] .. function() code goes here end.
+	a = help.docstring[[your docs]] .. function() code goes here end.
 
 If you are documenting some object a "after the fact", you can tack on a call
 to .applyTo(yourObj) (or multiple calls!) after help.docstring:
-  help.docstring[[your docs]].applyTo(a)
-  help.docstring[[your docs]].applyTo(c).applyTo(d)
+	help.docstring[[your docs]].applyTo(a)
+	help.docstring[[your docs]].applyTo(c).applyTo(d)
 or even just parentheses for calling:
-  help.docstring[[your docs]](a)
+	help.docstring[[your docs]](a)
 
 
 Quoting strings are somewhat flexible: see this web page for

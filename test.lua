@@ -44,8 +44,8 @@ help(random)
 help(help, help.docstring)
 
 if osgLua then
-  print("We have osgLua")
-  help(osg.PositionAttitudeTransform())
-  local xform = help.docstring[[The root transform.]] .. osg.PositionAttitudeTransform()
-  help(xform)
+	print("We have osgLua")
+	help(osg.PositionAttitudeTransform())
+	local xform = help.docstring[[The root transform.]] .. osg.PositionAttitudeTransform()
+	help(xform)
 end
