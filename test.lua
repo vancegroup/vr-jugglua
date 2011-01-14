@@ -1,7 +1,12 @@
 require("lunatest.lunatest")
-require("help")
+
+function test_loads()
+	require("help")
+	assert_table(help)
+end
 
 function test_concat()
+	require("help")
 	local a = help.docstring[[This is an example]] .. function()
 		return "function return value"
 	end
@@ -10,6 +15,7 @@ function test_concat()
 end
 
 function test_concat_lookup()
+	require("help")
 	local a = help.docstring[[This is an example]] .. function()
 		return "function return value"
 	end
@@ -17,6 +23,7 @@ function test_concat_lookup()
 end
 
 function test_concat_twice()
+	require("help")
 	local a = help.docstring[[This is an example]] .. help.docstring[[This is another example]] .. function()
 		return "function return value"
 	end
@@ -25,6 +32,7 @@ function test_concat_twice()
 end
 
 function test_concat_twice_lookup()
+	require("help")
 	local a = help.docstring[[This is an example]] .. help.docstring[[This is another example]] .. function()
 		return "function return value"
 	end
@@ -33,6 +41,7 @@ function test_concat_twice_lookup()
 end
 
 function test_call()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -42,6 +51,7 @@ function test_call()
 end
 
 function test_call_chain()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -59,6 +69,7 @@ function test_call_chain()
 end
 
 function test_call_lookup()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -67,6 +78,7 @@ function test_call_lookup()
 end
 
 function test_call_twice()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -77,6 +89,7 @@ function test_call_twice()
 end
 
 function test_call_twice_lookup()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -88,6 +101,7 @@ end
 
 
 function test_applyto()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -97,6 +111,7 @@ function test_applyto()
 end
 
 function test_applyto_chain()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -114,6 +129,7 @@ function test_applyto_chain()
 end
 
 function test_applyto_lookup()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -122,6 +138,7 @@ function test_applyto_lookup()
 end
 
 function test_applyto_twice()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -132,6 +149,7 @@ function test_applyto_twice()
 end
 
 function test_applyto_twice_lookup()
+	require("help")
 	local function a()
 		return "function return value"
 	end
@@ -141,11 +159,10 @@ function test_applyto_twice_lookup()
 	assert_len(2, help.lookup(a))
 end
 
-function test_selfdoc_table()
-end
-
 function test_selfdoc_list_of_functions()
-	assert_not_nil(help.lookup(help))
+	require("help")
+	assert_gt(#help, 1)
+	assert_not_nil(help.lookup(help), "The help table has no documentation!")
 
 	local keys = {}
 	local foundKeys = {}
@@ -166,6 +183,7 @@ function test_selfdoc_list_of_functions()
 end
 
 function test_selfdoc_complete()
+	require("help")
 	for k,v in pairs(help) do
 		assert_not_nil(help.lookup(v), "Function help." ..k.. " is not documented")
 	end
