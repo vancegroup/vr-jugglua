@@ -40,18 +40,26 @@ help = setmetatable({}, mt)
 local docstrings = setmetatable({}, {__mode = "kv"})
 local helpExtensions = {}
 
-function mt:__call(obj,...)
-	if obj == nil then
+function mt:__call(...)
+	if arg.n == 0 then
 		print("help(obj) - call to learn information about a particular object or value.")
 		return
 	end
-	local helpContent = help.lookup(obj)
-	
-	if helpContent then
-		print("Help:\t" .. help.formatHelp(helpContent))
-	else
-		print("type(obj) = " .. type(obj))	
-		print("No further help available!")
+	for i,obj in ipairs(arg) do
+		local helpContent = help.lookup(obj)
+		local helpHeader
+		if i == 1 then
+			helpHeader = "Help:\t"
+		else
+			print("")
+			helpHeader = string.format("Help (#%d):\t", i)
+		end
+		if helpContent then
+			print(helpHeader .. help.formatHelp(helpContent))
+		else
+			print(helpHeader .. "type(obj) = " .. type(obj))	
+			print("No further help available!")
+		end
 	end
 end
 
