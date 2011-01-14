@@ -22,13 +22,11 @@ Lua objects, intended for "end user" use.
 that provide their own methods of introspective help, for seamless
 use with "help()"
 
-See the `examples.lua` and `test.lua` files for some instructive examples,
-or do the following in your Lua interpreter:
+See the `examples.lua` and `test.lua` files for some instructive examples.
+Naturally, you can (and are encouraged to) do the following in your Lua interpreter:
 
     require("help")
-    help(help) -- naturally :)
-
-
+    help(help)
 
 License
 -------
