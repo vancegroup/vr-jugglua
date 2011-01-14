@@ -40,6 +40,39 @@ help = setmetatable({}, mt)
 local docstrings = setmetatable({}, {__mode = "kv"})
 local helpExtensions = {}
 
+local function tableExtend(dest, src)
+	local applied = {}
+	if type(src) ~= "table" then
+		src = {src}
+	end
+
+	-- Integer keys: add them to the list
+	for i, v in ipairs(src) do
+		table.insert(dest, v)
+		applied[i] = true
+	end
+
+	-- non-integer keys: set or append
+	for k,v in pairs(src) do
+		if not applied[k] then
+			if type(dest[k]) == "table" then
+				-- if dest is a table, either
+				if type(v) == "table" then
+					-- recurse
+					tableExtend(dest[k], v)
+				else
+					-- or just append
+					table.insert(dest[k], v)
+				end
+			else
+				-- just set if it's not a table
+				dest[k] = v
+			end
+		end
+	end
+
+end
+
 function mt:__call(...)
 	if arg.n == 0 then
 		print("help(obj) - call to learn information about a particular object or value.")
@@ -107,22 +140,32 @@ end
 
 function help.docstring(docs)
 	local mt = {}
+	local function mergeDocs(obj)
+		if help.lookup(obj) == nil then
+			docstrings[obj] = docs
+		else
+			local mergedDocs = help.lookup(obj)
+			tableExtend(mergedDocs, docs)
+			docstrings[obj] = mergedDocs
+		end
+	end
+
 	-- handle the .. operator for inline documentation
 	function mt.__concat(_, obj)
-		docstrings[obj] = docs
+		mergeDocs(obj)
 		return obj
 	end
 
 	-- handle a call to applyTo() for after-the-fact docs
 	local ret = {}
 	function ret.applyTo(obj)
-		docstrings[obj] = docs
-		return f
+		mergeDocs(obj)
+		return obj
 	end
 
 	-- Also just let them tack on () to the docstring call.
 	function mt:__call(obj)
-		docstrings[obj] = docs
+		mergeDocs(obj)
 		return self
 	end
 	return setmetatable(ret, mt)
