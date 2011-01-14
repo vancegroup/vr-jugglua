@@ -17,7 +17,26 @@ function help.formatHelp(h)
   if type(h) == "string" then
     return h
   elseif type(h) == "table" then
-    return table.concat(h, ",")
+    local keys = {}
+    local str = ""
+    for i, v in ipairs(h) do
+      keys[i] = true
+      str = str .. "\n" .. v
+    end
+    for k,v in pairs(h) do
+      if not keys[k] then
+        if type(v) == "table" then
+          str = string.format("%s\n%s = {", str, k)
+          for _, val in ipairs(v) do
+            str = str .. "\n\t" .. tostring(val)
+          end
+          str = str .. "\n}\n"
+        else
+          str = str .. string.format("\n%s = %s", k, tostring(v))
+        end
+      end
+    end
+    return str
   else
     return h
   end
@@ -57,9 +76,9 @@ function help.addHelpExtension(func)
 end
 
 if class_info then
-  --require("helpLuabind")
+  require("helpLuabind")
 end
 
 if osgLua then
-  --require("helpOsgLua")
+  require("helpOsgLua")
 end

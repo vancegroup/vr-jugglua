@@ -4,10 +4,14 @@ end
 
 local function luabindHelp(obj)
   local h = class_info(obj)
-  return { name = h.name,
-    methods = h.methods,
-    attributes = h.attributes
-  }
+  if h.name == "userdata" then
+    return nil
+  else
+    return { class = h.name,
+      methods = h.methods,
+      attributes = h.attributes
+    }
+  end
 end
 
 help.addHelpExtension(luabindHelp)
