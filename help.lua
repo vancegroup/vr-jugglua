@@ -225,6 +225,20 @@ a table with data like that passed to help.docstring, or nil
 if it doesn't know anything special about the object.
 ]==].applyTo(help.addHelpExtension)
 
+-- Document formatHelp
+help.docstring[==[
+Convert a value, such as that returned by help.lookup, into some
+formatted string.  The default implementation, used by help(),
+is optimized for on-screen display.
+]==].applyTo(help.formatHelp)
+
+-- Document lookup
+help.docstring[==[
+Perform a documentation lookup and return the raw documentation.
+This may be a table, rather than a string - help() handles this
+with a call to help.formatHelp.
+]==].applyTo(help.lookup)
+
 -- Gets a bit weird here - documentation for help.docstring
 help.docstring[==[
 Define documentation for an object.
