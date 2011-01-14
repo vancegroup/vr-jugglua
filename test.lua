@@ -19,7 +19,7 @@ function b()
 	print("this is the second function")
 end
 
-help.docstring([[a second documented func]])(b)
+help.docstring[[a second documented func]].applyTo(b)
 
 help(b)
 
@@ -40,4 +40,4 @@ if osgLua then
   help(osg.PositionAttitudeTransform())
 end
 
-help(help.docstring)
+help(help, help.docstring)
