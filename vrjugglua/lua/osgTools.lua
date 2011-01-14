@@ -1,6 +1,7 @@
 
 local function addVec(a, b)
 	--print("In addVec3d")
+	error("osgTools.addVec is deprecated: just do 'a + b'", 2)
 	return osg.Vec3d(a:x() + b:x(),
 		a:y() + b:y(),
 		a:z() + b:z())
@@ -8,6 +9,7 @@ end
 
 local function subVec(a, b)
 	--print("In subtractVec3d")
+	error("osgTools.subVec is deprecated: just do 'a - b'", 2)
 	return osg.Vec3d(a:x() - b:x(),
 		a:y() - b:y(),
 		a:z() - b:z())
@@ -15,6 +17,7 @@ end
 
 local function scaleVec(a, scale)
 	--print("in scaleVec3d")
+	error("osgTools.scaleVec is deprecated: just do 'a * scale'", 2)
 	return osg.Vec3d(a:x() * scale,
 		a:y() * scale,
 		a:z() * scale)
