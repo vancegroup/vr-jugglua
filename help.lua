@@ -57,7 +57,7 @@ function mt:__call(...)
 		if helpContent then
 			print(helpHeader .. help.formatHelp(helpContent))
 		else
-			print(helpHeader .. "type(obj) = " .. type(obj))	
+			print(helpHeader .. "type(obj) = " .. type(obj))
 			print("No further help available!")
 		end
 	end
@@ -98,7 +98,7 @@ function help.lookup(obj)
 	end
 	for _, v in ipairs(helpExtensions) do
 		local helpContent = v(obj)
-		if helpContent then 
+		if helpContent then
 			return helpContent
 		end
 	end
@@ -108,17 +108,24 @@ end
 function help.docstring(docs)
 	local mt = {}
 	-- handle the .. operator for inline documentation
-	function mt.__concat(a, f)
-		docstrings[f] = docs
+	function mt.__concat(_, obj)
+		docstrings[obj] = docs
+		return obj
+	end
+
+	-- handle a call to applyTo() for after-the-fact docs
+	local ret = {}
+	function ret.applyTo(obj)
+		docstrings[obj] = docs
 		return f
 	end
-	
-	-- hanadle the () operator for after-the-fact docs
-	function mt:__call(f)
-		docstrings[f] = docs
-		return f
+
+	-- Also just let them tack on () to the docstring call.
+	function mt:__call(obj)
+		docstrings[obj] = docs
+		return self
 	end
-	return setmetatable({}, mt)
+	return setmetatable(ret, mt)
 end
 
 function help.addHelpExtension(func)
@@ -127,26 +134,66 @@ end
 
 -- Docstring for the help function
 -- because you know somebody will try help(help)
-help.docstring[[help(obj)
-
-Display as much helpful information as possible about obj.
+help.docstring{
+	[==[
+Display as much helpful information as possible about the argument.
 There will be more information if you define docstrings for
-your objects. Try help(help.docstring) for info.]](help)
+your objects. Try help(help.docstring) for info.
+]==],
+	functions = {
+		"docstring",
+		"lookup",
+		"addHelpExtension",
+		"formatHelp"
+	},
+
+}.applyTo(help)
+
+-- Document help extensions
+help.docstring[==[
+Add a function to lookup help in other systems, not help.docstring.
+
+Accepts a function that, given a lua object, either returns
+a table with data like that passed to help.docstring, or nil
+if it doesn't know anything special about the object.
+]==].applyTo(help.addHelpExtension)
 
 -- Gets a bit weird here - documentation for help.docstring
-help.docstring[[Define documentation for an object.
+help.docstring[==[
+Define documentation for an object.
 
-You can pass just a string, or args = {}, methods = {}, etc.
+You can pass just a string:
+ help.docstring[[
+  Help goes here free-form.
+ ]]
+or provide more structured help:
+ help.docstring{
+  [[
+  Help goes here.
+  ]],
+  args = {"this", "that", "the other"},
+  methods = {"doThis", "doThat", "doOther"}
+ }
+
+No particular structure/requirement for the arguments
+you pass - just make them useful.
 
 If setting a variable, like
   a = function() code goes here end
 you can call
-  a = help.docstring\[\[your docs \]\] .. function() code goes here end.
+  a = help.docstring[[your docs]] .. function() code goes here end.
 
-If you are documenting some object a "after the fact", the object that help.docstring
-returns can be called with an argument:
-  help.docstring\[\[your docs\]\](a)
-]](help.docstring)
+If you are documenting some object a "after the fact", you can tack on a call
+to .applyTo(yourObj) (or multiple calls!) after help.docstring:
+  help.docstring[[your docs]].applyTo(a)
+  help.docstring[[your docs]].applyTo(c).applyTo(d)
+or even just parentheses for calling:
+  help.docstring[[your docs]](a)
+
+
+Quoting strings are somewhat flexible: see this web page for
+the full details: http://www.lua.org/manual/5.1/manual.html#2.1
+]==].applyTo(help.docstring)
 
 if class_info then
   require("helpLuabind")
