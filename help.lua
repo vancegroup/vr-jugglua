@@ -132,6 +132,21 @@ function help.addHelpExtension(func)
 	table.insert(helpExtensions, func)
 end
 
+
+-- Assume that a class_info method means that luabind has been
+-- opened in this state and that class_info has been registered
+if class_info then
+  require("helpLuabind")
+end
+
+-- If there's something called osgLua, assume it is osgLua the
+-- introspection-based OpenSceneGraph-wrapper
+if osgLua then
+  require("helpOsgLua")
+end
+
+--[[ begin documentation ]]
+
 -- Docstring for the help function
 -- because you know somebody will try help(help)
 help.docstring{
@@ -195,10 +210,3 @@ Quoting strings are somewhat flexible: see this web page for
 the full details: http://www.lua.org/manual/5.1/manual.html#2.1
 ]==].applyTo(help.docstring)
 
-if class_info then
-  require("helpLuabind")
-end
-
-if osgLua then
-  require("helpOsgLua")
-end
