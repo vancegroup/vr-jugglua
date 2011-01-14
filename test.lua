@@ -36,8 +36,12 @@ print(random)
 print("before printing results of random call")
 print(random(5))
 
-if osgLua then
-  help(osg.PositionAttitudeTransform())
-end
 
 help(help, help.docstring)
+
+if osgLua then
+  print("We have osgLua")
+  help(osg.PositionAttitudeTransform())
+  local xform = help.docstring[[The root transform.]] .. osg.PositionAttitudeTransform()
+  help(xform)
+end
