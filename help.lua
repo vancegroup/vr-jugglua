@@ -184,20 +184,77 @@ function help.addHelpExtension(func)
 	table.insert(helpExtensions, func)
 end
 
+--[[ Luabind support ]]
+local function luabindHelp(obj)
+	local h = class_info(obj)
+	if h.name == "userdata" then
+		return nil
+	else
+		return { class = h.name,
+			methods = h.methods,
+			attributes = h.attributes
+		}
+	end
+end
+
+function help.supportLuabind()
+	if not class_info then
+		error("Cannot load help Luabind support: must register class_info from the C++ side", 2)
+	end
+	help.addHelpExtension(luabindHelp)
+	help.supportLuabind = function()
+		print("Luabind help support already enabled!")
+	end
+end
+
+--[[ osgLua support ]]
+local function osgLuaHelp(obj)
+	local c = osgLua.getTypeInfo(obj)
+	if c then
+	 	local ret = {class = c.name}
+		if #(c.constructors) > 0 then
+			ret.constructors = {}
+			for _,v in ipairs(c.constructors) do
+				 table.insert(ret.constructors,v)
+			end
+		end
+		if #(c.methods) > 0 then
+			ret.methods = {}
+			for _,v in ipairs(ret.methods) do
+				 table.insert(ret.methods,v)
+			end
+		end
+		return ret
+	else
+		return nil
+	end
+end
+
+function help.supportOsgLua()
+	if not osgLua then
+		error("Cannot load help osgLua support: osgLua not found.", 2)
+	end
+	help.addHelpExtension(osgLuaHelp)
+	help.supportOsgLua = function()
+		print("osgLua help support already enabled!")
+	end
+end
+
+--[[ Auto-enable Support for Luabind and osgLua ]]
 
 -- Assume that a class_info method means that luabind has been
 -- opened in this state and that class_info has been registered
 if class_info then
-	require("helpLuabind")
+	help.supportLuabind()
 end
 
 -- If there's something called osgLua, assume it is osgLua the
 -- introspection-based OpenSceneGraph-wrapper
 if osgLua then
-	require("helpOsgLua")
+	help.supportOsgLua()
 end
 
---[[ begin documentation ]]
+--[[ Self-Documentation ]]
 
 -- Docstring for the help function
 -- because you know somebody will try help(help)
@@ -211,7 +268,9 @@ your objects. Try help(help.docstring) for info.
 		"docstring",
 		"lookup",
 		"addHelpExtension",
-		"formatHelp"
+		"formatHelp",
+		"supportLuabind",
+		"supportOsgLua"
 	},
 
 }.applyTo(help)
@@ -276,3 +335,21 @@ Quoting strings are somewhat flexible: see this web page for
 the full details: http://www.lua.org/manual/5.1/manual.html#2.1
 ]==].applyTo(help.docstring)
 
+-- Luabind support
+help.docstring[==[
+If you have Luabind opened on this Lua state, and you've registered class_info
+(see luabind/class_info.hpp), this will enable luabind-based introspection into
+classes in the help lookup.
+
+Note that if these conditions are met when you require("help"), this function
+is called automatically.
+]==].applyTo(help.supportLuabind)
+
+-- Luabind support
+help.docstring[==[
+If you have osgLua loaded in this Lua state, this will enable introspection into
+OpenSceneGraph objects in the help lookup.
+
+Note that if these conditions are met when you require("help"), this function
+is called automatically.
+]==].applyTo(help.supportOsgLua)
