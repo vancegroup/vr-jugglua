@@ -140,30 +140,39 @@ end
 
 function help.docstring(docs)
 	local mt = {}
+
+	-- Helper function to merge documentation
 	local function mergeDocs(obj)
-		if help.lookup(obj) == nil then
+		local origHelp = help.lookup(obj)
+		if origHelp == nil then
+			-- No existing help - just set
 			docstrings[obj] = docs
 		else
-			local mergedDocs = help.lookup(obj)
-			tableExtend(mergedDocs, docs)
-			docstrings[obj] = mergedDocs
+			-- wrap bare strings if appending
+			if type(origHelp) == "string" then
+				origHelp = { origHelp }
+			end
+
+			-- Extend existing help
+			tableExtend(origHelp, docs)
+			docstrings[obj] = origHelp
 		end
 	end
 
-	-- handle the .. operator for inline documentation
+	-- For return value: handle the .. operator for inline documentation
 	function mt.__concat(_, obj)
 		mergeDocs(obj)
 		return obj
 	end
 
-	-- handle a call to applyTo() for after-the-fact docs
+	-- For return value: handle a call to applyTo() for after-the-fact docs
 	local ret = {}
 	function ret.applyTo(obj)
 		mergeDocs(obj)
 		return obj
 	end
 
-	-- Also just let them tack on () to the docstring call.
+	-- For return value: Also just let them tack on () to apply
 	function mt:__call(obj)
 		mergeDocs(obj)
 		return self

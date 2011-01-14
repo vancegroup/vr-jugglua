@@ -25,16 +25,20 @@ help(b)
 
 print("before defining random")
 random =
-  help.docstring[[Compute random number.]] ..
-  function(n)
-    return math.random(n)
-  end
+	help.docstring[[Compute random number.]] ..
+	help.docstring[[An extra docstring.]] ..
+	function(n)
+		return math.random(n)
+	end
 
 print("before printing random")
 print(random)
 
 print("before printing results of random call")
 print(random(5))
+
+print("before help(random)")
+help(random)
 
 
 help(help, help.docstring)
