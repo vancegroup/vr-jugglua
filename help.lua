@@ -345,7 +345,7 @@ Note that if these conditions are met when you require("help"), this function
 is called automatically.
 ]==].applyTo(help.supportLuabind)
 
--- Luabind support
+-- osgLua support
 help.docstring[==[
 If you have osgLua loaded in this Lua state, this will enable introspection into
 OpenSceneGraph objects in the help lookup.
