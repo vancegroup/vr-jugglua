@@ -1,0 +1,20 @@
+s/:wasJustPressed\(\)/.justPressed/g
+s/:wasJustReleased\(\)/.justReleased/g
+s/:isPressed\(\)/.pressed/g
+s/.isPressed/.pressed/g
+s/:getPosition\(\)/.position/g
+s/:getForwardVector\(\)/.forwardVector/g
+s/:getCentered\(\)/.centered/g
+s/:getData\(\)/.data/g
+
+replace osgTools.addVec/subVec/scaleVec with the normal math operators
+replace osgTools.printVec with just print
+
+s/StateMachine.loadConfigFile/vrjKernel.loadConfigFile/g
+s/StateMachine.waitForStop/vrjKernel.waitForStop/g
+
+replace vrjKernel.start and vrjKernel.waitForStop with vrjKernel.enter
+
+replace appDelegate.appProxy:addModelSearchPath and StateMachine.addModelSearchPath with vrjLua.appendToModelSearchPath
+
+replace osgTools.subVec(osg.Vec3d(0.0, 0.0, 0.0), something) with just -something
