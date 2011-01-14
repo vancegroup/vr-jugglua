@@ -39,3 +39,5 @@ print(random(5))
 if osgLua then
   help(osg.PositionAttitudeTransform())
 end
+
+help(help.docstring)
