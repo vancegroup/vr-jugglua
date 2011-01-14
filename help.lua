@@ -41,12 +41,17 @@ local docstrings = setmetatable({}, {__mode = "kv"})
 local helpExtensions = {}
 
 function mt:__call(obj,...)
+	if obj == nil then
+		print("help(obj) - call to learn information about a particular object or value.")
+		return
+	end
 	local helpContent = help.lookup(obj)
 	
 	if helpContent then
 		print("Help:\t" .. help.formatHelp(helpContent))
 	else
-		print("No help available!")	
+		print("type(obj) = " .. type(obj))	
+		print("No further help available!")
 	end
 end
 
