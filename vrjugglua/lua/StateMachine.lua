@@ -85,17 +85,11 @@ StateMachine = {
 	getScene = getScene,
 	getNodeTrackingPositionOnly = getNodeTrackingPositionOnly,
 	getNodeTrackingPose = getNodeTrackingPose,
-	loadConfigFile = vrjKernel.loadConfigFile,
-	waitForStop = vrjKernel.waitForKernelStop,
 	runApp = runApp}
 	
 	
 appDelegate.appProxy =  vrjApp.OsgAppProxy()
 appDelegate.scripts = vrjSync.RunBuffer(appDelegate)
 appDelegate.appProxy:setAppDelegate(appDelegate)
-
-StateMachine.addModelSearchPath = function(path)
-	appDelegate.appProxy:addModelSearchPath(path)
-end
 
 return StateMachine
