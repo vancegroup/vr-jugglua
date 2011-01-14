@@ -141,5 +141,34 @@ function test_applyto_twice_lookup()
 	assert_len(2, help.lookup(a))
 end
 
+function test_selfdoc_table()
+end
+
+function test_selfdoc_list_of_functions()
+	assert_not_nil(help.lookup(help))
+
+	local keys = {}
+	local foundKeys = {}
+	for k,v in pairs(help) do
+		table.insert(keys, k)
+		foundKeys[k] = false
+	end
+	
+	for _,v in ipairs(help.lookup(help)["functions"]) do
+		assert_not_nil(foundKeys[v], "Function listed in documentation does not exist: " .. v)
+		assert_false(foundKeys[v], "Function is listed in documentation more than once: " .. v)
+		foundKeys[v] = true
+	end
+	
+	for k,v in pairs(foundKeys) do
+		assert_true(v, "Functions not listed in documentation for help: " .. k)
+	end
+end
+
+function test_selfdoc_complete()
+	for k,v in pairs(help) do
+		assert_not_nil(help.lookup(v), "Function help." ..k.. " is not documented")
+	end
+end
 
 lunatest.run()
