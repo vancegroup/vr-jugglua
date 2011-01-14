@@ -118,7 +118,7 @@ local function create(max_vel, max_rot_vel, seconds_to_max, seconds_to_stop)
 		local delta = osg.Matrixd()
 		
 		local dXlate = self:getTranslation(dt)
-		delta:setTrans(osgTools.subVec(osg.Vec3d(0.0, 0.0, 0.0), dXlate))
+		delta:setTrans(-dXlate)
 		
 		
 		local dRotate = - self:getRotation(dt)
