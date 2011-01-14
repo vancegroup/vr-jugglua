@@ -169,7 +169,7 @@ function help.docstring(docs)
 	local ret = {}
 	function ret.applyTo(obj)
 		mergeDocs(obj)
-		return obj
+		return ret
 	end
 
 	-- For return value: Also just let them tack on () to apply
