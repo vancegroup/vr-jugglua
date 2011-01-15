@@ -21,3 +21,4 @@ install_lua_target(lua-docstring
 	${LUA_DIR}
 	COMPONENT
 	runtime)
+add_dependencies(lua_modules lua-docstring)

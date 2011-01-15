@@ -22,3 +22,5 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/squish"
 add_custom_target(squish ALL SOURCES squish.lua DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/squish")
 
 set(SQUISH_COMMAND ${LUA_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/squish" -q --use-http --minify-level=debug --debug PARENT_SCOPE)
+
+add_dependencies(lua_modules squish)
