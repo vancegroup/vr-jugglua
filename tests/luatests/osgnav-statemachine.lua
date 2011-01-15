@@ -40,13 +40,13 @@ function osgnav:enter()
 	
 	-- Set up the events
 	self.events = {
-		[function() return button2:wasJustPressed() end] = StateMachine.createStateTransition(simplerotation);
+		[function() return button2.justPressed end] = StateMachine.createStateTransition(simplerotation);
 	}
 end
 
 -- When updating "osgnav"
 function osgnav:update(dt)
-	self.position = osgTools.subVec(self.position, self.nav:getTranslation(dt, self.position))
+	self.position = self.position - self.nav:getTranslation(dt, self.position)
 	navtransform:setPosition(self.position)
 end
 
@@ -63,7 +63,7 @@ simplerotation.degrees = 0
 function simplerotation:enter()
 	local button = gadget.DigitalInterface("VJButton2")
 	self.events = {
-		[function() return button:wasJustPressed() end] = StateMachine.createStateTransition(osgnav);
+		[function() return button.justPressed end] = StateMachine.createStateTransition(osgnav);
 	}
 end
 
@@ -79,9 +79,8 @@ end
 ------------------ Start up the app -----------------------
 
 print("Loading config files into kernel")
-StateMachine.loadConfigFile("standalone.jconf")
+vrjKernel.loadConfigFile("standalone.jconf")
 
 StateMachine.setInitFunction(myinit)
 StateMachine.setStartingState(osgnav)
 StateMachine.runApp()
-StateMachine.waitForStop()
