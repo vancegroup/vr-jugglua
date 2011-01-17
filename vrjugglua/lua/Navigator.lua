@@ -103,7 +103,7 @@ local function create(max_vel, max_rot_vel, seconds_to_max, seconds_to_stop)
 		local mvmt = dt * vel
 		--print("Movement magnitude: " .. mvmt)
 		local fwd = self:getTransVector()
-		return osgTools.scaleVec(fwd, mvmt)
+		return fwd * mvmt
 	end
 	
 	function nav:getRotation(dt)
