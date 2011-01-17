@@ -1,7 +1,5 @@
 maxspeed = 150
 
-require("osgTools")
-
 local function createEaseInOut(max_vel, seconds_to_max, seconds_to_stop)
 	local ease = {
 		max = max_vel,

@@ -1,7 +1,6 @@
 print("osgnav-testbed.lua starting up...")
 
 require("Navigator")
-require("osgTools")
 require("Scene")
 
 osgnav = {position = osg.Vec3d(0, 0, 0)}
@@ -38,7 +37,7 @@ function osgnav:initScene()
 end
 
 function osgnav:preFrame()
-	self.position = osgTools.subVec(self.position, self.nav:getTranslation(self.appProxy:getTimeDelta(), self.position))
+	self.position = self.position - self.nav:getTranslation(self.appProxy:getTimeDelta(), self.position)
 	navtransform:setPosition(self.position)
 end
 
