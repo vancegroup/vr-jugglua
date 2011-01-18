@@ -63,16 +63,16 @@ function Lighting(a)
 	if a.ambient then
 		light:setAmbient(osg.Vec4(a.ambient, a.ambient, a.ambient, 1.0))
 	end
-	
+
 	if a.diffuse then
 		light:setDiffuse(osg.Vec4(a.diffuse, a.diffuse, a.diffuse, 1.0))
 	end
-	
+
 	if a.specular then
 		light:setSpecular(osg.Vec4(a.specular, a.specular, a.specular, 1.0))
 	end
 	t:setLight(light)
-	
+
 	-- Add nodes in the "children" list
 	if a.children ~= nil then
 		for _, v in ipairs(a.children) do
@@ -81,15 +81,90 @@ function Lighting(a)
 			end
 		end
 	end
-	
+
 	-- Add nodes just tacked on the end of the list.
 	for _, v in ipairs(a) do
 		if v ~= nil then
 			t:addChild(v)
 		end
 	end
-	
+
 	return t
+end
+
+function Light(...)
+	local arg = {...}
+	local num = arg.number or 0 --- todo improve this
+	local light = osg.Light(num)
+
+	if arg.ambient then
+		if type(arg.ambient) == "number" then
+			arg.ambient = osg.Vec4(arg.ambient, arg.ambient, arg.ambient, 1.0)
+		else
+			print("WARNING: Assuming your ambient value is an osg.Vec4")
+		end
+		light:setAmbient(arg.ambient)
+	end
+
+	if arg.diffuse then
+		if type(arg.diffuse) == "number" then
+			arg.diffuse = osg.Vec4(arg.diffuse, arg.diffuse, arg.diffuse, 1.0)
+		else
+			print("WARNING: Assuming your diffuse value is an osg.Vec4")
+		end
+		light:setDiffuse(arg.diffuse)
+	end
+
+	if arg.specular then
+		if type(arg.specular) == "number" then
+			arg.specular = osg.Vec4(arg.specular, arg.specular, arg.specular, 1.0)
+		else
+			print("WARNING: Assuming your specular value is an osg.Vec4")
+		end
+		light:setSpecular(arg.specular)
+	end
+
+	-- Always set position
+	do
+		local pos = {0, -1, 0, 1}
+		local posOSG
+		local setLightType
+		if arg.directional then
+			pos[4] = 0
+			setLightType = "directional"
+		elseif arg.positional then
+			pos[4] = 1
+			setLightType = "positional"
+		end
+		if arg.position then
+			if type(arg.position) == "table" then
+				for i=1,3 do
+					pos[i] = arg.position[i]
+				end
+				if #arg.position == 4 then
+					if setLightType then
+						print("Warning: fourth value passed to 'position' overrides setting of light type as " .. setLightType)
+					end
+					pos[4] = arg.position[4]
+				end
+
+				posOSG = osg.Vec4(unpack(pos))
+			else
+				--- Assume it's a vec4 - perhaps a bad assumption
+				print("WARNING: Assuming your position value is an osg.Vec4")
+				posOSG = arg.position
+			end
+		end
+		light:setPosition(posOSG)
+	end
+
+end
+
+function LightSource(light)
+	local source = osg.LightSource()
+	source:setLight(light)
+	return source
+
 end
 
 function AmbientIntensity(a)
@@ -102,16 +177,16 @@ function AmbientIntensity(a)
 			node:addChild(v)
 		end
 	end
-	
+
 	local state = node:getOrCreateStateSet()
 	local lightmodel = osg.LightModel()
 	local val = a.intensity or 1.0
-	
+
 	lightmodel:setAmbientIntensity(osg.Vec4(val, val, val, 1.0))
 
 	state:setAttributeAndModes(lightmodel)
 	node:setStateSet(state)
-	
+
 	return node
 end
 
@@ -135,7 +210,8 @@ function Transform(args)
 	if args.scale ~= nil and args.scale ~= 1.0 then
 		t:setScale(osg.Vec3d(args.scale, args.scale, args.scale))
 		local GL_NORMALIZE = 0x0BA1
-		t:getOrCreateStateSet():setMode(GL_NORMALIZE, 1)
+		local GL_RESCALE_NORMAL = 0x803A
+		t:getOrCreateStateSet():setMode(GL_RESCALE_NORMAL, 1)
 	end
 
 	-- Add nodes in the "children" list
@@ -146,7 +222,7 @@ function Transform(args)
 			end
 		end
 	end
-	
+
 	-- Add nodes just tacked on the end of the list.
 	for _, v in ipairs(args) do
 		if v ~= nil then
@@ -175,7 +251,7 @@ function Sphere(a)
 	if a.position then
 		pos:set(unpack(a.position))
 	end
-	
+
 	local drbl = osg.ShapeDrawable(osg.Sphere(pos, a.radius or 1.0))
 	local geode = osg.Geode()
 	geode:addDrawable(drbl)
