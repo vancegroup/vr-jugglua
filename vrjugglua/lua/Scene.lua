@@ -148,16 +148,22 @@ function Light(...)
 					pos[4] = arg.position[4]
 				end
 
-				posOSG = osg.Vec4(unpack(pos))
+				
 			else
 				--- Assume it's a vec4 - perhaps a bad assumption
 				print("WARNING: Assuming your position value is an osg.Vec4")
 				posOSG = arg.position
 			end
 		end
+		
+		if not posOSG then
+			posOSG = osg.Vec4(pos[1], pos[2], pos[3], pos[4])
+		end
+		
 		light:setPosition(posOSG)
 	end
 
+	return light
 end
 
 function LightSource(light)
