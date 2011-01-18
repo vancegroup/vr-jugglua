@@ -47,9 +47,6 @@ class OsgAppProxy : public OsgApp {
 	/// @brief Lua binding call
 	static void bindToLua(LuaStatePtr & state);
 
-	/// @brief Wrapper to call from lua to add search paths for models
-	void addModelSearchPath(std::string const& path);
-
 	/// @brief Standard constructor
 	OsgAppProxy(vrj::Kernel* kern);
 

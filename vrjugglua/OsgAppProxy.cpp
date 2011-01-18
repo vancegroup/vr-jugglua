@@ -58,7 +58,6 @@ void OsgAppProxy::bindToLua(LuaStatePtr & state) {
 				.def("getNodeTrackingPositionOnly", &OsgAppProxy::getNodeTrackingPositionOnly)
 				.def("getNodeTrackingPose", &OsgAppProxy::getNodeTrackingPose)
 				.def("getTimeDelta", & OsgAppProxy::getTimeDelta)
-				.def("addModelSearchPath", &OsgAppProxy::addModelSearchPath)
 	   ];
 	}
 }
@@ -150,10 +149,6 @@ void OsgAppProxy::initScene() {
 	VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
 			<< "Number of children after forwarding call: " << _rootNode->getNumChildren()
 			<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
-}
-
-void OsgAppProxy::addModelSearchPath(std::string const& path) {
-	osgDB::Registry::instance()->getDataFilePathList().push_back(path);
 }
 
 void OsgAppProxy::configSceneView(osgUtil::SceneView* newSceneViewer) {
