@@ -50,7 +50,7 @@ function Vec(x, y, z, w)
 	end
 
 	-- Hmm, well, they didn't pass as a list either. Bail!
-	return nil, "Must call Vec with 2, 3, or 4 elements!"
+	error("Must call Vec with 2, 3, or 4 elements!", 2)
 end
 
 function AngleAxis(angle, axis)
@@ -119,7 +119,7 @@ function Transform(args)
 	local t = osg.PositionAttitudeTransform()
 	if args.position ~= nil then
 		if #args.position ~=3 then
-			print("Cannot set position: position must have 3 elements!")
+			error("Cannot set position: position must have 3 elements!", 2)
 		else
 			t:setPosition(osg.Vec3d(
 				args.position[1],
@@ -163,8 +163,7 @@ function Model(filename)
 		-- Model loaded successfully
 		return m
 	else
-		print("Warning: failed to load model " .. filename)
-		return nil
+		error("Failed to load model " .. filename, 2)
 	end
 end
 
