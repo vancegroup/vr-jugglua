@@ -132,8 +132,10 @@ function Transform(args)
 		t:setAttitude(args.orientation)
 	end
 
-	if args.scale ~= nil then
+	if args.scale ~= nil and args.scale ~= 1.0 then
 		t:setScale(osg.Vec3d(args.scale, args.scale, args.scale))
+		local GL_NORMALIZE = 0x0BA1
+		t:getOrCreateStateSet():setMode(GL_NORMALIZE, 1)
 	end
 
 	-- Add nodes in the "children" list
