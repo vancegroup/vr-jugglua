@@ -53,6 +53,21 @@ namespace vrjLua {
 		_runBuf->initLua(_state);
 		
 		_init = true;
+		
+		// Run all the early birds.
+		for (unsigned int i = 0; i < _earlyBirds.size(); ++i) {
+			RunBufCmd current = _earlyBirds[i];
+			switch (current.first) {
+				case CM_ADDSTRING:
+					_runBuf->addString(current.second, false);
+					break;
+				
+				case CM_ADDFILE:
+					_runBuf->addFile(current.second, false);
+					break;				
+			}
+		}
+		_earlyBirds.clear();
 	}
 
 	bool SynchronizedRunBuffer::isLocal() {
@@ -61,7 +76,13 @@ namespace vrjLua {
 	}
 
 	bool SynchronizedRunBuffer::addFile(std::string const& filename, bool blocking) {
-		if (_runBuf.isLocal()) {
+		if (!_init) {
+			if (blocking) {
+				std::cerr << "WARNING: Can't block on an addFile call prior to initialization!" << std::endl;
+			}
+			_earlyBirds.push_back(RunBufCmd(CM_ADDFILE, filename));	
+			return true;
+		} else if (_runBuf.isLocal()) {
 			_checkInit();
 			return _runBuf->addFile(filename, blocking);
 		} else {
@@ -70,7 +91,13 @@ namespace vrjLua {
 	}
 
 	bool SynchronizedRunBuffer::addString(std::string const& str, bool blocking) {
-		if (_runBuf.isLocal()) {
+		if (!_init) {
+			if (blocking) {
+				std::cerr << "WARNING: Can't block on an addString call prior to initialization!" << std::endl;
+			}
+			_earlyBirds.push_back(RunBufCmd(CM_ADDSTRING, str));	
+			return true;
+		} else if (_runBuf.isLocal()) {
 			_checkInit();
 			return _runBuf->addString(str, blocking);
 		} else {

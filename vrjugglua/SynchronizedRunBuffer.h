@@ -27,7 +27,8 @@
 #endif
 
 // Standard includes
-// - none
+#include <vector>
+#include <utility>
 
 namespace vrjLua {
 
@@ -62,6 +63,13 @@ class SynchronizedRunBuffer {
 	protected:
 		bool _init;
 		cluster::UserData<LuaRunBuffer> _runBuf;
+		enum COMMAND {
+			CM_ADDFILE,
+			CM_ADDSTRING
+		};
+		typedef std::pair<COMMAND, std::string> RunBufCmd;
+		
+		std::vector<RunBufCmd> _earlyBirds; 
 		lua_State * _state;
 		
 		void _checkInit();
