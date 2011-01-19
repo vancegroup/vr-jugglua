@@ -162,6 +162,16 @@ function Light(...)
 		
 		light:setPosition(posOSG)
 	end
+	
+	if arg.direction then
+		if type(arg.direction) == "table" then
+			arg.direction = osg.Vec3(arg.direction[1], arg.direction[2], arg.direction[3])
+		else
+			print("WARNING: Assuming your direction value is an osg.Vec3")
+		end
+		arg.direction:normalize()
+		light:setDirection(arg.direction)
+	end
 
 	return light
 end
