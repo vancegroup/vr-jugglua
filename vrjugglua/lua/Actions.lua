@@ -10,7 +10,7 @@ function Actions.addNodeAction(node, func)
 			if coroutine.status(co) == 'dead' then
 				node:removeUpdateCallback(c)
 			else
-				coroutine.resume(co, osgnav.appProxy:getTimeDelta())
+				coroutine.resume(co, Actions.appProxy:getTimeDelta())
 			end
 			--c:traverse(n, nodeVisitor)
 		end)
@@ -28,7 +28,7 @@ function Actions.updateFrameActions()
 	for _, v in ipairs(Actions._frameActions) do
 		--print(coroutine.status(v))
 		--- TODO handle errors here
-		assert(coroutine.resume(v, osgnav.appProxy:getTimeDelta()))
+		assert(coroutine.resume(v, Actions.appProxy:getTimeDelta()))
 		if coroutine.status(v) ~= 'dead' then
 			table.insert(keepers, v)
 		end
