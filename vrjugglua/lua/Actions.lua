@@ -51,8 +51,21 @@ end
 Actions.waitForRedraw = help.docstring[[
 Pauses an action momentarily to update the display. This must be called frequently:
 changes will not be seen until it is called.
-]] .. function ()
-	coroutine.yield()
+
+If you pass a number, it will wait for that many redraws. By default, it
+only waits once.
+
+Returns the amount of time that it waited, in seconds.
+]] .. function (num)
+	if type(num) == "number" then
+		local dt = 0
+		for i=1,num do
+			dt += coroutine.yield()
+		end
+		return dt
+	else
+		return coroutine.yield()
+	end
 end
 
 Actions.updateFrameActions = help.docstring[[
