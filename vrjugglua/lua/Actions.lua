@@ -4,7 +4,6 @@ Actions = {
 
 function Actions.addNodeAction(node, func)
 	local co = coroutine.create(func)
-	coroutine.resume(co, node, 0)
 	local c = osgLua.NodeCallback(
 		function(n, nodeVisitor)
 			if coroutine.status(co) == 'dead' then
@@ -19,8 +18,8 @@ end
 
 function Actions.addFrameAction(func)
 	local co = coroutine.create(func)
-	coroutine.resume(co, 0)
 	table.insert(Actions._frameActions, co)
+	return co
 end
 
 function Actions.updateFrameActions()
