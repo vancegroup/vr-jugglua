@@ -44,8 +44,15 @@ Actions.removeFrameAction = help.docstring[[
 Remove a frame action, stopping it from executing, presumably prior to
 its natural exit.
 ]] .. function (action)
-	--- @todo not sure if this works
-	table.remove(Actions._frameActions, action)	
+	local n
+	for i,v in ipairs(Actions._frameActions) do
+		if v == action then
+			n = v
+		end
+	end
+	if n ~= nil then
+		table.remove(Actions._frameActions, n)
+	end		
 end
 
 Actions.waitForRedraw = help.docstring[[
