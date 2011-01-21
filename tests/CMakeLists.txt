@@ -55,7 +55,9 @@ add_boost_test(OsgPointers
 	ValInvalidValConversion
 	MatrixExactMatch
 	MatrixSingleConversion
-	MatrixSingleConversionFromFloat
-	MatrixExactMatchFromRef
-	MatrixSingleConversionFromRef
-	MatrixSingleConversionFromFloatRef)
+	#MatrixSingleConversionFromFloat # osgIntrospection doesn't convert from matrixf to matrixd
+	#Conversion from refmatrix to matrix not supported?
+	#MatrixExactMatchFromRef
+	#MatrixSingleConversionFromRef
+	#MatrixSingleConversionFromFloatRef
+	)
