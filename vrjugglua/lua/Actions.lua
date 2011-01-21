@@ -23,14 +23,15 @@ function Actions.addFrameAction(func)
 end
 
 function Actions.updateFrameActions()
-	local keepers = {}
-	for _, v in ipairs(Actions._frameActions) do
+	local thisTime = Actions._frameActions
+	Actions._frameActions = {}
+
+	for _, v in ipairs(thisTime) do
 		--print(coroutine.status(v))
 		--- TODO handle errors here
 		assert(coroutine.resume(v, Actions.appProxy:getTimeDelta()))
 		if coroutine.status(v) ~= 'dead' then
-			table.insert(keepers, v)
+			table.insert(Actions._frameActions, v)
 		end
 	end
-	Actions._frameActions = keepers
 end
