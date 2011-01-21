@@ -10,7 +10,6 @@ scene:addChild(node)
 
 
 require("Navigator")
-require("osgTools")
 
 osgnav = {position = osg.Vec3d(0, 0, 0)}
 

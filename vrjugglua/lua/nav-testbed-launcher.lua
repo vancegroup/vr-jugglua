@@ -1,7 +1,6 @@
 print("osgnav-testbed.lua starting up...")
 
 require("Navigator")
-require("osgTools")
 require("Scene")
 
 

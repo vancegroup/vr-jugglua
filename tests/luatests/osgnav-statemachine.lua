@@ -1,5 +1,4 @@
 require("Navigator")
-require("osgTools")
 StateMachine = require("StateMachine")
 
 print("CTEST_FULL_OUTPUT")
