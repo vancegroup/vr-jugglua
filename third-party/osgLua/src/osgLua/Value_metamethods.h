@@ -229,7 +229,7 @@ namespace osgLua {
 	  			}
 	  		}
 		  		
-		  	luaL_error(L,"[%s:%d] Could not multiply instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+		  	luaL_error(L,"[%s:%d] Could not multiply instances of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
 			return 0;
 		}
 		
@@ -268,7 +268,10 @@ namespace osgLua {
 				lua_pushboolean(L, ret);
 		  		return 1;
 		  	} else {
-				luaL_error(L,"[%s:%d] Could not compare instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+				luaL_error(L,"[%s:%d] Could not compare instances of %s, %s, in comparator for %s",__FILE__,__LINE__,
+					typeA.getQualifiedName().c_str(),
+					typeB.getQualifiedName().c_str(),
+					myType.getQualifiedName().c_str());
 			}
 			return 0;
 		}
@@ -283,7 +286,7 @@ namespace osgLua {
 		  		lua_pushcfunction(L, &Matrix::eq<T>); 
 		  		lua_setfield(L, -2, "__eq"); 
 		  		lua_pushcfunction(L, &Matrix::lt<T>); 
-		  		lua_setfield(L, -2, "__lt"); 
+		  		lua_setfield(L, -2, "__lt");
 		  		return true;
 		  	}
 		  	return false;
