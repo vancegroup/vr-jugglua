@@ -7,6 +7,7 @@ include(LuaTargets)
 
 set(LUA_FILES
 	Actions.lua
+	getScriptFilename.lua
 	Navigator.lua
 	nav-testbed-launcher.lua
 	osgnav-testbed.lua
