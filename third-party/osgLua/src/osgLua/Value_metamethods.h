@@ -248,7 +248,13 @@ namespace osgLua {
 				lua_pushboolean(L, ret);
 		  		return 1;
 		  	} else {
-				luaL_error(L,"[%s:%d] Could not compare instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+		  		/// @todo figure out why line 11 in osglua-matrixmath.lua fails without this
+		  		return metamethods::eq(L);
+				/*luaL_error(L,"[%s:%d] Could not compare instances of %s, %s, in comparator for %s",__FILE__,__LINE__,
+					typeA.getQualifiedName().c_str(),
+					typeB.getQualifiedName().c_str(),
+					myType.getQualifiedName().c_str());
+				*/
 			}
 			return 0;
 		}
