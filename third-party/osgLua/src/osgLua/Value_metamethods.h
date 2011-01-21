@@ -30,6 +30,9 @@
 #include <osg/Vec3f>
 #include <osg/Vec4d>
 #include <osg/Vec3d>
+#include <osg/Matrix>
+#include <osg/Matrixf>
+#include <osg/Matrixd>
 
 namespace osgLua {
 
@@ -53,6 +56,11 @@ namespace osgLua {
 		template<class T>
 		T multMatrices(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
 			return osgIntrospection::variant_cast<T>(a) * osgIntrospection::variant_cast<T>(b);
+		}
+		
+		template<class Mat, class Vec>
+		Vec xformVec(osgIntrospection::Value const& theVec, osgIntrospection::Value const& theMat) {
+			return osgIntrospection::variant_cast<Vec>(theVec) * osgIntrospection::variant_cast<Mat>(theMat);
 		}
 	
 	} // end of namespace detail
@@ -176,8 +184,7 @@ namespace osgLua {
 			static const osgIntrospection::Type& matType = 
 		  		osgIntrospection::Reflection::getType(extended_typeid<Mat>());
 			if (typeA == vecType && typeB == matType) {
-				Vec result = osgIntrospection::variant_cast<Vec>(a->get()) * osgIntrospection::variant_cast<Mat>(b->get());
-		  		osgIntrospection::Value ret = result;
+		  		osgIntrospection::Value ret = detail::xformVec<Mat, Vec>(a->get(), b->get());
 		  		Value::push(L, ret);
 		  		return true;
 		  	}
