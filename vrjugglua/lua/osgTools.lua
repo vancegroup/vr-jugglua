@@ -24,6 +24,7 @@ local function scaleVec(a, scale)
 end
 
 local function printInfo(instance)
+	error("osgTools.printInfo is deprecated: just use help", 2)
 	local c = osgLua.getTypeInfo(instance)
 	if c then
 		print("name = " .. c.name)
@@ -39,6 +40,7 @@ local function printInfo(instance)
 end
 
 local function isValid(instance)
+	error("osgTools.isValid is deprecated: loading a model with Model (from require('Scene') ) automatically checks model validity", 2)
 	local c = osgLua.getTypeInfo(instance)
 	if c and table.getn(c.methods) > 0 then
 		return true
