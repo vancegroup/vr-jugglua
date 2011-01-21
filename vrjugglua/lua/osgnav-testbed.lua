@@ -4,6 +4,7 @@ require("Navigator")
 require("Scene")
 
 osgnav = {position = osg.Vec3d(0, 0, 0)}
+local setUpActions = false
 
 function osgnav:initScene()
 	runbuf:init()
@@ -44,6 +45,10 @@ end
 function osgnav:latePreFrame()
 	runbuf:runBuffer()
 	if Actions then
+		if not setUpActions then
+			Actions.setAppProxy(osgnav.appProxy)
+			setUpActions = true
+		end
 		Actions.updateFrameActions()
 	end
 end

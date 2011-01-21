@@ -5,6 +5,7 @@ require("osgTools")
 require("Scene")
 
 
+local setUpActions = false
 
 osgnav = {position = osg.Vec3d(0, 0, 0)}
 
@@ -37,6 +38,10 @@ end
 function osgnav:latePreFrame()
 	runbuf:runBuffer()
 	if Actions then
+		if not setUpActions then
+			Actions.setAppProxy(osgnav.appProxy)
+			setUpActions = true
+		end
 		Actions.updateFrameActions()
 	end
 end
@@ -47,6 +52,9 @@ runbuf = vrjSync.RunBuffer(nil)
 
 print("App delegate defined, now creating OsgAppProxy")
 osgnav.appProxy = vrjApp.OsgAppProxy()
+if Actions then
+	Actions.setAppProxy(osgnav.appProxy)
+end
 
 print ("Now setting OsgAppProxy's delegate")
 osgnav.appProxy:setAppDelegate(osgnav)
