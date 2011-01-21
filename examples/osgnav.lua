@@ -8,10 +8,6 @@ node = osgLua.loadObjectFile('cessna.osg')
 scene = osg.PositionAttitudeTransform()
 scene:addChild(node)
 
-function vecToString(vec)
-	return "(" .. tostring(vec:x()) .. ", " .. tostring(vec:y()) .. ", " .. tostring(vec:z()) .. ")"
-end
-
 
 require("Navigator")
 require("osgTools")
@@ -38,7 +34,7 @@ function osgnav:initScene()
 end
 
 function osgnav:preFrame()
-	self.position = osgTools.subVec(self.position, self.nav:getTranslation(self.appProxy:getTimeDelta(), self.position))
+	self.position = self.position - self.nav:getTranslation(self.appProxy:getTimeDelta(), self.position)
 	self.navtransform:setPosition(self.position)
 end
 
