@@ -37,8 +37,21 @@ DEALINGS IN THE SOFTWARE.
 
 local mt = {}
 help = setmetatable({}, mt)
-local docstrings = setmetatable({}, {__mode = "kv"})
+local docstrings = setmetatable({}, {__mode = "k"})
 local helpExtensions = {}
+
+local function callWithIntegersFirst(t, func)
+	local keys = {}
+	for i, v in ipairs(t) do
+		keys[i] = true
+		func(i, v)
+	end
+	for k, v in pairs(t) do
+		if not keys[k] then
+			func(k, v)
+		end
+	end
+end
 
 local function tableExtend(dest, src)
 	local applied = {}
@@ -248,6 +261,137 @@ function help.supportOsgLua()
 	help.addHelpExtension(osgLuaHelp)
 	help.supportOsgLua = function()
 		print("osgLua help support already enabled!")
+	end
+end
+
+--[[ HTML output ]]
+do
+	local function hasListPart(t)
+		for _, v in ipairs(t) do
+			return true
+		end
+		return false
+	end
+	
+	local function hasDictPart(t)
+		local seen = {}
+		for i, v in ipairs(t) do
+			seen[i] = true
+		end
+		for k, v in pairs(t) do
+			if not seen[k] then
+				return true
+			end
+		end
+		return false
+	end
+	
+	local function formatDefList(t)
+		local ret = {"<dl>"}
+		for k, v in pairs(t) do
+			table.insert(ret, string.format("<dt>%s</dt><dd>%s</dd>", k, v))
+		end
+		table.insert(ret, "</dl>")
+		return table.concat(ret, "\n")
+	end
+	
+	local function formatUnorderedList(t)
+		local ret = {"<ul>"}
+		for _, v in ipairs(t) do
+			table.insert(ret, string.format("<li>%s</li>", v))
+		end
+		table.insert(ret, "</ul>")
+		return table.concat(ret, "\n")
+	end
+	
+	local function formatParagraph(v)
+		return string.format("<p>%s</p>", v)
+	end
+	
+	function formatHeadings(level, t)
+		local ret = {}
+		for k, v in pairs(t) do
+			table.insert(ret, string.format("<h%d>%s</h%d>", level, k, level))
+			if type(v) == "string" then
+				table.insert(ret, formatParagraph(v))
+			elseif hasDictPart(v) then
+				table.insert(ret, formatDefList(v))
+			elseif hasListPart(v) then
+				table.insert(ret, formatUnorderedList(v))
+			else
+				error("No idea how to format this!")
+			end
+		end
+		return table.concat(ret, "\n")
+	end
+	
+	
+	
+	
+	
+	local function formatAsHTML(h, level)
+		if type(h) == "nil" then
+			return "<p>No documentation available.</p>"
+		elseif type(h) == "string" then
+			return formatParagraph(h)
+		elseif type(h) == "table" then
+			local keys = {}
+			local lines = {}
+			local str = ""
+			for i, v in ipairs(h) do
+				keys[i] = true
+				table.insert(lines, formatParagraph(tostring(v)))
+			end
+			
+			-- See if we do headings or straight definition lists.
+			local headings = false
+			local named = {}
+			for k,v in pairs(h) do
+				if not keys[k] then
+					named[k] = v
+					if type(v) == "table" then
+						headings = true
+					end
+				end
+			end
+			
+			if headings then
+				table.insert(lines, formatHeadings(level or 2, named))
+			else
+				table.insert(lines, formatDefList(named))
+			end
+			return table.concat(lines, "\n")
+		else
+			return h
+		end
+	end
+	help.html = {}
+	function help.html.recursive(name, entity, level)
+		local level = level or 1
+		local ret = {}
+		
+		print(string.format("Documenting %s at level %d", name, level))
+		
+		table.insert(ret, string.format("<h%d>%s</h%d>", level, name, level))
+		table.insert(ret, formatAsHTML(help.lookup(entity), level + 1))
+		if type(entity) == "table" then
+			for k, v in pairs(entity) do
+				table.insert(ret, help.html.recursive(string.format("%s.%s", name, k), v, level + 1))		
+			end
+		end
+		return table.concat(ret, "\n")
+	end
+	
+	function help.writeToHtml(filename, ...)
+		local arg = {"<html><body>", ..., "</body></html>"}
+		local file = io.open(filename, "w")
+		if io.type(file) == "file" then
+			file:write(table.concat(arg, "\n"))
+			file:close()
+		else
+			error("Could not open file to write: " .. filename)
+		end	
+	
 	end
 end
 

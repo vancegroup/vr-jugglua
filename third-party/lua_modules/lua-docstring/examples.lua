@@ -49,3 +49,7 @@ if osgLua then
 	local xform = help.docstring[[The root transform.]] .. osg.PositionAttitudeTransform()
 	help(xform)
 end
+
+help.writeToHtml("help.htm",
+	help.html.recursive("help", help)
+)
