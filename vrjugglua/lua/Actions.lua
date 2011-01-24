@@ -67,7 +67,7 @@ Returns the amount of time that it waited, in seconds.
 	if type(num) == "number" then
 		local dt = 0
 		for i=1,num do
-			dt += coroutine.yield()
+			dt = dt + coroutine.yield()
 		end
 		return dt
 	else
