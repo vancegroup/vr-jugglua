@@ -61,7 +61,4 @@ print("Setting kernel application")
 testapp.appProxy:setActiveApplication()
 
 print("Starting kernel")
-vrjKernel.start()
-
-print("Waiting for kernel stop")
-vrjKernel.waitForKernelStop()
+vrjKernel.enter()
