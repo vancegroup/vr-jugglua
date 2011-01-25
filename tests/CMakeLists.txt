@@ -11,6 +11,7 @@ set(LUA_TEST_SCRIPTS
 	stop-kernel
 	minimal-osg
 	initialize-devices
+	navtestbed-runs
 	osgnav-statemachine
 	osgapp-delegate
 	osgapp-delegate-count
