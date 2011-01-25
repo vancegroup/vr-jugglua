@@ -7,12 +7,14 @@ set(TESTS_DATA "${CMAKE_CURRENT_SOURCE_DIR}/data")
 set(LUA_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luatests")
 
 set(LUA_TEST_SCRIPTS
+	actions-loads
 	stop-kernel
 	minimal-osg
 	initialize-devices
 	osgnav-statemachine
 	osgapp-delegate
 	osgapp-delegate-count
+	osgapp-delegate-count-frameactions
 	osgapp-delegate-useful
 	osgapp-delegate-initdevices
 	osgapp-delegate-devicedata
