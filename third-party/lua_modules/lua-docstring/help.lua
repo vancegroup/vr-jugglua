@@ -366,7 +366,7 @@ do
 		end
 	end
 	help.html = {}
-	function help.html.recursive(name, entity, level)
+	function help.html.document(name, entity, level)
 		local level = level or 1
 		local ret = {}
 		
@@ -374,15 +374,23 @@ do
 		
 		table.insert(ret, string.format("<h%d>%s</h%d>", level, name, level))
 		table.insert(ret, formatAsHTML(help.lookup(entity), level + 1))
+		return table.concat(ret, "\n")
+	end
+	
+	function help.html.documentRecursive(name, entity, level)
+		local level = level or 1
+		local ret = {}
+		
+		table.insert(ret, help.html.document(name, entity, level))
 		if type(entity) == "table" then
 			for k, v in pairs(entity) do
-				table.insert(ret, help.html.recursive(string.format("%s.%s", name, k), v, level + 1))		
+				table.insert(ret, help.html.documentRecursive(string.format("%s.%s", name, k), v, level + 1))		
 			end
 		end
 		return table.concat(ret, "\n")
 	end
 	
-	function help.writeToHtml(filename, ...)
+	function help.html.writeFile(filename, ...)
 		local arg = {"<html><body>", ..., "</body></html>"}
 		local file = io.open(filename, "w")
 		if io.type(file) == "file" then
@@ -425,7 +433,10 @@ your objects. Try help(help.docstring) for info.
 		"addHelpExtension",
 		"formatHelp",
 		"supportLuabind",
-		"supportOsgLua"
+		"supportOsgLua",
+	},
+	additionalFeatures = {
+		"html",
 	},
 
 }.applyTo(help)
@@ -508,3 +519,35 @@ OpenSceneGraph objects in the help lookup.
 Note that if these conditions are met when you require("help"), this function
 is called automatically.
 ]==].applyTo(help.supportOsgLua)
+
+help.docstring[==[
+Methods for writing out HTML-based documentation from docstrings.
+]==].applyTo(help.html)
+
+help.docstring[==[
+Write an HTML file containing documentation.  Pass a filename, then one or
+more results of a help.html.document___ call, to specify what entities you
+want documented in the output HTML file.
+
+The file will be (over-)written without regard to previous contents.
+]==].applyTo(help.html.writeFile)
+
+help.docstring[==[
+Pass a string (how you want to refer to the Lua entity) and a Lua entity,
+and optionally a nesting level (default is 1).  This method will create
+HTML documentation for just that entity.
+
+Usually called within the parameters to help.html.writeFile.
+
+Returns an HTML string documenting this entity.
+]==].applyTo(help.html.document)
+
+help.docstring[==[
+Pass a string (how you want to refer to the Lua entity) and a Lua entity,
+and optionally a nesting level (default is 1). This method will create
+HTML documentation for that entity, and recursively into tables.
+
+Usually called within the parameters to help.html.writeFile.
+
+Returns an HTML string documenting this entity and its children.
+]==].applyTo(help.html.documentRecursive)

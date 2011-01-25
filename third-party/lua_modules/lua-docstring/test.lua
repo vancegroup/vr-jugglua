@@ -176,9 +176,15 @@ function test_selfdoc_list_of_functions()
 		assert_false(foundKeys[v], "Function is listed in documentation more than once: " .. v)
 		foundKeys[v] = true
 	end
+	
+	for _,v in ipairs(help.lookup(help)["additionalFeatures"]) do
+		assert_not_nil(foundKeys[v], "additionalFeature listed in documentation does not exist: " .. v)
+		assert_false(foundKeys[v], "additionalFeature is listed in documentation more than once: " .. v)
+		foundKeys[v] = true
+	end
 
 	for k,v in pairs(foundKeys) do
-		assert_true(v, "Functions not listed in documentation for help: " .. k)
+		assert_true(v, "Functions/additionalFeatures not listed in documentation for help: " .. k)
 	end
 end
 

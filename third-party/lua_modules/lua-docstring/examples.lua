@@ -50,6 +50,6 @@ if osgLua then
 	help(xform)
 end
 
-help.writeToHtml("help.htm",
-	help.html.recursive("help", help)
+help.html.writeFile("help.htm",
+	help.html.documentRecursive("help", help)
 )
