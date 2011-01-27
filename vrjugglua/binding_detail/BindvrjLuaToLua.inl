@@ -44,7 +44,8 @@ void BindvrjLuaToLua(LuaStatePtr state) {
 #endif
 	module(state.get(), "vrjLua") [
 		def("appendToModelSearchPath", &appendToModelSearchPath),
-		def("appendToLuaRequirePath", &appendToLuaRequirePath)
+		def("appendToLuaRequirePath", &appendToLuaRequirePath),
+		def("safePrint", &LuaScript::doPrint)
 	];
 
 

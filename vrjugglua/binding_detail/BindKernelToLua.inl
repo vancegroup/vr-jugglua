@@ -190,8 +190,7 @@ void bindKernelToLua(LuaStatePtr state) {
 		def("setApplication", &Kernel::setApplication),
 		def("loadConfigFile", &Kernel::loadConfigFile),
 		def("waitForKernelStop", &Kernel::waitForKernelStop),
-		def("isRunning", &Kernel::isRunning),
-		def("safePrint", &LuaScript::doPrint) /// @todo move this into a more generic/shared namesapce
+		def("isRunning", &Kernel::isRunning)
 	];
 
 }

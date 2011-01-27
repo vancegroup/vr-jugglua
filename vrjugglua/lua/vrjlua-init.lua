@@ -2,6 +2,6 @@
 do
 	local oldprint = print
 	print = function(s)
-		vrjKernel.safePrint(tostring(s))
+		vrjLua.safePrint(tostring(s))
 	end
 end
