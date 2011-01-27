@@ -194,15 +194,6 @@ void bindKernelToLua(LuaStatePtr state) {
 		def("safePrint", &LuaScript::doPrint) /// @todo move this into a more generic/shared namesapce
 	];
 
-	// Hide the print function, using the threadsafe one.
-	luaL_dostring(state.get(),
-	"do \n\
-		local oldprint = print \n\
-		print = function(s) \n\
-			vrjKernel.safePrint(tostring(s)) \n\
-		end \n\
-	end");
-
 }
 
 }// end of vrjLua namespace

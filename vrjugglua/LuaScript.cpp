@@ -226,6 +226,9 @@ void LuaScript::_applyBindings() {
 
 	// Set up traceback...
 	luabind::set_pcall_callback(&add_file_and_line);
+	
+	// Load the vrjlua init script
+	requireModule("vrjlua-init", true);
 
 	// set up global for debug mode
 	/// @todo make this work

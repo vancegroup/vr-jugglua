@@ -15,7 +15,8 @@ set(LUA_FILES
 	Scene.lua
 	sleep.lua
 	StateMachine.lua
-	vrjlua-config.lua)
+	vrjlua-config.lua
+	vrjlua-init.lua)
 
 
 add_lua_target(luaFiles "${CMAKE_BINARY_DIR}/${LUA_DIR}" ${LUA_FILES})
