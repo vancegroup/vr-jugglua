@@ -1,18 +1,25 @@
 
 print("CTEST_FULL_OUTPUT")
-local a = osg.Vec3(1, 1, 1)
-local b = osg.Vec3(2, 2, 2)
-local c = a + b
-print(c)
+function doTest(vectype)
+	local a = vectype(1, 1, 1)
+	local b = vectype(2, 2, 2)
+	local c = a + b
+	print(c)
+	
+	local d = b - a
+	print(d)
+	assert(a == d)
+	
+	local e = b * 2
+	print(e)
+	assert(e == 2 * b)
+	
+	print(-a)
+end
 
-local d = b - a
-print(d)
-assert(a == d)
+doTest(osg.Vec3)
 
-local e = b * 2
-print(e)
-assert(e == 2 * b)
-
-print(-a)
+doTest(osg.Vec3d)
+doTest(osg.Vec3f)
 
 print("Done!")
