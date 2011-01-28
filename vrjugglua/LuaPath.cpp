@@ -140,11 +140,11 @@ void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 	startingPlaces.push_back(fs::complete(arg0).remove_leaf().string());
 #endif
 
-	_root = _findFilePath(startingPlaces, "share/vrjugglua/lua/StateMachine.lua");
+	_root = _findFilePath(startingPlaces, "share/vrjugglua/lua/vrjlua-init.lua");
 	if (!_root.empty()) {
 		_luadir = (fs::path(_root) / "share/vrjugglua/lua/").string();
 	} else {
-		_root = _findFilePath(startingPlaces, "StateMachine.lua");
+		_root = _findFilePath(startingPlaces, "vrjlua-init.lua");
 		_luadir = _root;
 	}
 
