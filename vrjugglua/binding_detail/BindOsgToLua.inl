@@ -41,37 +41,34 @@ void bindOsgToLua(LuaStatePtr state) {
 #ifdef VERBOSE
 	luaL_dostring(state.get(), "print('osgLua: ' .. tostring(osgLua.getTypes()))");
 #endif
-	bool ret;
+	bool ret = true;
 
+	try {
 #ifdef AUTOLOAD_WRAPPER_OSG
-	ret = osgLua::loadWrapper(state.get(), "osg");
-	if (!ret) {
-		std::cerr << "Could not load Lua wrapper for osg!" << std::endl;
-		lua_pushstring(state.get(), "Could not load Lua wrapper for osg!");
-		lua_error(state.get());
-		return;
-	}
+		ret = ret && osgLua::loadWrapper(state.get(), "osg");
 #endif
 
 #ifdef AUTOLOAD_WRAPPER_OSGDB
-	ret = osgLua::loadWrapper(state.get(), "osgDB");
-	if (!ret) {
-		std::cerr << "Could not load Lua wrapper for osgDB!" << std::endl;
-		lua_pushstring(state.get(), "Could not load Lua wrapper for osgDB!");
-		lua_error(state.get());
-		return;
-	}
+		ret = ret && osgLua::loadWrapper(state.get(), "osgDB");
 #endif
 
 #ifdef AUTOLOAD_WRAPPER_OSGUTIL
-	ret = osgLua::loadWrapper(state.get(), "osgUtil");
-	if (!ret) {
-		std::cerr << "Could not load Lua wrapper for osgUtil!" << std::endl;
-		lua_pushstring(state.get(), "Could not load Lua wrapper for osgUtil!");
-		lua_error(state.get());
-		return;
-	}
+		ret = ret && osgLua::loadWrapper(state.get(), "osgUtil");
 #endif
+	} catch (std::exception & e) {
+		std::cerr << "ERROR: Caught an exception trying to load osgwrappers : " << e.what() << std::endl;
+		std::cerr << "Make sure you have the osgwrappers installed in their default location with respect to OSG itself." << std::endl;
+		std::cerr << "Cannot continue, exiting!" << std::endl;
+		std::terminate();
+	}
+
+
+	if (!ret) {
+		std::cerr << "Failure return code, trying to load wrappers for osg!" << std::endl;
+		lua_pushstring(state.get(), "Failure return code, trying to load wrappers for osg!");
+		lua_error(state.get());
+		std::terminate();
+	}
 
 	manuallyBindOsgHelpers(state);
 }
