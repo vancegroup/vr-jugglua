@@ -289,14 +289,13 @@ bool OsgAppProxy::_forwardCallToDelegate(const char * call, bool required) {
 			_delegationSuccessFlag = true;
 			return true;
 		} catch (luabind::error & e) {
-			VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
-				<< "Calling '" << call << "' in the delegate failed - check your lua code!"
-				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+			std::stringstream s;
+			s << "Calling '" << call << "' in the app delegate failed - check your lua code!" << std::endl;
 			luabind::object o(luabind::from_stack(e.state(), -1));
-			VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_ERROR)
-				<< "Top of the Lua stack (error message) is: '" << o << "'"
-				<< VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_ERROR);
+			s << "Top of the Lua stack (error message) is: '" << o << "'";
+			LuaScript::doPrint(s.str());
 			if (required) {
+				std::exit(1);
 				//throw;
 				vrj::Kernel::instance()->stop();
 			}
