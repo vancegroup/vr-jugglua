@@ -90,6 +90,10 @@ void KernelState::init() {
 	<< "Warning: your application is not cluster-capable as compiled (VR Juggler 3.x) because you did not initialize the kernel with command line arguments!"
 	<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 	boost::program_options::variables_map vm;
+	// Juggler assumes these will be in a provided variable map, and gives an unhelpful boost::any_cast exception
+	// if not set.
+	vm.insert(std::make_pair(std::string("vrjmaster"), boost::program_options::variable_value(false, true)));
+	vm.insert(std::make_pair(std::string("vrjslave"),boost::program_options::variable_value(false, true)));
 	vrj::Kernel::instance()->init(vm);
 	_init = true;
 }
