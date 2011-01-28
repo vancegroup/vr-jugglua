@@ -147,9 +147,14 @@ void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 		_root = _findFilePath(startingPlaces, "vrjlua-init.lua");
 		_luadir = _root;
 	}
-
+#if __VJ_version >= 2003000
+	fs::path jugglerTest = "share/vrjuggler-3.0/data/definitions/simulated_positional_device.jdef";
+#else
 	fs::path jugglerTest = "share/vrjuggler-2.2/data/definitions/simulated_positional_device.jdef";
-	if (fs::exists(_root/jugglerTest)) {
+#endif
+	fs::path jugglerTestFallback = "share/vrjuggler/data/definitions/simulated_positional_device.jdef";
+	
+	if (fs::exists(_root/jugglerTest) || fs::exists(_root/jugglerTestFallback)) {
 		_foundJuggler = true;
 		_jugglerRoot = _root;
 	}
