@@ -1,6 +1,6 @@
 
 function getScriptFilename()
-	local info = debug.getinfo(2)
+	local info = debug.getinfo(2, 'S')
 	-- split up the string
 	local prefix = string.sub(info.source, 1, 1)
 	if prefix == "@" then
