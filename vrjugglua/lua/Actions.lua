@@ -25,6 +25,7 @@ will run.
 					actionDead = true
 				end
 			end
+			--- TODO fix this so we traverse in the callback!
 			--c:traverse(n, nodeVisitor)
 		end)
 	node:addUpdateCallback(c)
