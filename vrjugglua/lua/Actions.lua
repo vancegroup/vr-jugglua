@@ -11,12 +11,19 @@ By this, we mean: if the node is attached to the scenegraph, this Action
 will run.
 ]] .. function(node, func)
 	local co = coroutine.create(func)
+	local actionDead = false
 	local c = osgLua.NodeCallback(
 		function(n, nodeVisitor)
-			if coroutine.status(co) == 'dead' then
+			if actionDead then
 				node:removeUpdateCallback(c)
 			else
-				coroutine.resume(co, Actions.appProxy:getTimeDelta())
+				local succeeded, results = coroutine.resume(co, Actions.appProxy:getTimeDelta())
+				if not succeeded then
+					print(string.format("A node action failed and will be stopped/removed. Error details: %s",
+						debug.traceback(co, result)))
+				elseif coroutine.status(v) == 'dead' then
+					actionDead = true
+				end
 			end
 			--c:traverse(n, nodeVisitor)
 		end)
