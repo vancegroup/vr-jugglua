@@ -1,6 +1,10 @@
 require("help")
 
-Actions = {
+Actions = help.docstring[[
+Actions can be considered separate "mini-programs" that you can start
+to run a single task - keep an object at the same location as a positional
+device, display an animation on button click, etc.
+]] .. {
 	_frameActions = {};
 }
 
