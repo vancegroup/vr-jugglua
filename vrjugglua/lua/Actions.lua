@@ -88,8 +88,12 @@ If that made no sense to you, you do not need to use this function.
 	for _, v in ipairs(thisTime) do
 		--print(coroutine.status(v))
 		--- TODO handle errors here
-		assert(coroutine.resume(v, Actions.appProxy:getTimeDelta()))
-		if coroutine.status(v) ~= 'dead' then
+		local succeeded, result = coroutine.resume(v, Actions.appProxy:getTimeDelta())
+		if not succeeded then
+			print(string.format("Frame action %s failed and will be stopped/removed. Error details: %s",
+				tostring(v),
+				debug.traceback(v, result)))
+		elseif coroutine.status(v) ~= 'dead' then
 			table.insert(Actions._frameActions, v)
 		end
 	end
