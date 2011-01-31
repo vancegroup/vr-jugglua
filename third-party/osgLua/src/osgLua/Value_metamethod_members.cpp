@@ -38,13 +38,13 @@
 
 namespace osgLua {
 
-	int Value::__gc(lua_State *L) {
+	int Value::_gc(lua_State *L) {
 		Value *v = _rawGet(L,1);
 		delete v;
 		return 0;
 	}
 
-	int Value::__index(lua_State *L) {
+	int Value::_index(lua_State *L) {
 		Value *v = _rawGet(L,1);
 		if (lua_isstring(L,2)) {
 			const osgIntrospection::Type &type = v->getType();
@@ -77,7 +77,7 @@ namespace osgLua {
 			}
 
 			lua_pushvalue(L,2); // copy the name
-			lua_pushcclosure(L, Value::__methodCall,1);
+			lua_pushcclosure(L, Value::_methodCall,1);
 			return 1;
 		}
 		// maybe ... if is an integer... access indexed data
@@ -85,7 +85,7 @@ namespace osgLua {
 	}
 
 
-	int Value::__methodCall(lua_State *L) {
+	int Value::_methodCall(lua_State *L) {
 		int top = lua_gettop(L);
 
 		Value *value = Value::getRequired(L,1);
@@ -158,7 +158,7 @@ namespace osgLua {
 
 	}
 
-	int Value::__newindex(lua_State *L) {
+	int Value::_newindex(lua_State *L) {
 
 		Value *v = _rawGet(L,1);
 

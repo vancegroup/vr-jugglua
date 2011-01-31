@@ -83,13 +83,13 @@ namespace osgLua {
 			lua_pushcfunction(L, osgLuaTypeTag);
 			lua_setfield(L, -2, OSGLUAVALUEMETATABLE);
 
-			lua_pushcfunction(L, Value::__gc);
+			lua_pushcfunction(L, Value::_gc);
 			lua_setfield(L, -2, "__gc");
 
-			lua_pushcfunction(L, Value::__index);
+			lua_pushcfunction(L, Value::_index);
 			lua_setfield(L, -2, "__index");
 
-			lua_pushcfunction(L, Value::__newindex);
+			lua_pushcfunction(L, Value::_newindex);
 			lua_setfield(L, -2, "__newindex");
 
 			if (t.getReaderWriter()) {

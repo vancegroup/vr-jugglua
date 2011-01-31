@@ -77,10 +77,10 @@ namespace osgLua {
 			/// @name Metamethods
 			/// Used in the osgLua binding.
 			/// @{
-			static int __gc(lua_State *L);
-			static int __index(lua_State *L);
-			static int __newindex(lua_State *L);
-			static int __methodCall(lua_State *L);
+			static int _gc(lua_State *L);
+			static int _index(lua_State *L);
+			static int _newindex(lua_State *L);
+			static int _methodCall(lua_State *L);
 			/// @}
 	};
 
