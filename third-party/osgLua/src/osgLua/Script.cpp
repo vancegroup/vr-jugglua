@@ -17,7 +17,7 @@
 
 #include <osgLua/Script>
 #include "osgLua.h"
-#include "Value.h"
+#include <osgLua/Value>
 #include "Type.h"
 
 #include <osgIntrospection/Value>

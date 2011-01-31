@@ -16,7 +16,7 @@
 #ifndef OSGLUA_VALUE_METAMETHODS
 #define OSGLUA_VALUE_METAMETHODS
 
-#include "Value.h"
+#include <osgLua/Value>
 #include <vrjugglua/LuaIncludeFull.h>
 
 #include <osgIntrospection/Value>
@@ -66,7 +66,8 @@ namespace osgLua {
 	} // end of namespace detail
 
 	
-	namespace metamethods {
+	namespace value_metamethods {
+
 		int tostring(lua_State *L);
 		
 		int minimal_tostring(lua_State *L);
@@ -152,10 +153,10 @@ namespace osgLua {
 	  	}
 	  	
 	  	template<class T>
-	  	bool bind_metamethods(lua_State *L, const osgIntrospection::Value &original) {
+	  	bool bind_metamethods(lua_State *L, const osgIntrospection::Type &valT) {
 	  		static const osgIntrospection::Type& myType = 
 		  		osgIntrospection::Reflection::getType(extended_typeid<T>()); 
-		  	if (original.getType() == myType) { 
+		  	if (valT == myType) { 
 		  		lua_pushcfunction(L, &Vector::add<T>); 
 		  		lua_setfield(L, -2, "__add"); 
 		  		lua_pushcfunction(L, &Vector::sub<T>); 
@@ -164,11 +165,11 @@ namespace osgLua {
 		  		lua_setfield(L, -2, "__unm"); 
 		  		lua_pushcfunction(L, &Vector::scale<T>);
 		  		lua_setfield(L, -2, "__mul"); 
-		  		lua_pushcfunction(L, &metamethods::eq); 
+		  		lua_pushcfunction(L, &value_metamethods::eq); 
 		  		lua_setfield(L, -2, "__eq"); 
-		  		lua_pushcfunction(L, &metamethods::lt); 
+		  		lua_pushcfunction(L, &value_metamethods::lt); 
 		  		lua_setfield(L, -2, "__lt"); 
-		  		lua_pushcfunction(L, &metamethods::le); 
+		  		lua_pushcfunction(L, &value_metamethods::le); 
 		  		lua_setfield(L, -2, "__le"); 
 		  		return true;
 		  	}
@@ -251,7 +252,7 @@ namespace osgLua {
 		  		return 1;
 		  	} else {
 		  		/// @todo figure out why line 11 in osglua-matrixmath.lua fails without this
-		  		return metamethods::eq(L);
+		  		return value_metamethods::eq(L);
 				/*luaL_error(L,"[%s:%d] Could not compare instances of %s, %s, in comparator for %s",__FILE__,__LINE__,
 					typeA.getQualifiedName().c_str(),
 					typeB.getQualifiedName().c_str(),
@@ -285,10 +286,10 @@ namespace osgLua {
 		}
 		
 		template<class T>
-	  	bool bind_metamethods(lua_State *L, const osgIntrospection::Value &original) {
+	  	bool bind_metamethods(lua_State *L, const osgIntrospection::Type &valT) {
 	  		static const osgIntrospection::Type& myType = 
 		  		osgIntrospection::Reflection::getType(extended_typeid<T>()); 
-		  	if (original.getType() == myType) { 
+		  	if (valT == myType) { 
 		  		lua_pushcfunction(L, &Matrix::mul<T>); 
 		  		lua_setfield(L, -2, "__mul"); 
 		  		lua_pushcfunction(L, &Matrix::eq<T>); 

@@ -1,7 +1,6 @@
 /*
 	osgLua: use Lua to access dynamically to osg using osgIntrospection
 	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
-	Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
 
     This library is open source and may be redistributed and/or modified under  
     the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
@@ -14,35 +13,18 @@
     OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGLUA_LUAINCLUDE
-#define OSGLUA_LUAINCLUDE
+#ifndef OSGLUA_BINDVALUE
+#define OSGLUA_BINDVALUE
 
-#ifdef OSGLUA_LUA_PREFIX
-#   include OSGLUA_LUA_PREFIX
-#else
+#include <vrjugglua/LuaIncludeFull.h>
 
-#   if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-extern "C" {
-#   endif
+#include <osgIntrospection/Type>
 
-#endif
+namespace osgLua {
+	namespace detail {
 
+	} // end of detail namespace
 
-	#include <lua.h>
-	#include <lauxlib.h>
-    #include <lualib.h>
-
-
-#ifdef OSGLUA_LUA_POSTFIX
-
-#   include OSGLUA_LUA_POSTFIX
-
-#else
-
-#   if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-}
-#   endif
-
-#endif
+} // end of osgLua namespace
 
 #endif

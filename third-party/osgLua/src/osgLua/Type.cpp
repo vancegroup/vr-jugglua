@@ -13,7 +13,7 @@
     OpenSceneGraph Public License for more details.
 */
 
-#include "Value.h"
+#include <osgLua/Value>
 #include "Type.h"
 
 #include <osgIntrospection/Reflection>

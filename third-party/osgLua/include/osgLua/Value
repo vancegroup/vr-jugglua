@@ -17,7 +17,7 @@
 #define OSGLUA_VALUE
 
 
-#include <vrjugglua/LuaIncludeFull.h>
+#include <osgLua/LuaInclude>
 
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>
@@ -25,6 +25,9 @@
 #include <osg/ref_ptr>
 
 namespace osgLua {
+	namespace value_metamethods {
+		int gc(lua_State *L);
+	}
 
 	class Value
 	{
@@ -51,14 +54,15 @@ namespace osgLua {
 		
 		osgIntrospection::Value _value;
 		osg::ref_ptr<osg::Referenced> _referenced;
-
-		static Value* rawGet(lua_State *L, int index);
-		static int gc(lua_State *L);
-		static int index(lua_State *L);
-		static int newindex(lua_State *L);
-
-		static int methodCall(lua_State *L);
 		
+		static void _getOrCreateMetatable(lua_State* L, osgIntrospection::Type const& t);
+		static bool _hasOsgLuaValueMetatable(lua_State *L, int index);
+
+		static Value* _rawGet(lua_State *L, int index);
+		static int __gc(lua_State *L);
+		static int __index(lua_State *L);
+		static int __newindex(lua_State *L);
+		static int __methodCall(lua_State *L);	
 	};
 
 	osgIntrospection::Value getValue(lua_State *L, int index);

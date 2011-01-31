@@ -22,7 +22,7 @@
 
 // Library/third-party includes
 #include <osgLua/osgLua.h>
-#include <osgLua/Value.h>
+#include <osgLua/Value>
 
 
 // Standard includes

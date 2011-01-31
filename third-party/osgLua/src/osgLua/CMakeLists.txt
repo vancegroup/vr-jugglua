@@ -4,6 +4,8 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 set(OSGLUA_SRCS
+	BindValue.cpp
+	BindValue.h
 	Callback.cpp
 	lua_functions.cpp
 	osgLua.cpp
@@ -16,13 +18,13 @@ set(OSGLUA_SRCS
 set(OSGLUA_API
 	lua_functions.h
 	osgLua.h
-	Type.h
-	Value.h)
+	Type.h)
 
 set(OSGLUA_SIMPLE_API
 	../../include/osgLua/Callback
 	../../include/osgLua/LuaInclude
-	../../include/osgLua/Script)
+	../../include/osgLua/Script
+	../../include/osgLua/Value)
 
 source_group(API FILES ${OSGLUA_SIMPLE_API})
 

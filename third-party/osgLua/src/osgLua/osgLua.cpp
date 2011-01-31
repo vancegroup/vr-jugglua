@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <cstring>
-#include "Value.h"
+#include <osgLua/Value>
 #include "Type.h"
 #include <osgLua/Callback>
 

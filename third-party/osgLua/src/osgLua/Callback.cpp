@@ -1,5 +1,5 @@
 #include <osgLua/Callback>
-#include "Value.h"
+#include <osgLua/Value>
 
 namespace osgLua {
 
