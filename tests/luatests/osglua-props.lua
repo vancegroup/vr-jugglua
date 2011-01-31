@@ -11,4 +11,8 @@ print(mat.Trans)
 
 assert(vec2 == mat.Trans)
 assert(vec == mat.Scale)
+
+require("help")
+help(mat)
+
 print("Done!")
