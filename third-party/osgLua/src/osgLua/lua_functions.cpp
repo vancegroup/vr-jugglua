@@ -43,14 +43,14 @@ namespace osgLua {
 
 	void pushMethodInfo(lua_State *L, const osgIntrospection::MethodInfo *mi) {
 		int top = lua_gettop(L);
-		lua_pushfstring(L, "%s %s(",
+		lua_pushfstring(L, "%s\t%s(",
 		                getName(mi->getReturnType()),
 		                mi->getName().c_str());
 		const osgIntrospection::ParameterInfoList &param = mi->getParameters();
 		for (osgIntrospection::ParameterInfoList::const_iterator
 		        i = param.begin(); i != param.end(); ++i) {
 			pushParameter(L, *i);
-			lua_pushstring(L,",");
+			lua_pushstring(L,", ");
 		}
 		if (!param.empty()) lua_pop(L,1);
 		lua_pushstring(L, ")");
