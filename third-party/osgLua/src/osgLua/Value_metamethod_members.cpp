@@ -88,11 +88,7 @@ namespace osgLua {
 	int Value::__methodCall(lua_State *L) {
 		int top = lua_gettop(L);
 
-		Value *value = Value::get(L,1);
-		if (value == 0) {
-			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-			           __FILE__,__LINE__, lua_typename(L,lua_type(L, 1))) ;
-		}
+		Value *value = Value::getRequired(L,1);
 
 		osgIntrospection::ValueList vl;
 		for (int i = 2; i <= top; ++i) {
