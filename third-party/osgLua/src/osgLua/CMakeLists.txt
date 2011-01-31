@@ -15,6 +15,7 @@ set(OSGLUA_SRCS
 	Type.cpp
 	Value.cpp
 	Value_rawget.inl
+	Value_metamethod_members.cpp
 	Value_metamethods.cpp
 	Value_metamethods.h
 	VectorTemplates.h)
