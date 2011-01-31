@@ -25,6 +25,10 @@ namespace osgLua {
         void setVector(lua_State * L);
         
         void setMatrix(lua_State * L);
+        
+        bool isMatrix(lua_State * L, int index);
+        bool isVector(lua_State * L, int index);
+        
 	} // end of detail namespace
 
 } // end of osgLua namespace

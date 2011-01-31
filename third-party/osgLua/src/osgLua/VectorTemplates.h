@@ -34,6 +34,8 @@
 #include <osg/Matrixf>
 #include <osg/Matrixd>
 
+#include <iostream>
+
 namespace osgLua {
 
 
@@ -108,21 +110,36 @@ namespace osgLua {
 		template<class T>
 		int scale(lua_State *L) {
 
-			double scalar;
-			Value * vector = Value::get(L,1);
-			if (vector == 0) {
-				if (!lua_isnumber(L, 1)) {
-					luaL_error(L, "%s:%d Expected a number but get %s",
-						__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) );
+			double scalar = 0;
+			Value * vector = NULL;
+			if (detail::isVector(L, 1) && detail::isMatrix(L, 2)) {
+				// we should be transforming - use the matrix's metatable.
+				int top = lua_gettop(L);
+				lua_getmetatable(L, 2);
+				lua_pushstring(L, "__mul");
+				lua_gettable(L, -2);
+				lua_CFunction multFunc = lua_tocfunction(L,-1);
+				lua_settop(L,top);
+				return (*multFunc)(L);
+			}
+			// we are scaling
+			for (int vecIdx = 1, scalarIdx = 2; vecIdx <= 2; vecIdx++, scalarIdx--) {
+				
+				std::cout << "Trying vecIdx=" << vecIdx << ", scalarIdx=" << scalarIdx << std::endl;
+				if (detail::isVector(L, vecIdx)) {
+					vector = Value::get(L,vecIdx);
+					if (!lua_isnumber(L, scalarIdx)) {
+						luaL_error(L, "%s:%d Expected a number but get %s",
+							__FILE__,__LINE__, lua_typename(L,lua_type(L, scalarIdx)) );
+					}
+					scalar = lua_tonumber(L, scalarIdx);
+					break;
 				}
-				scalar = lua_tonumber(L, 1);
-				vector = Value::getRequired(L,2);
-			} else {
-				if (!lua_isnumber(L, 2)) {
-					luaL_error(L, "%s:%d Expected a number but get %s",
-						__FILE__,__LINE__, lua_typename(L,lua_type(L, 2)) );
-				}
-				scalar = lua_tonumber(L, 2);
+			}
+			
+			if (!vector) {
+				luaL_error(L, "%s:%d In a vector multiplication metamethod, but didn't find a vector as an argument! (%s, %s)",
+					__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)), lua_typename(L,lua_type(L, 2)) );
 			}
 			
 			osgIntrospection::Value ret = detail::scaleVector<T>(vector->get(), scalar);

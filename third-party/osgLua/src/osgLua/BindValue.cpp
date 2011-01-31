@@ -66,6 +66,45 @@ namespace osgLua {
 			lua_pushcfunction(L, matrixTag);
 			lua_setfield(L, -2, OSGLUAVALUEISMATRIX);
         }
+        
+        
+        bool isMatrix(lua_State * L, int index) {
+			int top = lua_gettop(L);
+			index = (index>0)? index : top + index + 1;
+	
+			if (Value::get(L, index))
+			{
+				lua_getmetatable(L, index);
+				lua_pushstring(L, OSGLUAVALUEISMATRIX);
+				lua_gettable(L, -2);
+				if (lua_tocfunction(L,-1) == &matrixTag)
+				{
+					lua_settop(L,top);
+					return true;
+				}
+			}
+			lua_settop(L,top);
+			return false;
+		}
+
+        bool isVector(lua_State * L, int index) {
+			int top = lua_gettop(L);
+			index = (index>0)? index : top + index + 1;
+	
+			if (Value::get(L, index))
+			{
+				lua_getmetatable(L, index);
+				lua_pushstring(L, OSGLUAVALUEISVECTOR);
+				lua_gettable(L, -2);
+				if (lua_tocfunction(L,-1) == &vectorTag)
+				{
+					lua_settop(L,top);
+					return true;
+				}
+			}
+			lua_settop(L,top);
+			return false;
+		}
     }
 	
 	bool Value::_hasOsgLuaValueMetatable(lua_State *L, int index) {
@@ -87,43 +126,6 @@ namespace osgLua {
 		return false;
 	}
 	
-	bool Value::_isMatrix(lua_State *L, int index) {
-		int top = lua_gettop(L);
-		index = (index>0)? index : top + index + 1;
-
-		if (_hasOsgLuaValueMetatable(L, index))
-		{
-			lua_getmetatable(L, index);
-			lua_pushstring(L, OSGLUAVALUEISMATRIX);
-			lua_gettable(L, -2);
-			if (lua_tocfunction(L,-1) == &matrixTag)
-			{
-				lua_settop(L,top);
-				return true;
-			}
-		}
-		lua_settop(L,top);
-		return false;
-	}
-	
-	bool Value::_isVector(lua_State *L, int index) {
-		int top = lua_gettop(L);
-		index = (index>0)? index : top + index + 1;
-
-		if (_hasOsgLuaValueMetatable(L, index))
-		{
-			lua_getmetatable(L, index);
-			lua_pushstring(L, OSGLUAVALUEISVECTOR);
-			lua_gettable(L, -2);
-			if (lua_tocfunction(L,-1) == &vectorTag)
-			{
-				lua_settop(L,top);
-				return true;
-			}
-		}
-		lua_settop(L,top);
-		return false;
-	}
 
 	void Value::_getOrCreateMetatable(lua_State *L, osgIntrospection::Type const& t) {
 		// create/get the metatable
