@@ -19,11 +19,11 @@
 #include <osgLua/LuaInclude>
 
 namespace osgLua {
-    /// Registers osgLua functions on the provided state
-    void open(lua_State *L);
-    
-    /// Loads the wrapped content of the indicated library into the provided
-    /// state, as well as registering osgLua functions if needed.
+	/// Registers osgLua functions on the provided state
+	void open(lua_State *L);
+
+	/// Loads the wrapped content of the indicated library into the provided
+	/// state, as well as registering osgLua functions if needed.
 	bool loadWrapper(lua_State *L, const char *name);
 }
 

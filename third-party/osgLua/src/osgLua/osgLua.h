@@ -19,12 +19,12 @@
 #include <osgLua/LuaInclude>
 
 LUA_C_INTERFACE_BEGIN
-	int luaopen_osgLua(lua_State *L);
-	int luaopen_libosgLua(lua_State *L);
+int luaopen_osgLua(lua_State *L);
+int luaopen_libosgLua(lua_State *L);
 LUA_C_INTERFACE_END
 
 namespace osgLua {
-    void get(lua_State *L);
+	void get(lua_State *L);
 	int lua_loadWrapper(lua_State *L);
 	int lua_loadObjectFile(lua_State *L);
 }

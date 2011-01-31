@@ -34,14 +34,14 @@
 namespace osgLua {
 
 	namespace value_metamethods {
-		
+
 		int tostring(lua_State *L) {
 			Value *a = Value::getRequired(L,1);
 
 			lua_pushstring(L, a->get().toString().c_str());
 			return 1;
 		}
-	
+
 		int minimal_tostring(lua_State *L) {
 			Value *a = Value::getRequired(L,1);
 			std::stringstream s;
@@ -57,7 +57,7 @@ namespace osgLua {
 			bool ret;
 			try {
 				ret = a->get() == b->get();
-			} catch(osgIntrospection::Exception &e) {
+			} catch (osgIntrospection::Exception &e) {
 				luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
 			}
 
@@ -73,7 +73,7 @@ namespace osgLua {
 			bool ret;
 			try {
 				ret = a->get() < b->get();
-			} catch(osgIntrospection::Exception &e) {
+			} catch (osgIntrospection::Exception &e) {
 				luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
 			}
 
@@ -89,7 +89,7 @@ namespace osgLua {
 			bool ret;
 			try {
 				ret = a->get() <= b->get();
-			} catch(osgIntrospection::Exception &e) {
+			} catch (osgIntrospection::Exception &e) {
 				luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
 			}
 
@@ -97,13 +97,13 @@ namespace osgLua {
 
 			return 1;
 		}
-		
+
 		namespace detail {
-		
+
 		} // end of detail namespace
-	
-		
-	
+
+
+
 	} // end of value_metamethods namespace
 
 } // end of osgLua namespace

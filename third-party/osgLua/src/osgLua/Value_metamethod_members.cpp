@@ -2,14 +2,14 @@
 	osgLua: use Lua to access dynamically to osg using osgIntrospection
 	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
 
-    This library is open source and may be redistributed and/or modified under  
-    the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
+    This library is open source and may be redistributed and/or modified under
+    the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
     (at your option) any later version.  The full license is in LICENSE file
     included with this distribution, and on the openscenegraph.org website.
-    
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     OpenSceneGraph Public License for more details.
 */
 
@@ -35,26 +35,22 @@
 
 namespace osgLua {
 
-	int Value::__gc(lua_State *L)
-	{
+	int Value::__gc(lua_State *L) {
 		Value *v = _rawGet(L,1);
 		delete v;
 		return 0;
 	}
 
-	int Value::__index(lua_State *L)
-	{
+	int Value::__index(lua_State *L) {
 		Value *v = _rawGet(L,1);
-		if (lua_isstring(L,2))
-		{
+		if (lua_isstring(L,2)) {
 			const osgIntrospection::Type &type = v->getType();
-			if (!type.isDefined())
-			{
-				luaL_error(L, "Type not defined %s", 
-					type.getStdTypeInfo().name());
+			if (!type.isDefined()) {
+				luaL_error(L, "Type not defined %s",
+				           type.getStdTypeInfo().name());
 			}
 			//std::string cname = type.getQualifiedName();
-		
+
 			const char * memberName = lua_tostring(L, 2);
 			std::string memName(memberName);
 			osgIntrospection::PropertyInfoList props;
@@ -76,7 +72,7 @@ namespace osgLua {
 					}
 				}
 			}
-		
+
 			lua_pushvalue(L,2); // copy the name
 			lua_pushcclosure(L, Value::__methodCall,1);
 			return 1;
@@ -84,31 +80,27 @@ namespace osgLua {
 		// maybe ... if is an integer... access indexed data
 		return 0;
 	}
-	
-	
-	int Value::__methodCall(lua_State *L)
-	{
+
+
+	int Value::__methodCall(lua_State *L) {
 		int top = lua_gettop(L);
 
 		Value *value = Value::get(L,1);
-		if (value == 0)
-		{
+		if (value == 0) {
 			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-				__FILE__,__LINE__, lua_typename(L,lua_type(L, 1)) ) ;
+			           __FILE__,__LINE__, lua_typename(L,lua_type(L, 1))) ;
 		}
 
 		osgIntrospection::ValueList vl;
-		for(int i = 2; i <= top; ++i)
-		{
-			vl.push_back( getValue(L, i) );
+		for (int i = 2; i <= top; ++i) {
+			vl.push_back(getValue(L, i));
 		}
 
-		try
-		{
-			std::string name( lua_tostring(L, lua_upvalueindex(1)) );
+		try {
+			std::string name(lua_tostring(L, lua_upvalueindex(1)));
 			const osgIntrospection::MethodInfo *method = 0;
 			const osgIntrospection::Type &type = value->getType();
-			method = type.getCompatibleMethod (name,vl, true);
+			method = type.getCompatibleMethod(name,vl, true);
 			/* This code is no longer needed if getCompatibleMethod
 			 * finds methods in base types correctly.
 			if (!method)
@@ -116,7 +108,7 @@ namespace osgLua {
 				//manual method finding... d'oh!
 				for(int i = 0; i < type.getNumBaseTypes() && !method; ++i)
 				{
-					const osgIntrospection::Type &base = 
+					const osgIntrospection::Type &base =
 						type.getBaseType(i);
 					if (!base.isDefined()) continue;
 					method = base.getCompatibleMethod(name,vl,false);
@@ -124,10 +116,9 @@ namespace osgLua {
 			}
 			*/
 
-			if (!method)
-			{
+			if (!method) {
 				if (vl.back().getType().isNonConstPointer() &&
-						vl.back().getInstanceType().isSubclassOf(osgIntrospection::Reflection::getType("osg::NodeVisitor"))) {
+				        vl.back().getInstanceType().isSubclassOf(osgIntrospection::Reflection::getType("osg::NodeVisitor"))) {
 					// OK, we have a pointer to a visitor, let's search again after dereferencing
 					osgIntrospection::Value vPointer = vl.back();
 					vl.pop_back();
@@ -135,21 +126,19 @@ namespace osgLua {
 					vl.push_back(*osgIntrospection::variant_cast<osg::NodeVisitor*>(vPointer));
 
 					// Search again for the method
-					method = type.getCompatibleMethod (name,vl, true);
+					method = type.getCompatibleMethod(name,vl, true);
 				}
 			}
-			if (!method)
-			{
+			if (!method) {
 				// Couldn't find a method
 				int top = lua_gettop(L);
 				lua_pushfstring(L, "Error method %s::%s(",
-					type.getName().c_str(),
-					lua_tostring(L,lua_upvalueindex(1))
-					);
-				for( osgIntrospection::ValueList::iterator
-					i = vl.begin(); i != vl.end(); ++i)
-				{
-					lua_pushstring(L, i->getType().getName().c_str() );
+				                type.getName().c_str(),
+				                lua_tostring(L,lua_upvalueindex(1))
+				               );
+				for (osgIntrospection::ValueList::iterator
+				        i = vl.begin(); i != vl.end(); ++i) {
+					lua_pushstring(L, i->getType().getName().c_str());
 					lua_pushstring(L,",");
 				}
 				if (!vl.empty()) lua_pop(L,1);
@@ -163,30 +152,26 @@ namespace osgLua {
 			osgIntrospection::Value returnedval = method->invoke(value->get(), vl);
 			Value::push(L, returnedval);
 			return 1;
-		}
-		catch(osgIntrospection::Exception &e)
-		{
+		} catch (osgIntrospection::Exception &e) {
 			luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
 		}
 		return 0;
-		
+
 	}
 
 	int Value::__newindex(lua_State *L) {
-		
+
 		Value *v = _rawGet(L,1);
-	
+
 		Value *newVal = get(L,3);
-		if (lua_isstring(L,2))
-		{
+		if (lua_isstring(L,2)) {
 			const osgIntrospection::Type &type = v->getType();
-			if (!type.isDefined())
-			{
-				luaL_error(L, "Type not defined %s", 
-					type.getStdTypeInfo().name());
+			if (!type.isDefined()) {
+				luaL_error(L, "Type not defined %s",
+				           type.getStdTypeInfo().name());
 			}
 			//std::string cname = type.getQualifiedName();
-		
+
 			const char * memberName = lua_tostring(L, 2);
 			std::string memName(memberName);
 			osgIntrospection::PropertyInfoList props;
@@ -207,12 +192,12 @@ namespace osgLua {
 					}
 				}
 			}
-		
+
 			luaL_error(L, "No property %s defined in %s", memberName, type.getQualifiedName().c_str());
-	
+
 		}
 		// maybe ... if is an integer... access indexed data
-		return 0;	
+		return 0;
 	}
 
 } // end of osgLua namespace
