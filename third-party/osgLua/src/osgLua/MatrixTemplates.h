@@ -126,12 +126,11 @@ namespace osgLua {
 		  		return 1;
 		  	} else {
 		  		/// @todo figure out why line 11 in osglua-matrixmath.lua fails without this
-		  		return value_metamethods::eq(L);
-				/*luaL_error(L,"[%s:%d] Could not compare instances of %s, %s, in comparator for %s",__FILE__,__LINE__,
+		  		//return value_metamethods::eq(L);
+				luaL_error(L,"[%s:%d] Could not compare instances of %s, %s, in comparator for %s",__FILE__,__LINE__,
 					typeA.getQualifiedName().c_str(),
 					typeB.getQualifiedName().c_str(),
 					myType.getQualifiedName().c_str());
-				*/
 			}
 			return 0;
 		}
