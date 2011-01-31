@@ -267,12 +267,12 @@ function help.supportOsgLua()
 	help.docstring{
 		[[Introspection-based wrapper of OpenSceneGraph functionality.]],
 		functions = {
-			"getTypes",
-			"getTypeInfo",
 			"loadObjectFile",
 			"saveObjectFile",
 			"loadWrapper",
 			"NodeCallback",
+			"getTypes",
+			"getTypeInfo",
 			"createByName"
 		}
 	}.applyTo(osgLua)
