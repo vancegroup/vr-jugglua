@@ -51,11 +51,22 @@ Scripts notes
    
    (This is the pseudo-object-oriented style of use objects in lua sorry about
     the notation, what is a "." in C++ is a ":" in Lua)
+   
+   Some objects have "properties", which may be accessed using "." :
+      mat = osg.Matrix.scale(osg.Vec3d(2, 2, 2))
+      print(mat.Scale)
+      
+      mat.Trans = osg.Vec3d(4, 4, 4)
+      print(mat.Trans)
 
-   Finally there are two more functions accessible from luaScripts:
-      getTypes() -> returns a table with all reflected types by
+   Finally there are several more functions accessible from luaScripts:
+      osgLua.loadObjectFile(filename) -> returns the osg object contained in
+            filename
+      osgLua.saveObjectFile(object, filename) -> saves some osg object into
+            filename
+      osgLua.getTypes() -> returns a table with all reflected types by
                 osgIntrospection
-      getTypeInfo(type) -> type can be an instance or a string with the name
+      osgLua.getTypeInfo(type) -> type can be an instance or a string with the name
                     of a class. Returns a dictionary with keys: name, methods,
                     constructors, ...  with information about the class ( see
                     scripts/show.lua )
