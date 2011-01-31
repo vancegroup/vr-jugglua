@@ -14,5 +14,6 @@ assert(vec == mat.Scale)
 
 require("help")
 help(mat)
+help(osg.Group())
 
 print("Done!")
