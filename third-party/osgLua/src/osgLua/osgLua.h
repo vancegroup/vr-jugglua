@@ -28,6 +28,7 @@ namespace osgLua {
 	void get(lua_State *L);
 	int lua_loadWrapper(lua_State *L);
 	int lua_loadObjectFile(lua_State *L);
+	int lua_saveObjectFile(lua_State *L);
 }
 
 #endif

@@ -30,6 +30,9 @@
 
 #include <osgDB/DynamicLibrary>
 #include <osgDB/ReadFile>
+#include <osgDB/WriteFile>
+#include <osgIntrospection/variant_cast>
+#include <osg/Object>
 
 std::string getLibraryNamePrepend() {
 	return std::string("osgPlugins-")+std::string(osgGetVersion())+std::string("/");
@@ -90,6 +93,8 @@ void osgLua::open(lua_State *L) {
 		lua_setfield(L,-2, "loadWrapper");
 		lua_pushcfunction(L, osgLua::lua_loadObjectFile);
 		lua_setfield(L,-2, "loadObjectFile");
+		lua_pushcfunction(L, osgLua::lua_saveObjectFile);
+		lua_setfield(L,-2, "saveObjectFile");
 		lua_pushcfunction(L, osgLua::NodeCallback::createFromLua);
 		lua_setfield(L,-2, "NodeCallback");
 
@@ -219,6 +224,20 @@ int osgLua::lua_loadObjectFile(lua_State *L) {
 	osg::Object *obj = osgDB::readObjectFile(name);
 	osgLua::Value::push(L, obj);
 	return 1;
+}
+
+
+int osgLua::lua_saveObjectFile(lua_State *L) {
+	osgLua::Value * v = osgLua::Value::getRequired(L, 1);
+
+	const char *name = lua_tostring(L,2);
+	luaL_argcheck(L, name != 0, 2, "need a string");
+	bool success = osgDB::writeObjectFile( *osgIntrospection::variant_cast<osg::Object const*>(v->get()), name);
+	if (!success) {
+		luaL_error(L, "Could not write osgLua object to file %s", name);
+	}
+
+	return 0;
 }
 
 int luaopen_osgLua(lua_State *L) {
