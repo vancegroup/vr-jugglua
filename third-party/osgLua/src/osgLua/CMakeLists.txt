@@ -48,7 +48,7 @@ endif()
 # TODO: this might make it impossible to build an osgLua dll on windows
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 add_library(osgLua_static ${OSGLUA_SRCS} ${OSGLUA_PRIVATE_API} ${OSGLUA_PUBLIC_API})
-set_target_properties(osgLua_static PROPERTIES PUBLIC_HEADER "${OSGLUA_PRIVATE_API};${OSGLUA_PUBLIC_API}")
+set_target_properties(osgLua_static PROPERTIES PUBLIC_HEADER "${OSGLUA_PUBLIC_API}")
 target_link_libraries(osgLua_static lua ${OPENSCENEGRAPH_LIBRARIES} lua)
 
 set_property(TARGET
