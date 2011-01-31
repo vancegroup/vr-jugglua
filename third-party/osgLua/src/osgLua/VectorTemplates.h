@@ -34,8 +34,6 @@
 #include <osg/Matrixf>
 #include <osg/Matrixd>
 
-#include <iostream>
-
 namespace osgLua {
 
 
@@ -109,9 +107,6 @@ namespace osgLua {
 		
 		template<class T>
 		int scale(lua_State *L) {
-
-			double scalar = 0;
-			Value * vector = NULL;
 			if (detail::isVector(L, 1) && detail::isMatrix(L, 2)) {
 				// we should be transforming - use the matrix's metatable.
 				int top = lua_gettop(L);
@@ -123,9 +118,13 @@ namespace osgLua {
 				return (*multFunc)(L);
 			}
 			// we are scaling
-			for (int vecIdx = 1, scalarIdx = 2; vecIdx <= 2; vecIdx++, scalarIdx--) {
-				
-				std::cout << "Trying vecIdx=" << vecIdx << ", scalarIdx=" << scalarIdx << std::endl;
+
+			double scalar = 0;
+			Value * vector = NULL;
+			for (int vecIdx = 1, scalarIdx = 2;
+					vecIdx <= 2;
+					vecIdx++, scalarIdx--) {
+
 				if (detail::isVector(L, vecIdx)) {
 					vector = Value::get(L,vecIdx);
 					if (!lua_isnumber(L, scalarIdx)) {
