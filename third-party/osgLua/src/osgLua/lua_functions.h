@@ -16,6 +16,7 @@
 #include <osgIntrospection/Reflection>
 #include <osgIntrospection/MethodInfo>
 #include <osgIntrospection/ConstructorInfo>
+#include <osgIntrospection/PropertyInfo>
 #include <osgIntrospection/Utility>
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>
@@ -26,6 +27,7 @@ namespace osgLua {
 
 	void pushParameter(lua_State *L, const osgIntrospection::ParameterInfo *p);
 	void pushMethodInfo(lua_State *L, const osgIntrospection::MethodInfo *mi);
+	void pushPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *mi);
 	void pushConstructorInfo(lua_State *L,
 	                         const osgIntrospection::ConstructorInfo *ci);
 	void pushTypeInfo(lua_State *L, const osgIntrospection::Type *type);

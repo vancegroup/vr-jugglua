@@ -14,6 +14,7 @@
 */
 
 #include "lua_functions.h"
+#include "LuaIncludeFull.h"
 
 
 namespace osgLua {
@@ -55,6 +56,58 @@ namespace osgLua {
 		lua_pushstring(L, ")");
 		if (mi->isConst()) lua_pushstring(L, " const");
 		if (mi->isStatic()) lua_pushstring(L, " static");
+		lua_concat(L, lua_gettop(L) - top);
+	}
+	
+	void pushArrayPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
+		lua_pushstring(L, "Use as array of ");
+		lua_pushstring(L, getName(pi->getPropertyType()));
+	}
+	
+	void pushIndexedPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
+		lua_pushstring(L, "Indexed property ");
+		
+		lua_pushstring(L, getName(pi->getPropertyType()));
+		lua_pushstring(L, " ");
+		lua_pushstring(L, pi->getName().c_str());
+		
+		lua_pushstring(L, "[]");		
+	}
+	
+	void pushSimplePropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
+		
+		
+		lua_pushstring(L, getName(pi->getPropertyType()));
+		lua_pushstring(L, " ");
+		lua_pushstring(L, pi->getName().c_str());
+		if (pi->canGet() && pi->canSet()) {
+			lua_pushstring(L, " (read/write)");
+		} else if (pi->canGet() && !pi->canSet()) {
+			lua_pushstring(L, " (read-only)");
+		} else if (!pi->canGet() && pi->canSet()) {
+			lua_pushstring(L, " (write-only)");
+		} else {
+			// should never happen
+			lua_pushstring(L, " (can't read or write!)");
+		}
+	}
+	
+	void pushPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
+		
+		int top = lua_gettop(L);
+		
+		if (pi->isArray()) {
+			pushArrayPropertyInfo(L, pi);
+		} else if (pi->isIndexed()) {
+			pushIndexedPropertyInfo(L, pi);
+		} else if (pi->isSimple()) {
+			pushSimplePropertyInfo(L, pi);
+		} else {
+			luaL_error(L, "%s:%d Property is neither array, indexed, nor simple!",
+			           __FILE__,__LINE__);
+		}
+		
+		
 		lua_concat(L, lua_gettop(L) - top);
 	}
 
@@ -105,6 +158,18 @@ namespace osgLua {
 					lua_rawseti(L,-2, count);
 				}
 				lua_setfield(L, table, "methods");
+			}
+			{ // properties
+				lua_newtable(L);
+				int count = 1;
+				osgIntrospection::PropertyInfoList list;
+				type->getAllProperties(list);
+				for (osgIntrospection::PropertyInfoList::const_iterator
+				        i = list.begin(); i != list.end(); ++i, ++count) {
+					pushPropertyInfo(L, *i);
+					lua_rawseti(L,-2, count);
+				}
+				lua_setfield(L, table, "properties");
 			}
 			{ // constructors
 				lua_newtable(L);
