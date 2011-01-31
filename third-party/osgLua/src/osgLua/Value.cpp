@@ -33,6 +33,12 @@
 #include <osg/Matrix>
 
 namespace osgLua {
+	static const char OSGLUAVALUEMETATABLE[] = "__isOsgLuaValue";
+
+	static int osgLuaTypeTag(lua_State *L) {
+		lua_pushboolean(L, true);
+		return 1;
+	}
 
 	Value::Value( const osgIntrospection::Value &v ) : _value(v)
 	{
@@ -135,22 +141,34 @@ namespace osgLua {
 		#undef basic_type
 
 		// if not is a basic type...
-
+		// create a userdata
 		Value** data = (Value**) lua_newuserdata(L, sizeof(Value*));
-		if(luaL_newmetatable(L,"osgLua::Value"))
+		
+		// create/get the metatable
+		if(luaL_newmetatable(L,original.getType().getQualifiedName().c_str()))
 		{
+			std::cout << "First time pushing " << original.getType().getQualifiedName() << " to Lua - creating metatable!" << std::endl;
+			// tag this as an osgLua value
+			lua_pushcfunction(L, osgLuaTypeTag);
+			lua_setfield(L, -2, OSGLUAVALUEMETATABLE);
+			
 			lua_pushcfunction(L, Value::gc);
 			lua_setfield(L, -2, "__gc");	
+			
 			lua_pushcfunction(L, Value::index);
 			lua_setfield(L, -2, "__index");
+			
 			lua_pushcfunction(L, Value::newindex);
 			lua_setfield(L, -2, "__newindex");
 			
 			if (original.getType().getReaderWriter()) {
 				/// If we know how to turn it into a string
 				lua_pushcfunction(L, metamethods::tostring);
-				lua_setfield(L, -2, "__tostring");
+			} else {
+				lua_pushcfunction(L, metamethods::minimal_tostring);
 			}
+			
+			lua_setfield(L, -2, "__tostring");
 			
 			/// Bind mathematically-inclined values specially
 		  	bool success = false;
@@ -211,8 +229,9 @@ namespace osgLua {
 		if (lua_isuserdata(L, index))
 		{
 			lua_getmetatable(L, index);
-			luaL_getmetatable(L, "osgLua::Value");
-			if (lua_equal(L,-1,-2))
+			lua_pushstring(L, OSGLUAVALUEMETATABLE);
+			lua_gettable(L, -2);
+			if (lua_tocfunction(L,-1) == &osgLuaTypeTag)
 			{
 				Value *v = rawGet(L,index);
 				lua_settop(L,top);
