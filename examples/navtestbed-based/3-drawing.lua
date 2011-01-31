@@ -1,3 +1,7 @@
+-- This is a "navtestbed" script: open it from the NavTestbed GUI, paste it
+-- in the run box of the GUI, or launch it separately using the 
+-- nav-testbed-launcher script.
+
 require("Actions")
 pointRadius = 0.0125
 
@@ -17,10 +21,10 @@ function makeTransparent(node, alpha)
 end
 root = osgnav.appProxy:getScene()
 
+device = gadget.PositionInterface("VJWand")
 
-
-local device = gadget.PositionInterface("VJWand")
-
+-- This frame action draws and updates our
+-- cursor at the device's location.
 Actions.addFrameAction(function()
 	local xform = osg.MatrixTransform()
 	xform:addChild(Sphere{
@@ -31,12 +35,15 @@ Actions.addFrameAction(function()
 
 	root:addChild(xform)
 
+	-- Update the cursor position forever.
 	while true do
 		xform:setMatrix(device.matrix)
 		Actions.waitForRedraw()
 	end
 end)
-	
+
+-- This action adds to the scenegraph when you
+-- press/hold a button to draw
 Actions.addFrameAction(function()
 	local drawBtn = gadget.DigitalInterface("VJButton1")
 	while true do
