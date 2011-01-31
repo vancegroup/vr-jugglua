@@ -26,9 +26,6 @@
 #include <osg/ref_ptr>
 
 namespace osgLua {
-	namespace value_metamethods {
-		int gc(lua_State *L);
-	}
 
 	class Value
 	{
@@ -38,8 +35,20 @@ namespace osgLua {
 		const osgIntrospection::Type &getType() const;
 		void set( const osgIntrospection::Value &v );
 
-		static void push(lua_State *L,const osgIntrospection::Value &v);
+		/// Push an osgIntrospection::Value on to the Lua stack.
+		static void push(lua_State *L, const osgIntrospection::Value &v);
+		
+		/** @brief Get an osgLua::Value from the Lua stack at the given index.
+			@returns a pointer to the osgLua::Value, or NULL if value at index
+				is not an osgLua::Value
+		*/		
 		static Value* get(lua_State *L, int index);
+		
+		/** @brief Get an osgLua::Value from the Lua stack at the given index,
+			reporting a Lua error if the value is not an osgLua::Value.
+
+			@returns a pointer to the osgLua::Value
+		*/
 		static Value* getRequired(lua_State *L, int index);
 
 		static int getTypeInfo(lua_State *L);
@@ -56,14 +65,24 @@ namespace osgLua {
 		osgIntrospection::Value _value;
 		osg::ref_ptr<osg::Referenced> _referenced;
 		
+		/// Given an osgIntrospection::Type, create the metatable if it has
+		/// not yet been created, and in any case, leave the metatable on the
+		/// top of the Lua stack.
 		static void _getOrCreateMetatable(lua_State* L, osgIntrospection::Type const& t);
+		
+		/// Checks the value at the given index to see if its metatable
+		/// is one created by osgLua.
 		static bool _hasOsgLuaValueMetatable(lua_State *L, int index);
 
 		static Value* _rawGet(lua_State *L, int index);
+		/// @name Metamethods
+		/// Used in the osgLua binding.
+		/// @{
 		static int __gc(lua_State *L);
 		static int __index(lua_State *L);
 		static int __newindex(lua_State *L);
 		static int __methodCall(lua_State *L);	
+		/// @}
 	};
 
 	osgIntrospection::Value getValue(lua_State *L, int index);
