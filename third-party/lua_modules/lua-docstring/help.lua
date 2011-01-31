@@ -264,6 +264,37 @@ function help.supportOsgLua()
 		error("Cannot load help osgLua support: osgLua not found.", 2)
 	end
 	help.addHelpExtension(osgLuaHelp)
+	help.docstring{
+		[[Introspection-based wrapper of OpenSceneGraph functionality.]],
+		functions = {
+			"getTypes",
+			"getTypeInfo",
+			"loadObjectFile",
+			"saveObjectFile",
+			"loadWrapper",
+			"NodeCallback",
+			"createByName"
+		}
+	}.applyTo(osgLua)
+	
+	help.docstring[[Pass a string indicating an OSG nodekit to load (e.g. "osg", "osgText").
+	Loads the wrapper for that functionality, creating a corresponding global table providing access to it.]].applyTo(osgLua.loadWrapper)
+	
+	help.docstring[[Returns a table of all osgLua types, listed as their fully-qualified C++ name.]].applyTo(osgLua.getTypes)
+
+	help.docstring[[Pass a function. Returns an osg.NodeCallback that calls the given function.]].applyTo(osgLua.NodeCallback)
+	
+	help.docstring[[Pass a string naming a type, and optionally parameters. Returns a new instance of the named type passing parameters to the constructor.
+	Usually can be ignored in favor of using the global tables directly to access constructors.]].applyTo(osgLua.createByName)
+	
+	help.docstring[[Pass a value or string. Returns a table with information about the given value's
+	type or the type specified by the given string.]].applyTo(osgLua.getTypeInfo)
+	
+	help.docstring[[Pass a filename. Returns OSG object (node, etc) loaded from the named file.]].applyTo(osgLua.loadObjectFile)
+	
+	help.docstring[[Pass an OSG object (node, etc) and a filename (likely ending in .osg).
+	Saves the given object to the named file]].applyTo(osgLua.saveObjectFile)
+	
 	help.supportOsgLua = function()
 		print("osgLua help support already enabled!")
 	end
