@@ -17,7 +17,7 @@
 #define OSGLUA_VALUE_RAWGET
 
 #include <osgLua/Value>
-#include <vrjugglua/LuaIncludeFull.h>
+#include <osgLua/LuaInclude>
 
 namespace osgLua {
 

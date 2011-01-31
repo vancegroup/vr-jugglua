@@ -16,7 +16,7 @@
 #ifndef OSGLUA_TYPE
 #define OSGLUA_TYPE
 
-#include <vrjugglua/LuaIncludeFull.h>
+#include <osgLua/LuaInclude>
 
 namespace osgLua {
 

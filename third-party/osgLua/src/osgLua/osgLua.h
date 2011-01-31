@@ -16,7 +16,7 @@
 #ifndef OSGLUA_MAIN
 #define OSGLUA_MAIN
 
-#include <vrjugglua/LuaInclude.h>
+#include <osgLua/LuaInclude>
 
 LUA_C_INTERFACE_BEGIN
 	int luaopen_osgLua(lua_State *L);

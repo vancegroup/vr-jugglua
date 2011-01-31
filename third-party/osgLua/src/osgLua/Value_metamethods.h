@@ -17,18 +17,11 @@
 #define OSGLUA_VALUE_METAMETHODS
 
 #include <osgLua/Value>
-#include <vrjugglua/LuaIncludeFull.h>
-
-#include <osgIntrospection/Value>
-#include <osgIntrospection/Type>
-#include <osg/Referenced>
-#include <osg/ref_ptr>
-
+#include <osgLua/LuaInclude>
 
 namespace osgLua {
 
 	namespace value_metamethods {
-
 		int tostring(lua_State *L);
 		
 		int minimal_tostring(lua_State *L);
@@ -36,22 +29,8 @@ namespace osgLua {
 		int eq(lua_State *L);
 		int lt(lua_State *L);
 		int le(lua_State *L);
-		
-		bool isMatrix(lua_State *L);
-		bool isVector(lua_State *L);
-		
-		namespace detail {
-			int matrixTag(lua_State *L);
-			
-			int vectorTag(lua_State *L);
-		}
 	}
 
-
 } // end of osgLua namespace
-
-
-#include "VectorTemplates.h"
-#include "MatrixTemplates.h"
 
 #endif

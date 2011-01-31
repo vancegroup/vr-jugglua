@@ -5,9 +5,10 @@
 
 set(OSGLUA_SRCS
 	BindValue.cpp
-	BindValue.h
 	Callback.cpp
 	lua_functions.cpp
+	MathValueTags.cpp
+	MathValueTags.h
 	MatrixTemplates.h
 	osgLua.cpp
 	Script.cpp

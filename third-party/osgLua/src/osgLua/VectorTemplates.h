@@ -16,23 +16,13 @@
 #ifndef OSGLUA_VECTORTEMPLATES
 #define OSGLUA_VECTORTEMPLATES
 
-#include "Value_metamethods.h"
-#include "BindValue.h"
+#include "MathValueTags.h"
 
+#include <osgIntrospection/Reflection>
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>
-#include <osg/Referenced>
-#include <osg/ref_ptr>
-
-#include <osg/Vec4>
-#include <osg/Vec3>
-#include <osg/Vec4f>
-#include <osg/Vec3f>
-#include <osg/Vec4d>
-#include <osg/Vec3d>
-#include <osg/Matrix>
-#include <osg/Matrixf>
-#include <osg/Matrixd>
+#include <osgIntrospection/variant_cast>
+#include <osgIntrospection/ExtendedTypeInfo>
 
 namespace osgLua {
 
@@ -106,7 +96,7 @@ namespace osgLua {
 		}
 		
 		template<class T>
-		int scale(lua_State *L) {
+		int mul(lua_State *L) {
 			if (detail::isVector(L, 1) && detail::isMatrix(L, 2)) {
 				// we should be transforming - use the matrix's metatable.
 				int top = lua_gettop(L);
@@ -117,8 +107,8 @@ namespace osgLua {
 				lua_settop(L,top);
 				return (*multFunc)(L);
 			}
-			// we are scaling
 
+			// we are scaling
 			double scalar = 0;
 			Value * vector = NULL;
 			for (int vecIdx = 1, scalarIdx = 2;
@@ -158,7 +148,7 @@ namespace osgLua {
 		  		lua_setfield(L, -2, "__sub"); 
 		  		lua_pushcfunction(L, &Vector::unm<T>); 
 		  		lua_setfield(L, -2, "__unm"); 
-		  		lua_pushcfunction(L, &Vector::scale<T>);
+		  		lua_pushcfunction(L, &Vector::mul<T>);
 		  		lua_setfield(L, -2, "__mul"); 
 		  		lua_pushcfunction(L, &value_metamethods::eq); 
 		  		lua_setfield(L, -2, "__eq"); 

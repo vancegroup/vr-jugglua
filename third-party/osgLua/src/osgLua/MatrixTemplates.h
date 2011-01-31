@@ -16,13 +16,13 @@
 #ifndef OSGLUA_MATRIXTEMPLATES
 #define OSGLUA_MATRIXTEMPLATES
 
-#include "Value_metamethods.h"
-#include "BindValue.h"
+#include "MathValueTags.h"
 
+#include <osgIntrospection/Reflection>
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>
-#include <osg/Referenced>
-#include <osg/ref_ptr>
+#include <osgIntrospection/variant_cast>
+#include <osgIntrospection/ExtendedTypeInfo>
 
 #include <osg/Vec4>
 #include <osg/Vec3>
@@ -30,9 +30,6 @@
 #include <osg/Vec3f>
 #include <osg/Vec4d>
 #include <osg/Vec3d>
-#include <osg/Matrix>
-#include <osg/Matrixf>
-#include <osg/Matrixd>
 
 namespace osgLua {
 

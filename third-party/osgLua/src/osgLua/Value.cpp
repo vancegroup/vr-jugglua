@@ -16,7 +16,6 @@
 #include <osgLua/Value>
 #include "Value_metamethods.h"
 #include "Value_rawget.inl"
-#include "BindValue.h"
 #include "Type.h"
 #include "lua_functions.h"
 
@@ -43,15 +42,16 @@ namespace osgLua {
 		  osgIntrospection::Reflection::getType(extended_typeid<osg::Referenced>());
 
 		const osgIntrospection::Type &type = v.getType();
-		if (type.isDefined())
-		if (type.isNonConstPointer())
-		{
-			const osgIntrospection::Type &p_type = type.getPointedType();
-			if (p_type.isDefined())
-			if (p_type.isSubclassOf(t_referenced))
+		if (type.isDefined()) {
+			if (type.isNonConstPointer())
 			{
-				_referenced = 
-					osgIntrospection::variant_cast<osg::Referenced*>(_value);
+				const osgIntrospection::Type &p_type = type.getPointedType();
+				if (p_type.isDefined())
+				if (p_type.isSubclassOf(t_referenced))
+				{
+					_referenced = 
+						osgIntrospection::variant_cast<osg::Referenced*>(_value);
+				}
 			}
 		}
 	}
