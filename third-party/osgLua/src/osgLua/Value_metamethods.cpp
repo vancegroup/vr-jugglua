@@ -103,7 +103,9 @@ namespace osgLua {
 			return 1;
 		}
 		
+		namespace detail {
 		
+		} // end of detail namespace
 	
 		
 	

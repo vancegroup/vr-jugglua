@@ -34,11 +34,39 @@
 
 namespace osgLua {
 	static const char OSGLUAVALUEMETATABLE[] = "__isOsgLuaValue";
+	
+	
+	static const char OSGLUAVALUEISMATRIX[] = "__isOsgLuaMatrix";
+	static const char OSGLUAVALUEISVECTOR[] = "__isOsgLuaVector";
 
 	static int osgLuaTypeTag(lua_State *L) {
 		lua_pushboolean(L, true);
 		return 1;
 	}
+	
+	
+			
+	static int matrixTag(lua_State *L) {
+		lua_pushboolean(L, true);
+		return 1;
+	}
+	
+	static int vectorTag(lua_State *L) {
+		lua_pushboolean(L, true);
+		return 1;
+	}
+	
+	namespace detail {
+        void setVector(lua_State * L) {	
+			lua_pushcfunction(L, vectorTag);
+			lua_setfield(L, -2, OSGLUAVALUEISVECTOR);
+        }
+        
+        void setMatrix(lua_State * L){	
+			lua_pushcfunction(L, matrixTag);
+			lua_setfield(L, -2, OSGLUAVALUEISMATRIX);
+        }
+    }
 	
 	bool Value::_hasOsgLuaValueMetatable(lua_State *L, int index) {
 		int top = lua_gettop(L);
@@ -50,6 +78,44 @@ namespace osgLua {
 			lua_pushstring(L, OSGLUAVALUEMETATABLE);
 			lua_gettable(L, -2);
 			if (lua_tocfunction(L,-1) == &osgLuaTypeTag)
+			{
+				lua_settop(L,top);
+				return true;
+			}
+		}
+		lua_settop(L,top);
+		return false;
+	}
+	
+	bool Value::_isMatrix(lua_State *L, int index) {
+		int top = lua_gettop(L);
+		index = (index>0)? index : top + index + 1;
+
+		if (_hasOsgLuaValueMetatable(L, index))
+		{
+			lua_getmetatable(L, index);
+			lua_pushstring(L, OSGLUAVALUEISMATRIX);
+			lua_gettable(L, -2);
+			if (lua_tocfunction(L,-1) == &matrixTag)
+			{
+				lua_settop(L,top);
+				return true;
+			}
+		}
+		lua_settop(L,top);
+		return false;
+	}
+	
+	bool Value::_isVector(lua_State *L, int index) {
+		int top = lua_gettop(L);
+		index = (index>0)? index : top + index + 1;
+
+		if (_hasOsgLuaValueMetatable(L, index))
+		{
+			lua_getmetatable(L, index);
+			lua_pushstring(L, OSGLUAVALUEISVECTOR);
+			lua_gettable(L, -2);
+			if (lua_tocfunction(L,-1) == &vectorTag)
 			{
 				lua_settop(L,top);
 				return true;

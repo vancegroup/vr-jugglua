@@ -22,7 +22,9 @@
 
 namespace osgLua {
 	namespace detail {
-
+        void setVector(lua_State * L);
+        
+        void setMatrix(lua_State * L);
 	} // end of detail namespace
 
 } // end of osgLua namespace

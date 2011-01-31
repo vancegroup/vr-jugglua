@@ -73,6 +73,10 @@ namespace osgLua {
 		/// Checks the value at the given index to see if its metatable
 		/// is one created by osgLua.
 		static bool _hasOsgLuaValueMetatable(lua_State *L, int index);
+		
+		
+		static bool _isMatrix(lua_State *L, int index);
+		static bool _isVector(lua_State *L, int index);
 
 		static Value* _rawGet(lua_State *L, int index);
 		/// @name Metamethods

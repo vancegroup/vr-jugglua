@@ -8,13 +8,15 @@ set(OSGLUA_SRCS
 	BindValue.h
 	Callback.cpp
 	lua_functions.cpp
+	MatrixTemplates.h
 	osgLua.cpp
 	Script.cpp
 	Type.cpp
 	Value.cpp
 	Value_rawget.inl
 	Value_metamethods.cpp
-	Value_metamethods.h)
+	Value_metamethods.h
+	VectorTemplates.h)
 
 set(OSGLUA_API
 	lua_functions.h
