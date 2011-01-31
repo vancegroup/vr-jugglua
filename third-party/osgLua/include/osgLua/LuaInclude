@@ -17,6 +17,9 @@
 #ifndef OSGLUA_LUAINCLUDE
 #define OSGLUA_LUAINCLUDE
 
+#include <vrjugglua/LuaIncludeFull.h>
+
+#if 0
 #ifdef OSGLUA_LUA_PREFIX
 #   include OSGLUA_LUA_PREFIX
 #else
@@ -45,4 +48,5 @@ extern "C" {
 
 #endif
 
+#endif
 #endif
