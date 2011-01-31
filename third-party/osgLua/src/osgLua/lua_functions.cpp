@@ -150,8 +150,8 @@ namespace osgLua {
 			{ // methods
 				lua_newtable(L);
 				int count = 1;
-				const osgIntrospection::MethodInfoList &list =
-				    type->getMethods();
+				osgIntrospection::MethodInfoList list;
+				type->getAllMethods(list);
 				for (osgIntrospection::MethodInfoList::const_iterator
 				        i = list.begin(); i != list.end(); ++i, ++count) {
 					pushMethodInfo(L, *i);
