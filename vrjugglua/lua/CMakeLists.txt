@@ -16,6 +16,7 @@ set(LUA_FILES
 	Scene.lua
 	sleep.lua
 	StateMachine.lua
+	TransparentGroup.lua
 	vrjlua-config.lua
 	vrjlua-init.lua)
 
