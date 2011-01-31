@@ -74,7 +74,9 @@ namespace osgLua {
 	void Value::_getOrCreateMetatable(lua_State *L, osgIntrospection::Type const& t) {
 		// create/get the metatable
 		if (luaL_newmetatable(L, t.getQualifiedName().c_str())) {
+#ifdef OSGLUA_VERBOSE
 			std::cout << "First time pushing " << t.getQualifiedName() << " to Lua - creating metatable!" << std::endl;
+#endif
 
 			// tag this as an osgLua value
 			lua_pushcfunction(L, osgLuaTypeTag);
