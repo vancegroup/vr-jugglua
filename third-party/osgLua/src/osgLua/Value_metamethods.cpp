@@ -15,6 +15,7 @@
 
 #include "Value_metamethods.h"
 #include <osgLua/Value>
+#include "Value_rawget.inl"
 #include "Type.h"
 #include "lua_functions.h"
 

@@ -16,6 +16,8 @@
 #include <osgLua/Value>
 #include "Type.h"
 
+#include <osgLua/LuaInclude>
+
 #include <osgIntrospection/Reflection>
 #include <osgIntrospection/MethodInfo>
 #include <osgIntrospection/ConstructorInfo>
@@ -25,7 +27,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <vrjugglua/LuaIncludeFull.h>
+
 
 namespace osgLua {
 

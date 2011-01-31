@@ -12,6 +12,7 @@ set(OSGLUA_SRCS
 	Script.cpp
 	Type.cpp
 	Value.cpp
+	Value_rawget.inl
 	Value_metamethods.cpp
 	Value_metamethods.h)
 
