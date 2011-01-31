@@ -2,14 +2,14 @@
 	osgLua: use Lua to access dynamically to osg using osgIntrospection
 	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
 
-    This library is open source and may be redistributed and/or modified under  
-    the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
+    This library is open source and may be redistributed and/or modified under
+    the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
     (at your option) any later version.  The full license is in LICENSE file
     included with this distribution, and on the openscenegraph.org website.
-    
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     OpenSceneGraph Public License for more details.
 */
 
@@ -17,16 +17,16 @@
 #define OSGLUA_SCRIPT_
 
 #if defined(_MSC_VER)
-	#  if defined( OSGLUA_LIBRARY_STATIC )
-	#    define OSGLUA_API
-	#  elif defined( OSGLUA_LIBRARY )
-	#    define OSGLUA_API   __declspec(dllexport)
-	#  else
-	#    define OSGLUA_API   __declspec(dllimport)
-	#  endif /* OSGLUA_API */
+#  if defined( OSGLUA_LIBRARY_STATIC )
+#    define OSGLUA_API
+#  elif defined( OSGLUA_LIBRARY )
+#    define OSGLUA_API   __declspec(dllexport)
+#  else
+#    define OSGLUA_API   __declspec(dllimport)
+#  endif /* OSGLUA_API */
 #else
-	#  define OSGLUA_API
-#endif 
+#  define OSGLUA_API
+#endif
 
 #include <osg/ref_ptr>
 #include <osg/Referenced>
@@ -35,64 +35,67 @@
 
 namespace osgLua {
 
-	class OSGLUA_API Exception 
-	{
-	public:
-		Exception(const char *msg) : _error(msg) {}
-		const char *what() { return _error; }
-	private:
-		const char *_error;
+	class OSGLUA_API Exception {
+		public:
+			Exception(const char *msg) : _error(msg) {}
+			const char *what() {
+				return _error;
+			}
+		private:
+			const char *_error;
 	};
 
 	class OSGLUA_API Script : public osg::Referenced {
-	public:
-		/// Default constructor. openStandardLibs = Opens all 
-		/// standard Lua libraries.
-		Script(bool openStandardLibs = true);
+		public:
+			/// Default constructor. openStandardLibs = Opens all
+			/// standard Lua libraries.
+			Script(bool openStandardLibs = true);
 
-		/// Loads and executes the contents of a file.
-		/// @param filename, If filename == 0 use standard input. 
-		/// @param vl, if vl is != 0 then the returned values from
-		/// the script will be appended to the value list. Note the function
-	    /// doesn't clear the value list.	
-		void loadFile(const char *filename = 0, osgIntrospection::ValueList *vl = 0);
+			/// Loads and executes the contents of a file.
+			/// @param filename, If filename == 0 use standard input.
+			/// @param vl, if vl is != 0 then the returned values from
+			/// the script will be appended to the value list. Note the function
+			/// doesn't clear the value list.
+			void loadFile(const char *filename = 0, osgIntrospection::ValueList *vl = 0);
 
-		/// Executes the given code. 
-		/// @param vl, if vl is != 0 then the returned values from
-		/// the script will be appended to the value list. Note the function
-	    /// doesn't clear the value list.	
-		/// @param name, If there is an error name is used
-		/// to identify the executed code.
-		void execute(const std::string &code,
-			osgIntrospection::ValueList *vl = 0, 
-			const std::string &name = "--inline_code--");
+			/// Executes the given code.
+			/// @param vl, if vl is != 0 then the returned values from
+			/// the script will be appended to the value list. Note the function
+			/// doesn't clear the value list.
+			/// @param name, If there is an error name is used
+			/// to identify the executed code.
+			void execute(const std::string &code,
+			             osgIntrospection::ValueList *vl = 0,
+			             const std::string &name = "--inline_code--");
 
-		bool call(const std::string &funcName, const osgIntrospection::ValueList *params, 
-			  osgIntrospection::ValueList *results = 0);	
+			bool call(const std::string &funcName, const osgIntrospection::ValueList *params,
+			          osgIntrospection::ValueList *results = 0);
 
-		/// Loads the wrapper and enables the access to the given namespace
-		bool enable(const std::string &namespaceName = "osg");
+			/// Loads the wrapper and enables the access to the given namespace
+			bool enable(const std::string &namespaceName = "osg");
 
-		/// Sets the value of global variable (name) in the script
-		void set(const osgIntrospection::Value &val, const std::string &name);
+			/// Sets the value of global variable (name) in the script
+			void set(const osgIntrospection::Value &val, const std::string &name);
 
-		/// Returns the value of a given global variable, returns empty
-		/// value if the variable do not exists.
-		osgIntrospection::Value get(const std::string &name);
+			/// Returns the value of a given global variable, returns empty
+			/// value if the variable do not exists.
+			osgIntrospection::Value get(const std::string &name);
 
-		lua_State *getLuaState() { return L; }
+			lua_State *getLuaState() {
+				return L;
+			}
 
-		/// returns the script given the lua_State
-		static Script *getScript(lua_State *L);
+			/// returns the script given the lua_State
+			static Script *getScript(lua_State *L);
 
-	protected:
-		virtual ~Script();
+		protected:
+			virtual ~Script();
 
-		/// Executes the function at the top of the stack, if vl != 0 append 
-		/// to it the Values returned by the script.
-		void execute(int value, osgIntrospection::ValueList *vl = 0);
-	private:
-		lua_State *L;
+			/// Executes the function at the top of the stack, if vl != 0 append
+			/// to it the Values returned by the script.
+			void execute(int value, osgIntrospection::ValueList *vl = 0);
+		private:
+			lua_State *L;
 
 	};
 

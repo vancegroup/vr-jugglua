@@ -23,7 +23,7 @@
 // Library/third-party includes
 #include <osg/ComputeBoundsVisitor>
 
-#include <osgLua/Value.h>
+#include <osgLua/Value>
 
 #include <osgIntrospection/Value>
 #include <osgIntrospection/variant_cast>

@@ -3,14 +3,14 @@
 	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
 	Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
 
-    This library is open source and may be redistributed and/or modified under  
-    the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
+    This library is open source and may be redistributed and/or modified under
+    the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
     (at your option) any later version.  The full license is in LICENSE file
     included with this distribution, and on the openscenegraph.org website.
-    
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     OpenSceneGraph Public License for more details.
 */
 
@@ -19,30 +19,23 @@
 
 #ifdef OSGLUA_LUA_PREFIX
 #   include OSGLUA_LUA_PREFIX
-#else
+#endif
 
-#   if defined(__cplusplus)
-extern "C" {
+#ifndef OSGLUA_LUA_INTERFACE_BEGIN
+#   if defined(__cplusplus) && !defined(OSGLUA_LUA_BUILT_AS_CPP)
+#       define OSGLUA_LUA_INTERFACE_BEGIN extern "C" {
+#       define OSGLUA_LUA_INTERFACE_END }
+#   else
+#       define OSGLUA_LUA_INTERFACE_BEGIN
+#       define OSGLUA_LUA_INTERFACE_END
 #   endif
-
 #endif
 
 
-	#include <lua.h>
-	#include <lauxlib.h>
-    #include <lualib.h>
+OSGLUA_LUA_INTERFACE_BEGIN
 
+#include <lua.h>
 
-#ifdef OSGLUA_LUA_POSTFIX
-
-#   include OSGLUA_LUA_POSTFIX
-
-#else
-
-#   if defined(__cplusplus)
-}
-#   endif
-
-#endif
+OSGLUA_LUA_INTERFACE_END
 
 #endif

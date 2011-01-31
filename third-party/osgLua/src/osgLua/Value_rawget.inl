@@ -14,20 +14,22 @@
     OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGLUA_MAIN
-#define OSGLUA_MAIN
+#ifndef OSGLUA_VALUE_RAWGET
+#define OSGLUA_VALUE_RAWGET
 
+#include <osgLua/Value>
 #include <osgLua/LuaInclude>
 
-OSGLUA_LUA_INTERFACE_BEGIN
-int luaopen_osgLua(lua_State *L);
-int luaopen_libosgLua(lua_State *L);
-OSGLUA_LUA_INTERFACE_END
-
 namespace osgLua {
-	void get(lua_State *L);
-	int lua_loadWrapper(lua_State *L);
-	int lua_loadObjectFile(lua_State *L);
-}
+
+	inline Value* Value::_rawGet(lua_State *L, int index) {
+		Value **value = reinterpret_cast<Value**>(lua_touserdata(L,index));
+		if (value) {
+			return *value;
+		}
+		return 0;
+	}
+
+} // end of osgLua namespace
 
 #endif

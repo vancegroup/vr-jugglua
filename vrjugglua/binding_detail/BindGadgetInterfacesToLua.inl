@@ -25,7 +25,7 @@
 // Library/third-party includes
 #include <luabind/luabind.hpp>
 
-#include <osgLua/Value.h>
+#include <osgLua/Value>
 
 
 

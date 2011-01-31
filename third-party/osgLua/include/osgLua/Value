@@ -1,0 +1,114 @@
+/*
+	osgLua: use Lua to access dynamically to osg using osgIntrospection
+	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
+	Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
+
+    This library is open source and may be redistributed and/or modified under
+    the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+    (at your option) any later version.  The full license is in LICENSE file
+    included with this distribution, and on the openscenegraph.org website.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    OpenSceneGraph Public License for more details.
+*/
+
+#ifndef OSGLUA_VALUE
+#define OSGLUA_VALUE
+
+
+#include <osgLua/LuaInclude>
+
+#include <osgIntrospection/Value>
+#include <osgIntrospection/Type>
+#include <osg/Referenced>
+#include <osg/ref_ptr>
+
+namespace osgLua {
+
+	class Value {
+		public:
+			osgIntrospection::Value &get();
+			const osgIntrospection::Type &getRealType() const;
+			const osgIntrospection::Type &getType() const;
+			void set(const osgIntrospection::Value &v);
+
+			/// Push an osgIntrospection::Value on to the Lua stack.
+			static void push(lua_State *L, const osgIntrospection::Value &v);
+
+			/** @brief Get an osgLua::Value from the Lua stack at the given index.
+				@returns a pointer to the osgLua::Value, or NULL if value at index
+					is not an osgLua::Value
+			*/
+			static Value* get(lua_State *L, int index);
+
+			/** @brief Get an osgLua::Value from the Lua stack at the given index,
+				reporting a Lua error if the value is not an osgLua::Value.
+
+				@returns a pointer to the osgLua::Value
+			*/
+			static Value* getRequired(lua_State *L, int index);
+
+			static int getTypeInfo(lua_State *L);
+			static int getTypes(lua_State *L);
+			static int createByName(lua_State *L);
+
+		private:
+			Value();
+			Value(const osgIntrospection::Value &v);
+			~Value();
+			Value(const Value &);
+			Value& operator=(const Value &);
+
+			osgIntrospection::Value _value;
+			osg::ref_ptr<osg::Referenced> _referenced;
+
+			/// Given an osgIntrospection::Type, create the metatable if it has
+			/// not yet been created, and in any case, leave the metatable on the
+			/// top of the Lua stack.
+			static void _getOrCreateMetatable(lua_State* L, osgIntrospection::Type const& t);
+
+			/// Checks the value at the given index to see if its metatable
+			/// is one created by osgLua.
+			static bool _hasOsgLuaValueMetatable(lua_State *L, int index);
+
+			static Value* _rawGet(lua_State *L, int index);
+			/// @name Metamethods
+			/// Used in the osgLua binding.
+			/// @{
+			static int __gc(lua_State *L);
+			static int __index(lua_State *L);
+			static int __newindex(lua_State *L);
+			static int __methodCall(lua_State *L);
+			/// @}
+	};
+
+	osgIntrospection::Value getValue(lua_State *L, int index);
+
+
+	/****************************************************************/
+	/* --- Inline implementations --- *******************************/
+	/****************************************************************/
+	inline osgIntrospection::Value &Value::get() {
+		return _value;
+	}
+
+	inline const osgIntrospection::Type &Value::getRealType() const {
+		return _value.getType();
+	}
+
+	inline const osgIntrospection::Type &Value::getType() const {
+		if (_value.isTypedPointer()) {
+			return _value.getInstanceType();
+		}
+		return _value.getType();
+	}
+
+	inline void Value::set(const osgIntrospection::Value &v) {
+		_value = v;
+	}
+
+} // end of osgLua namespace
+
+#endif

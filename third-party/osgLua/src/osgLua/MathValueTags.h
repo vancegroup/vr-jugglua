@@ -14,20 +14,22 @@
     OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGLUA_MAIN
-#define OSGLUA_MAIN
+#ifndef OSGLUA_MATHVALUETAGS
+#define OSGLUA_MATHVALUETAGS
 
 #include <osgLua/LuaInclude>
 
-OSGLUA_LUA_INTERFACE_BEGIN
-int luaopen_osgLua(lua_State *L);
-int luaopen_libosgLua(lua_State *L);
-OSGLUA_LUA_INTERFACE_END
-
 namespace osgLua {
-	void get(lua_State *L);
-	int lua_loadWrapper(lua_State *L);
-	int lua_loadObjectFile(lua_State *L);
-}
+	namespace detail {
+		void setVector(lua_State * L);
+
+		void setMatrix(lua_State * L);
+
+		bool isMatrix(lua_State * L, int index);
+		bool isVector(lua_State * L, int index);
+
+	} // end of detail namespace
+
+} // end of osgLua namespace
 
 #endif
