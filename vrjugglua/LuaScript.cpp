@@ -277,6 +277,17 @@ void LuaScript::initVrjKernel(int argc, char* argv[]) {
 	KernelState::init(argc, argv);
 }
 
+void LuaScript::initVrjKernelAsSingleMachine() {
+	KernelState::initAsSingleMachine();
+}
+
+void LuaScript::initVrjKernelAsClusterPrimary() {
+	KernelState::initAsClusterPrimaryNode();
+}
+void LuaScript::initVrjKernelAsClusterSecondary(int port) {
+	KernelState::initAsClusterSecondaryNode(port);
+}
+
 void LuaScript::doPrint(std::string const& str) {
 	if (_printFunc) {
 		_printFunc(str);

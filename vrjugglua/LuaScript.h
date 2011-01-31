@@ -81,6 +81,10 @@ class LuaScript {
 		static void initVrjKernel(boost::program_options::variables_map const& vm);
 		static void initVrjKernel(int argc, char* argv[]);
 
+		static void initVrjKernelAsSingleMachine();
+		static void initVrjKernelAsClusterPrimary();
+		static void initVrjKernelAsClusterSecondary(int port = 0);
+
 	protected:
 		static boost::function<void (std::string const&)> _printFunc;
 		bool _handleLuaReturnCode(int returnVal, std::string const& failureMsg, std::string const& successMsg = "");

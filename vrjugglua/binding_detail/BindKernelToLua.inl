@@ -42,8 +42,10 @@
 namespace vrjLua {
 using namespace luabind;
 
-// Static member
+// Static members
 bool KernelState::_init = false;
+bool KernelState::_isCluster = false;
+bool KernelState::_isPrimary = false;
 
 
 bool KernelState::hasInitialized() {
@@ -64,38 +66,62 @@ void KernelState::init(boost::program_options::variables_map vm) {
 		<< "Warning: vrjKernel.init called a second time!"
 		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 	}
+	bool isPrimary = vm.count("vrjmaster") && vm["vrjmaster"].as<bool>();
+	bool isSecondary = vm.count("vrjslave") && vm["vrjslave"].as<bool>();
+	if (isPrimary || isSecondary) {
+		_isCluster = true;
+	}
+	_isPrimary = isPrimary;
+	
 	vrj::Kernel::instance()->init(vm);
 	_init = true;
 }
 
 void KernelState::init(int argc, char* argv[]) {
-	if (_init) {
-		VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
-		<< "Warning: vrjKernel.init called a second time!"
-		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
-	}
-	vrj::Kernel::instance()->init(argc, argv);
-	_init = true;
+	boost::program_options::options_description& cluster_desc = vrj::Kernel::instance()->getClusterOptions();
+	boost::program_options::variables_map vm;
+	boost::program_options::store(boost::program_options::command_line_parser(argc, argv)
+			.options(cluster_desc)
+			.run(),
+		vm);
+	init(vm);
 }
 
 /// Fallback - if we have no other source of info
 void KernelState::init() {
-	if (_init) {
-		VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
-		<< "Warning: vrjKernel.init called a second time!"
-		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
-	}
-
 	VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
-	<< "Warning: your application is not cluster-capable as compiled (VR Juggler 3.x) because you did not initialize the kernel with command line arguments!"
-	<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
+		<< "Warning: your application is not cluster-capable as compiled (VR Juggler 3.x) because you did not initialize the kernel with command line arguments!"
+		<< VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 	boost::program_options::variables_map vm;
 	// Juggler assumes these will be in a provided variable map, and gives an unhelpful boost::any_cast exception
 	// if not set.
 	vm.insert(std::make_pair(std::string("vrjmaster"), boost::program_options::variable_value(false, true)));
 	vm.insert(std::make_pair(std::string("vrjslave"),boost::program_options::variable_value(false, true)));
-	vrj::Kernel::instance()->init(vm);
-	_init = true;
+	init(vm);
+}
+
+void KernelState::initAsSingleMachine() {
+	boost::program_options::variables_map vm;
+	vm.insert(std::make_pair(std::string("vrjmaster"), boost::program_options::variable_value(false, true)));
+	vm.insert(std::make_pair(std::string("vrjslave"),boost::program_options::variable_value(false, true)));
+	init(vm);
+}
+
+void KernelState::initAsClusterPrimaryNode() {
+	boost::program_options::variables_map vm;
+	vm.insert(std::make_pair(std::string("vrjmaster"), boost::program_options::variable_value(true, false)));
+	vm.insert(std::make_pair(std::string("vrjslave"),boost::program_options::variable_value(false, true)));
+	init(vm);
+}
+
+void KernelState::initAsClusterSecondaryNode(int port) {
+	boost::program_options::variables_map vm;
+	vm.insert(std::make_pair(std::string("vrjmaster"), boost::program_options::variable_value(false, true)));
+	vm.insert(std::make_pair(std::string("vrjslave"),boost::program_options::variable_value(true, false)));
+	if (port != 0) {
+		vm.insert(std::make_pair(std::string("listen_port"),boost::program_options::variable_value(port, false)));
+	}
+	init(vm);
 }
 
 #else
@@ -122,9 +148,30 @@ void KernelState::init() {
 
 	_init = true;
 }
+
+void KernelState::initAsSingleMachine() {
+	_isCluster = false;
+	_isPrimary = false;
+	_init = true;
+}
+
+void KernelState::initAsClusterPrimaryNode() {
+	_isCluster = true;
+	_isPrimary = true;
+	_init = true;
+}
+
+void KernelState::initAsClusterSecondaryNode(int /*port*/) {
+	_isCluster = true;
+	_isPrimary = false;
+	_init = true;
+}
 #endif
 
 namespace Kernel {
+	void initAsClusterSecondaryNodeDefaultPort() {
+		KernelState::initAsClusterSecondaryNode();
+	}
 
 	void doStart(bool waiting = false) {
 		if (!KernelState::hasInitialized()) {
@@ -194,7 +241,12 @@ void bindKernelToLua(LuaStatePtr state) {
 		def("setApplication", &Kernel::setApplication),
 		def("loadConfigFile", &Kernel::loadConfigFile),
 		def("waitForKernelStop", &Kernel::waitForKernelStop),
-		def("isRunning", &Kernel::isRunning)
+		def("isRunning", &Kernel::isRunning),
+		def("initAsClusterPrimaryNode", &KernelState::initAsClusterPrimaryNode),
+		def("initAsClusterSecondaryNode", &KernelState::initAsClusterSecondaryNode),
+		def("initAsClusterSecondaryNode", &Kernel::initAsClusterSecondaryNodeDefaultPort),
+		def("initAsSingleMachine", &KernelState::initAsSingleMachine)
+		
 	];
 
 }
