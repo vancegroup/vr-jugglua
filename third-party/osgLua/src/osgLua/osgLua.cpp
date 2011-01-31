@@ -15,12 +15,12 @@
 */
 
 #include <osgLua/LoadWrapper>
+#include <osgLua/Value>
 #include "osgLua.h"
 #include "LuaIncludeFull.h"
 
 #include <iostream>
 #include <cstring>
-#include <osgLua/Value>
 #include "Type.h"
 #include <osgLua/Callback>
 
@@ -29,10 +29,6 @@
 #include <osg/Vec3> // FIXME!!! (this is for checkings)
 
 #include <osgDB/DynamicLibrary>
-#include <osgDB/ReadFile>
-#include <osgDB/WriteFile>
-#include <osgIntrospection/variant_cast>
-#include <osg/Object>
 
 std::string getLibraryNamePrepend() {
 	return std::string("osgPlugins-")+std::string(osgGetVersion())+std::string("/");
@@ -215,28 +211,6 @@ int osgLua::lua_loadWrapper(lua_State *L) {
 	if (!osgLua::loadWrapper(L, name)) {
 		luaL_error(L, "Can not load osg wrapper for %s", name);
 	}
-	return 0;
-}
-
-int osgLua::lua_loadObjectFile(lua_State *L) {
-	const char *name = lua_tostring(L,1);
-	luaL_argcheck(L, name != 0, 1, "need a string");
-	osg::Object *obj = osgDB::readObjectFile(name);
-	osgLua::Value::push(L, obj);
-	return 1;
-}
-
-
-int osgLua::lua_saveObjectFile(lua_State *L) {
-	osgLua::Value * v = osgLua::Value::getRequired(L, 1);
-
-	const char *name = lua_tostring(L,2);
-	luaL_argcheck(L, name != 0, 2, "need a string");
-	bool success = osgDB::writeObjectFile( *osgIntrospection::variant_cast<osg::Object const*>(v->get()), name);
-	if (!success) {
-		luaL_error(L, "Could not write osgLua object to file %s", name);
-	}
-
 	return 0;
 }
 

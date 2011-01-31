@@ -6,10 +6,12 @@
 set(OSGLUA_SRCS
 	BindValue.cpp
 	Callback.cpp
+	loadObjectFile.cpp
 	lua_functions.cpp
 	MathValueTags.cpp
 	MatrixTemplates.h
 	osgLua.cpp
+	saveObjectFile.cpp
 	Script.cpp
 	Type.cpp
 	Value.cpp
