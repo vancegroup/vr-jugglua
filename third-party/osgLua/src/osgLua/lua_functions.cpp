@@ -108,17 +108,21 @@ namespace osgLua {
 		int top = lua_gettop(L);
 		
 		if (pi->isArray()) {
-			pushArrayPropertyInfo(L, pi);
+			/// @todo array properties not yet supported - no sense in showing them
+			lua_pushstring(L, " ");
+			//pushArrayPropertyInfo(L, pi);
 		} else if (pi->isIndexed()) {
-			pushIndexedPropertyInfo(L, pi);
+			/// @todo indexed properties not yet supported - no sense in showing them
+			lua_pushstring(L, " ");
+			//pushIndexedPropertyInfo(L, pi);
 		} else if (pi->isSimple()) {
 			pushSimplePropertyInfo(L, pi);
 		} else {
+			// should not happen
 			luaL_error(L, "%s:%d Property is neither array, indexed, nor simple!",
 			           __FILE__,__LINE__);
 		}
-		
-		
+
 		lua_concat(L, lua_gettop(L) - top);
 	}
 
