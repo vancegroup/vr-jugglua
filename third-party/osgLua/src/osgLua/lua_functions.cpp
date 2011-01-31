@@ -61,17 +61,17 @@ namespace osgLua {
 	
 	void pushArrayPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
 		lua_pushstring(L, getName(pi->getPropertyType()));
-		lua_pushstring(L, " ");
+		lua_pushstring(L, "\t");
 		
 		lua_pushstring(L, pi->getName().c_str());
 		
-		lua_pushstring(L, "[i] (array)");
+		lua_pushstring(L, "[i]\t(array)");
 	}
 	
 	void pushIndexedPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
 		
 		lua_pushstring(L, getName(pi->getPropertyType()));
-		lua_pushstring(L, " ");
+		lua_pushstring(L, "\t");
 		lua_pushstring(L, pi->getName().c_str());
 		
 		lua_pushstring(L, "(");
@@ -82,24 +82,24 @@ namespace osgLua {
 			lua_pushstring(L,",");
 		}
 		if (!param.empty()) lua_pop(L,1);
-		lua_pushstring(L, ") (indexed)");
+		lua_pushstring(L, ")\t(indexed)");
 	}
 	
 	void pushSimplePropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
 		
 		
 		lua_pushstring(L, getName(pi->getPropertyType()));
-		lua_pushstring(L, " ");
+		lua_pushstring(L, "\t");
 		lua_pushstring(L, pi->getName().c_str());
 		if (pi->canGet() && pi->canSet()) {
-			lua_pushstring(L, " (read/write)");
+			lua_pushstring(L, "\t(read/write)");
 		} else if (pi->canGet() && !pi->canSet()) {
-			lua_pushstring(L, " (read-only)");
+			lua_pushstring(L, "\t(read-only)");
 		} else if (!pi->canGet() && pi->canSet()) {
-			lua_pushstring(L, " (write-only)");
+			lua_pushstring(L, "\t(write-only)");
 		} else {
 			// should never happen
-			lua_pushstring(L, " (can't read or write!)");
+			lua_pushstring(L, "\t(can't read or write!)");
 		}
 	}
 	
