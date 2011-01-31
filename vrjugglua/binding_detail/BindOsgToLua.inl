@@ -21,7 +21,7 @@
 #include "../LuaIncludeFull.h"
 
 // Library/third-party includes
-#include <osgLua/osgLua.h>
+#include <osgLua/LoadWrapper>
 #include <osgLua/Value>
 
 
@@ -37,7 +37,7 @@ void bindOsgToLua(LuaStatePtr state) {
 #ifdef VERBOSE
 	std::cerr << "Started binding OSG to Lua..." << std::flush << std::endl;
 #endif
-	luaopen_osgLua(state.get());
+	osgLua::open(state.get());
 #ifdef VERBOSE
 	luaL_dostring(state.get(), "print('osgLua: ' .. tostring(osgLua.getTypes()))");
 #endif

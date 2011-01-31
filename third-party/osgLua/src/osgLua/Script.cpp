@@ -15,6 +15,7 @@
 
 #include <osgLua/Script>
 #include <osgLua/Value>
+#include <osgLua/LoadWrapper>
 #include "osgLua.h"
 #include "Type.h"
 

@@ -27,6 +27,7 @@ set(OSGLUA_API
 
 set(OSGLUA_SIMPLE_API
 	../../include/osgLua/Callback
+	../../include/osgLua/LoadWrapper
 	../../include/osgLua/LuaInclude
 	../../include/osgLua/Script
 	../../include/osgLua/Value)

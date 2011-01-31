@@ -1,3 +1,4 @@
+#include <osgLua/LoadWrapper>
 #include "osgLua.h"
 
 #include <iostream>
@@ -54,10 +55,9 @@ int unload_osgWrapper(lua_State *L)
 	return 0;
 }
 
-bool osgLua::loadWrapper(lua_State *L, const char *name) {
+void osgLua::open(lua_State *L)
+{
 	int top = lua_gettop(L);
-
-	//get or create osgLuaLibs in the registry
 	lua_getfield(L, LUA_REGISTRYINDEX, "osgLuaLibs" );
 	if (lua_isnil(L,-1))
 	{
@@ -65,7 +65,40 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		lua_newtable(L); // create a table
 		lua_pushvalue(L,-1); // copy it
 		lua_setfield(L, LUA_REGISTRYINDEX, "osgLuaLibs"); // one copy to reg.
+
+		lua_newtable(L);
+		lua_pushcfunction(L,osgLua::Value::getTypes);
+		lua_setfield(L,-2,  "getTypes");
+		lua_pushcfunction(L,osgLua::Value::getTypeInfo);
+		lua_setfield(L,-2, "getTypeInfo");
+		lua_pushcfunction(L,osgLua::Value::createByName);
+		lua_setfield(L,-2, "createByName");
+		lua_pushcfunction(L, osgLua::lua_loadWrapper );
+		lua_setfield(L,-2, "loadWrapper");
+		lua_pushcfunction(L, osgLua::lua_loadObjectFile );
+		lua_setfield(L,-2, "loadObjectFile");
+		lua_pushcfunction(L, osgLua::NodeCallback::createFromLua );
+		lua_setfield(L,-2, "NodeCallback");
+
+		lua_setglobal(L, "osgLua");
 	}
+
+	lua_settop(L, top);
+}
+
+void osgLua::get(lua_State *L) {
+	lua_getfield(L, LUA_REGISTRYINDEX, "osgLuaLibs" );
+	if (lua_isnil(L,-1)) {
+		osgLua::open(L);
+		lua_getfield(L, LUA_REGISTRYINDEX, "osgLuaLibs" );
+	}
+}
+
+bool osgLua::loadWrapper(lua_State *L, const char *name) {
+	int top = lua_gettop(L);
+
+	//get or create osgLuaLibs in the registry
+	osgLua::get(L);
 	int osgLuaLibs = lua_gettop(L);
 
 	// check if the library exists, if not try load it
@@ -187,22 +220,8 @@ int osgLua::lua_loadObjectFile(lua_State *L)
 
 int luaopen_osgLua(lua_State *L)
 {
-
-	lua_newtable(L);
-	lua_pushcfunction(L,osgLua::Value::getTypes);
-	lua_setfield(L,-2,  "getTypes");
-	lua_pushcfunction(L,osgLua::Value::getTypeInfo);
-	lua_setfield(L,-2, "getTypeInfo");
-	lua_pushcfunction(L,osgLua::Value::createByName);
-	lua_setfield(L,-2, "createByName");
-	lua_pushcfunction(L, osgLua::lua_loadWrapper );
-	lua_setfield(L,-2, "loadWrapper");
-	lua_pushcfunction(L, osgLua::lua_loadObjectFile );
-	lua_setfield(L,-2, "loadObjectFile");
-	lua_pushcfunction(L, osgLua::NodeCallback::createFromLua );
-	lua_setfield(L,-2, "NodeCallback");
-
-	lua_setglobal(L, "osgLua");
+	osgLua::open(L);
+	
 	return 0;
 }
 

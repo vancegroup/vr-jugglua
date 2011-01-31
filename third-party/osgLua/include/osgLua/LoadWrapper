@@ -13,20 +13,18 @@
     OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGLUA_MAIN
-#define OSGLUA_MAIN
+#ifndef OSGLUA_LOADWRAPPER
+#define OSGLUA_LOADWRAPPER
 
 #include <osgLua/LuaInclude>
 
-LUA_C_INTERFACE_BEGIN
-	int luaopen_osgLua(lua_State *L);
-	int luaopen_libosgLua(lua_State *L);
-LUA_C_INTERFACE_END
-
 namespace osgLua {
-    void get(lua_State *L);
-	int lua_loadWrapper(lua_State *L);
-	int lua_loadObjectFile(lua_State *L);
+    /// Registers osgLua functions on the provided state
+    void open(lua_State *L);
+    
+    /// Loads the wrapped content of the indicated library into the provided
+    /// state, as well as registering osgLua functions if needed.
+	bool loadWrapper(lua_State *L, const char *name);
 }
 
 #endif
