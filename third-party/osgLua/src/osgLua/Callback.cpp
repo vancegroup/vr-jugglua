@@ -16,6 +16,8 @@
 #include <osgLua/Callback>
 #include <osgLua/Value>
 
+#include "LuaIncludeFull.h"
+
 namespace osgLua {
 
 	Callback::Callback(Script *s, const char *name) : _script(s), _ref(0), _L(0) {

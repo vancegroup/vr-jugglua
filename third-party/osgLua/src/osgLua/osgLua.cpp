@@ -16,6 +16,7 @@
 
 #include <osgLua/LoadWrapper>
 #include "osgLua.h"
+#include "LuaIncludeFull.h"
 
 #include <iostream>
 #include <cstring>

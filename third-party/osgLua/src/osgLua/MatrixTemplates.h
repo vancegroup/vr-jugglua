@@ -19,6 +19,8 @@
 
 #include "MathValueTags.h"
 
+#include "LuaIncludeFull.h"
+
 #include <osgIntrospection/Reflection>
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>

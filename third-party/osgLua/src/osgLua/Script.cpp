@@ -19,6 +19,7 @@
 #include <osgLua/LoadWrapper>
 #include "osgLua.h"
 #include "Type.h"
+#include "LuaIncludeFull.h"
 
 #include <osgIntrospection/Value>
 #include <osgIntrospection/Type>

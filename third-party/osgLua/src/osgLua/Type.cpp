@@ -17,7 +17,7 @@
 #include <osgLua/Value>
 #include "Type.h"
 
-#include <osgLua/LuaInclude>
+#include "LuaIncludeFull.h"
 
 #include <osgIntrospection/Reflection>
 #include <osgIntrospection/MethodInfo>

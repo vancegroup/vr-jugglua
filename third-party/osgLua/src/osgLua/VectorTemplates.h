@@ -18,6 +18,7 @@
 #define OSGLUA_VECTORTEMPLATES
 
 #include "MathValueTags.h"
+#include "LuaIncludeFull.h"
 
 #include <osgIntrospection/Reflection>
 #include <osgIntrospection/Value>

@@ -20,6 +20,8 @@
 #include "Type.h"
 #include "lua_functions.h"
 
+#include "LuaIncludeFull.h"
+
 #include <osgIntrospection/Reflection>
 #include <osgIntrospection/MethodInfo>
 #include <osgIntrospection/ConstructorInfo>

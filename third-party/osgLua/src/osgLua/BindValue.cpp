@@ -20,6 +20,7 @@
 #include "MatrixTemplates.h"
 #include "Type.h"
 #include "lua_functions.h"
+#include "LuaIncludeFull.h"
 
 #include <osgIntrospection/Type>
 

@@ -17,36 +17,25 @@
 #ifndef OSGLUA_LUAINCLUDE
 #define OSGLUA_LUAINCLUDE
 
-#include <vrjugglua/LuaIncludeFull.h>
-
-#if 0
 #ifdef OSGLUA_LUA_PREFIX
 #   include OSGLUA_LUA_PREFIX
-#else
-
-#   if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-extern "C" {
-#   endif
-
 #endif
 
+#ifndef OSGLUA_LUA_INTERFACE_BEGIN
+#   if defined(__cplusplus) && !defined(OSGLUA_LUA_BUILT_AS_CPP)
+#       define OSGLUA_LUA_INTERFACE_BEGIN extern "C" {
+#       define OSGLUA_LUA_INTERFACE_END }
+#   else
+#       define OSGLUA_LUA_INTERFACE_BEGIN
+#       define OSGLUA_LUA_INTERFACE_END
+#   endif
+#endif
+
+
+OSGLUA_LUA_INTERFACE_BEGIN
 
 #include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
 
+OSGLUA_LUA_INTERFACE_END
 
-#ifdef OSGLUA_LUA_POSTFIX
-
-#   include OSGLUA_LUA_POSTFIX
-
-#else
-
-#   if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
-}
-#   endif
-
-#endif
-
-#endif
 #endif
