@@ -60,18 +60,29 @@ namespace osgLua {
 	}
 	
 	void pushArrayPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
-		lua_pushstring(L, "Use as array of ");
 		lua_pushstring(L, getName(pi->getPropertyType()));
+		lua_pushstring(L, " ");
+		
+		lua_pushstring(L, pi->getName().c_str());
+		
+		lua_pushstring(L, "[i] (array)");
 	}
 	
 	void pushIndexedPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
-		lua_pushstring(L, "Indexed property ");
 		
 		lua_pushstring(L, getName(pi->getPropertyType()));
 		lua_pushstring(L, " ");
 		lua_pushstring(L, pi->getName().c_str());
 		
-		lua_pushstring(L, "[]");		
+		lua_pushstring(L, "(");
+		const osgIntrospection::ParameterInfoList & param = pi->getIndexParameters();
+		for (osgIntrospection::ParameterInfoList::const_iterator
+		        i = param.begin(); i != param.end(); ++i) {
+			pushParameter(L, *i);
+			lua_pushstring(L,",");
+		}
+		if (!param.empty()) lua_pop(L,1);
+		lua_pushstring(L, ") (indexed)");
 	}
 	
 	void pushSimplePropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
