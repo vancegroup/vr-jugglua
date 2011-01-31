@@ -32,12 +32,22 @@
 #include <osg/Vec4d>
 #include <osg/Vec4f>
 
+#include <sstream>
+
 namespace osgLua {
 
 	int metamethods::tostring(lua_State *L) {
 		Value *a = Value::getRequired(L,1);
 
 		lua_pushstring(L, a->get().toString().c_str());
+		return 1;
+	}
+	
+	int metamethods::minimal_tostring(lua_State *L) {
+		Value *a = Value::getRequired(L,1);
+		std::stringstream s;
+		s << "osgLua::Value (" << a->get().getType().getQualifiedName() << ") " << a;
+		lua_pushstring(L, s.str().c_str());
 		return 1;
 	}
 

@@ -69,6 +69,8 @@ namespace osgLua {
 	namespace metamethods {
 		int tostring(lua_State *L);
 		
+		int minimal_tostring(lua_State *L);
+		
 		int eq(lua_State *L);
 		int lt(lua_State *L);
 		int le(lua_State *L);
