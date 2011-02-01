@@ -1,4 +1,4 @@
-# - Copy lua source files as a custom target
+# - Copy/parse lua source files as a custom target
 #
 #  include(LuaTargets)
 #  add_lua_target(<target_name> <directory to copy to> [<luafile> <luafile>])
@@ -7,6 +7,8 @@
 #
 #  install_lua_target(<target_name> [arguments to INSTALL(PROGRAMS ...) ])
 #
+# Set this variable to specify location of luac, if it is not a target:
+#  LUA_TARGET_LUAC_EXECUTABLE
 #
 # Requires CMake 2.6 or newer (uses the 'function' command)
 #
