@@ -68,8 +68,9 @@ its natural exit.
 end
 
 Actions.waitForRedraw = help.docstring[[
-Pauses an action momentarily to update the display. This must be called frequently:
-changes will not be seen until it is called.
+Pauses an action momentarily to update the display. This (or some other
+wait function, like waitSeconds) must be called frequently: changes will
+not be seen until it is called.
 
 If you pass a number, it will wait for that many redraws. By default, it
 only waits once.
@@ -85,6 +86,22 @@ Returns the amount of time that it waited, in seconds.
 	else
 		return coroutine.yield()
 	end
+end
+
+Actions.waitSeconds = help.docstring[[
+Pauses an action for (at least) the specified number of seconds.
+Just like Actions.waitForRedraw, it updates the display.
+
+Returns the exact amount of time that it waited, in seconds.
+]] .. function (seconds)
+	if not type(seconds) == "number" then
+		error("Action.waitSeconds requires that you pass a single number as a parameter.", 2)
+	end
+	local dt = 0
+	while dt < seconds do
+		dt = dt + coroutine.yield()
+	end
+	return dt
 end
 
 Actions.updateFrameActions = help.docstring[[
