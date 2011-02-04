@@ -206,6 +206,18 @@ function AmbientIntensity(a)
 	return node
 end
 
+function Group(arg)
+	local t = osg.Group()
+	-- Add nodes just tacked on the end of the list.
+	for _, v in ipairs(arg) do
+		if v ~= nil then
+			t:addChild(v)
+		end
+	end
+
+	return t
+end
+
 function Transform(arg)
 	local t = osg.PositionAttitudeTransform()
 	if arg.position ~= nil then
