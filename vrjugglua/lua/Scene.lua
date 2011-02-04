@@ -206,37 +206,37 @@ function AmbientIntensity(a)
 	return node
 end
 
-function Transform(args)
+function Transform(arg)
 	local t = osg.PositionAttitudeTransform()
-	if args.position ~= nil then
-		if #args.position ~=3 then
+	if arg.position ~= nil then
+		if #arg.position ~=3 then
 			error("Cannot set position: position must have 3 elements!", 2)
 		else
 			t:setPosition(osg.Vec3d(
-				args.position[1],
-				args.position[2],
-				args.position[3]))
+				arg.position[1],
+				arg.position[2],
+				arg.position[3]))
 		end
 	end
 
-	if args.orientation ~= nil then
-		t:setAttitude(args.orientation)
+	if arg.orientation ~= nil then
+		t:setAttitude(arg.orientation)
 	end
 
-	if args.scale ~= nil and args.scale ~= 1.0 then
-		t:setScale(osg.Vec3d(args.scale, args.scale, args.scale))
+	if arg.scale ~= nil and arg.scale ~= 1.0 then
+		t:setScale(osg.Vec3d(arg.scale, arg.scale, arg.scale))
 		local GL_NORMALIZE = 0x0BA1
 		local GL_RESCALE_NORMAL = 0x803A
 		t:getOrCreateStateSet():setMode(GL_RESCALE_NORMAL, 1)
 	end
 
-	-- Add nodes in the "children" list
-	if args.children ~= nil then
+	-- Deprecated: Add nodes in the "children" list
+	if arg.children ~= nil then
 		error("No longer need to pass children={}, just list the children directly.", 2)
 	end
 
 	-- Add nodes just tacked on the end of the list.
-	for _, v in ipairs(args) do
+	for _, v in ipairs(arg) do
 		if v ~= nil then
 			t:addChild(v)
 		end
