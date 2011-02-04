@@ -232,11 +232,7 @@ function Transform(args)
 
 	-- Add nodes in the "children" list
 	if args.children ~= nil then
-		for _, v in ipairs(args.children) do
-			if v ~= nil then
-				t:addChild(v)
-			end
-		end
+		error("No longer need to pass children={}, just list the children directly.", 2)
 	end
 
 	-- Add nodes just tacked on the end of the list.
