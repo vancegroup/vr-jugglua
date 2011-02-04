@@ -1,10 +1,19 @@
 require("help")
 
-Actions = help.docstring[[
+Actions = help.docstring{
+[[
 Actions can be considered separate "mini-programs" that you can start
 to run a single task - keep an object at the same location as a positional
 device, display an animation on button click, etc.
-]] .. {
+]],
+	methods = {
+		"addNodeAction",
+		"addFrameAction",
+		"removeFrameAction",
+		"waitForRedraw",
+		"waitSeconds"
+	}
+} .. {
 	_frameActions = {};
 }
 
@@ -132,7 +141,8 @@ Actions.setAppProxy = help.docstring[[
 If you are implementing your own application delegate, call this method
 before adding any actions, and pass the value you got from vrjApp.OsgAppProxy().
 
-If this made no sense to you, you do not need to use this function.
+If this made no sense to you, you do not need to use this function, since you are
+probably not creating your own application delegate.
 ]] .. function(proxy)
 	Actions.appProxy = proxy
 end
