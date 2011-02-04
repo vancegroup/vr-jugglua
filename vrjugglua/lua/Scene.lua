@@ -58,38 +58,7 @@ function AngleAxis(angle, axis)
 end
 
 function Lighting(a)
-	local t = osg.LightSource()
-	local light = osg.Light()
-	if a.ambient then
-		light:setAmbient(osg.Vec4(a.ambient, a.ambient, a.ambient, 1.0))
-	end
-
-	if a.diffuse then
-		light:setDiffuse(osg.Vec4(a.diffuse, a.diffuse, a.diffuse, 1.0))
-	end
-
-	if a.specular then
-		light:setSpecular(osg.Vec4(a.specular, a.specular, a.specular, 1.0))
-	end
-	t:setLight(light)
-
-	-- Add nodes in the "children" list
-	if a.children ~= nil then
-		for _, v in ipairs(a.children) do
-			if v ~= nil then
-				t:addChild(v)
-			end
-		end
-	end
-
-	-- Add nodes just tacked on the end of the list.
-	for _, v in ipairs(a) do
-		if v ~= nil then
-			t:addChild(v)
-		end
-	end
-
-	return t
+	return LightSource(Light(a))
 end
 
 function Light(...)
