@@ -93,6 +93,10 @@ if(BUILD_LUA_UTILS)
 
 	add_executable(luac ${LUAC_SOURCES})
 	target_link_libraries(luac lua)
+
+	install(TARGETS luac
+		EXPORT vrjlua-sdk
+		RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
 endif()
 
 if(BUILD_LUA_AS_CPP)

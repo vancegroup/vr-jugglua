@@ -262,6 +262,9 @@ endif()
 if(BUILD_QT_GUI)
 	list(APPEND BUILD_TREE_TARGETS vrjugglua-qt)
 endif()
+if(BUILD_LUA_UTILS)
+	list(APPEND BUILD_TREE_TARGETS luac)
+endif()
 
 configure_file(vrjugglua-config-build-tree.cmake.in VRJuggLuaConfig.cmake @ONLY)
 export(TARGETS ${BUILD_TREE_TARGETS}

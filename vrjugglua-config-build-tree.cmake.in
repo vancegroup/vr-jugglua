@@ -37,4 +37,16 @@ endfunction()
 
 include("@CMAKE_CURRENT_BINARY_DIR@/vrjugglua-targets.cmake")
 
+if(TARGET vrjlua_buildtree_luac AND NOT TARGET luac)
+	# Create a luac target to match the one we imported, so LuaTargets.cmake works
+	add_executable(luac IMPORTED)
+	get_property(_luac_configs TARGET vrjlua_buildtree_luac PROPERTY IMPORTED_CONFIGURATIONS)
+	set_property(TARGET luac PROPERTY IMPORTED_CONFIGURATIONS ${_luac_configs})
+	foreach(_config ${_luac_configs})
+		get_property(_luac_location TARGET vrjlua_buildtree_luac PROPERTY IMPORTED_LOCATION_${_config})
+		set_property(TARGET luac PROPERTY IMPORTED_LOCATION_${_config} ${_luac_location})
+	endforeach()
+endif()
+
+
 set(VRJUGGLUA_FOUND ON)
