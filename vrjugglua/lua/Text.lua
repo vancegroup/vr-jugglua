@@ -71,7 +71,19 @@ function setDefaultFont(f)
 	verifyFont(f)
 	defaultFont = f
 end
-function TextGeode(arg)
+
+
+TextGeode = help.docstring{[[
+Pass a table containing one or more strings, and optionally
+some named parameters. It returns an OSG node (Geode) with
+the text strings formatted as lines.
+]]
+optionalParameters = {
+	color = "An osg.Vec4 providing RGBA color, with each component in [0,1]: defaults to a light blue",
+	lineHeight = "Height of a line/character size: defaults to 0.45",
+	position = "Position of the upper-left of the text, in {x, y, z} format",
+	font = "A font object, such as that returned from Font()"
+}} .. function(arg, ...)
 	if type(arg) ~= "table" then
 		arg = {arg, ...}
 	end
