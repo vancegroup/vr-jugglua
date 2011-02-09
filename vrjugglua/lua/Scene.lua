@@ -249,3 +249,14 @@ function Sphere(a)
 	geode:addDrawable(drbl)
 	return geode
 end
+
+function Geode(arg)
+	if type(arg) ~= "table" then
+		arg = {arg}
+	end
+	local g = osg.Geode()
+	for _, v in ipairs(arg) do
+		g:addDrawable(v)
+	end
+	return g
+end
