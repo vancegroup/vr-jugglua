@@ -1,4 +1,5 @@
 osgLua.loadWrapper("osgText")
+osgLua.loadWrapper("osgDB")
 
 local knownFonts = {
 	["DroidSans"] = "assets/fonts/droid-fonts/DroidSans.ttf",
@@ -27,6 +28,25 @@ function Font(filename)
 	fontCache[filename] = f
 	return f
 end
+
+local fontCache3D = {}
+function Font3D(filename)
+	if knownFonts[filename] then
+		filename = knownFonts[filename]
+	end
+	if fontCache3D[filename] then
+		return fontCache3D[filename]
+	end
+	local rw = osgDB.Registry.instance():getReaderWriterForExtension(".ttf")
+	local f = rw:readObject(filename, osgDB.ReaderWriter.Options("3D"))
+	local c = osgLua.getTypeInfo(f)
+	if not c.name == "osgText::Font3D" then
+		error(string.format("Could not load a Font3D from %s - loaded %s instead!", filename, c.name), 2)
+	end
+	fontCache3D[filename] = f
+	return f
+end
+	
 
 function verifyFont(obj)
 	local c = osgLua.getTypeInfo(obj)
@@ -62,6 +82,32 @@ function TextGeode(arg)
     local geode = osg.Geode()
     for i, v in ipairs(arg) do
         local thisLine = osgText.Text()
+        thisLine:setFont(arg.font or defaultFont)
+        thisLine:setCharacterSize(lineHeight)
+        thisLine:setPosition(osg.Vec3(X,topLineY - i * lineHeight,Z))
+        thisLine:setText(v)
+        thisLine:setColor(color)
+        geode:addDrawable(thisLine)
+    end
+	return geode
+end
+
+function Text3DGeode(arg)
+	if type(arg) ~= "table" then
+		arg = {arg}
+	end
+	if arg.font then
+		verifyFont(arg.font)
+	end
+	local color = arg.color or osg.Vec4(0.9,0.8,0.7,1.0)
+    local lineHeight = arg.lineHeight or 0.45
+    local pos = arg.position or {2.5, -1.5, -7.0}
+    local topLineY = pos[2]
+    local X = pos[1]
+    local Z = pos[3]
+    local geode = osg.Geode()
+    for i, v in ipairs(arg) do
+        local thisLine = osgText.Text3D()
         thisLine:setFont(arg.font or defaultFont)
         thisLine:setCharacterSize(lineHeight)
         thisLine:setPosition(osg.Vec3(X,topLineY - i * lineHeight,Z))
