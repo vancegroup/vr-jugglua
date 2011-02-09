@@ -223,7 +223,7 @@ create_default_target_launcher(NavTestbed
     WORKING_DIRECTORY
     "${CMAKE_CURRENT_BINARY_DIR}"
 	ENVIRONMENT
-	${VRJUGGLER22_ENVIRONMENT})
+	${VRJUGGLER_ENVIRONMENT})
 
 create_target_launcher(vrjlua
 	FORWARD_ARGS
@@ -232,7 +232,7 @@ create_target_launcher(vrjlua
     WORKING_DIRECTORY
     "${CMAKE_CURRENT_BINARY_DIR}"
 	ENVIRONMENT
-	${VRJUGGLER22_ENVIRONMENT})
+	${VRJUGGLER_ENVIRONMENT})
 
 create_generic_launcher(genericlauncher
 	RUNTIME_LIBRARY_DIRS
@@ -240,7 +240,7 @@ create_generic_launcher(genericlauncher
     WORKING_DIRECTORY
     "${CMAKE_CURRENT_BINARY_DIR}"
 	ENVIRONMENT
-	${VRJUGGLER22_ENVIRONMENT})
+	${VRJUGGLER_ENVIRONMENT})
 
 
 if(BUILD_TESTING)
