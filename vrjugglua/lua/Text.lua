@@ -50,24 +50,8 @@ and return the osg.Font value.
 	return f
 end
 
-local fontCache3D = {}
-function Font3D(filename)
-	if knownFonts[filename] then
-		filename = knownFonts[filename]
-	end
-	if fontCache3D[filename] then
-		return fontCache3D[filename]
-	end
-	local rw = osgDB.Registry.instance():getReaderWriterForExtension(".ttf")
-	local f = rw:readObject(filename, osgDB.ReaderWriter.Options("3D"))
-	local c = osgLua.getTypeInfo(f)
-	if not c.name == "osgText::Font3D" then
-		error(string.format("Could not load a Font3D from %s - loaded %s instead!", filename, c.name), 2)
-	end
-	fontCache3D[filename] = f
-	return f
-end
-	
+
+
 
 function verifyFont(obj)
 	local c = osgLua.getTypeInfo(obj)
@@ -113,6 +97,28 @@ function TextGeode(arg)
 	return geode
 end
 
+--[[
+local fontCache3D = {}
+function Font3D(filename)
+	if not osgDB then
+		osgLua.loadWrapper("osgDB")
+	end
+
+	if knownFonts[filename] then
+		filename = knownFonts[filename]
+	end
+	if fontCache3D[filename] then
+		return fontCache3D[filename]
+	end
+	local rw = osgDB.Registry.instance():getReaderWriterForExtension(".ttf")
+	local f = rw:readObject(filename, osgDB.ReaderWriter.Options("3D"))
+	local c = osgLua.getTypeInfo(f)
+	if not c.name == "osgText::Font3D" then
+		error(string.format("Could not load a Font3D from %s - loaded %s instead!", filename, c.name), 2)
+	end
+	fontCache3D[filename] = f
+	return f
+end
 function Text3DGeode(arg)
 	if type(arg) ~= "table" then
 		arg = {arg}
@@ -138,3 +144,4 @@ function Text3DGeode(arg)
     end
 	return geode
 end
+]]
