@@ -20,7 +20,7 @@ end
 addKnownFonts{
 	["DroidSans"] = "assets/fonts/droid-fonts/DroidSans.ttf",
 	["DroidSansBold"] = "assets/fonts/droid-fonts/DroidSans-Bold.ttf",
-	["DroidSansMono"] = "assets/fonts/droid-fonts/DroidSansMono.ttf",
+	["DroidSansMono"] = "assets/fonts/droid-sans-mono-slashed/DroidSansMonoSlashed.ttf",
 	["DroidSerifBold"] = "assets/fonts/droid-fonts/DroidSerif-Bold.ttf",
 	["DroidSerifBoldItalic"] = "assets/fonts/droid-fonts/DroidSerif-BoldItalic.ttf",
 	["DroidSerifItalic"] = "assets/fonts/droid-fonts/DroidSerif-Italic.ttf",
