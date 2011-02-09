@@ -73,7 +73,7 @@ function setDefaultFont(f)
 end
 function TextGeode(arg)
 	if type(arg) ~= "table" then
-		arg = {arg}
+		arg = {arg, ...}
 	end
 	if arg.font then
 		verifyFont(arg.font)
