@@ -29,7 +29,7 @@ function Font(filename)
 end
 
 function verifyFont(obj)
-	local c = osgLua.getTypeInfo(f)
+	local c = osgLua.getTypeInfo(obj)
 	if not c then
 		error(string.format("Not even an osgLua type: %s", type(f)), 2)
 	end
@@ -64,7 +64,7 @@ function TextGeode(arg)
         local thisLine = osgText.Text()
         thisLine:setFont(arg.font or defaultFont)
         thisLine:setCharacterSize(lineHeight)
-        thisLine:setPosition(osg.Vec3(X,topLineY - i * helpTextSize,Z))
+        thisLine:setPosition(osg.Vec3(X,topLineY - i * lineHeight,Z))
         thisLine:setText(v)
         thisLine:setColor(color)
         geode:addDrawable(thisLine)
