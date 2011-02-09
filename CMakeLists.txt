@@ -73,6 +73,7 @@ endif()
 
 set(BIN_DIR bin)
 set(INCLUDE_DIR include)
+set(SHARE_DIR share/vrjugglua/)
 set(LUA_DIR share/vrjugglua/lua/)
 set(ARCH_DIR lib)
 if(WIN32)
@@ -291,6 +292,10 @@ endif()
 # Install the examples
 install(DIRECTORY examples
 	DESTINATION . COMPONENT examples)
+
+# Install assets (Fonts, etc)
+install(DIRECTORY assets
+	DESTINATION ${SHARE_DIR} COMPONENT recommendedassets)
 
 include(InstallRequiredSystemLibraries)
 
