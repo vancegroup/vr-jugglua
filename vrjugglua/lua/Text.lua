@@ -1,7 +1,23 @@
 osgLua.loadWrapper("osgText")
-osgLua.loadWrapper("osgDB")
 
-local knownFonts = {
+require("help")
+
+local knownFonts = {}
+local listOfKnownFonts = {}
+function addKnownFont(name, filename)
+	if not knownFonts[name] then
+		table.insert(listOfKnownFonts, name)
+	end
+	knownFonts[name] = filename
+end
+
+function addKnownFonts(arg)
+	for name, filename in pairs(arg) do
+		addKnownFont(name, filename)
+	end
+end
+
+addKnownFonts{
 	["DroidSans"] = "assets/fonts/droid-fonts/DroidSans.ttf",
 	["DroidSansBold"] = "assets/fonts/droid-fonts/DroidSans-Bold.ttf",
 	["DroidSansMono"] = "assets/fonts/droid-fonts/DroidSansMono.ttf",
@@ -12,8 +28,14 @@ local knownFonts = {
 	["DroidSerifRegular"] = "assets/fonts/droid-fonts/DroidSerif-Regular.ttf"
 }
 
+
 local fontCache = {}
-function Font(filename)
+Font = help.docstring{[[
+Pass a filename, or the name of a "known font," to load that font
+and return the osg.Font value.
+]],
+	knownFonts = listOfKnownFonts
+} .. function (filename)
 	if knownFonts[filename] then
 		filename = knownFonts[filename]
 	end
