@@ -78,7 +78,7 @@ function TextGeode(arg)
 	if arg.font then
 		verifyFont(arg.font)
 	end
-	local color = arg.color or osg.Vec4(0.9,0.8,0.7,1.0)
+	local color = arg.color or osg.Vec4(0.1,0.1,0.8,1.0)
     local lineHeight = arg.lineHeight or 0.45
     local pos = arg.position or {2.5, -1.5, -7.0}
     local topLineY = pos[2]
