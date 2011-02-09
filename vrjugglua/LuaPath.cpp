@@ -142,11 +142,13 @@ void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 
 	_root = _findFilePath(startingPlaces, "share/vrjugglua/lua/vrjlua-init.lua");
 	if (!_root.empty()) {
-		_luadir = (fs::path(_root) / "share/vrjugglua/lua/").string();
+		_luaDir = (fs::path(_root) / "share/vrjugglua/lua/").string();
+		startingPlaces.push_back((fs::path(_root) / "share/vrjugglua/").string());
 	} else {
 		_root = _findFilePath(startingPlaces, "vrjlua-init.lua");
-		_luadir = _root;
+		_luaDir = _root;
 	}
+	_shareDir = _findFilePath(startingPlaces, "assets/fonts/droid-fonts/DroidSans.ttf");
 #if __VJ_version >= 2003000
 	fs::path jugglerTest = "share/vrjuggler-3.0/data/definitions/simulated_positional_device.jdef";
 #else
@@ -191,7 +193,7 @@ std::string LuaPath::findFilePath(std::string const& fn) {
 	startingPlaces.push_back(_initialPath);
 	startingPlaces.push_back(_exeDir);
 	startingPlaces.push_back(_root);
-	startingPlaces.push_back(_luadir);
+	startingPlaces.push_back(_luaDir);
 	return _findFilePath(startingPlaces, fn);
 }
 
@@ -207,12 +209,15 @@ std::string const& LuaPath::getAppRoot() const {
 std::string const& LuaPath::getExeDir() const {
 	return _exeDir;
 }
+std::string const& LuaPath::getShareDir() const {
+	return _shareDir;
+}
 std::string const& LuaPath::getInitialPath() const {
 	return _initialPath;
 }
 
 std::string LuaPath::getPathToLuaScript(const std::string & scriptfn) const {
-	return (fs::path(_luadir) / scriptfn).string();
+	return (fs::path(_luaDir) / scriptfn).string();
 }
 
 

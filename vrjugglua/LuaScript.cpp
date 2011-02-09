@@ -317,8 +317,8 @@ void LuaPath::_populateSearchPathsVector(LuaStatePtr state) {
 		it = std::find(_searchPaths.begin(), _searchPaths.end(), "?.lua");
 	}
 
-	_searchPaths.push_front(_luadir + "?.lua");
-	_searchPaths.push_front(_luadir + "?");
+	_searchPaths.push_front(_luaDir + "?.lua");
+	_searchPaths.push_front(_luaDir + "?");
 }
 
 void LuaPath::_setLuaSearchPaths(LuaStatePtr state) {

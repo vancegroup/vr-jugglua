@@ -36,6 +36,7 @@ class LuaPath {
 		std::string findFilePath(std::string const& fn);
 		bool findAppRoot(std::string const& fn);
 		std::string const& getAppRoot() const;
+		std::string const& getShareDir() const;
 		std::string const& getExeDir() const;
 		std::string const& getInitialPath() const;
 		std::string getPathToLuaScript(const std::string & scriptfn) const;
@@ -58,7 +59,8 @@ class LuaPath {
 		std::string _initialPath;
 		std::string _exeDir;
 		std::string _root;
-		std::string _luadir;
+		std::string _luaDir;
+		std::string _shareDir;
 		std::string _appRoot;
 
 		bool _foundJuggler;

@@ -47,6 +47,12 @@ void BindvrjLuaToLua(LuaStatePtr state) {
 		def("appendToLuaRequirePath", &appendToLuaRequirePath),
 		def("safePrint", &LuaScript::doPrint)
 	];
+	
+	std::string const& shareDir = LuaPath::instance().getShareDir();
+	if (!shareDir.empty()) {
+		std::cout << "Found VR JuggLua share directory (" << shareDir << "), adding to model search path..." << std::endl;
+		appendToModelSearchPath(shareDir);
+	}
 
 
 }
