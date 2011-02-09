@@ -30,8 +30,8 @@ if(			(NOT BOOST_INCLUDEDIR)
 endif()
 
 function(install_vrjugglua_lua_files)
-	install(DIRECTORY "${VRJUGGLUA_BASE_DIR}/share/vrjugglua/lua/"
-		DESTINATION "share/vrjugglua/lua/"
+	install(DIRECTORY "${VRJUGGLUA_BASE_DIR}/share/vrjugglua/"
+		DESTINATION "share/vrjugglua/"
 		${ARGN})
 endfunction()
 
