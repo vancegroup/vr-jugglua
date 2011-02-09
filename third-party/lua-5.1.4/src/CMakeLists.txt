@@ -95,7 +95,7 @@ if(BUILD_LUA_UTILS)
 	target_link_libraries(luac lua)
 
 	install(TARGETS luac
-		EXPORT vrjlua-sdk
+		EXPORT vrjlua-luac
 		RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
 endif()
 

@@ -263,15 +263,18 @@ endif()
 if(BUILD_QT_GUI)
 	list(APPEND BUILD_TREE_TARGETS vrjugglua-qt)
 endif()
-if(BUILD_LUA_UTILS)
-	list(APPEND BUILD_TREE_TARGETS luac)
-endif()
 
 configure_file(vrjugglua-config-build-tree.cmake.in VRJuggLuaConfig.cmake @ONLY)
 export(TARGETS ${BUILD_TREE_TARGETS}
 	NAMESPACE vrjlua_buildtree_
 	FILE vrjugglua-targets.cmake)
+if(BUILD_LUA_UTILS)
+	export(TARGETS luac
+		NAMESPACE 
+		FILE vrjugglua-luac-target.cmake)
+endif()
 export(PACKAGE VRJuggLua)
+
 
 # Set up use from install tree
 if(INSTALL_CXX_SDK)
@@ -279,6 +282,10 @@ if(INSTALL_CXX_SDK)
 		DESTINATION ${EXPORT_DIR}
 		NAMESPACE vrjlua_exported_
 		FILE vrjlua-targets.cmake)
+	install(EXPORT vrjlua-luac
+		DESTINATION ${EXPORT_DIR}
+		NAMESPACE 
+		FILE vrjlua-luac-target.cmake)
 	configure_file(vrjugglua-config.cmake.in vrjugglua-config-for-install.cmake @ONLY)
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vrjugglua-config-for-install.cmake
 		RENAME vrjugglua-config.cmake
