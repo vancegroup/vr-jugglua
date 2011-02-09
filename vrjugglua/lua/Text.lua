@@ -24,8 +24,7 @@ addKnownFonts{
 	["DroidSerifBold"] = "assets/fonts/droid-fonts/DroidSerif-Bold.ttf",
 	["DroidSerifBoldItalic"] = "assets/fonts/droid-fonts/DroidSerif-BoldItalic.ttf",
 	["DroidSerifItalic"] = "assets/fonts/droid-fonts/DroidSerif-Italic.ttf",
-	["DroidSerif"] = "assets/fonts/droid-fonts/DroidSerif-Regular.ttf",
-	["DroidSerifRegular"] = "assets/fonts/droid-fonts/DroidSerif-Regular.ttf"
+	["DroidSerif"] = "assets/fonts/droid-fonts/DroidSerif-Regular.ttf"
 }
 
 
