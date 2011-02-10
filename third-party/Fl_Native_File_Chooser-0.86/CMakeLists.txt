@@ -97,7 +97,9 @@ set_property(TARGET
 	Fl_Native_File_Chooser
 	PROPERTY
 	PROJECT_LABEL
-	"Third-Party: FLTK Native File Chooser")
+	"FLTK Native File Chooser")
+
+set_target_properties(Fl_Native_File_Chooser PROPERTIES FOLDER "Third-Party")
 
 if(INSTALL_CXX_SDK)
 	install(TARGETS Fl_Native_File_Chooser

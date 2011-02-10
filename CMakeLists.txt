@@ -58,6 +58,16 @@ mark_as_advanced(BUILD_EMBEDDED_LUA
 	BUILD_LUA_AS_CPP
 	BUILD_VERY_VERBOSE)
 
+if(MSVC)
+	option(BUILD_WITH_PROJECT_FOLDERS
+		"Use project folders in build system - not compatible with Visual C++ Express editions!"
+		OFF)
+else()
+	set(BUILD_WITH_PROJECT_FOLDERS ON)
+endif()
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ${BUILD_WITH_PROJECT_FOLDERS})
+
 # Apply definitions
 if(BUILD_VERBOSE)
 	set(VERBOSE ON)

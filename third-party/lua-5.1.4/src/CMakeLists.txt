@@ -94,9 +94,11 @@ endif()
 if(BUILD_LUA_UTILS)
 	add_executable(lua-interp ${LUA_INTERP_SOURCES})
 	target_link_libraries(lua-interp lua)
+	set_target_properties(luac PROPERTIES FOLDER "Third-Party")
 
 	add_executable(luac ${LUAC_SOURCES})
 	target_link_libraries(luac lua)
+	set_target_properties(luac PROPERTIES FOLDER "Third-Party")
 
 	install(TARGETS luac
 		EXPORT vrjlua-luac
@@ -111,8 +113,9 @@ set_property(TARGET
 	lua
 	PROPERTY
 	PROJECT_LABEL
-	"Third-Party: Lua Core Library")
+	"Lua Core Library")
 set_target_properties(lua PROPERTIES PUBLIC_HEADER "${LUA_API}")
+set_target_properties(lua PROPERTIES FOLDER "Third-Party")
 
 if(INSTALL_CXX_SDK)
 	install(TARGETS lua
