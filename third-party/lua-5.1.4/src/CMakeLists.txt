@@ -82,6 +82,10 @@ else() # Linux
 	list(APPEND LUA_EXTRA_LIBS ${READLINE_LIBRARY} ${CURSES_LIBRARIES})
 endif()
 
+if(CMAKE_DL_LIBS)
+	list(APPEND LUA_EXTRA_LIBS ${CMAKE_DL_LIBS})
+endif()
+
 add_library(lua ${LUA_SRCS} ${LUA_HEADERS} ${LUA_API})
 if(LUA_EXTRA_LIBS)
 	target_link_libraries(lua ${LUA_EXTRA_LIBS})
