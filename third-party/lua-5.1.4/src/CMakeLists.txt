@@ -94,7 +94,7 @@ endif()
 if(BUILD_LUA_UTILS)
 	add_executable(lua-interp ${LUA_INTERP_SOURCES})
 	target_link_libraries(lua-interp lua)
-	set_target_properties(luac PROPERTIES FOLDER "Third-Party")
+	set_target_properties(lua-interp PROPERTIES FOLDER "Third-Party")
 
 	add_executable(luac ${LUAC_SOURCES})
 	target_link_libraries(luac lua)
