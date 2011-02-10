@@ -36,7 +36,9 @@ set_property(TARGET
 	vrjlua
 	PROPERTY
 	PROJECT_LABEL
-	"App: Standalone Interpreter")
+	"vrjlua Standalone Interpreter")
+
+set_target_properties(vrjlua PROPERTIES FOLDER "Applications")
 
 install(TARGETS vrjlua
 	RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
@@ -57,7 +59,9 @@ if(BUILD_FLTK_GUI)
 		${FLTK_GUI_APP}
 		PROPERTY
 		PROJECT_LABEL
-		"App: Nav Console FLTK")
+		"Nav Testbed FLTK")
+
+	set_target_properties(${FLTK_GUI_APP} PROPERTIES FOLDER "Applications")
 
     install(TARGETS ${FLTK_GUI_APP}
 	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime
@@ -94,7 +98,8 @@ if(BUILD_QT_GUI)
 		NavTestbed
 		PROPERTY
 		PROJECT_LABEL
-		"App: Nav Console QT")
+		"Nav Testbed Qt")
+	set_target_properties(NavTestbed PROPERTIES FOLDER "Applications")
 
     install(TARGETS NavTestbed
 	    RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime
