@@ -105,6 +105,7 @@ include(StampSourcesWithVersion)
 include(ResetConfigurations) # remove Debug and MinSizeRel
 
 include(MSVCMultipleProcessCompile)
+include(CreateLaunchers)
 
 include(CTest)
 include(CreateDashboardScripts)
@@ -225,17 +226,7 @@ if(APPLE)
 	string(REPLACE "/usr/lib;" "" RUNTIME_LIBRARY_DIRS "${RUNTIME_LIBRARY_DIRS}")
 endif()
 
-include(CreateLaunchers)
 create_default_target_launcher(NavTestbed
-	FORWARD_ARGS
-	RUNTIME_LIBRARY_DIRS
-	${RUNTIME_LIBRARY_DIRS}
-    WORKING_DIRECTORY
-    "${CMAKE_CURRENT_BINARY_DIR}"
-	ENVIRONMENT
-	${VRJUGGLER_ENVIRONMENT})
-
-create_target_launcher(vrjlua
 	FORWARD_ARGS
 	RUNTIME_LIBRARY_DIRS
 	${RUNTIME_LIBRARY_DIRS}

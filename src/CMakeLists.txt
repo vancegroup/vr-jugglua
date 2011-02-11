@@ -40,6 +40,15 @@ set_property(TARGET
 
 set_target_properties(vrjlua PROPERTIES FOLDER "Applications")
 
+create_target_launcher(vrjlua
+	FORWARD_ARGS
+	RUNTIME_LIBRARY_DIRS
+	${RUNTIME_LIBRARY_DIRS}
+    WORKING_DIRECTORY
+    "${PROJECT_BINARY_DIR}"
+	ENVIRONMENT
+	${VRJUGGLER_ENVIRONMENT})
+
 install(TARGETS vrjlua
 	RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime)
 
@@ -127,4 +136,13 @@ endif()
 
 if(TARGET NavTestbed)
 	fixup_vrjuggler_app_bundle("NavTestbed" "${APP_LOCATION}" "${RUNTIME_LIBRARIES};${VRJUGGLER_INSTALLED_PLUGINS};${OSG_PLUGINS}" "${RUNTIME_LIBRARY_DIRS}")
+
+	create_target_launcher(NavTestbed
+		FORWARD_ARGS
+		RUNTIME_LIBRARY_DIRS
+		${RUNTIME_LIBRARY_DIRS}
+		WORKING_DIRECTORY
+		"${PROJECT_BINARY_DIR}"
+		ENVIRONMENT
+		${VRJUGGLER_ENVIRONMENT})
 endif()
