@@ -19,6 +19,8 @@ package.loaded["vrjugglua"] = true
 
 -- Let Lua know that osgLua and osg are loaded
 package.loaded["osgLua"] = osgLua
+
+print(package.loaded["osg"])
 package.loaded["osg"] = osg
 
 -- Add support for loading osg wrappers using require()

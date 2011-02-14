@@ -165,6 +165,16 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 	// enable the namespace
 	osgLua::Type::push(L, name);
 	lua_setglobal(L, name);
+	int libIdx = lua_gettop(L);
+
+	lua_getglobal(L, "package");
+	if (lua_isnil(L, -1)) {
+		lua_getfield(L, -1 , "loaded");
+		if (lua_isnil(L, -1)) {
+			lua_getglobal(L, name);
+			lua_setfield(L, -2, name);
+		}
+	}
 
 	lua_settop(L, top);
 	return true;
