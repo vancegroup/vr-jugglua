@@ -7,12 +7,6 @@ if(BUILD_LUABIND_COMBINED)
 	add_definitions(-DLUABIND_COMBINED_COMPILE)
 endif()
 
-foreach(wrapper OSG OSGDB OSGUTIL)
-	if(AUTOLOAD_WRAPPER_${wrapper})
-		add_definitions(-DAUTOLOAD_WRAPPER_${wrapper})
-	endif()
-endforeach()
-
 if(BUILD_EMBEDDED_LUA)
 	add_definitions(-DEMBEDDED_LUA)
 endif()

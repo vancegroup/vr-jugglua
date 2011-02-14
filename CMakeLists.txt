@@ -40,10 +40,6 @@ option(BUILD_QT_GUI "Build Qt-based GUI apps." DEFAULT_QT_GUI)
 
 option(INSTALL_CXX_SDK "Should we install the headers and libraries needed for C++ development using VRJLua?" on)
 
-option(AUTOLOAD_WRAPPER_OSG "Load the osg wrapper automatically at binding time." ON)
-option(AUTOLOAD_WRAPPER_OSGDB "Load the osgDB wrapper automatically at binding time." OFF)
-option(AUTOLOAD_WRAPPER_OSGUTIL "Load the osgUtil wrapper automatically at binding time." OFF)
-
 # Define advanced options
 option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app - highly recommended." ON)
 option(BUILD_LUA_UTILS "Build a stock, standalone lua-interpreter and luac" ON)
