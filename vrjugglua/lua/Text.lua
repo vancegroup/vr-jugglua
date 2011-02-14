@@ -1,6 +1,5 @@
-osgLua.loadWrapper("osgText")
-
 require("help")
+require("osgText")
 
 local knownFonts = {}
 local listOfKnownFonts = {}
