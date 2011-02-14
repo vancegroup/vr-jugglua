@@ -64,6 +64,12 @@ void BindvrjLuaToLua(LuaStatePtr state) {
 		appendToModelSearchPath(shareDir);
 	}
 
+	std::string const& rootDir = LuaPath::instance().getRootDir();
+	if (!rootDir.empty()) {
+		std::cout << "Found root directory (" << rootDir << "), adding to model search path..." << std::endl;
+		appendToModelSearchPath(rootDir);
+	}
+
 
 }
 
