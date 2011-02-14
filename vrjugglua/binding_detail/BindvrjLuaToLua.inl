@@ -38,12 +38,22 @@ static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
 	LuaPath::instance().addLuaRequirePath(borrowStatePtr(s), path);
 }
 
+static luabind::object getModelSearchPath(lua_State *L) {
+	luabind::object searchPath(newtable(L));
+	osgDB::FilePathList paths = osgDB::Registry::instance()->getDataFilePathList();
+	for (unsigned int i = 0; i < paths.size(); ++i) {
+		searchPath[i+1] = paths[i];
+	}
+	return searchPath;
+}
+
 void BindvrjLuaToLua(LuaStatePtr state) {
 #ifdef VERBOSE
 	std::cerr << "Registering vrjLua module functions with Lua..." << std::flush << std::endl;
 #endif
 	module(state.get(), "vrjLua") [
 		def("appendToModelSearchPath", &appendToModelSearchPath),
+		def("getModelSearchPath", &getModelSearchPath),
 		def("appendToLuaRequirePath", &appendToLuaRequirePath),
 		def("safePrint", &LuaScript::doPrint)
 	];
