@@ -253,7 +253,7 @@ bool LuaPath::_setJugglerEnvironment() const {
 		ret = (!_jugglerRoot.empty());
 		VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
 			<< "LuaPath: "
-			<< "Couldn't auto-detect base dir, using what the environment has: "
+			<< "Couldn't auto-detect VJ_BASE_DIR, using what the environment has: "
 			<< _jugglerRoot
 			<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
 	}
