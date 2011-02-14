@@ -205,6 +205,9 @@ bool LuaPath::findAppRoot(std::string const& fn) {
 std::string const& LuaPath::getAppRoot() const {
 	return _appRoot;
 }
+std::string const& LuaPath::getRootDir() const {
+	return _root;
+}
 
 std::string const& LuaPath::getExeDir() const {
 	return _exeDir;

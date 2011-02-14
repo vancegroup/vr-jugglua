@@ -36,6 +36,7 @@ class LuaPath {
 		std::string findFilePath(std::string const& fn);
 		bool findAppRoot(std::string const& fn);
 		std::string const& getAppRoot() const;
+		std::string const& getRootDir() const;
 		std::string const& getShareDir() const;
 		std::string const& getExeDir() const;
 		std::string const& getInitialPath() const;
