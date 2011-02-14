@@ -1,5 +1,5 @@
-/**	@file	fltk-console/FLTKConsole.h
-	@brief	header for an FLTK-based GUI console
+/**	@file	qt-console/QTConsole.h
+	@brief	header for an Qt-based GUI console
 
 	@date
 	2009-2010

@@ -1,5 +1,5 @@
-/**	@file	fltk-console/FLTKConsole.cpp
-	@brief	implementation of FLTK console GUI
+/**	@file	qt-console/QTConsole.cpp
+	@brief	implementation of QT console GUI
 
 	@date
 	2009-2010
