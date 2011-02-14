@@ -7,6 +7,7 @@ include(LuaTargets)
 
 set(LUA_FILES
 	Actions.lua
+	DebugAxes.lua
 	getScriptFilename.lua
 	nav-app-skeleton.lua
 	nav-testbed-launcher.lua
@@ -16,6 +17,7 @@ set(LUA_FILES
 	Scene.lua
 	sleep.lua
 	StateMachine.lua
+	StockModels.lua
 	Text.lua
 	TransparentGroup.lua
 	vrjlua-config.lua
