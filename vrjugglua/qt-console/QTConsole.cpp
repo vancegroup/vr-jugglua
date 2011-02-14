@@ -25,6 +25,9 @@
 #include <QFileDialog>
 #include <QScrollBar>
 #include <QTimer>
+#include <QFontDatabase>
+
+#include <osgDB/FileUtils>
 
 #include <vrj/Kernel/Kernel.h>
 
@@ -50,9 +53,7 @@ QTConsole::QTConsole() :
 		_app(s_app),
 		_running(false),
 		_ui(new Ui::MainWindow()){
-	assert(_app);
-	_ui->setupUi(this);
-	_ui->plainTextDebugLog->hide();
+	_shared_init();
 }
 
 QTConsole::QTConsole(LuaScript const& script) :
@@ -60,18 +61,14 @@ QTConsole::QTConsole(LuaScript const& script) :
 		_app(s_app),
 		_running(false),
 		_ui(new Ui::MainWindow()){
-	assert(_app);
-	_ui->setupUi(this);
-	_ui->plainTextDebugLog->hide();
+	_shared_init();
 }
 
 QTConsole::QTConsole(QApplication* app) :
 		_app(app),
 		_running(false),
 		_ui(new Ui::MainWindow()) {
-	assert(_app);
-	_ui->setupUi(this);
-	_ui->plainTextDebugLog->hide();
+	_shared_init();
 }
 
 QTConsole::QTConsole(QApplication* app, LuaScript const& script) :
@@ -79,9 +76,26 @@ QTConsole::QTConsole(QApplication* app, LuaScript const& script) :
 		_app(app),
 		_running(false),
 		_ui(new Ui::MainWindow()) {
+	_shared_init();
+}
+
+void QTConsole::_shared_init() {
 	assert(_app);
 	_ui->setupUi(this);
 	_ui->plainTextDebugLog->hide();
+
+	/// Try to set font to Droid Sans Mono Slashed 8pt
+	std::string fontFn = osgDB::findDataFile("assets/fonts/droid-sans-mono-slashed/DroidSansMonoSlashed.ttf");
+	if (!fontFn.empty()) {
+		int id = QFontDatabase::addApplicationFont(QString::fromStdString(fontFn));
+		if (id != -1) {
+			// font load succeeded
+			QFont droid("Droid Sans Mono Slashed", 8);
+			_ui->plainTextDebugLog->setFont(droid);
+			_ui->plainTextEdit->setFont(droid);
+			_ui->plainTextEditLog->setFont(droid);
+		}
+	}
 }
 
 QTConsole::~QTConsole() {
