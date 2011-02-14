@@ -20,7 +20,10 @@
 
 #include <vector>
 #include <stdexcept>
+
+#ifdef OSGLUA_VERBOSE
 #include <iostream>
+#endif
 
 std::string getLibraryNamePrepend() {
 	return std::string("osgPlugins-")+std::string(osgGetVersion())+std::string("/");
@@ -53,27 +56,39 @@ std::string createLibraryNameForWrapper(const std::string& ext) {
 }
 
 osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname) {
-    std::string basename = createLibraryNameForWrapper(libname);
+	/// get a base name
+	std::string basename = createLibraryNameForWrapper(libname);
+
+	/// try that name and that name with lib in front
 	std::vector<std::string> libnames;
 	libnames.push_back(basename);
 	libnames.push_back("lib"+basename);
+
+	/// grab the lib dir
 	std::string const libdir = getLibraryNamePrepend();
+
+	/// for each existing idea, push another idea that has the lib dir prepended
 	unsigned int n = libnames.size();
 	for (unsigned int i = 0; i < n; ++i) {
 		libnames.push_back(libdir + libnames[i]);
 	}
-	
+
+	/// Try all ideas until we succeed or run out of htem
 	n = libnames.size();
 	for (unsigned int i = 0; i < n; ++i) {
+#ifdef OSGLUA_VERBOSE
 		std::cout << "Trying to load " << libnames[i] << std::endl;
+#endif
 		osgDB::DynamicLibrary * lib = osgDB::DynamicLibrary::loadLibrary(libnames[i]);
 		if (lib) {
+#ifdef OSGLUA_VERBOSE
 			std::cout << "Success!" << std::endl;
+#endif
 			return lib;
 		}
 	}
-	
-    throw std::runtime_error("Could not load wrapper for " + libname);
-	
+
+	throw std::runtime_error("Could not load wrapper for " + libname);
+
 	return NULL;
 }
