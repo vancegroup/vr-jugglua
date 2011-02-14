@@ -83,19 +83,35 @@ void QTConsole::_shared_init() {
 	assert(_app);
 	_ui->setupUi(this);
 	_ui->plainTextDebugLog->hide();
+	bool needsDroid = true;
+#ifdef _WIN32
+	/// If windows has consolas, we'll use that
+	QFont consolas("Consolas", 10);
+	if (consolas.exactMatch()) {
+		needsDroid = false;
+	}
+#endif
+
+	if (!needsDroid) {
+		return;
+	}
 
 	/// Try to set font to Droid Sans Mono Slashed 8pt
 	std::string fontFn = osgDB::findDataFile("assets/fonts/droid-sans-mono-slashed/DroidSansMonoSlashed.ttf");
-	if (!fontFn.empty()) {
-		int id = QFontDatabase::addApplicationFont(QString::fromStdString(fontFn));
-		if (id != -1) {
-			// font load succeeded
-			QFont droid("Droid Sans Mono Slashed", 8);
-			_ui->plainTextDebugLog->setFont(droid);
-			_ui->plainTextEdit->setFont(droid);
-			_ui->plainTextEditLog->setFont(droid);
-		}
+	if (fontFn.empty()) {
+		return;
 	}
+
+	int id = QFontDatabase::addApplicationFont(QString::fromStdString(fontFn));
+	if (id == -1) {
+		return;
+	}
+
+	// font load succeeded
+	QFont droid("Droid Sans Mono Slashed", 8);
+	_ui->plainTextDebugLog->setFont(droid);
+	_ui->plainTextEdit->setFont(droid);
+	_ui->plainTextEditLog->setFont(droid);
 }
 
 QTConsole::~QTConsole() {
