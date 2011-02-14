@@ -11,6 +11,8 @@ set(OSGLUA_SRCS
 	MathValueTags.cpp
 	MatrixTemplates.h
 	osgLua.cpp
+	loadWrapperLib.cpp
+	loadWrapperLib.h
 	saveObjectFile.cpp
 	Script.cpp
 	Type.cpp

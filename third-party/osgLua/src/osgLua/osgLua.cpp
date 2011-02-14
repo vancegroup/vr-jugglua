@@ -17,6 +17,7 @@
 #include <osgLua/LoadWrapper>
 #include <osgLua/Value>
 #include "osgLua.h"
+#include "loadWrapperLib.h"
 #include "LuaIncludeFull.h"
 
 #include <iostream>
@@ -24,41 +25,10 @@
 #include "Type.h"
 #include <osgLua/Callback>
 
-#include <osg/Version>
 
 #include <osg/Vec3> // FIXME!!! (this is for checkings)
 
 #include <osgDB/DynamicLibrary>
-
-std::string getLibraryNamePrepend() {
-	return std::string("osgPlugins-")+std::string(osgGetVersion())+std::string("/");
-}
-
-// borrowed from osgDB...
-std::string createLibraryNameForWrapper(const std::string& ext) {
-
-#if defined(WIN32)
-	// !! recheck evolving Cygwin DLL extension naming protocols !! NHV
-#ifdef __CYGWIN__
-	return "cygosgwrapper_"+ext+".dll";
-#elif defined(__MINGW32__)
-	return "libosgwrapper_"+ext+".dll";
-#else
-#ifdef _DEBUG
-	return "osgwrapper_"+ext+"d.dll";
-#else
-	return "osgwrapper_"+ext+".dll";
-#endif
-#endif
-#elif macintosh
-	return "osgwrapper_"+ext;
-#elif defined(__hpux__)
-	// why don't we use PLUGIN_EXT from the makefiles here?
-	return "osgwrapper_"+ext+".sl";
-#else
-	return "osgwrapper_"+ext+".so";
-#endif
-}
 
 typedef osgDB::DynamicLibrary osglib;
 
@@ -119,23 +89,11 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 	lua_getfield(L, osgLuaLibs , name);
 	if (lua_isnil(L,-1)) {
 		lua_pop(L,1);
-		std::string fn = createLibraryNameForWrapper(name);
-		osglib *lib = osgDB::DynamicLibrary::loadLibrary(fn);
-
-		// try it with an extension
-		if (!lib) {
-			fn = getLibraryNamePrepend() + createLibraryNameForWrapper(name);
-			lib = osgDB::DynamicLibrary::loadLibrary(fn);
-		}
-
-#ifdef VERBOSE
-		if (lib) {
-			std::cerr << "Successfully loaded " << fn << std::endl;
-		}
-#endif
-
-		if (!lib) {
-			std::cerr << "Failed following osgDB::DynamicLibrary::loadLibrary call: trying to load "<< fn << std::endl;
+		osglib * lib;
+		try {
+			lib = loadWrapperLib(name);
+		} catch (std::exception & e) {
+			std::cerr << "Failed to load wrapper for " << name << " : " << e.what() << std::endl;
 			return false;
 		}
 
