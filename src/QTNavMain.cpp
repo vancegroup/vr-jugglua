@@ -18,10 +18,11 @@
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
-
+#include <boost/algorithm/string/replace.hpp>
 
 // Standard includes
-// - none;
+#include <vector>
+#include <string>
 
 using namespace vrjLua;
 
@@ -32,12 +33,31 @@ int main(int argc, char * argv[]) {
 	/// Tell it our application path
 	LuaPath lp = LuaPath::instance(argv[0]);
 
+	/// Process command line args
+	bool stubConsole = false;
+	std::vector<std::string> files;
+	for (int i = 1; i < argc; ++i) {
+		std::string arg(argv[i]);
+		if (arg == "--stub") {
+			stubConsole = true;
+		} else if (arg.find(".jconf") != std::string::npos) {
+			std::cerr << "WARNING: passing jconf files on the command line not yet supported!" << std::endl;
+		} else if (arg.find(".lua") != std::string::npos) {
+			// change to forward slashes.
+			boost::algorithm::replace_all(arg, "\\", "/");
+			std::cout << "Queuing up " << arg << " to run after startup..." << std::endl;
+			files.push_back(arg);
+		} else {
+			std::cerr << "Unrecognized command line argument '" << arg << "', ignoring..." << std::endl;
+		}
+	}
+
 	/// Create the script object
 	LuaScript script;
 
 	/// Create the console GUI
 	boost::shared_ptr<LuaConsole> console;
-	if (argc > 1 && std::string(argv[1]) == "--stub") {
+	if (stubConsole) {
 		std::cout << "Creating stub console, as requested..." << std::endl;
 		boost::shared_ptr<LuaConsole> temp(new StubConsole(script));
 		console = temp;
@@ -69,6 +89,10 @@ int main(int argc, char * argv[]) {
 	console->getRunBufFromLuaGlobal();
 
 	assert(console->isValid());
+
+	for (unsigned int i = 0; i < files.size(); ++i) {
+		console->addFile(files[i]);
+	}
 
 	/// Run it all
 	vrj::Kernel::instance()->start();
