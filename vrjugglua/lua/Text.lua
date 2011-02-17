@@ -62,7 +62,7 @@ function verifyFont(obj)
 	end
 end
 
-local defaultFont
+local defaultFont = Font("DroidSans")
 function setDefaultFont(f)
 	if type(f) == "string" then
 		f = Font(f)
