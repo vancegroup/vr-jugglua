@@ -68,6 +68,9 @@ void BindvrjLuaToLua(LuaStatePtr state) {
 	if (!rootDir.empty()) {
 		std::cout << "Found root directory (" << rootDir << "), adding to model search path..." << std::endl;
 		appendToModelSearchPath(rootDir);
+		
+		std::cout << "Adding config directory (" << rootDir << "/etc/vrjugglua/) to Lua package path..." << std::endl;
+		appendToLuaRequirePath(state.get(), rootDir + "/etc/vrjugglua/");
 	}
 
 
