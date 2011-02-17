@@ -40,6 +40,8 @@ option(BUILD_QT_GUI "Build Qt-based GUI apps." DEFAULT_QT_GUI)
 
 option(INSTALL_CXX_SDK "Should we install the headers and libraries needed for C++ development using VRJLua?" on)
 
+option(BUILD_WITHOUT_TERMINAL "Build GUI applications without the terminal when possible." on)
+
 # Define advanced options
 option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app - highly recommended." ON)
 option(BUILD_LUA_UTILS "Build a stock, standalone lua-interpreter and luac" ON)
