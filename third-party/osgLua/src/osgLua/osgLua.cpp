@@ -93,7 +93,7 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		try {
 			lib = loadWrapperLib(name);
 		} catch (std::exception & e) {
-			std::cerr << "Failed to load wrapper for " << name << " : " << e.what() << std::endl;
+			std::cout << "Failed to load wrapper for " << name << " : " << e.what() << std::endl;
 			return false;
 		}
 
