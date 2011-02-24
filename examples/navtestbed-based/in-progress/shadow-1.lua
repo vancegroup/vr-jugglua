@@ -13,15 +13,16 @@ scene:setCastsShadowTraversalMask(CastsShadowTraversalMask)
 
 sm = osgShadow.ShadowMap()
 
-scene:setShadowTechnique(sm)
-
 mapres = 1024
 sm:setTextureSize(osg.Vec2s(mapres, mapres))
+sm:setTextureUnit(1)
+
+scene:setShadowTechnique(sm)
 
 
 newroom = Transform{
-	scale = 0.02,
-	position = {0, -2, 0},
+	scale = ScaleFrom.inches,
+	position = {0, -2.5, 0},
 	Model("examples/models/wavyroom.ive")
 }
 newroom:setNodeMask(ReceivesShadowTraversalMask)
