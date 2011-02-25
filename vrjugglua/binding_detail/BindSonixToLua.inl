@@ -43,6 +43,7 @@ void bindSonixToLua(LuaStatePtr state) {
 		def("changeAPI", &Sonix::changeAPI),
 
 		class_<snx::SoundInfo>("SoundInfo")
+			.def(constructor<>())
 			.def_readwrite("alias", &snx::SoundInfo::alias)
 			.def_readwrite("filename", &snx::SoundInfo::filename)
 			.def_readwrite("ambient", &snx::SoundInfo::ambient)
