@@ -38,6 +38,19 @@ namespace osgLua {
 		int call(lua_State *L);
 	}
 
+	const osgIntrospection::Type & lookupType(std::string const& name) {
+		typedef std::map<std::string, const osgIntrospection::Type *> TypeNameMap;
+		static TypeNameMap usedTypes;
+		TypeNameMap::iterator it = usedTypes.find(name);
+		if (it != usedTypes.end()) {
+			return *(it->second);
+		}
+		const osgIntrospection::Type &type =
+			osgIntrospection::Reflection::getType(name);
+		usedTypes.insert(std::make_pair(name, &type));
+		return type;
+	}
+
 	int staticMethodCall(lua_State *L) {
 		int top = lua_gettop(L);
 		const char *tname  = lua_tostring(L, lua_upvalueindex(1));
@@ -112,8 +125,8 @@ namespace osgLua {
 		// traverse the namespace
 		try {
 
-			const osgIntrospection::Type &type =
-			    osgIntrospection::Reflection::getType(base);
+			const osgIntrospection::Type &type = lookupType(base);
+			    //osgIntrospection::Reflection::getType(base);
 
 			// is it an enum ?
 			/// @todo Make methods that require an enum accept a long
@@ -153,8 +166,8 @@ namespace osgLua {
 		int top = lua_gettop(L);
 		std::string name(lua_tostring(L, lua_upvalueindex(1)));
 		try {
-			const osgIntrospection::Type &type =
-			    osgIntrospection::Reflection::getType(name);
+			const osgIntrospection::Type &type = lookupType(name);
+			    //osgIntrospection::Reflection::getType(name);
 
 			osgIntrospection::ValueList vl;
 			for (int i = 2; i <= top; ++i) {
