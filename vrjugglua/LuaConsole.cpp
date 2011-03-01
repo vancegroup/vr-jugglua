@@ -84,13 +84,14 @@ bool LuaConsole::getRunBufFromLuaGlobal() {
 	}
 
 	luabind::object runbufLua(luabind::globals(state.get())["runbuf"]);
-	if (!runbufLua) {
+	if (!runbufLua || luabind::type(runbufLua) == LUA_TNIL) {
 		throw std::runtime_error("Could not get a lua global named runbuf!");
 	}
 
-	_runbuf = luabind::object_cast<boost::shared_ptr<SynchronizedRunBuffer> >(runbufLua);
-	if (!_runbuf) {
-		throw std::runtime_error("Could not get a valid run buffer pointer from lua!");
+	try {
+		_runbuf = luabind::object_cast<boost::shared_ptr<SynchronizedRunBuffer> >(runbufLua);
+	} catch (luabind::cast_failed &) {
+		throw std::runtime_error("Could not get a valid run buffer pointer from lua - cast failed!");
 	}
 	return true;
 }
