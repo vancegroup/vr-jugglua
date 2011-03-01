@@ -20,6 +20,7 @@
 
 // Library includes
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string/trim.hpp>
 
 #include <vpr/System.h>
 
@@ -147,6 +148,22 @@ void LuaPath::_init(std::string const& arg0, std::string const& vrjlua_base) {
 	} else {
 		_root = _findFilePath(startingPlaces, "vrjlua-init.lua");
 		_luaDir = _root;
+	}
+	std::string sourceTreeIndicator = (fs::path(_luaDir)/"vrjlua-sourcetreeloc.lua").string();
+	if (fs::exists(sourceTreeIndicator)) {
+		std::ifstream df(sourceTreeIndicator.c_str());
+		if (df.is_open()) {
+			std::string line;
+			std::getline(df, line);
+			boost::algorithm::trim(line);
+			if (!line.empty()) {
+				VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
+					<< "LuaPath: Presence of file " << sourceTreeIndicator
+					<< " indicated we are running from a build tree, adding extra path hint " << line
+					<< VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
+				startingPlaces.push_back(line);
+			}
+		}
 	}
 	_shareDir = _findFilePath(startingPlaces, "assets/fonts/droid-fonts/DroidSans.ttf");
 #if __VJ_version >= 2003000

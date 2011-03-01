@@ -208,6 +208,10 @@ if(BUILD_FLTK_GUI)
 	include_directories(${FNFC_INCLUDE_DIRS} ${FLTK_INCLUDE_DIR})
 endif()
 
+# Add a flag for indicating the source tree location
+file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/${LUA_DIR}")
+file(WRITE "${CMAKE_BINARY_DIR}/${LUA_DIR}/vrjlua-sourcetreeloc.lua" "${CMAKE_SOURCE_DIR}")
+
 # Build the vrjugglua library
 add_subdirectory(vrjugglua)
 
