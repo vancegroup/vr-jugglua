@@ -1,4 +1,6 @@
 
+-- Based on http://www.openscenegraph.org/projects/osg/wiki/Support/ProgrammingGuide/osgShadow
+
 require("StockModels")
 
 require("osgShadow")
