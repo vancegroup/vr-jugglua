@@ -41,6 +41,7 @@ class LuaPath {
 		std::string const& getExeDir() const;
 		std::string const& getInitialPath() const;
 		std::string getPathToLuaScript(const std::string & scriptfn) const;
+
 		void chdir(std::string const& path);
 
 		void addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash);
