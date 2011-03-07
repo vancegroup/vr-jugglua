@@ -240,6 +240,9 @@ std::string LuaPath::getPathToLuaScript(const std::string & scriptfn) const {
 	return (fs::path(_luaDir) / scriptfn).string();
 }
 
+void LuaPath::chdir(std::string const& path) {
+	fs::current_path(path);
+}
 
 void LuaPath::addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash) {
 	_searchPaths.push_front(dirEndingInSlash + "?.lua");
