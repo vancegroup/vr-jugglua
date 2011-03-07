@@ -66,6 +66,10 @@ static luabind::object getModelSearchPath(lua_State *L) {
 	return searchPath;
 }
 
+static std::string findInModelSearchPath(std::string const& fn) {
+	return osgDB::findDataFile(fn);
+}
+
 void BindvrjLuaToLua(LuaStatePtr state) {
 #ifdef VERBOSE
 	std::cerr << "Registering vrjLua module functions with Lua..." << std::flush << std::endl;
@@ -73,6 +77,7 @@ void BindvrjLuaToLua(LuaStatePtr state) {
 	module(state.get(), "vrjLua") [
 		def("appendToModelSearchPath", &appendToModelSearchPath),
 		def("getModelSearchPath", &getModelSearchPath),
+		def("findInModelSearchPath", &findInModelSearchPath),
 		def("appendToLuaRequirePath", &appendToLuaRequirePath),
 		def("safePrint", &LuaScript::doPrint)
 	];
