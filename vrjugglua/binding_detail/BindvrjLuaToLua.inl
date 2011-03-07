@@ -21,6 +21,8 @@
 #include <luabind/luabind.hpp>
 
 #include <osgDB/Registry>
+#include <osgDB/FileUtils>
+#include <osgDB/FileNameUtils>
 
 // Standard includes
 #ifdef VERBOSE
@@ -31,10 +33,27 @@ namespace vrjLua {
 using namespace luabind;
 
 static void appendToModelSearchPath(std::string const& path) {
-	osgDB::Registry::instance()->getDataFilePathList().push_back(path);
+	std::string p = path;
+	if (osgDB::fileExists(path)) {
+		p = osgDB::convertFileNameToUnixStyle(osgDB::getRealPath(path));
+		if (osgDB::fileType(p) == osgDB::REGULAR_FILE) {
+			p = osgDB::getFilePath(p);
+		}
+	}
+	osgDB::Registry::instance()->getDataFilePathList().push_back(p);
 }
 
 static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
+	std::string p = path;
+	if (osgDB::fileExists(path)) {
+		p = osgDB::convertFileNameToUnixStyle(osgDB::getRealPath(path));
+		if (osgDB::fileType(p) == osgDB::REGULAR_FILE) {
+			p = osgDB::getFilePath(p);
+		}
+	}
+	if (p[p.size() - 1] != '/') {
+		p.push_back('/');
+	}
 	LuaPath::instance().addLuaRequirePath(borrowStatePtr(s), path);
 }
 
