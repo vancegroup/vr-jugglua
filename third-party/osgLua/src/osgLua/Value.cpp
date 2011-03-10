@@ -80,8 +80,12 @@ namespace osgLua {
 		if (lua_isnumber(L, index)) {
 			lua_Integer vi = lua_tointeger(L, index);
 			lua_Number  vf = lua_tonumber(L, index);
-
+			unsigned int vu = static_cast<unsigned int>(vi);
 			if (((lua_Number)vi) == vf) {
+				// OK, at least an integer
+				if (static_cast<lua_Integer>(vu) == vi) {
+					return osgIntrospection::Value(vu);
+				}
 				return osgIntrospection::Value(vi);
 			}
 			return osgIntrospection::Value(vf);
