@@ -63,8 +63,12 @@ end
 
 function Light(...)
 	local arg = {...}
-	local num = arg.number or 0 --- todo improve this
-	local light = osg.Light(num)
+	local num = arg.number
+	if num == nil then
+		num = 0 --- todo improve this
+	end
+	local light = osg.Light()
+	light:setLightNum(num)
 
 	if arg.ambient then
 		if type(arg.ambient) == "number" then
@@ -94,42 +98,35 @@ function Light(...)
 	end
 
 	-- Always set position
-	do
-		local pos = {0, -1, 0, 1}
-		local posOSG
-		local setLightType
-		if arg.directional then
-			pos[4] = 0
-			setLightType = "directional"
-		elseif arg.positional then
-			pos[4] = 1
-			setLightType = "positional"
-		end
-		if arg.position then
-			if type(arg.position) == "table" then
-				for i=1,3 do
-					pos[i] = arg.position[i]
+	local setLightType
+	local fourthPosition = 1
+	if arg.directional then
+		fourthPosition = 0
+		setLightType = "directional"
+	elseif arg.positional then
+		fourthPosition = 1
+		setLightType = "positional"
+	end
+	if arg.position == nil then
+		light:setPosition(osg.Vec4(0, 1, -1, fourthPosition))
+	else
+		if type(arg.position) == "table" then
+			if #(arg.position) == 4 then
+				if setLightType then
+					print("Warning: fourth value passed to 'position' overrides setting of light type as " .. setLightType)
 				end
-				if #arg.position == 4 then
-					if setLightType then
-						print("Warning: fourth value passed to 'position' overrides setting of light type as " .. setLightType)
-					end
-					pos[4] = arg.position[4]
-				end
-
-				
 			else
-				--- Assume it's a vec4 - perhaps a bad assumption
-				print("WARNING: Assuming your position value is an osg.Vec4")
-				posOSG = arg.position
+				arg.position[4] = fourthPosition
 			end
+			local osgvec = osg.Vec4(arg.position[1], arg.position[2], arg.position[3], arg.position[4])
+			print("Setting light position to " .. tostring(osgvec))
+			light:setPosition()
+			
+		else
+			--- Assume it's a vec4 - perhaps a bad assumption
+			print("WARNING: Assuming your position value is an osg.Vec4")
+			light:setPosition(arg.position)
 		end
-		
-		if not posOSG then
-			posOSG = osg.Vec4(pos[1], pos[2], pos[3], pos[4])
-		end
-		
-		light:setPosition(posOSG)
 	end
 	
 	if arg.direction then
