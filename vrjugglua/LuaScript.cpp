@@ -289,12 +289,11 @@ void LuaScript::initVrjKernelAsClusterSecondary(int port) {
 }
 
 void LuaScript::doPrint(std::string const& str) {
+	VRJLUA_MSG_START(dbgVRJLUA_APP, MSG_STATUS)
+			<< str
+			<< VRJLUA_MSG_END(dbgVRJLUA_APP, MSG_STATUS);
 	if (_printFunc) {
 		_printFunc(str);
-	} else {
-		VRJLUA_MSG_START(dbgVRJLUA_APP, MSG_STATUS)
-				<< str
-				<< VRJLUA_MSG_END(dbgVRJLUA_APP, MSG_STATUS);
 	}
 }
 
