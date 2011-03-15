@@ -159,7 +159,7 @@ void LuaConsole::captureStdOut() {
 void LuaConsole::captureStdErr() {
 	if (this->supportsAlternateLogging()) {
 		_loggingActive = true;
-		std::cout.rdbuf(_log.rdbuf());
+		std::cerr.rdbuf(_log.rdbuf());
 	}
 }
 
