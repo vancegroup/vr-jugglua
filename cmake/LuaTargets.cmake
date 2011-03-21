@@ -54,13 +54,18 @@ function(add_lua_target _target _dest)
 
 	set(ALLFILES)
 	foreach(fn ${ARGN})
+		# Produce an absolute path to the input file
 		if(IS_ABSOLUTE "${fn}")
-			set(fullpath "${fn}")
+			get_filename_component(fullpath "${fn}" ABSOLUTE)
 			get_filename_component(fn "${fn}" NAME)
 		else()
 			get_filename_component(fullpath "${CMAKE_CURRENT_SOURCE_DIR}/${fn}" ABSOLUTE)
 		endif()
-		add_custom_command(OUTPUT "${_dest}/${fn}"
+
+		# Clean up output file name
+		get_filename_component(absout "${_dest}/${fn}" ABSOLUTE)
+
+		add_custom_command(OUTPUT "${absout}"
 				COMMAND
 				${CMAKE_COMMAND}
 				ARGS -E make_directory "${_dest}"
@@ -70,10 +75,10 @@ function(add_lua_target _target _dest)
 				COMMAND
 				"${LUA_TARGET_LUAC_EXECUTABLE}"
 				ARGS -p "${fullpath}"
-				WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-				DEPENDS "${fullpath}"
-				COMMENT "Copying ${fullpath} to ${_dest}/${fn} and parsing...")
-		list(APPEND ALLFILES "${_dest}/${fn}")
+				MAIN_DEPENDENCY "${fn}"
+				VERBATIM
+				COMMENT "Copying ${fn} to ${absout} and parsing...")
+		list(APPEND ALLFILES "${absout}")
 	endforeach()
 
 	# Custom target depending on all the file copy commands
