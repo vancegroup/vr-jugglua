@@ -39,7 +39,6 @@ function(add_lua_target _target _dest)
 
 	if(NOT LUA_TARGET_LUAC_EXECUTABLE)
 		if(TARGET luac)
-			message(STATUS "luac target found, using that in add_lua_target")
 			set(LUA_TARGET_LUAC_EXECUTABLE luac)
 		else()
 			find_executable(LUA_TARGET_LUAC_EXECUTABLE
@@ -66,18 +65,18 @@ function(add_lua_target _target _dest)
 		get_filename_component(absout "${_dest}/${fn}" ABSOLUTE)
 
 		add_custom_command(OUTPUT "${absout}"
-				COMMAND
+			COMMAND
 				${CMAKE_COMMAND}
-				ARGS -E make_directory "${_dest}"
-				COMMAND
-				${CMAKE_COMMAND}
-				ARGS -E copy "${fullpath}" "${_dest}"
-				COMMAND
-				"${LUA_TARGET_LUAC_EXECUTABLE}"
-				ARGS -p "${fullpath}"
-				MAIN_DEPENDENCY "${fn}"
-				VERBATIM
-				COMMENT "Copying ${fn} to ${absout} and parsing...")
+			ARGS -E make_directory "${_dest}"
+			COMMAND
+			${CMAKE_COMMAND}
+			ARGS -E copy "${fullpath}" "${_dest}"
+			COMMAND
+			"${LUA_TARGET_LUAC_EXECUTABLE}"
+			ARGS -p "${fullpath}"
+			MAIN_DEPENDENCY "${fn}"
+			VERBATIM
+			COMMENT "Copying ${fn} to ${absout} and parsing...")
 		list(APPEND ALLFILES "${absout}")
 	endforeach()
 
