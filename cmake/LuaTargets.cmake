@@ -52,6 +52,7 @@ function(add_lua_target _target _dest)
 	endif()
 
 	set(ALLFILES)
+	set(SOURCES)
 	foreach(fn ${ARGN})
 		# Produce an absolute path to the input file
 		if(IS_ABSOLUTE "${fn}")
@@ -66,7 +67,7 @@ function(add_lua_target _target _dest)
 
 		add_custom_command(OUTPUT "${absout}"
 			COMMAND
-				${CMAKE_COMMAND}
+			${CMAKE_COMMAND}
 			ARGS -E make_directory "${_dest}"
 			COMMAND
 			${CMAKE_COMMAND}
@@ -77,12 +78,13 @@ function(add_lua_target _target _dest)
 			MAIN_DEPENDENCY "${fn}"
 			VERBATIM
 			COMMENT "Copying ${fn} to ${absout} and parsing...")
+		list(APPEND SOURCES "${fullpath}")
 		list(APPEND ALLFILES "${absout}")
 	endforeach()
 
 	# Custom target depending on all the file copy commands
 	add_custom_target(${_target}
-		SOURCES ${ARGN}
+		SOURCES ${SOURCES}
 		DEPENDS ${ALLFILES})
 	if(TARGET "${LUA_TARGET_LUAC_EXECUTABLE}")
 		get_property(_luac_imported TARGET "${LUA_TARGET_LUAC_EXECUTABLE}" PROPERTY IMPORTED)
