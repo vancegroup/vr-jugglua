@@ -16,6 +16,7 @@ SRC="$(readlink -f ${EXTRA}/${SRC_IN_RELATION_TO_EXTRA})"
 
 
 SPREADSHEET="${EXTRA}/include-spreadsheet.csv"
+SORTED="${EXTRA}/include-spreadsheet-sorted.csv"
 FLAGS="-I${BUILD} -I${SRC} -I${SRC}/third-party/luabind -I${SRC}/third-party/lua-5.1.4/src -I${SRC}/third-party/osgLua/include -DEMBEDDED_LUA -DOSGLUA_LIBRARY_STATIC -DLUABIND_MAX_BASES=3 -DLUABIND_MAX_ARITY=3 -x c++"
 
 
@@ -47,8 +48,12 @@ if [ "x$2" == "x" ]; then
 	echo "Processing luabind"
 	cd "${SRC}/third-party/luabind"
 	"${EXTRA}/includecomparison.sh" ${FLAGS} -- luabind/*.hpp >> "${SPREADSHEET}"
+
+	echo "Sorting"
+	sort --field-separator=, --key=2 -g "${SPREADSHEET}" > "${SORTED}"
 fi
 
+echo "Graphing"
 cd ${EXTRA}
 gnuplot <<EOF
 
@@ -77,7 +82,7 @@ set ylabel "Includes" rotate by -90
 set datafile separator ","
 
 # every ::2 skips the first line
-plot 'include-spreadsheet.csv' every ::2 using 3 title "Unique includes", \
+plot "${SORTED}" every ::2 using 3 title "Unique includes", \
 	'' every ::2 using 4:xtic(1) title "Repeat includes"
 
 EOF
