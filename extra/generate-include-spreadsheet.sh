@@ -27,24 +27,58 @@ FLAGS="-I${BUILD} -I${SRC} -I${SRC}/third-party/luabind -I${SRC}/third-party/lua
 
 ####
 # Actually create the spreadsheet.
+if [ "x$2" == "x" ]; then
+	# Replace existing contents with header row
+	cat > "${SPREADSHEET}" <<-EOF
+	"Filename","Total Includes","Unique Includes","Duplicate Includes"
+	EOF
 
-# Replace existing contents with header row
-cat > "${SPREADSHEET}" <<EOF
-"Filename","Total Includes","Unique Includes","Duplicate Includes"
+	# VR JuggLua headers
+	echo "Processing VR JuggLua"
+	cd "${SRC}"
+	"${EXTRA}/includecomparison.sh" ${FLAGS} -- vrjugglua/*.h >> "${SPREADSHEET}"
+
+	# osgLua headers
+	echo "Processing osgLua"
+	cd "${SRC}/third-party/osgLua/include"
+	"${EXTRA}/includecomparison.sh" ${FLAGS} -- osgLua/* >> "${SPREADSHEET}"
+
+	# luabind headers
+	echo "Processing luabind"
+	cd "${SRC}/third-party/luabind"
+	"${EXTRA}/includecomparison.sh" ${FLAGS} -- luabind/*.hpp >> "${SPREADSHEET}"
+fi
+
+cd ${EXTRA}
+gnuplot <<EOF
+
+set term postscript \
+	enhanced \
+	eps \
+	color \
+	size 7.5,10
+set output "| ps2pdf - includes.pdf"
+set boxwidth 0.9 absolute
+set style fill solid 1.00 border -1
+set style data histogram
+set style histogram rowstacked
+
+set auto x
+set xtic rotate by -90 scale 0
+set xtics nomirror rotate by -90
+set xlabel "Header File" rotate by -90
+
+set ytics 100  rotate by -90
+set ylabel "Includes" rotate by -90
+
+
+
+# load csv
+set datafile separator ","
+
+# every ::2 skips the first line
+plot 'include-spreadsheet.csv' every ::2 using 3 title "Unique includes", \
+	'' every ::2 using 4:xtic(1) title "Repeat includes"
+
 EOF
-
-# VR JuggLua headers
-echo "Processing VR JuggLua"
-cd "${SRC}"
-"${EXTRA}/includecomparison.sh" ${FLAGS} -- vrjugglua/*.h >> "${SPREADSHEET}"
-
-# osgLua headers
-echo "Processing osgLua"
-cd "${SRC}/third-party/osgLua/include"
-"${EXTRA}/includecomparison.sh" ${FLAGS} -- osgLua/* >> "${SPREADSHEET}"
-
-# luabind headers
-echo "Processing luabind"
-cd "${SRC}/third-party/luabind"
-"${EXTRA}/includecomparison.sh" ${FLAGS} -- luabind/*.hpp >> "${SPREADSHEET}"
 
