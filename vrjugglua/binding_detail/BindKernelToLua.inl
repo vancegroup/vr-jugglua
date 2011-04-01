@@ -28,10 +28,10 @@
 
 #if __VJ_version < 2003011
 #	include <vrj/Draw/OSG/OsgApp.h>
-	typedef vrj::OsgApp OsgApp;
+	typedef vrj::OsgApp KernelOsgApp;
 #else
 #	include <vrj/Draw/OSG/App.h>
-	typedef vrj::osg::App OsgApp;
+	typedef vrj::osg::App KernelOsgApp;
 #endif
 
 // Standard includes
@@ -217,7 +217,7 @@ namespace Kernel {
 	}
 
 	void setApplication(luabind::object app) {
-		vrj::Kernel::instance()->setApplication(luabind::object_cast<OsgApp*>(app));
+		vrj::Kernel::instance()->setApplication(luabind::object_cast<KernelOsgApp*>(app));
 	}
 
 	void loadConfigFile(const std::string & fn) {
