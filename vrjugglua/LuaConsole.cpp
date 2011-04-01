@@ -122,9 +122,9 @@ bool LuaConsole::addFile(std::string const& fn) {
 		throw std::runtime_error("Could not get the run buffer to add a file to!");
 	}
 	std::string code;
-	code = "dofile('";
+	code = "dofile([[";
 	code += fn;
-	code += "')\n";
+	code += "]])\n";
 
 	bool ret = addString(code);
 

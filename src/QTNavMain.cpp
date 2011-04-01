@@ -18,7 +18,6 @@
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
-#include <boost/algorithm/string/replace.hpp>
 
 // Standard includes
 #include <vector>
@@ -43,8 +42,6 @@ int main(int argc, char * argv[]) {
 		} else if (arg.find(".jconf") != std::string::npos) {
 			std::cerr << "WARNING: passing jconf files on the command line not yet supported!" << std::endl;
 		} else if (arg.find(".lua") != std::string::npos) {
-			// change to forward slashes.
-			boost::algorithm::replace_all(arg, "\\", "/");
 			std::cout << "Queuing up " << arg << " to run after startup..." << std::endl;
 			files.push_back(arg);
 		} else {
