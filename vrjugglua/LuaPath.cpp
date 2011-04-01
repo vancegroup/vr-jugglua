@@ -251,7 +251,7 @@ void LuaPath::addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingI
 }
 
 void LuaPath::updateLuaRequirePath(LuaStatePtr state) {
-	if (_searchPaths.size() == 0) {
+	if (_searchPaths.empty()) {
 		_populateSearchPathsVector(state);
 	}
 	_setLuaSearchPaths(state);
