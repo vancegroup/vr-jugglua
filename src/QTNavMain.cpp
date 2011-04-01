@@ -27,7 +27,6 @@ using namespace vrjLua;
 
 int main(int argc, char * argv[]) {
 	bool ret;
-	//QApplication app(argc, argv);
 
 	/// Tell it our application path
 	LuaPath lp = LuaPath::instance(argv[0]);
@@ -74,7 +73,7 @@ int main(int argc, char * argv[]) {
 	if (!ret) {
 		std::cout << "Could not load osgnav-testbed module!" << std::endl;
 #ifdef BUILD_WITHOUT_TERMINAL
-		console->appendToDisplay("-- Could not load osgnav-testbed module: see View->Show debug log for potential clues.");
+		console->appendToDisplay("-- ERROR: Could not load osgnav-testbed module: see View->Show debug log for potential clues.");
 		console->appendToDisplay("-- Application will not function properly - exit when finished viewing log.");
 		/// @todo tell the console to disable any active interaction (run button, open menu item, etc)
 		console->threadLoop();
