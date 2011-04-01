@@ -29,7 +29,7 @@
 
 namespace vrjLua {
 
-inline void state_no_op_deleter(lua_State *L) {
+inline void state_no_op_deleter(lua_State * /*L*/) {
 	return;
 }
 
