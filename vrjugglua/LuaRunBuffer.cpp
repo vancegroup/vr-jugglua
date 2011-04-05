@@ -76,9 +76,10 @@ void LuaRunBuffer::writeObject(vpr::ObjectWriter* writer) {
 void LuaRunBuffer::readObject(vpr::ObjectReader* reader) {
 	vpr::Guard<vpr::CondVar> guard(_cond, true);
 	_maxRun = reader->readUint32();
+	_buf.clear();
 	for (unsigned int i = 0; i < _maxRun; ++i) {
 		// Overwrite it all.
-		_buf[i] = (reader->readString());
+		_buf.push_back(reader->readString());
 	}
 	if (_buf.size() != _maxRun) {
 		VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_WARNING)
