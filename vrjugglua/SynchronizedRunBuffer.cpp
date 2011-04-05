@@ -107,6 +107,7 @@ namespace vrjLua {
 			_checkInit();
 			return _runBuf->addString(str, blocking);
 		} else {
+			std::cerr << "WARNING: can't add a string if the buffer isn't local!" << std::endl;
 			return false;
 		}
 	}
