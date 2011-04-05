@@ -254,4 +254,10 @@ void StubConsole::setTitle(std::string const& title) {
 				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
 }
 
+void StubConsole::disableAction() {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+				<< "StubConsole::disableAction called - no-op because we're a stub."
+				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+}
+
 } // end of vrjLua namespace

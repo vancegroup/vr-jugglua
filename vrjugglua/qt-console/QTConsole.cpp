@@ -173,6 +173,12 @@ void QTConsole::checkRunningState() {
 	}
 }
 
+void QTConsole::disableGUIAction() {
+	_ui->plainTextEdit->setEnabled(false);
+	_ui->buttonRun->setEnabled(false);
+	_ui->actionFileOpen->setEnabled(false);
+}
+
 bool QTConsole::threadLoop() {
 	if (_running) {
 		/// @todo notify that the thread is already running?
@@ -183,6 +189,7 @@ bool QTConsole::threadLoop() {
 
 	boost::shared_ptr<QTimer> timer(new QTimer(this));
 	connect(this, SIGNAL(textDisplaySignal(QString const&)), this, SLOT(addTextToDisplay(QString const&)));
+	connect(this, SIGNAL(disableGUISignal()), this, SLOT(disableGUIAction()));
 	connect(timer.get(), SIGNAL(timeout()), this, SLOT(checkRunningState()));
 	timer->start(POLLING_INTERVAL);
 
@@ -221,6 +228,11 @@ void QTConsole::addTextToDisplay(QString const& message) {
 
 void QTConsole::setTitle(std::string const& title) {
 	setWindowTitle(QString::fromStdString(title));
+}
+
+void QTConsole::disableAction() {
+	appendToDisplay("-- Disabling interaction console GUI on this node...");
+	Q_EMIT disableGUISignal();
 }
 
 } // end of vrjLua namespace

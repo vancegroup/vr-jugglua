@@ -51,6 +51,8 @@ class LuaConsole {
 		virtual void appendToDisplay(std::string const& message) = 0;
 
 		virtual void setTitle(std::string const& title) = 0;
+
+		virtual void disableAction() = 0;
 		/// @}
 
 		bool isValid() const;
@@ -100,6 +102,8 @@ class StubConsole : public LuaConsole {
 		virtual void appendToDisplay(std::string const& message);
 
 		virtual void setTitle(std::string const& title);
+
+		virtual void disableAction();
 		/// @}
 };
 
