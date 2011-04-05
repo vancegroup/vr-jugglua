@@ -66,10 +66,21 @@ void LuaRunBuffer::writeObject(vpr::ObjectWriter* writer) {
 	/// Set max # to run so we don't run anything added between
 	/// data synchronization and postframe
 	_maxRun = _buf.size();
+	if (_maxRun > 0) {
+		VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_STATUS)
+			<< "Told to write objects - will write " << _maxRun
+			<< VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_STATUS);
+	}
 	writer->writeUint32(_maxRun);
 	for (unsigned int i = 0; i < _maxRun; ++i) {
+		VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_STATUS)
+			<< "Writing: "<< _buf[i]
+			<< VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_STATUS);
 		writer->writeString(_buf[i]);
 	}
+	VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_STATUS)
+		<< "Done writing."
+		<< VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_STATUS);
 
 }
 
