@@ -193,6 +193,12 @@ void FLTKConsole::setTitle(std::string const& title) {
 	_view->copy_label(title.c_str());
 }
 
+void FLTKConsole::disableAction() {
+	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+				<< "FLTKConsole::disableAction called but not implemented!!!"
+				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+}
+
 bool FLTKConsole::_doThreadWork() {
 	return ((Fl::wait(1.0/60.0) >= 0) && (Fl::first_window() != NULL));
 }

@@ -15,6 +15,7 @@
 // Local includes
 #define NEED_RUNBUFFER_LUABIND_OBJECT
 #include "SynchronizedRunBuffer.h"
+#include "LuaConsole.h"
 
 // Library/third-party includes
 // - none
@@ -68,6 +69,11 @@ namespace vrjLua {
 			}
 		}
 		_earlyBirds.clear();
+
+		LuaConsole * console = LuaConsole::getConsole();
+		if (console && (!isLocal())) {
+			console->disableAction();
+		}
 	}
 
 	bool SynchronizedRunBuffer::isLocal() {
@@ -101,6 +107,7 @@ namespace vrjLua {
 			_checkInit();
 			return _runBuf->addString(str, blocking);
 		} else {
+			std::cerr << "WARNING: can't add a string if the buffer isn't local!" << std::endl;
 			return false;
 		}
 	}

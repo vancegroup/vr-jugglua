@@ -46,6 +46,8 @@ class FLTKConsole : public LuaConsole, boost::noncopyable {
 		virtual void appendToDisplay(std::string const& message);
 
 		virtual void setTitle(std::string const& title);
+
+		virtual void disableAction();
 		/// @}
 
 	protected:
