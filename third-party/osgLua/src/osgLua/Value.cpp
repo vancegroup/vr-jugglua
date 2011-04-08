@@ -41,6 +41,82 @@ namespace osgLua {
 		static void push_stdString(lua_State *L, const std::string &s) {
 			lua_pushstring(L, s.c_str());
 		}
+
+		template<typename T>
+		struct LuaBasicTypeTraits;
+
+		template<>
+		struct LuaBasicTypeTraits<bool> {
+			static void push(lua_State * L, bool val) {
+				lua_pushboolean(L, val);
+			}
+		};
+
+		template<typename T>
+		struct LuaIntegerTypeTraits {
+			static void push(lua_State * L, T val) {
+				lua_pushinteger(L, val);
+			}
+		};
+
+		template<typename T>
+		struct LuaNumberTypeTraits {
+			static void push(lua_State * L, T val) {
+				lua_pushnumber(L, val);
+			}
+		};
+
+		template<>
+		struct LuaBasicTypeTraits<int> :
+			public LuaIntegerTypeTraits<int> {};
+
+		template<>
+		struct LuaBasicTypeTraits<unsigned int> :
+			public LuaIntegerTypeTraits<unsigned int> {};
+
+		template<>
+		struct LuaBasicTypeTraits<lua_Integer> :
+			public LuaIntegerTypeTraits<lua_Integer> {};
+
+		template<>
+		struct LuaBasicTypeTraits<float> :
+			public LuaNumberTypeTraits<float> {};
+
+		template<>
+		struct LuaBasicTypeTraits<double> :
+			public LuaNumberTypeTraits<double> {};
+
+#if LUA_NUMBER != double && LUA_NUMBER != float
+		template<>
+		struct LuaBasicTypeTraits<lua_Number> :
+			public LuaNumberTypeTraits<lua_Number> {};
+#endif
+
+		template<>
+		struct LuaBasicTypeTraits<const char*> {
+			static void push(lua_State * L, const char* val) {
+				lua_pushstring(L, val);
+			}
+		};
+
+		template<>
+		struct LuaBasicTypeTraits<const std::string> {
+			static void push(lua_State * L, const std::string & val) {
+				lua_pushstring(L, val.c_str());
+			}
+		};
+
+		template<typename T>
+		bool tryToPushBasicType(lua_State *L, const osgIntrospection::Value &original) {
+			static const osgIntrospection::Type& testType =
+				osgIntrospection::Reflection::getType(extended_typeid<T>());
+			if (original.getType() == testType) {
+				LuaBasicTypeTraits<T>::push(L, osgIntrospection::getInstance<T>(original));
+				return true;
+			}
+			return false;
+		}
+
 	}
 
 	Value::Value(const osgIntrospection::Value &v) : _value(v) {
@@ -108,27 +184,15 @@ namespace osgLua {
 
 
 	void Value::push(lua_State *L, const osgIntrospection::Value &original) {
-#define basic_type(TYPE, NAME, FUNCTION) \
-		static const osgIntrospection::Type& NAME = \
-		  osgIntrospection::Reflection::getType(extended_typeid<TYPE>()); \
-			if ( original.getType() == NAME ) \
-			{ \
-				FUNCTION(L, (TYPE) \
-					osgIntrospection::getInstance<TYPE>(original)); \
-				return;	\
-			}
-
-		basic_type(bool, tbool,  lua_pushboolean)
-		basic_type(int, tint, lua_pushinteger)
-		basic_type(unsigned int, tuint, lua_pushinteger)
-		basic_type(lua_Integer, tlua_int, lua_pushinteger)
-		basic_type(float, tfloat, lua_pushnumber)
-		basic_type(double, tdouble, lua_pushnumber)
-		basic_type(lua_Number, tlnumber, lua_pushnumber)
-		basic_type(const char*, tcchar, lua_pushstring)
-		basic_type(const std::string, tstd_string, detail::push_stdString)
-
-#undef basic_type
+		if (detail::tryToPushBasicType<bool>(L, original)) { return; }
+		if (detail::tryToPushBasicType<int>(L, original)) { return; }
+		if (detail::tryToPushBasicType<unsigned int>(L, original)) { return; }
+		if (detail::tryToPushBasicType<lua_Integer>(L, original)) { return; }
+		if (detail::tryToPushBasicType<float>(L, original)) { return; }
+		if (detail::tryToPushBasicType<double>(L, original)) { return; }
+		if (detail::tryToPushBasicType<lua_Number>(L, original)) { return; }
+		if (detail::tryToPushBasicType<const char*>(L, original)) { return; }
+		if (detail::tryToPushBasicType<const std::string>(L, original)) { return; }
 
 		// if not is a basic type...
 		// create a userdata
