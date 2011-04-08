@@ -18,6 +18,7 @@
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
+#include <luabind/object.hpp>
 
 // Standard includes
 #include <vector>
@@ -34,22 +35,34 @@ int main(int argc, char * argv[]) {
 	/// Process command line args
 	bool stubConsole = false;
 	std::vector<std::string> files;
+	std::vector<std::string> args;
 	for (int i = 1; i < argc; ++i) {
 		std::string arg(argv[i]);
 		if (arg == "--stub") {
 			stubConsole = true;
+		/*
 		} else if (arg.find(".jconf") != std::string::npos) {
 			std::cerr << "WARNING: passing jconf files on the command line not yet supported!" << std::endl;
+		*/
 		} else if (arg.find(".lua") != std::string::npos) {
 			std::cout << "Queuing up " << arg << " to run after startup..." << std::endl;
 			files.push_back(arg);
 		} else {
-			std::cerr << "Unrecognized command line argument '" << arg << "', ignoring..." << std::endl;
+			//std::cerr << "Unrecognized command line argument '" << arg << "', ignoring..." << std::endl;
+			args.push_back(arg);
 		}
 	}
 
 	/// Create the script object
 	LuaScript script;
+	
+	/// Create the "arg" table
+	luabind::object arg = luabind::newtable(script.getLuaRawState());
+	arg[0] = std::string(argv[0]);
+	for (unsigned int i = 0; i < args.size(); ++i) {
+		arg[i+1] = args[i];
+	}
+	luabind::globals(script.getLuaRawState())["arg"] = arg;
 
 	/// Create the console GUI
 	boost::shared_ptr<LuaConsole> console;
