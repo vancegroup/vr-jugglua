@@ -72,6 +72,7 @@ class LuaScript {
 		static void doPrint(std::string const& str);
 
 		LuaStateWeakPtr getLuaState() const;
+		LuaStateRawPtr getLuaRawState() const;
 
 		bool isValid() const;
 

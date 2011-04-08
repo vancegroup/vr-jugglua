@@ -265,6 +265,11 @@ LuaStateWeakPtr LuaScript::getLuaState() const {
 	return _state;
 }
 
+
+LuaStateRawPtr LuaScript::getLuaRawState() const {
+	return _state.get();
+}
+
 boost::program_options::options_description LuaScript::getVrjOptionsDescriptions() {
 	return KernelState::getVrjOptionsDescriptions();
 }
