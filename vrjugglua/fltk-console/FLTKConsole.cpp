@@ -14,6 +14,7 @@
 
 // Internal Includes
 #include "FLTKConsole.h"
+#include "../VRJLuaOutput.h"
 
 // FLTK-generated source
 #include <vrjlua-fltk-console.h>
