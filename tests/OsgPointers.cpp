@@ -10,6 +10,7 @@
 #define BOOST_TEST_MODULE OsgPointers tests
 
 // Internal Includes
+#include <luabind/function.hpp>
 #include <vrjugglua/osgLuaBind.h>
 #include <vrjugglua/LuaScript.h>
 
