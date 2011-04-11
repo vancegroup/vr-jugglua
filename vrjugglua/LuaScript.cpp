@@ -17,6 +17,7 @@
 
 #include "OsgAppProxy.h"
 #include "LuaPath.h"
+#include "LuaGCBlock.h"
 
 #include "VRJLuaOutput.h"
 
@@ -68,16 +69,18 @@ LuaScript::LuaScript(const bool create) {
 			return;
 		}
 
-		lua_gc(_state.get(), LUA_GCSTOP, 0);  /* stop collector during initialization */
-		// Load default Lua libs
-		luaL_openlibs(_state.get());
+		{
+			/// RAII-style disabling of garbage collector during init
+			LuaGCBlock gcBlocker(_state.get());
+			// Load default Lua libs
+			luaL_openlibs(gcBlocker.state());
 
-		/// @todo Extend the path here for shared libraries?
-		//luabind::call_function<std::string>(_state.get(), "format", "%q", )
-		//luaL_dostring(_state.get(), "package.cpath = ")
+			/// @todo Extend the path here for shared libraries?
+			//luabind::call_function<std::string>(_state.get(), "format", "%q", )
+			//luaL_dostring(_state.get(), "package.cpath = ")
 
-		_applyBindings();
-		lua_gc(_state.get(), LUA_GCRESTART, 0);
+			_applyBindings();
+		}
 	}
 }
 
