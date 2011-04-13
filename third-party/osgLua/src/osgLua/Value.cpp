@@ -74,10 +74,14 @@ namespace osgLua {
 		struct LuaBasicTypeTraits<unsigned int> :
 			public LuaIntegerTypeTraits<unsigned int> {};
 
+		
+		/// @todo this is not the best way to do this
+#ifndef _WIN32
+		// On Windows, ptrdiff_t is just a typedef of integer.
 		template<>
 		struct LuaBasicTypeTraits<lua_Integer> :
 			public LuaIntegerTypeTraits<lua_Integer> {};
-
+#endif
 		template<>
 		struct LuaBasicTypeTraits<float> :
 			public LuaNumberTypeTraits<float> {};
@@ -85,11 +89,13 @@ namespace osgLua {
 		template<>
 		struct LuaBasicTypeTraits<double> :
 			public LuaNumberTypeTraits<double> {};
-
-#if LUA_NUMBER != double && LUA_NUMBER != float
+		/// @todo this is not the best way to do this
+#ifndef _WIN32
+#if (LUA_NUMBER != double) && (LUA_NUMBER != float)
 		template<>
 		struct LuaBasicTypeTraits<lua_Number> :
 			public LuaNumberTypeTraits<lua_Number> {};
+#endif
 #endif
 
 		template<>
