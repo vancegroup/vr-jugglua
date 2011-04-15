@@ -202,6 +202,9 @@ bool QTConsole::threadLoop() {
 		_ui->actionShow_debug_log->setEnabled(false);
 	}
 
+	/// Once GUI is ready, tell the console base class to redirect print statements.
+	QTimer::singleShot(0, this, SLOT(consoleReady()));
+
 	show();
 	_app->exec();
 
@@ -228,6 +231,10 @@ void QTConsole::addTextToDisplay(QString const& message) {
 
 void QTConsole::setTitle(std::string const& title) {
 	setWindowTitle(QString::fromStdString(title));
+}
+
+void QTConsole::consoleReady() {
+	_consoleIsReady();
 }
 
 void QTConsole::disableAction() {

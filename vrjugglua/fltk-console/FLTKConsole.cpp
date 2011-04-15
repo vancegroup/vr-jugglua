@@ -168,6 +168,7 @@ bool FLTKConsole::threadLoop() {
 
 	_running = true;
 	bool ret = true;
+	_consoleIsReady();
 	while (_running && vrj::Kernel::instance()->isRunning()) {
 		// Do the FLTK loop
 		ret = _doThreadWork();

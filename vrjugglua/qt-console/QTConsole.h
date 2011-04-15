@@ -84,6 +84,7 @@ class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 		void updateDebugLog();
 		void addTextToDisplay(QString const& message);
 		void disableGUIAction();
+		void consoleReady();
 
 	protected:
 		void _shared_init();

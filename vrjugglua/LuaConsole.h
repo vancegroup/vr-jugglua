@@ -73,6 +73,8 @@ class LuaConsole {
 		static LuaConsole * getConsole();
 
 	protected:
+		/// Call from subclasses to switch print function to the GUI Console print.
+		void _consoleIsReady();
 		static LuaConsole * s_console;
 
 		bool _loggingActive;

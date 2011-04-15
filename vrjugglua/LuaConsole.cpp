@@ -51,7 +51,6 @@ LuaConsole::LuaConsole() :
 	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
 	s_console = this;
-	_script.setPrintFunction(consolePrintFunction);
 	// A new script context is automatically created
 }
 
@@ -62,7 +61,6 @@ LuaConsole::LuaConsole(LuaScript const& script) :
 	std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
 	s_console = this;
-	_script.setPrintFunction(consolePrintFunction);
 	// Using existing (provided) script context
 }
 
@@ -195,6 +193,10 @@ LuaScript& LuaConsole::getScript() {
 	return _script;
 }
 
+void LuaConsole::_consoleIsReady() {
+	_script.setPrintFunction(consolePrintFunction);
+}
+
 
 void StubConsole::setup(int & argc, char * argv[]) {
 	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
@@ -229,6 +231,7 @@ StubConsole::~StubConsole() {
 }
 
 bool StubConsole::threadLoop() {
+	_consoleIsReady();
 	VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
 				<< "StubConsole::threadLoop called - joining the kernel thread because we're a stub."
 				<< VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
