@@ -38,86 +38,91 @@
 
 namespace osgLua {
 	namespace detail {
-		static void push_stdString(lua_State *L, const std::string &s) {
-			lua_pushstring(L, s.c_str());
-		}
 
+		/// Template used to designate lua equivalents of types.
 		template<typename T>
-		struct LuaBasicTypeTraits;
+		struct LuaEquivalent;
 
-		template<>
-		struct LuaBasicTypeTraits<bool> {
-			static void push(lua_State * L, bool val) {
-				lua_pushboolean(L, val);
-			}
+		/// shared definition for types convertible to lua_Number
+		struct is_lua_Number {
+			typedef lua_Number type;
 		};
 
+		/// shared definition for types convertible to lua_Integer
+		struct is_lua_Integer {
+			typedef lua_Integer type;
+		};
+
+		template<>
+		struct LuaEquivalent<double> : is_lua_Number {};
+
+		template<>
+		struct LuaEquivalent<float> : is_lua_Number {};
+
+		template<>
+		struct LuaEquivalent<int> : is_lua_Integer {};
+
+		template<>
+		struct LuaEquivalent<unsigned int> : is_lua_Integer {};
+
+		/// Forward declaration of templated way to push values into Lua
 		template<typename T>
-		struct LuaIntegerTypeTraits {
-			static void push(lua_State * L, T val) {
+		struct ToLua;
+
+		/// We know how to push lua_Integer
+		template<>
+		struct ToLua<lua_Integer> {
+			static void push(lua_State * L, lua_Integer const val) {
 				lua_pushinteger(L, val);
 			}
 		};
 
-		template<typename T>
-		struct LuaNumberTypeTraits {
-			static void push(lua_State * L, T val) {
+		/// We know how to push lua_Number
+		template<>
+		struct ToLua<lua_Number> {
+			static void push(lua_State * L, lua_Number const val) {
 				lua_pushnumber(L, val);
 			}
 		};
 
+		/// We know how to push bool
 		template<>
-		struct LuaBasicTypeTraits<int> :
-			public LuaIntegerTypeTraits<int> {};
+		struct ToLua<bool> {
+			static void push(lua_State * L, bool const val) {
+				lua_pushboolean(L, val);
+			}
+		};
 
+		/// We know how to push const char *
 		template<>
-		struct LuaBasicTypeTraits<unsigned int> :
-			public LuaIntegerTypeTraits<unsigned int> {};
-
-		
-		/// @todo this is not the best way to do this
-#ifndef _WIN32
-		// On Windows, ptrdiff_t is just a typedef of integer.
-		template<>
-		struct LuaBasicTypeTraits<lua_Integer> :
-			public LuaIntegerTypeTraits<lua_Integer> {};
-#endif
-		template<>
-		struct LuaBasicTypeTraits<float> :
-			public LuaNumberTypeTraits<float> {};
-
-		template<>
-		struct LuaBasicTypeTraits<double> :
-			public LuaNumberTypeTraits<double> {};
-		/// @todo this is not the best way to do this
-#ifndef _WIN32
-#if (LUA_NUMBER != double) && (LUA_NUMBER != float)
-		template<>
-		struct LuaBasicTypeTraits<lua_Number> :
-			public LuaNumberTypeTraits<lua_Number> {};
-#endif
-#endif
-
-		template<>
-		struct LuaBasicTypeTraits<const char*> {
+		struct ToLua<const char*> {
 			static void push(lua_State * L, const char* val) {
 				lua_pushstring(L, val);
 			}
 		};
 
+		/// We know how to push const std::string
 		template<>
-		struct LuaBasicTypeTraits<const std::string> {
+		struct ToLua<const std::string> {
 			static void push(lua_State * L, const std::string & val) {
 				lua_pushstring(L, val.c_str());
 			}
 		};
 
+		/// Fallback templated case: push value like its lua equivalent.
 		template<typename T>
-		bool tryToPushBasicType(lua_State *L, const osgIntrospection::Value &original) {
+		struct ToLua {
+			static void push(lua_State *L, T const& val) {
+				ToLua< typename LuaEquivalent<T>::type >::push(L, val);
+			}
+		};
+
+		template<typename T>
+		bool pushIfTypeIs(lua_State *L, const osgIntrospection::Value &original) {
 			static const osgIntrospection::Type& testType =
-				osgIntrospection::Reflection::getType(extended_typeid<T>());
+			    osgIntrospection::Reflection::getType(extended_typeid<T>());
 			if (original.getType() == testType) {
-				LuaBasicTypeTraits<T>::push(L, osgIntrospection::getInstance<T>(original));
+				ToLua<T>::push(L, osgIntrospection::getInstance<T>(original));
 				return true;
 			}
 			return false;
@@ -190,15 +195,36 @@ namespace osgLua {
 
 
 	void Value::push(lua_State *L, const osgIntrospection::Value &original) {
-		if (detail::tryToPushBasicType<bool>(L, original)) { return; }
-		if (detail::tryToPushBasicType<int>(L, original)) { return; }
-		if (detail::tryToPushBasicType<unsigned int>(L, original)) { return; }
-		if (detail::tryToPushBasicType<lua_Integer>(L, original)) { return; }
-		if (detail::tryToPushBasicType<float>(L, original)) { return; }
-		if (detail::tryToPushBasicType<double>(L, original)) { return; }
-		if (detail::tryToPushBasicType<lua_Number>(L, original)) { return; }
-		if (detail::tryToPushBasicType<const char*>(L, original)) { return; }
-		if (detail::tryToPushBasicType<const std::string>(L, original)) { return; }
+		if (detail::pushIfTypeIs<bool>(L, original)) {
+			return;
+		}
+
+		if (detail::pushIfTypeIs<int>(L, original)) {
+			return;
+		}
+		if (detail::pushIfTypeIs<unsigned int>(L, original)) {
+			return;
+		}
+		if (detail::pushIfTypeIs<lua_Integer>(L, original)) {
+			return;
+		}
+
+		if (detail::pushIfTypeIs<float>(L, original)) {
+			return;
+		}
+		if (detail::pushIfTypeIs<double>(L, original)) {
+			return;
+		}
+		if (detail::pushIfTypeIs<lua_Number>(L, original)) {
+			return;
+		}
+
+		if (detail::pushIfTypeIs<const char*>(L, original)) {
+			return;
+		}
+		if (detail::pushIfTypeIs<const std::string>(L, original)) {
+			return;
+		}
 
 		// if not is a basic type...
 		// create a userdata
