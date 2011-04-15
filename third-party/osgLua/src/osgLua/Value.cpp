@@ -153,12 +153,13 @@ namespace osgLua {
 
 	osgIntrospection::Value getValue(lua_State *L, int index) {
 		int top = lua_gettop(L);
-		index = (index>0)? index : top + index + 1;
+		index = (index > 0) ? index : top + index + 1;
 
 		if (lua_isuserdata(L, index)) {
 			Value *v = Value::get(L, index);
-			if (v) return v->get();
-			else {
+			if (v) {
+				return v->get();
+			} else {
 				luaL_error(L,
 				           "userdata can not be used as osgIntrospection::Value");
 			}
@@ -242,23 +243,23 @@ namespace osgLua {
 
 	Value* Value::get(lua_State *L, int index) {
 		int top = lua_gettop(L);
-		index = (index>0)? index : top + index + 1;
+		index = (index > 0) ? index : top + index + 1;
 
 		if (_hasOsgLuaValueMetatable(L, index)) {
-			Value *v = _rawGet(L,index);
-			lua_settop(L,top);
+			Value *v = _rawGet(L, index);
+			lua_settop(L, top);
 			return v;
 		}
 
-		lua_settop(L,top);
+		lua_settop(L, top);
 		return 0;
 	}
 
 	Value* Value::getRequired(lua_State *L, int index) {
-		Value *a = Value::get(L,index);
+		Value *a = Value::get(L, index);
 		if (a == 0) {
 			luaL_error(L, "%s:%d Expected a osgLua userdata but get %s",
-			           __FILE__,__LINE__, lua_typename(L,lua_type(L, index))) ;
+			           __FILE__, __LINE__, lua_typename(L, lua_type(L, index))) ;
 		}
 		return a;
 	}
@@ -266,12 +267,13 @@ namespace osgLua {
 
 	int Value::getTypeInfo(lua_State *L) {
 		const osgIntrospection::Type *type = 0;
-		Value *v = Value::get(L,1);
-		if (v) type = &(v->getType());
-		else if (lua_isstring(L,1)) {
+		Value *v = Value::get(L, 1);
+		if (v) {
+			type = &(v->getType());
+		} else if (lua_isstring(L, 1)) {
 			try {
 				const osgIntrospection::Type &t =
-				    osgIntrospection::Reflection::getType(lua_tostring(L,1));
+				    osgIntrospection::Reflection::getType(lua_tostring(L, 1));
 				type = &t;
 			} catch (osgIntrospection::TypeNotFoundException&) {
 				return 0;
@@ -296,9 +298,11 @@ namespace osgLua {
 		for (osgIntrospection::TypeMap::const_iterator i = map.begin();
 		        i != map.end(); ++i) {
 			osgIntrospection::Type *type = i->second;
-			if (!type->isDefined() || type->isPointer()) continue;
+			if (!type->isDefined() || type->isPointer()) {
+				continue;
+			}
 			lua_pushstring(L, type->getQualifiedName().c_str());
-			lua_rawseti(L,-2,counter);
+			lua_rawseti(L, -2, counter);
 			counter++;
 
 		}
@@ -322,7 +326,7 @@ namespace osgLua {
 			Value::push(L, returnedval);
 			return 1;
 		} catch (osgIntrospection::Exception &e) {
-			luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+			luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 		}
 		return 0;
 	}
