@@ -22,6 +22,7 @@ set(LUA_TEST_SCRIPTS
 	osg-accept-visitor
 	osglua-enums
 	osglua-matrixmath
+	osglua-missingmethod
 	osglua-props
 	osglua-vectormath)
 
