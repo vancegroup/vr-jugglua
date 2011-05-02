@@ -115,7 +115,7 @@ namespace osgLua {
 			}
 			*/
 
-			if (!method) {
+			if (!method && vl.size() > 0) {
 				if (vl.back().getType().isNonConstPointer() &&
 				        vl.back().getInstanceType().isSubclassOf(osgIntrospection::Reflection::getType("osg::NodeVisitor"))) {
 					// OK, we have a pointer to a visitor, let's search again after dereferencing
