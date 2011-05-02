@@ -20,6 +20,7 @@ set(LUA_TEST_SCRIPTS
 	osgapp-delegate-initdevices
 	osgapp-delegate-devicedata
 	osg-accept-visitor
+	osglua-dotnotcolon
 	osglua-enums
 	osglua-matrixmath
 	osglua-missingmethod
