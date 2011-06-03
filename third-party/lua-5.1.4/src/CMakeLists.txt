@@ -72,14 +72,16 @@ if(WIN32)
 elseif(APPLE)
 	add_definitions(-DLUA_USE_MACOSX)
 else() # Linux
-	add_definitions(-DLUA_USE_LINUX)
-
 	find_library(READLINE_LIBRARY
 		NAMES
 		readline)
 	find_package(Curses)
-
-	list(APPEND LUA_EXTRA_LIBS ${READLINE_LIBRARY} ${CURSES_LIBRARIES})
+	if(READLINE_LIBRARY AND CURSES_FOUND)
+		list(APPEND LUA_EXTRA_LIBS ${READLINE_LIBRARY} ${CURSES_LIBRARIES})
+		add_definitions(-DLUA_USE_LINUX)
+	else()
+		add_definitions(-DLUA_USE_POSIX -DLUA_USE_DLOPEN)
+	endif()
 endif()
 
 if(CMAKE_DL_LIBS)
