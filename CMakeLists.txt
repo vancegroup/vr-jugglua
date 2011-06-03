@@ -173,7 +173,7 @@ endif()
 if(BUILD_FLTK_GUI)
 	set(CMAKE_FIND_APPBUNDLE NEVER) # Don't find Fluid.app the single-site browser
 	find_package(FLTK REQUIRED)
-	if(NOT FLUID_EXECUTABLE)
+	if(NOT FLTK_FLUID_EXECUTABLE)
 		message(FATAL_ERROR "Could not find the FLTK Fluid UI design tool!")
 	endif()
 endif()
