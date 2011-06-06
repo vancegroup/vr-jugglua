@@ -1,3 +1,6 @@
 [submodule "util/jenkins-ctest-plugin"]
 	path = util/jenkins-ctest-plugin
 	url = git://github.com/rpavlik/jenkins-ctest-plugin.git
+[submodule "third-party/lua_modules/lua-docstring/lunatest"]
+	path = third-party/lua_modules/lua-docstring/lunatest
+	url = git://github.com/silentbicycle/lunatest.git
