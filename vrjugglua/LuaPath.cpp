@@ -23,6 +23,7 @@
 #include <boost/algorithm/string/trim.hpp>
 
 #include <vpr/System.h>
+#include <vrj/vrjParam.h> // for __VJ_version define
 
 // Standard includes
 #include <fstream>
