@@ -31,16 +31,6 @@ namespace osgLua {
 
 	namespace detail {
 		template<class T>
-		T addVectors(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
-			return osgIntrospection::variant_cast<T>(a) + osgIntrospection::variant_cast<T>(b);
-		}
-
-		template<class T>
-		T subtractVectors(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
-			return osgIntrospection::variant_cast<T>(a) - osgIntrospection::variant_cast<T>(b);
-		}
-
-		template<class T>
 		T scaleVector(osgIntrospection::Value const& vector, double scalar) {
 			return osgIntrospection::variant_cast<T>(vector) * scalar;
 		}
@@ -49,8 +39,9 @@ namespace osgLua {
 
 	namespace Vector {
 
-		template<class T>
-		int add(lua_State *L) {
+		/// Shared function template to handle both addition and subtraction.
+		template<class T, typename FunctorType>
+		int apply_binary_typed_predicate(lua_State *L, FunctorType predicate) {
 			Value *a = Value::getRequired(L,1);
 			Value *b = Value::getRequired(L,2);
 
@@ -60,33 +51,23 @@ namespace osgLua {
 			static const osgIntrospection::Type& myType =
 			    osgIntrospection::Reflection::getType(extended_typeid<T>());
 			if (typeA == myType && typeB == myType) {
-				osgIntrospection::Value ret = detail::addVectors<T>(a->get(), b->get());
+				osgIntrospection::Value ret = predicate(osgIntrospection::variant_cast<T>(a->get()), osgIntrospection::variant_cast<T>(b->get()));
 				Value::push(L, ret);
 				return 1;
 			} else {
-				luaL_error(L,"[%s:%d] Could not add instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+				luaL_error(L,"[%s:%d] Could not perform math on instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
 			}
 			return 0;
 		}
 
 		template<class T>
+		int add(lua_State *L) {
+			return apply_binary_typed_predicate<T>(L, std::plus<T>());
+		}
+
+		template<class T>
 		int sub(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
-			Value *b = Value::getRequired(L,2);
-
-			const osgIntrospection::Type &typeA = a->getType();
-			const osgIntrospection::Type &typeB = b->getType();
-
-			static const osgIntrospection::Type& myType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
-			if (typeA == myType && typeB == myType) {
-				osgIntrospection::Value ret = detail::subtractVectors<T>(a->get(), b->get());
-				Value::push(L, ret);
-				return 1;
-			} else {
-				luaL_error(L,"[%s:%d] Could not subtract instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
-			}
-			return 0;
+			return apply_binary_typed_predicate<T>(L, std::minus<T>());
 		}
 
 		template<class T>
