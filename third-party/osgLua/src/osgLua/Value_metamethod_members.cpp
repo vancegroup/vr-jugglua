@@ -44,6 +44,19 @@ namespace osgLua {
 		return 0;
 	}
 
+	static const osgIntrospection::PropertyInfo * lookupProperty(const osgIntrospection::Type &type, std::string const& memName) {
+		osgIntrospection::PropertyInfoList props;
+		type.getAllProperties(props);
+		if (props.size() > 0) {
+			for (unsigned int i = 0; i < props.size(); ++i) {
+				if (props[i]->getName() == memName) {
+					return props[i];
+				}
+			}
+		}
+		return NULL;
+	}
+
 	int Value::_index(lua_State *L) {
 		Value *v = _rawGet(L,1);
 		if (lua_isstring(L,2)) {
@@ -54,28 +67,22 @@ namespace osgLua {
 			}
 			//std::string cname = type.getQualifiedName();
 
-			const char * memberName = lua_tostring(L, 2);
-			std::string memName(memberName);
-			osgIntrospection::PropertyInfoList props;
-			type.getAllProperties(props);
-			if (props.size() > 0) {
-				for (unsigned int i = 0; i < props.size(); ++i) {
-					if (props[i]->getName() == memName) {
-						if (props[i]->isIndexed()) {
-							/// @todo implement indexed properties
-							luaL_error(L, "Indexed properties are not yet implemented in osgLua");
-						} else if (!props[i]->canGet()) {
-							luaL_error(L, "Property %s defined as not gettable", props[i]->getName().c_str());
-						} else {
-							//std::cout << "Getting a property named " << props[i]->getName() << std::endl;
-							osgIntrospection::Value propVal = props[i]->getValue(v->get());
-							Value::push(L, propVal);
-							return 1;
-						}
-					}
+			const osgIntrospection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));
+			if (prop) {
+				if (prop->isIndexed()) {
+					/// @todo implement indexed properties
+					luaL_error(L, "Indexed properties are not yet implemented in osgLua");
+				} else if (!prop->canGet()) {
+					luaL_error(L, "Property %s defined as not gettable", prop->getName().c_str());
+				} else {
+					//std::cout << "Getting a property named " << props[i]->getName() << std::endl;
+					osgIntrospection::Value propVal = prop->getValue(v->get());
+					Value::push(L, propVal);
+					return 1;
 				}
 			}
 
+			// OK, it's not a property, assume it's a method.
 			lua_pushvalue(L,2); // copy the name
 			lua_pushcclosure(L, Value::_methodCall,1);
 			return 1;
@@ -171,28 +178,21 @@ namespace osgLua {
 			}
 			//std::string cname = type.getQualifiedName();
 
-			const char * memberName = lua_tostring(L, 2);
-			std::string memName(memberName);
-			osgIntrospection::PropertyInfoList props;
-			type.getAllProperties(props);
-			if (props.size() > 0) {
-				for (unsigned int i = 0; i < props.size(); ++i) {
-					if (props[i]->getName() == memName) {
-						if (props[i]->isIndexed()) {
-							/// @todo implement indexed properties
-							luaL_error(L, "Indexed properties are not yet implemented in osgLua");
-						} else if (!props[i]->canSet()) {
-							luaL_error(L, "Property %s defined as not settable", props[i]->getName().c_str());
-						} else {
-							std::cout << "Setting a property named " << props[i]->getName() << std::endl;
-							props[i]->setValue(v->get(), newVal->get());
-							return 0;
-						}
-					}
+			const osgIntrospection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));
+			if (prop) {
+				if (prop->isIndexed()) {
+					/// @todo implement indexed properties
+					luaL_error(L, "Indexed properties are not yet implemented in osgLua");
+				} else if (!prop->canSet()) {
+					luaL_error(L, "Property %s defined as not settable", prop->getName().c_str());
+				} else {
+					std::cout << "Setting a property named " << prop->getName() << std::endl;
+					prop->setValue(v->get(), newVal->get());
+					return 0;
 				}
 			}
 
-			luaL_error(L, "No property %s defined in %s", memberName, type.getQualifiedName().c_str());
+			luaL_error(L, "No property %s defined in %s", lua_tostring(L, 2), type.getQualifiedName().c_str());
 
 		}
 		// maybe ... if is an integer... access indexed data
