@@ -34,6 +34,8 @@
 #include <osg/Vec4d>
 #include <osg/Vec3d>
 
+#include <functional>
+
 namespace osgLua {
 
 
@@ -110,8 +112,9 @@ namespace osgLua {
 			return 0;
 		}
 
-		template<class T>
-		int eq(lua_State *L) {
+		/// Shared function template to handle both equality and less-than comparison.
+		template<class T, typename FunctorType>
+		int apply_binary_bool_predicate(lua_State *L, FunctorType predicate) {
 			Value *a = Value::getRequired(L,1);
 			Value *b = Value::getRequired(L,2);
 
@@ -121,12 +124,10 @@ namespace osgLua {
 			static const osgIntrospection::Type& myType =
 			    osgIntrospection::Reflection::getType(extended_typeid<T>());
 			if (typeA == myType && typeB == myType) {
-				bool ret = (osgIntrospection::variant_cast<T>(a->get()) == osgIntrospection::variant_cast<T>(b->get()));
+				bool ret = predicate(osgIntrospection::variant_cast<T>(a->get()), osgIntrospection::variant_cast<T>(b->get()));
 				lua_pushboolean(L, ret);
 				return 1;
 			} else {
-				/// @todo figure out why line 11 in osglua-matrixmath.lua fails without this
-				//return value_metamethods::eq(L);
 				luaL_error(L,"[%s:%d] Could not compare instances of %s, %s, in comparator for %s",__FILE__,__LINE__,
 				           typeA.getQualifiedName().c_str(),
 				           typeB.getQualifiedName().c_str(),
@@ -136,26 +137,13 @@ namespace osgLua {
 		}
 
 		template<class T>
+		int eq(lua_State *L) {
+			return apply_binary_bool_predicate<T>(L, std::equal_to<T>());
+		}
+
+		template<class T>
 		int lt(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
-			Value *b = Value::getRequired(L,2);
-
-			const osgIntrospection::Type &typeA = a->getType();
-			const osgIntrospection::Type &typeB = b->getType();
-
-			static const osgIntrospection::Type& myType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
-			if (typeA == myType && typeB == myType) {
-				bool ret = (osgIntrospection::variant_cast<T>(a->get()) < osgIntrospection::variant_cast<T>(b->get()));
-				lua_pushboolean(L, ret);
-				return 1;
-			} else {
-				luaL_error(L,"[%s:%d] Could not compare instances of %s, %s, in comparator for %s",__FILE__,__LINE__,
-				           typeA.getQualifiedName().c_str(),
-				           typeB.getQualifiedName().c_str(),
-				           myType.getQualifiedName().c_str());
-			}
-			return 0;
+			return apply_binary_bool_predicate<T>(L, std::less<T>());
 		}
 
 		template<class T>
