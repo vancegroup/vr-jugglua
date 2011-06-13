@@ -2,24 +2,6 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
-if(BUILD_EMBEDDED_LUA)
-	# Lua 5.1.4-3 (that is, patch level 3)
-	add_subdirectory(lua-5.1.4/src)
-	set(LUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/lua-5.1.4/src")
-	set(LUA_INCLUDE_DIRS ${LUA_INCLUDE_DIRS} PARENT_SCOPE)
-	set(LUA_LIBRARIES lua)
-	set(LUA_LIBRARIES ${LUA_LIBRARIES} PARENT_SCOPE)
-	set(LUA51_FOUND YES)
-
-	add_subdirectory(luabind)
-	set(LUABIND_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/luabind" ${LUA_INCLUDE_DIRS})
-	set(LUABIND_INCLUDE_DIRS ${LUABIND_INCLUDE_DIRS} PARENT_SCOPE)
-
-	add_subdirectory(osgLua)
-	set(OSGLUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/osgLua/include" ${LUA_INCLUDE_DIRS})
-	set(OSGLUA_INCLUDE_DIRS ${OSGLUA_INCLUDE_DIRS} PARENT_SCOPE)
-endif()
-
 if(BUILD_FLTK_GUI)
 	add_subdirectory(Fl_Native_File_Chooser-0.86)
 	set(FNFC_LIBRARY ${FNFC_LIBRARY} PARENT_SCOPE)
@@ -30,6 +12,27 @@ if(BUILD_QT_GUI)
 	#add_subdirectory(qconsole2)
 	#set(QCONSOLE_LIBRARY ${QCONSOLE_LIBRARY} PARENT_SCOPE)
 	#set(QCONSOLE_INCLUDE_DIRS ${QCONSOLE_INCLUDE_DIRS} PARENT_SCOPE)
+endif()
+
+if(BUILD_EMBEDDED_LUA)
+	# Lua 5.1.4-3 (that is, patch level 3)
+	add_subdirectory(lua-5.1.4/src)
+	set(LUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/lua-5.1.4/src")
+	set(LUA_INCLUDE_DIRS ${LUA_INCLUDE_DIRS} PARENT_SCOPE)
+	set(LUA_LIBRARIES lua)
+	set(LUA_LIBRARIES ${LUA_LIBRARIES} PARENT_SCOPE)
+	set(LUA51_FOUND YES)
+
+	if(BUILD_LUA_AS_CPP)
+		add_definitions(-DLUABIND_CPLUSPLUS_LUA)
+	endif()
+	add_subdirectory(luabind)
+	set(LUABIND_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/luabind" ${LUA_INCLUDE_DIRS})
+	set(LUABIND_INCLUDE_DIRS ${LUABIND_INCLUDE_DIRS} PARENT_SCOPE)
+
+	add_subdirectory(osgLua)
+	set(OSGLUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/osgLua/include" ${LUA_INCLUDE_DIRS})
+	set(OSGLUA_INCLUDE_DIRS ${OSGLUA_INCLUDE_DIRS} PARENT_SCOPE)
 endif()
 
 # Lua stdlib release 15

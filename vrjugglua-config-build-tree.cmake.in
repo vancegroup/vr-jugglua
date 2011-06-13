@@ -46,5 +46,9 @@ if((NOT TARGET luac) AND (EXISTS "${_luac_target_file}"))
 	include("${_luac_target_file}")
 endif()
 
+set(BUILD_LUA_AS_CPP @BUILD_LUA_AS_CPP@)
+if(BUILD_LUA_AS_CPP)
+	list(APPEND VRJUGGLUA_DEFINITIONS -DLUABIND_CPLUSPLUS_LUA)
+endif()
 
 set(VRJUGGLUA_FOUND ON)

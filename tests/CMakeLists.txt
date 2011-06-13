@@ -3,6 +3,10 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
+if(BUILD_LUA_AS_CPP)
+	add_definitions(-DLUABIND_CPLUSPLUS_LUA)
+endif()
+
 set(TESTS_DATA "${CMAKE_CURRENT_SOURCE_DIR}/data")
 set(LUA_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luatests")
 
