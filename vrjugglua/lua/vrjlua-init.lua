@@ -5,8 +5,12 @@ require("help")
 -- Override print function with threadsafe Juggler one
 do
 	local oldprint = print
-	print = function(s)
-		vrjLua.safePrint(tostring(s))
+	print = function(...)
+		local argStrings = {}
+		for _, v in ipairs{...} do
+			table.insert(argStrings, tostring(v))
+		end
+		vrjLua.safePrint(table.concat(argStrings, "\t"))
 	end
 end
 
