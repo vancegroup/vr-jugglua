@@ -116,27 +116,9 @@ bool LuaRunBuffer::addFile(const std::string & filename, bool blocking) {
 						<< VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_WARNING);
 		return false;
 	}
-	std::ifstream file(filename.c_str());
-	if (!file.is_open()) {
-		VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_WARNING)
-				<< "Could not open file: "
-				<< filename
-				<< VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_WARNING);
-		return false;
-	}
-	std::string code;
-	while (!file.eof()) {
-		std::string line;
-		std::getline(file, line);
-		code += "\n" + line;
-	}
-	file.close();
-
-	// Now just add the code to the buffer using addString
-	// slightly inefficient if we are not blocking - might have
-	// to read again later - but better than hogging the
-	// critical section
-	return addString(code, blocking);
+	std::ostringstream ss;
+	ss << "dofile([==[" << filename << "]==])";
+	return addString(ss.str(), blocking);
 }
 
 bool LuaRunBuffer::addString(const std::string & str, bool blocking) {
