@@ -1,3 +1,7 @@
+function clearScene()
+	RelativeTo.World:removeChildren(0, RelativeTo.World:getNumChildren())
+	RelativeTo.Room:removeChildren(0, RelativeTo.World:getNumChildren())
+end
 
 function Degrees(d)
 	return d * 3.141592653589 / 180
