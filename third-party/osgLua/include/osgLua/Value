@@ -20,8 +20,9 @@
 
 #include <osgLua/LuaInclude>
 
-#include <osgIntrospection/Value>
-#include <osgIntrospection/Type>
+#include <osgLua/IntrospectionValue>
+#include <osgLua/IntrospectionType>
+
 #include <osg/Referenced>
 #include <osg/ref_ptr>
 

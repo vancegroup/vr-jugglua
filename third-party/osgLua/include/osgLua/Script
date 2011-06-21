@@ -16,6 +16,8 @@
 #ifndef OSGLUA_SCRIPT_
 #define OSGLUA_SCRIPT_
 
+#include <osgLua/Config>
+
 #if defined(_MSC_VER)
 #  if defined( OSGLUA_LIBRARY_STATIC )
 #    define OSGLUA_API
@@ -30,7 +32,7 @@
 
 #include <osg/ref_ptr>
 #include <osg/Referenced>
-#include <osgIntrospection/Type>
+#include <osgLua/IntrospectionType>
 #include <osgLua/LuaInclude>
 
 namespace osgLua {

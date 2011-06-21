@@ -17,6 +17,8 @@
 #ifndef OSGLUA_LUAINCLUDE
 #define OSGLUA_LUAINCLUDE
 
+#include <osgLua/Config>
+
 #ifdef OSGLUA_LUA_PREFIX
 #   include OSGLUA_LUA_PREFIX
 #endif

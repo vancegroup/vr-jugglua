@@ -21,8 +21,8 @@
 #include "Type.h"
 #include "LuaIncludeFull.h"
 
-#include <osgIntrospection/Value>
-#include <osgIntrospection/Type>
+#include <osgLua/IntrospectionValue>
+#include <osgLua/IntrospectionType>
 
 namespace osgLua {
 

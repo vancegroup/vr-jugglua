@@ -42,6 +42,8 @@ option(INSTALL_CXX_SDK "Should we install the headers and libraries needed for C
 
 option(BUILD_WITHOUT_TERMINAL "Build GUI applications without the terminal when possible." on)
 
+option(BUILD_WITH_CPPINTROSPECTION "Build against cppintrospection instead of osgIntrospection." off)
+
 # Define advanced options
 option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app - highly recommended." ON)
 option(BUILD_LUA_UTILS "Build a stock, standalone lua-interpreter and luac" ON)
@@ -128,8 +130,11 @@ if(WIN32)
 endif()
 
 # OpenSceneGraph
+if(NOT BUILD_WITH_CPPINTROSPECTION)
+	set(OSGINTROSPECTION_COMPONENT osgIntrospection)
+endif()
 include(SearchProgramFilesForOpenSceneGraph)
-find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgUtil osgIntrospection)
+find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgUtil ${OSGINTROSPECTION_COMPONENT})
 list(APPEND EXTRA_LIBS ${OPENSCENEGRAPH_LIBRARIES})
 
 include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
@@ -139,6 +144,13 @@ if(WIN32)
     foreach(_dir ${OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS})
         list(APPEND RUNTIME_LIBRARY_DIRS ${_dir}/../bin)
     endforeach()
+endif()
+
+
+if(BUILD_WITH_CPPINTROSPECTION)
+	find_package(cppintrospection)
+	list(APPEND EXTRA_LIBS ${CPPINTROSPECTION_LIBRARIES})
+	include_directories(${CPPINTROSPECTION_INCLUDE_DIRS})
 endif()
 
 # VR Juggler

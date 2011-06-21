@@ -19,12 +19,22 @@
 
 #include "LuaIncludeFull.h"
 
-#include <osgIntrospection/Reflection>
-#include <osgIntrospection/MethodInfo>
-#include <osgIntrospection/ConstructorInfo>
-#include <osgIntrospection/Utility>
-#include <osgIntrospection/Value>
-#include <osgIntrospection/Type>
+#include <osgLua/Config>
+
+#ifdef OSGLUA_USE_CPPINTROSPECTION
+#	include <cppintrospection/Reflection>
+#	include <cppintrospection/MethodInfo>
+#	include <cppintrospection/ConstructorInfo>
+#	include <cppintrospection/Utility>
+#else
+#	include <osgIntrospection/Reflection>
+#	include <osgIntrospection/MethodInfo>
+#	include <osgIntrospection/ConstructorInfo>
+#	include <osgIntrospection/Utility>
+#endif
+
+#include <osgLua/IntrospectionValue>
+#include <osgLua/IntrospectionType>
 
 #include <iostream>
 #include <sstream>

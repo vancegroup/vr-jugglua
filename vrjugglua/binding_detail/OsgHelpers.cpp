@@ -22,8 +22,8 @@
 
 #include <osgLua/Value>
 
-#include <osgIntrospection/Value>
-#include <osgIntrospection/variant_cast>
+#include <osgLua/IntrospectionValue>
+#include <osgLua/Introspection_variant_cast>
 
 // Standard includes
 #include <iostream>

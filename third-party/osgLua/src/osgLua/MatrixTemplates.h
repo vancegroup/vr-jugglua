@@ -21,11 +21,18 @@
 
 #include "LuaIncludeFull.h"
 
-#include <osgIntrospection/Reflection>
-#include <osgIntrospection/Value>
-#include <osgIntrospection/Type>
-#include <osgIntrospection/variant_cast>
-#include <osgIntrospection/ExtendedTypeInfo>
+#include <osgLua/Config>
+#ifdef OSGLUA_USE_CPPINTROSPECTION
+#	include <cppintrospection/Reflection>
+#	include <cppintrospection/ExtendedTypeInfo>
+#else
+#	include <osgIntrospection/Reflection>
+#	include <osgIntrospection/ExtendedTypeInfo>
+#endif
+
+#include <osgLua/Introspection_variant_cast>
+#include <osgLua/IntrospectionValue>
+#include <osgLua/IntrospectionType>
 
 #include <osg/Vec4>
 #include <osg/Vec3>

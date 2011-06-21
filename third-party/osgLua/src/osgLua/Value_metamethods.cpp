@@ -22,13 +22,24 @@
 
 #include "LuaIncludeFull.h"
 
-#include <osgIntrospection/Reflection>
-#include <osgIntrospection/MethodInfo>
-#include <osgIntrospection/ConstructorInfo>
-#include <osgIntrospection/Utility>
-#include <osgIntrospection/ExtendedTypeInfo>
-#include <osgIntrospection/PropertyInfo>
-#include <osgIntrospection/variant_cast>
+#include <osgLua/Config>
+
+#ifdef OSGLUA_USE_CPPINTROSPECTION
+#	include <cppintrospection/Reflection>
+#	include <cppintrospection/MethodInfo>
+#	include <cppintrospection/ConstructorInfo>
+#	include <cppintrospection/PropertyInfo>
+#	include <cppintrospection/Utility>
+#	include <cppintrospection/ExtendedTypeInfo>
+#else
+#	include <osgIntrospection/Reflection>
+#	include <osgIntrospection/MethodInfo>
+#	include <osgIntrospection/ConstructorInfo>
+#	include <osgIntrospection/PropertyInfo>
+#	include <osgIntrospection/Utility>
+#	include <osgIntrospection/ExtendedTypeInfo>
+#endif
+#include <osgLua/Introspection_variant_cast>
 
 
 

@@ -22,7 +22,7 @@
 #include "lua_functions.h"
 #include "LuaIncludeFull.h"
 
-#include <osgIntrospection/Type>
+#include <osgLua/IntrospectionType>
 
 // cd /usr/include && find osg -name "Vec*" | sort | sed 's/\(.*\)/\#include \<\1\>/g'
 #include <osg/Vec2>

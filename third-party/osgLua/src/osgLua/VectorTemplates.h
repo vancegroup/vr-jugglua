@@ -20,11 +20,19 @@
 #include "MathValueTags.h"
 #include "LuaIncludeFull.h"
 
-#include <osgIntrospection/Reflection>
-#include <osgIntrospection/Value>
-#include <osgIntrospection/Type>
-#include <osgIntrospection/variant_cast>
-#include <osgIntrospection/ExtendedTypeInfo>
+#include <osgLua/Config>
+
+#ifdef OSGLUA_USE_CPPINTROSPECTION
+#	include <cppintrospection/Reflection>
+#	include <cppintrospection/ExtendedTypeInfo>
+#else
+#	include <osgIntrospection/Reflection>
+#	include <osgIntrospection/ExtendedTypeInfo>
+#endif
+
+#include <osgLua/IntrospectionValue>
+#include <osgLua/IntrospectionType>
+#include <osgLua/Introspection_variant_cast>
 
 namespace osgLua {
 

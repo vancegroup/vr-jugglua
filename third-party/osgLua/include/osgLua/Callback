@@ -17,6 +17,8 @@
 #ifndef OSGLUA_CALLBACK_
 #define OSGLUA_CALLBACK_
 
+#include <osgLua/Config>
+
 #if defined(_MSC_VER)
 #  if defined( OSGLUA_LIBRARY_STATIC )
 #    define OSGLUA_API

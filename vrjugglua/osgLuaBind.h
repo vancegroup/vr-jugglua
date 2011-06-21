@@ -23,7 +23,7 @@
 #include <luabind/luabind.hpp>
 
 #include <osgLua/Value>
-#include <osgIntrospection/variant_cast>
+#include <osgLua/Introspection_variant_cast>
 
 // Standard includes
 #ifdef BUILD_VERBOSE
