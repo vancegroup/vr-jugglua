@@ -17,7 +17,6 @@
 #ifndef OSGLUA_VALUE
 #define OSGLUA_VALUE
 
-
 #include <osgLua/LuaInclude>
 
 #include <osgLua/IntrospectionValue>

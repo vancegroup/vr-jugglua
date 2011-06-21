@@ -30,7 +30,6 @@
 #include <osg/PositionAttitudeTransform>
 
 // Standard includes
-#include <cstring>
 #include <cstdlib>
 
 namespace vrjLua {

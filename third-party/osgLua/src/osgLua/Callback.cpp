@@ -47,7 +47,7 @@ namespace osgLua {
 			lua_pop(_L,1); // remove the original function
 		} else {
 			lua_pop(_L,1); // remove the function
-			throw osgLua::Exception(
+			throw ::osgLua::Exception(
 			    "Callback not initialized correctly with a function");
 		}
 	}
