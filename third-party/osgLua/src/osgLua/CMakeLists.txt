@@ -32,7 +32,7 @@ set(OSGLUA_PRIVATE_API
 
 set(OSGLUA_PUBLIC_API
 	../../include/osgLua/Callback
-	../../include/osgLua/IntrospectionVType
+	../../include/osgLua/IntrospectionType
 	../../include/osgLua/IntrospectionValue
 	../../include/osgLua/Introspection_variant_cast
 	../../include/osgLua/LoadWrapper
