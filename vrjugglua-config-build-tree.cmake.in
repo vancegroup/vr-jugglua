@@ -13,8 +13,7 @@ set(VRJUGGLUA_INCLUDE_DIRS
 	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/lua-5.1.4/src"
 	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/Fl_Native_File_Chooser-0.86"
 	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/luabind"
-	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/osgLua/include"
-	"@CMAKE_CURRENT_SOURCE_DIR@/third-party/osgLua/src"
+	"@OSGLUA_INCLUDE_DIRS@"
 	"@CMAKE_CURRENT_SOURCE_DIR@"
 	"@CMAKE_CURRENT_BINARY_DIR@")
 
