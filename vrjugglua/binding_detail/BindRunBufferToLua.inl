@@ -38,7 +38,9 @@ void bindRunBufferToLua(LuaStatePtr state) {
 			.def(constructor<luabind::object>())
 			.def("init", &SynchronizedRunBuffer::init)
 			.def("addFile", &SynchronizedRunBuffer::addFile)
+			.def("addFile", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addFile)
 			.def("addString", &SynchronizedRunBuffer::addString)
+			.def("addString", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addString)
 			.def("runBuffer", &SynchronizedRunBuffer::runBuffer)
 			.property("local", &SynchronizedRunBuffer::isLocal)
 	];
