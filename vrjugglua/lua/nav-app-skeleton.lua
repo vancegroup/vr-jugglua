@@ -42,13 +42,17 @@ function osgnav:initScene()
 	print("")
 	print("Do groupnode:addChild(somenode) to attach 'somenode' to the scene graph")
 	print("")
-	print("Simulator Mode Instructions for Navigation --")
-	print("In the simulator window:")
-	print("   Hold 'shift' and move the mouse to rotate the simulated wand")
-	print("   Hold 'ctrl' and move the mouse to move (translate) the simulated wand")
-	print("   Mouse buttons are mapped left, middle, right to VJButton0, 1, 2 respectively.")
-	print("   Mouse-click ('VJButtton0') to navigate in the direction of the wand's tip")
-	print("");
+	if inSimulator then
+		print("Simulator Mode Instructions --")
+		print("In the simulator window:")
+		print("   Hold 'shift' and move the mouse to rotate the simulated wand")
+		print("   Hold 'ctrl' and move the mouse to move (translate) the wand in X and Y")
+		print("   Hold 'alt' and move the mouse to move (translate) the wand in X")
+		print("   Mouse buttons are mapped left, middle, right to VJButton0, 1, 2 respectively.")
+		print("   To use a different configuration, pass the name of the jconf file at the command line.")
+		print("")
+	end
+
 end
 
 function osgnav:preFrame()
