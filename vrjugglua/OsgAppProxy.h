@@ -73,9 +73,6 @@ class OsgAppProxy : public OsgApp {
 	*/
 	virtual osg::Group* getScene();
 
-	osg::Group* getNodeTrackingPositionOnly(std::string const& device);
-	osg::Group* getNodeTrackingPose(std::string const& device);
-
 	/** Interval between the most recent (current) preFrame and the previous.
 
 		This is an accessor whose data member is updated in preFrame before
@@ -191,22 +188,6 @@ class OsgAppProxy : public OsgApp {
 	*/
 	vpr::Interval _lastPreFrameTime;
 	double _timeDelta;
-
-	struct PositionTrackingNode {
-		osg::ref_ptr<osg::Group> node;
-		gadget::PositionInterface device;
-		std::string deviceName;
-		bool positionOnly;
-		PositionTrackingNode(std::string const& devName, bool posOnly = false);
-
-		bool is(std::string const& devName, bool posOnly) const {
-			return deviceName == devName && posOnly == positionOnly;
-		}
-
-		void update();
-	};
-
-	std::vector<boost::shared_ptr<PositionTrackingNode> > _trackNodes;
 };
 
 // -- inline implementations -- //
