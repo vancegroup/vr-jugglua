@@ -34,21 +34,12 @@ int main(int argc, char * argv[]) {
 
 	/// Process command line args
 	bool stubConsole = false;
-	std::vector<std::string> files;
 	std::vector<std::string> args;
 	for (int i = 1; i < argc; ++i) {
 		std::string arg(argv[i]);
 		if (arg == "--stub") {
 			stubConsole = true;
-		/*
-		} else if (arg.find(".jconf") != std::string::npos) {
-			std::cerr << "WARNING: passing jconf files on the command line not yet supported!" << std::endl;
-		*/
-		} else if (arg.find(".lua") != std::string::npos) {
-			std::cout << "Queuing up " << arg << " to run after startup..." << std::endl;
-			files.push_back(arg);
 		} else {
-			//std::cerr << "Unrecognized command line argument '" << arg << "', ignoring..." << std::endl;
 			args.push_back(arg);
 		}
 	}
@@ -98,10 +89,6 @@ int main(int argc, char * argv[]) {
 	console->getRunBufFromLuaGlobal();
 
 	assert(console->isValid());
-
-	for (unsigned int i = 0; i < files.size(); ++i) {
-		console->addFile(files[i]);
-	}
 
 	/// Run it all
 	vrj::Kernel::instance()->start();
