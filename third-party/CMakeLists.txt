@@ -8,12 +8,6 @@ if(BUILD_FLTK_GUI)
 	set(FNFC_INCLUDE_DIRS ${FNFC_INCLUDE_DIRS} PARENT_SCOPE)
 endif()
 
-if(BUILD_QT_GUI)
-	#add_subdirectory(qconsole2)
-	#set(QCONSOLE_LIBRARY ${QCONSOLE_LIBRARY} PARENT_SCOPE)
-	#set(QCONSOLE_INCLUDE_DIRS ${QCONSOLE_INCLUDE_DIRS} PARENT_SCOPE)
-endif()
-
 if(BUILD_EMBEDDED_LUA)
 	# Lua 5.1.4-3 (that is, patch level 3)
 	add_subdirectory(lua-5.1.4/src)

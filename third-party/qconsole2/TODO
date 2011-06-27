@@ -1,6 +1,0 @@
-- The interceptor class seems to work only with POSIX systems,
-  I'll try to port it on windows.
-- Improve replacing <cr> by '\n' in history list
-- autocompleteCommand for 'subcommands' as well
-- Offer threaded call to commands !
-
