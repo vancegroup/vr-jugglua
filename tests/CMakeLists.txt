@@ -12,6 +12,7 @@ set(LUA_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luatests")
 
 set(LUA_TEST_SCRIPTS
 	actions-loads
+	actions-canremove
 	stop-kernel
 	minimal-osg
 	initialize-devices
