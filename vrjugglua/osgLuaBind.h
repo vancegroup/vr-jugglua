@@ -30,8 +30,7 @@
 #include <iostream>
 #endif
 
-namespace luabind
-{
+namespace luabind {
 	/// Base class for converting osg referenced types to/from osgLua values
 	template<typename OSG_QUALIFIED_TYPENAME>
 	struct osglua_ref_converter_base : native_converter_base<OSG_QUALIFIED_TYPENAME*> {
@@ -44,7 +43,7 @@ namespace luabind
 				return -1;
 			}
 			static const osgIntrospection::Type& destType =
-				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
+			    osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
 			const osgIntrospection::Type& type = v->get().getType();
 #ifdef BUILD_VERBOSE
 			std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
@@ -91,7 +90,7 @@ namespace luabind
 		OSG_QUALIFIED_TYPENAME* apply(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index) {
 			return from(L, index);
 		}
-		
+
 		void apply(lua_State* L, OSG_QUALIFIED_TYPENAME* const& value) {
 			to(L, value);
 		}
@@ -100,7 +99,7 @@ namespace luabind
 			osgLua::Value::push(L, x);
 		}
 	};
-	
+
 	template<typename OSG_QUALIFIED_TYPENAME>
 	struct osglua_ref_refptr_converter_base : native_converter_base< osg::ref_ptr<OSG_QUALIFIED_TYPENAME> > {
 		static int compute_score(lua_State* L, int index) {
@@ -112,7 +111,7 @@ namespace luabind
 				return -1;
 			}
 			static const osgIntrospection::Type& destType =
-				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
+			    osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
 			const osgIntrospection::Type& type = v->get().getType();
 #ifdef BUILD_VERBOSE
 			std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
@@ -147,7 +146,7 @@ namespace luabind
 		int match(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index) {
 			return compute_score(L, index);
 		}
-		
+
 		int match(lua_State* L, detail::by_value<osg::ref_ptr<OSG_QUALIFIED_TYPENAME> >&, int index) {
 			return compute_score(L, index);
 		}
@@ -163,11 +162,11 @@ namespace luabind
 		osg::ref_ptr<OSG_QUALIFIED_TYPENAME> apply(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index) {
 			return from(L, index);
 		}
-		
+
 		osg::ref_ptr<OSG_QUALIFIED_TYPENAME> apply(lua_State* L, detail::by_value<osg::ref_ptr<OSG_QUALIFIED_TYPENAME> >&, int index) {
 			return from(L, index);
 		}
-		
+
 		void apply(lua_State* L, osg::ref_ptr<OSG_QUALIFIED_TYPENAME> const& value) {
 			to(L, value);
 		}
@@ -189,7 +188,7 @@ namespace luabind
 				return -1;
 			}
 			static const osgIntrospection::Type& destType =
-				osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME>());
+			    osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME>());
 			const osgIntrospection::Type& type = v->get().getType();
 
 #ifdef BUILD_VERBOSE
@@ -214,7 +213,7 @@ namespace luabind
 				} catch (...) {
 					return -1;
 				}
-				
+
 				return 0; // OK, convertible, so better than nothing
 			}
 		}

@@ -31,22 +31,22 @@
 // - none
 
 namespace vrjLua {
-namespace Internal {
-	class PositionInterface {
-		public:
-			PositionInterface(const std::string & device);
+	namespace Internal {
+		class PositionInterface {
+			public:
+				PositionInterface(const std::string & device);
 
-			osg::Matrixd getMatrix();
-			osg::Vec3d getPosition();
-			osg::Quat getOrientation();
-			osg::Vec3d getForwardVector();
+				osg::Matrixd getMatrix();
+				osg::Vec3d getPosition();
+				osg::Quat getOrientation();
+				osg::Vec3d getForwardVector();
 
-		protected:
-			gmtl::Matrix44f _getData(const float scale = gadget::PositionUnitConversion::ConvertToFeet);
+			protected:
+				gmtl::Matrix44f _getData(const float scale = gadget::PositionUnitConversion::ConvertToFeet);
 
-			gadget::PositionInterface _iface;
-	};
-} // end of Internal namespace
+				gadget::PositionInterface _iface;
+		};
+	} // end of Internal namespace
 } // end of vrjLua namespace
 
 #endif // INCLUDED_vrjugglua_Lua_PositionInterface_h

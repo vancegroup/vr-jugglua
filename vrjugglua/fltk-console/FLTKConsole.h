@@ -28,35 +28,35 @@ class FLTKConsoleUI;
 
 namespace vrjLua {
 
-class FLTKConsole : public LuaConsole, boost::noncopyable {
-	public:
-		FLTKConsole();
-		FLTKConsole(LuaScript const& script);
+	class FLTKConsole : public LuaConsole, boost::noncopyable {
+		public:
+			FLTKConsole();
+			FLTKConsole(LuaScript const& script);
 
-		static void setup(int & argc, char * argv[]);
+			static void setup(int & argc, char * argv[]);
 
-		virtual ~FLTKConsole();
+			virtual ~FLTKConsole();
 
-		/// @name Interface required by LuaConsole
-		/// @{
-		virtual bool threadLoop();
+			/// @name Interface required by LuaConsole
+			/// @{
+			virtual bool threadLoop();
 
-		virtual void stopThread();
+			virtual void stopThread();
 
-		virtual void appendToDisplay(std::string const& message);
+			virtual void appendToDisplay(std::string const& message);
 
-		virtual void setTitle(std::string const& title);
+			virtual void setTitle(std::string const& title);
 
-		virtual void disableAction();
-		/// @}
+			virtual void disableAction();
+			/// @}
 
-	protected:
-		bool _doThreadWork();
+		protected:
+			bool _doThreadWork();
 
-		bool _running;
+			bool _running;
 
-		boost::shared_ptr<FLTKConsoleUI> _view;
-};
+			boost::shared_ptr<FLTKConsoleUI> _view;
+	};
 
 // -- inline implementations -- /
 

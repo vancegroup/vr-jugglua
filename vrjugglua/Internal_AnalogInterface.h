@@ -26,21 +26,21 @@
 // - none
 
 namespace vrjLua {
-namespace Internal {
-	class AnalogInterface {
-		public:
-			AnalogInterface(const std::string & device);
+	namespace Internal {
+		class AnalogInterface {
+			public:
+				AnalogInterface(const std::string & device);
 
-			/// @brief get value in range [0, 1]
-			double getData();
+				/// @brief get value in range [0, 1]
+				double getData();
 
-			/// @brief get value in range [-1, 1]
-			double getCentered();
+				/// @brief get value in range [-1, 1]
+				double getCentered();
 
-		protected:
-			gadget::AnalogInterface _iface;
-	};
-} // end of Internal namespace
+			protected:
+				gadget::AnalogInterface _iface;
+		};
+	} // end of Internal namespace
 } // end of vrjLua namespace
 
 #endif // INCLUDED_vrjugglua_Internal_AnalogInterface_h

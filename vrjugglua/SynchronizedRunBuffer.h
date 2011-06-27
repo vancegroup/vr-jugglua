@@ -32,48 +32,48 @@
 
 namespace vrjLua {
 
-class SynchronizedRunBuffer {
-	public:
-		/// @name Constructors
-		/// They accept different arguments as ways to get to the Lua state.
-		/// @{
+	class SynchronizedRunBuffer {
+		public:
+			/// @name Constructors
+			/// They accept different arguments as ways to get to the Lua state.
+			/// @{
 #ifdef NEED_RUNBUFFER_LUABIND_OBJECT
-		SynchronizedRunBuffer(luabind::object const& delegate);
+			SynchronizedRunBuffer(luabind::object const& delegate);
 #endif
-		SynchronizedRunBuffer(LuaStatePtr const& state);
-		SynchronizedRunBuffer(LuaScript const& script);
-		/// @}
-		
-		/// @brief Initialize application shared data, in initScene
-		void init();
+			SynchronizedRunBuffer(LuaStatePtr const& state);
+			SynchronizedRunBuffer(LuaScript const& script);
+			/// @}
 
-		/// @brief are we the data-local (master) node?
-		bool isLocal();
+			/// @brief Initialize application shared data, in initScene
+			void init();
 
-		/// @name Methods that only make sense on the data-local (master) node
-		/// @{
-		bool addFile(std::string const& filename, bool blocking = false);
-		bool addString(std::string const& str, bool blocking = false);
-		/// @}
+			/// @brief are we the data-local (master) node?
+			bool isLocal();
 
-		/** @brief Buffer execution - should take place in latePreFrame
-		 */
-		unsigned int runBuffer();
+			/// @name Methods that only make sense on the data-local (master) node
+			/// @{
+			bool addFile(std::string const& filename, bool blocking = false);
+			bool addString(std::string const& str, bool blocking = false);
+			/// @}
 
-	protected:
-		bool _init;
-		cluster::UserData<LuaRunBuffer> _runBuf;
-		enum COMMAND {
-			CM_ADDFILE,
-			CM_ADDSTRING
-		};
-		typedef std::pair<COMMAND, std::string> RunBufCmd;
-		
-		std::vector<RunBufCmd> _earlyBirds; 
-		lua_State * _state;
-		
-		void _checkInit();
-};
+			/** @brief Buffer execution - should take place in latePreFrame
+			 */
+			unsigned int runBuffer();
+
+		protected:
+			bool _init;
+			cluster::UserData<LuaRunBuffer> _runBuf;
+			enum COMMAND {
+				CM_ADDFILE,
+				CM_ADDSTRING
+			};
+			typedef std::pair<COMMAND, std::string> RunBufCmd;
+
+			std::vector<RunBufCmd> _earlyBirds;
+			lua_State * _state;
+
+			void _checkInit();
+	};
 
 } // end of vrjLua namespace
 

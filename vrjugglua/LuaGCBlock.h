@@ -36,9 +36,9 @@ namespace vrjLua {
 			};
 
 			/** @brief Constructor: disables garbage collection in the given state.
-			
+
 				Requires a valid state pointer.
-			
+
 				@throws NullStateError if state pointer given is NULL
 			*/
 			LuaGCBlock(lua_State * L) : _L(L) {
@@ -52,7 +52,7 @@ namespace vrjLua {
 			~LuaGCBlock() {
 				lua_gc(_L, LUA_GCRESTART, 0);
 			}
-			
+
 			/// Accessor to the GC-blocked state
 			lua_State * state() const {
 				return _L;

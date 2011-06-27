@@ -26,7 +26,7 @@
 
 namespace vrjLua {
 
-void bindSonixToLua(LuaStatePtr state);
+	void bindSonixToLua(LuaStatePtr state);
 
 } // end of vrjLua namespace
 

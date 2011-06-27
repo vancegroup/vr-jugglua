@@ -37,8 +37,7 @@ int luaopen_libvrjugglua(lua_State *L) {
 }
 
 // From the Luabind docs
-int add_file_and_line(lua_State* L)
-{
+int add_file_and_line(lua_State* L) {
 	lua_Debug d;
 	lua_getstack(L, 1, &d);
 	lua_getinfo(L, "Sln", &d);
@@ -47,8 +46,7 @@ int add_file_and_line(lua_State* L)
 	std::stringstream msg;
 	msg << d.short_src << ":" << d.currentline;
 
-	if (d.name != 0)
-	{
+	if (d.name != 0) {
 		msg << "(" << d.namewhat << " " << d.name << ")";
 	}
 	msg << " " << err;

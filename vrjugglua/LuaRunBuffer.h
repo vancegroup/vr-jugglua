@@ -33,50 +33,50 @@
 
 namespace vrjLua {
 
-class LuaRunBuffer : public vpr::SerializableObject {
-	public:
-		LuaRunBuffer(unsigned int capacity = 10, bool runBlocks = false);
-		~LuaRunBuffer();
+	class LuaRunBuffer : public vpr::SerializableObject {
+		public:
+			LuaRunBuffer(unsigned int capacity = 10, bool runBlocks = false);
+			~LuaRunBuffer();
 
-		/// @brief sets the lua state
-		void initLua(lua_State * L);
+			/// @brief sets the lua state
+			void initLua(lua_State * L);
 
-		/// @brief Checks to see if we've been initialized
-		bool ready() const;
+			/// @brief Checks to see if we've been initialized
+			bool ready() const;
 
-		/// @brief Get the GUID for a single RunBuffer syncronized in an app
-		static vpr::GUID getGUID();
+			/// @brief Get the GUID for a single RunBuffer syncronized in an app
+			static vpr::GUID getGUID();
 
-		/// @name Adding new chunks to the run buffer
-		/// @{
-		bool addFile(const std::string & filename, bool blocking = false);
-		bool addString(const std::string & str, bool blocking = false);
-		/// @}
+			/// @name Adding new chunks to the run buffer
+			/// @{
+			bool addFile(const std::string & filename, bool blocking = false);
+			bool addString(const std::string & str, bool blocking = false);
+			/// @}
 
-		/// @brief Run currently buffered chunks - only call from a single thread!
-		unsigned int runBuffer();
+			/// @brief Run currently buffered chunks - only call from a single thread!
+			unsigned int runBuffer();
 
 
 
-		/// @name vpr::SerializableObject interface
-		/// @{
-		void writeObject(vpr::ObjectWriter* writer);
-		void readObject(vpr::ObjectReader* reader);
-		/// @}
+			/// @name vpr::SerializableObject interface
+			/// @{
+			void writeObject(vpr::ObjectWriter* writer);
+			void readObject(vpr::ObjectReader* reader);
+			/// @}
 
-	protected:
-		bool _full() const;
-		bool _empty() const;
+		protected:
+			bool _full() const;
+			bool _empty() const;
 
-		LuaScript _script;
+			LuaScript _script;
 
-		boost::circular_buffer<std::string> _buf;
-		vpr::CondVar _cond;
-		unsigned int _maxRun;
+			boost::circular_buffer<std::string> _buf;
+			vpr::CondVar _cond;
+			unsigned int _maxRun;
 
-		/// @brief configuration - whether we should block in runBuffer
-		bool _runBlock;
-};
+			/// @brief configuration - whether we should block in runBuffer
+			bool _runBlock;
+	};
 
 // -- inline implementations -- /
 

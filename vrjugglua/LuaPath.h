@@ -28,51 +28,51 @@
 
 namespace vrjLua {
 
-class LuaPath {
-	public:
-		~LuaPath();
-		static LuaPath& instance(std::string const& arg0 = "", std::string const& vrjlua_base = "");
+	class LuaPath {
+		public:
+			~LuaPath();
+			static LuaPath& instance(std::string const& arg0 = "", std::string const& vrjlua_base = "");
 
-		std::string findFilePath(std::string const& fn);
-		bool findAppRoot(std::string const& fn);
-		std::string const& getAppRoot() const;
-		std::string const& getRootDir() const;
-		std::string const& getShareDir() const;
-		std::string const& getExeDir() const;
-		std::string const& getInitialPath() const;
-		std::string getPathToLuaScript(const std::string & scriptfn) const;
+			std::string findFilePath(std::string const& fn);
+			bool findAppRoot(std::string const& fn);
+			std::string const& getAppRoot() const;
+			std::string const& getRootDir() const;
+			std::string const& getShareDir() const;
+			std::string const& getExeDir() const;
+			std::string const& getInitialPath() const;
+			std::string getPathToLuaScript(const std::string & scriptfn) const;
 
-		void chdir(std::string const& path);
+			void chdir(std::string const& path);
 
-		void addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash);
-		void updateLuaRequirePath(LuaStatePtr state);
+			void addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash);
+			void updateLuaRequirePath(LuaStatePtr state);
 
 
-	protected:
-		LuaPath();
-		void _init(std::string const& arg0, std::string const& vrjlua_base);
+		protected:
+			LuaPath();
+			void _init(std::string const& arg0, std::string const& vrjlua_base);
 
-		static std::string _findFilePath(std::vector<std::string> const& startingPlaces, std::string const& qualified);
-		static std::string _findFilePath(std::string const& startingAt, std::string const& fn);
+			static std::string _findFilePath(std::vector<std::string> const& startingPlaces, std::string const& qualified);
+			static std::string _findFilePath(std::string const& startingAt, std::string const& fn);
 
-		void _populateSearchPathsVector(LuaStatePtr state);
-		void _setLuaSearchPaths(LuaStatePtr state);
-		bool _setJugglerEnvironment() const;
+			void _populateSearchPathsVector(LuaStatePtr state);
+			void _setLuaSearchPaths(LuaStatePtr state);
+			bool _setJugglerEnvironment() const;
 
-		std::string _initialPath;
-		std::string _exeDir;
-		std::string _root;
-		std::string _luaDir;
-		std::string _shareDir;
-		std::string _appRoot;
+			std::string _initialPath;
+			std::string _exeDir;
+			std::string _root;
+			std::string _luaDir;
+			std::string _shareDir;
+			std::string _appRoot;
 
-		bool _foundJuggler;
-		std::string _jugglerRoot;
+			bool _foundJuggler;
+			std::string _jugglerRoot;
 
-		bool _valid;
+			bool _valid;
 
-		std::deque<std::string> _searchPaths;
-};
+			std::deque<std::string> _searchPaths;
+	};
 
 // -- inline implementations -- /
 

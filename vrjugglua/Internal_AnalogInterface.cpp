@@ -22,19 +22,19 @@
 // - none
 
 namespace vrjLua {
-namespace Internal {
+	namespace Internal {
 
-AnalogInterface::AnalogInterface(const std::string & device) {
-	_iface.init(device);
-}
+		AnalogInterface::AnalogInterface(const std::string & device) {
+			_iface.init(device);
+		}
 
-double AnalogInterface::getData() {
-	return (_iface->getData());
-}
+		double AnalogInterface::getData() {
+			return (_iface->getData());
+		}
 
-double AnalogInterface::getCentered() {
-	return (_iface->getData() * 2.0) - 1.0;
-}
+		double AnalogInterface::getCentered() {
+			return (_iface->getData() * 2.0) - 1.0;
+		}
 
-} // end of Internal namespace
+	} // end of Internal namespace
 } // end of vrjLua namespace

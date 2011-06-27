@@ -27,25 +27,25 @@
 
 namespace vrjLua {
 
-void bindKernelToLua(LuaStatePtr state);
+	void bindKernelToLua(LuaStatePtr state);
 
 /// @brief Class for internal use - use the static methods in LuaScript.h
-class KernelState {
-	public:
-		static void init(boost::program_options::variables_map vm);
-		static void init(int argc, char* argv[]);
-		static void init();
-		static void initAsSingleMachine();
-		static void initAsClusterPrimaryNode();
-		static void initAsClusterSecondaryNode(int port = 0);
-		static bool hasInitialized();
-		static boost::program_options::options_description getVrjOptionsDescriptions();
+	class KernelState {
+		public:
+			static void init(boost::program_options::variables_map vm);
+			static void init(int argc, char* argv[]);
+			static void init();
+			static void initAsSingleMachine();
+			static void initAsClusterPrimaryNode();
+			static void initAsClusterSecondaryNode(int port = 0);
+			static bool hasInitialized();
+			static boost::program_options::options_description getVrjOptionsDescriptions();
 
-	protected:
-		static bool _init;
-		static bool _isCluster;
-		static bool _isPrimary;
-};
+		protected:
+			static bool _init;
+			static bool _isCluster;
+			static bool _isPrimary;
+	};
 
 } // end of vrjLua namespace
 

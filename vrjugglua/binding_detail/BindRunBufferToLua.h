@@ -26,7 +26,7 @@
 
 namespace vrjLua {
 
-void bindRunBufferToLua(LuaStatePtr state);
+	void bindRunBufferToLua(LuaStatePtr state);
 
 
 } // end of vrjLua namespace

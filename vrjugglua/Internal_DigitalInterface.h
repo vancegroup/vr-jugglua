@@ -26,22 +26,22 @@
 // - none
 
 namespace vrjLua {
-namespace Internal {
-	class DigitalInterface {
-		public:
-			DigitalInterface(const std::string & device);
-			DigitalInterface(const DigitalInterface & other);
+	namespace Internal {
+		class DigitalInterface {
+			public:
+				DigitalInterface(const std::string & device);
+				DigitalInterface(const DigitalInterface & other);
 
-			bool pressed();
-			bool justChanged();
+				bool pressed();
+				bool justChanged();
 
-			bool justPressed();
-			bool justReleased();
+				bool justPressed();
+				bool justReleased();
 
-		protected:
-			gadget::DigitalInterface _iface;
-	};
-} // end of Internal namespace
+			protected:
+				gadget::DigitalInterface _iface;
+		};
+	} // end of Internal namespace
 } // end of vrjLua namespace
 
 #endif // INCLUDED_vrjugglua_Internal_DigitalInterface_h

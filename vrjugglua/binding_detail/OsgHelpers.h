@@ -26,7 +26,7 @@
 
 namespace vrjLua {
 
-void manuallyBindOsgHelpers(LuaStatePtr state);
+	void manuallyBindOsgHelpers(LuaStatePtr state);
 
 }// end of vrjLua namespace
 
