@@ -42,6 +42,25 @@ foreach(script ${LUA_TEST_SCRIPTS})
         "${LUA_TEST_DIR}/${script}.lua")
 endforeach()
 
+set(EXAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../examples")
+file(GLOB_RECURSE EXAMPLES
+	RELATIVE "${EXAMPLE_DIR}"
+	"${EXAMPLE_DIR}/*.lua")
+foreach(EXAMPLE ${EXAMPLES})
+	if("${EXAMPLE}" MATCHES "^[0-9]+-")
+		string(REGEX REPLACE "[.\\/]" "_" script "${EXAMPLE}")
+		add_test(NAME
+			examples_${script}
+			COMMAND
+			${GENERIC_LAUNCHER_COMMAND}
+			--debugger
+			$<TARGET_FILE:NavTestbed>
+			--stub
+			"${EXAMPLE_DIR}/${EXAMPLE}"
+			"${CMAKE_CURRENT_SOURCE_DIR}/shutdown-after-5-frames.lua")
+	endif()
+endforeach()
+
 add_boost_test(OsgPointers
 	SOURCES
 	OsgPointers.cpp
