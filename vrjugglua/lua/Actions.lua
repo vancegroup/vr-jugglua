@@ -68,7 +68,7 @@ its natural exit.
 	local n
 	for i,v in ipairs(Actions._frameActions) do
 		if v == action then
-			n = v
+			n = i
 		end
 	end
 	if n ~= nil then
