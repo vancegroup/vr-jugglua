@@ -26,7 +26,7 @@
 #endif
 
 std::string getLibraryNamePrepend() {
-	return std::string("osgPlugins-")+std::string(osgGetVersion())+std::string("/");
+	return std::string("osgPlugins-") + std::string(osgGetVersion()) + std::string("/");
 }
 
 // borrowed from osgDB...
@@ -35,23 +35,23 @@ std::string createLibraryNameForWrapper(const std::string& ext) {
 #if defined(WIN32)
 	// !! recheck evolving Cygwin DLL extension naming protocols !! NHV
 #ifdef __CYGWIN__
-	return "cygosgwrapper_"+ext+".dll";
+	return "cygosgwrapper_" + ext + ".dll";
 #elif defined(__MINGW32__)
-	return "libosgwrapper_"+ext+".dll";
+	return "libosgwrapper_" + ext + ".dll";
 #else
 #ifdef _DEBUG
-	return "osgwrapper_"+ext+"d.dll";
+	return "osgwrapper_" + ext + "d.dll";
 #else
-	return "osgwrapper_"+ext+".dll";
+	return "osgwrapper_" + ext + ".dll";
 #endif
 #endif
 #elif macintosh
-	return "osgwrapper_"+ext;
+	return "osgwrapper_" + ext;
 #elif defined(__hpux__)
 	// why don't we use PLUGIN_EXT from the makefiles here?
-	return "osgwrapper_"+ext+".sl";
+	return "osgwrapper_" + ext + ".sl";
 #else
-	return "osgwrapper_"+ext+".so";
+	return "osgwrapper_" + ext + ".so";
 #endif
 }
 
@@ -62,7 +62,7 @@ osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname) {
 	/// try that name and that name with lib in front
 	std::vector<std::string> libnames;
 	libnames.push_back(basename);
-	libnames.push_back("lib"+basename);
+	libnames.push_back("lib" + basename);
 
 	/// grab the lib dir
 	std::string const libdir = getLibraryNamePrepend();

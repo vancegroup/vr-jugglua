@@ -45,35 +45,35 @@ namespace osgLua {
 
 		bool isMatrix(lua_State * L, int index) {
 			int top = lua_gettop(L);
-			index = (index>0)? index : top + index + 1;
+			index = (index > 0) ? index : top + index + 1;
 
 			if (Value::get(L, index)) {
 				lua_getmetatable(L, index);
 				lua_pushstring(L, OSGLUAVALUEISMATRIX);
 				lua_gettable(L, -2);
-				if (lua_tocfunction(L,-1) == &matrixTag) {
-					lua_settop(L,top);
+				if (lua_tocfunction(L, -1) == &matrixTag) {
+					lua_settop(L, top);
 					return true;
 				}
 			}
-			lua_settop(L,top);
+			lua_settop(L, top);
 			return false;
 		}
 
 		bool isVector(lua_State * L, int index) {
 			int top = lua_gettop(L);
-			index = (index>0)? index : top + index + 1;
+			index = (index > 0) ? index : top + index + 1;
 
 			if (Value::get(L, index)) {
 				lua_getmetatable(L, index);
 				lua_pushstring(L, OSGLUAVALUEISVECTOR);
 				lua_gettable(L, -2);
-				if (lua_tocfunction(L,-1) == &vectorTag) {
-					lua_settop(L,top);
+				if (lua_tocfunction(L, -1) == &vectorTag) {
+					lua_settop(L, top);
 					return true;
 				}
 			}
-			lua_settop(L,top);
+			lua_settop(L, top);
 			return false;
 		}
 	}

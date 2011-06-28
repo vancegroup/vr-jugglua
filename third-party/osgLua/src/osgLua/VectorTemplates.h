@@ -50,8 +50,8 @@ namespace osgLua {
 		/// Shared function template to handle both addition and subtraction.
 		template<class T, typename FunctorType>
 		int apply_binary_typed_predicate(lua_State *L, FunctorType predicate) {
-			Value *a = Value::getRequired(L,1);
-			Value *b = Value::getRequired(L,2);
+			Value *a = Value::getRequired(L, 1);
+			Value *b = Value::getRequired(L, 2);
 
 			const osgIntrospection::Type &typeA = a->getType();
 			const osgIntrospection::Type &typeB = b->getType();
@@ -63,7 +63,7 @@ namespace osgLua {
 				Value::push(L, ret);
 				return 1;
 			} else {
-				luaL_error(L,"[%s:%d] Could not perform math on instance of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+				luaL_error(L, "[%s:%d] Could not perform math on instance of %s, %s", __FILE__, __LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
 			}
 			return 0;
 		}
@@ -80,7 +80,7 @@ namespace osgLua {
 
 		template<class T>
 		int unm(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
+			Value *a = Value::getRequired(L, 1);
 			osgIntrospection::Value ret = detail::scaleVector<T>(a->get(), -1);
 			Value::push(L, ret);
 			return 1;
@@ -94,8 +94,8 @@ namespace osgLua {
 				lua_getmetatable(L, 2);
 				lua_pushstring(L, "__mul");
 				lua_gettable(L, -2);
-				lua_CFunction multFunc = lua_tocfunction(L,-1);
-				lua_settop(L,top);
+				lua_CFunction multFunc = lua_tocfunction(L, -1);
+				lua_settop(L, top);
 				return (*multFunc)(L);
 			}
 
@@ -107,10 +107,10 @@ namespace osgLua {
 			        vecIdx++, scalarIdx--) {
 
 				if (detail::isVector(L, vecIdx)) {
-					vector = Value::get(L,vecIdx);
+					vector = Value::get(L, vecIdx);
 					if (!lua_isnumber(L, scalarIdx)) {
 						luaL_error(L, "%s:%d Expected a number but get %s",
-						           __FILE__,__LINE__, lua_typename(L,lua_type(L, scalarIdx)));
+						           __FILE__, __LINE__, lua_typename(L, lua_type(L, scalarIdx)));
 					}
 					scalar = lua_tonumber(L, scalarIdx);
 					break;
@@ -119,7 +119,7 @@ namespace osgLua {
 
 			if (!vector) {
 				luaL_error(L, "%s:%d In a vector multiplication metamethod, but didn't find a vector as an argument! (%s, %s)",
-				           __FILE__,__LINE__, lua_typename(L,lua_type(L, 1)), lua_typename(L,lua_type(L, 2)));
+				           __FILE__, __LINE__, lua_typename(L, lua_type(L, 1)), lua_typename(L, lua_type(L, 2)));
 			}
 
 			osgIntrospection::Value ret = detail::scaleVector<T>(vector->get(), scalar);

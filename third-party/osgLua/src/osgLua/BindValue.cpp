@@ -56,18 +56,18 @@ namespace osgLua {
 
 	bool Value::_hasOsgLuaValueMetatable(lua_State *L, int index) {
 		int top = lua_gettop(L);
-		index = (index>0)? index : top + index + 1;
+		index = (index > 0) ? index : top + index + 1;
 
 		if (lua_isuserdata(L, index)) {
 			lua_getmetatable(L, index);
 			lua_pushstring(L, OSGLUAVALUEMETATABLE);
 			lua_gettable(L, -2);
-			if (lua_tocfunction(L,-1) == &osgLuaTypeTag) {
-				lua_settop(L,top);
+			if (lua_tocfunction(L, -1) == &osgLuaTypeTag) {
+				lua_settop(L, top);
 				return true;
 			}
 		}
-		lua_settop(L,top);
+		lua_settop(L, top);
 		return false;
 	}
 

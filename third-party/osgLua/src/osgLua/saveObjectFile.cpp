@@ -25,7 +25,7 @@
 int osgLua::lua_saveObjectFile(lua_State *L) {
 	osgLua::Value * v = osgLua::Value::getRequired(L, 1);
 
-	const char *name = lua_tostring(L,2);
+	const char *name = lua_tostring(L, 2);
 	luaL_argcheck(L, name != 0, 2, "need a string");
 	bool success = osgDB::writeObjectFile(*osgIntrospection::variant_cast<osg::Object const*>(v->get()), name);
 	if (!success) {

@@ -50,7 +50,7 @@
 namespace osgLua {
 
 	int Value::_gc(lua_State *L) {
-		Value *v = _rawGet(L,1);
+		Value *v = _rawGet(L, 1);
 		delete v;
 		return 0;
 	}
@@ -69,8 +69,8 @@ namespace osgLua {
 	}
 
 	int Value::_index(lua_State *L) {
-		Value *v = _rawGet(L,1);
-		if (lua_isstring(L,2)) {
+		Value *v = _rawGet(L, 1);
+		if (lua_isstring(L, 2)) {
 			const osgIntrospection::Type &type = v->getType();
 			if (!type.isDefined()) {
 				luaL_error(L, "Type not defined %s",
@@ -94,8 +94,8 @@ namespace osgLua {
 			}
 
 			// OK, it's not a property, assume it's a method.
-			lua_pushvalue(L,2); // copy the name
-			lua_pushcclosure(L, Value::_methodCall,1);
+			lua_pushvalue(L, 2); // copy the name
+			lua_pushcclosure(L, Value::_methodCall, 1);
 			return 1;
 		}
 		// maybe ... if is an integer... access indexed data
@@ -106,7 +106,7 @@ namespace osgLua {
 	int Value::_methodCall(lua_State *L) {
 		int top = lua_gettop(L);
 
-		Value *value = Value::getRequired(L,1);
+		Value *value = Value::getRequired(L, 1);
 
 		osgIntrospection::ValueList vl;
 		for (int i = 2; i <= top; ++i) {
@@ -117,7 +117,7 @@ namespace osgLua {
 			std::string name(lua_tostring(L, lua_upvalueindex(1)));
 			const osgIntrospection::MethodInfo *method = 0;
 			const osgIntrospection::Type &type = value->getType();
-			method = type.getCompatibleMethod(name,vl, true);
+			method = type.getCompatibleMethod(name, vl, true);
 			/* This code is no longer needed if getCompatibleMethod
 			 * finds methods in base types correctly.
 			if (!method)
@@ -143,7 +143,7 @@ namespace osgLua {
 					vl.push_back(*osgIntrospection::variant_cast<osg::NodeVisitor*>(vPointer));
 
 					// Search again for the method
-					method = type.getCompatibleMethod(name,vl, true);
+					method = type.getCompatibleMethod(name, vl, true);
 				}
 			}
 			if (!method) {
@@ -151,16 +151,18 @@ namespace osgLua {
 				int top = lua_gettop(L);
 				lua_pushfstring(L, "Error method %s::%s(",
 				                type.getName().c_str(),
-				                lua_tostring(L,lua_upvalueindex(1))
+				                lua_tostring(L, lua_upvalueindex(1))
 				               );
 				for (osgIntrospection::ValueList::iterator
 				        i = vl.begin(); i != vl.end(); ++i) {
 					lua_pushstring(L, i->getType().getName().c_str());
-					lua_pushstring(L,",");
+					lua_pushstring(L, ",");
 				}
-				if (!vl.empty()) lua_pop(L,1);
-				lua_pushstring(L,") not found");
-				lua_concat(L,lua_gettop(L) - top);
+				if (!vl.empty()) {
+					lua_pop(L, 1);
+				}
+				lua_pushstring(L, ") not found");
+				lua_concat(L, lua_gettop(L) - top);
 				lua_error(L);
 
 			}
@@ -170,7 +172,7 @@ namespace osgLua {
 			Value::push(L, returnedval);
 			return 1;
 		} catch (osgIntrospection::Exception &e) {
-			luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+			luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 		}
 		return 0;
 
@@ -178,10 +180,10 @@ namespace osgLua {
 
 	int Value::_newindex(lua_State *L) {
 
-		Value *v = _rawGet(L,1);
+		Value *v = _rawGet(L, 1);
 
-		Value *newVal = get(L,3);
-		if (lua_isstring(L,2)) {
+		Value *newVal = get(L, 3);
+		if (lua_isstring(L, 2)) {
 			const osgIntrospection::Type &type = v->getType();
 			if (!type.isDefined()) {
 				luaL_error(L, "Type not defined %s",

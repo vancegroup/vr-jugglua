@@ -55,7 +55,7 @@ namespace osgLua {
 			return *(it->second);
 		}
 		const osgIntrospection::Type &type =
-			osgIntrospection::Reflection::getType(name);
+		    osgIntrospection::Reflection::getType(name);
 		usedTypes.insert(std::make_pair(name, &type));
 		return type;
 	}
@@ -75,7 +75,7 @@ namespace osgLua {
 
 			osgIntrospection::ParameterInfoList params;
 			const osgIntrospection::MethodInfo *mi =
-			    type.getCompatibleMethod(method,vl,false);
+			    type.getCompatibleMethod(method, vl, false);
 
 			if (mi) {
 				Value::push(L, mi->invoke(vl));
@@ -107,9 +107,9 @@ namespace osgLua {
 			*/
 
 			luaL_error(L, "Class %s do not have static method %s",
-			           tname,method);
+			           tname, method);
 		} catch (osgIntrospection::Exception &e) {
-			luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+			luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 		}
 		return 0;
 	}
@@ -129,13 +129,13 @@ namespace osgLua {
 	int Type::index(lua_State *L) {
 		std::string tbase(lua_tostring(L, lua_upvalueindex(1)));
 		const char *name = luaL_checkstring(L, 2);
-		std::string base(tbase+"::"+name);
+		std::string base(tbase + "::" + name);
 
 		// traverse the namespace
 		try {
 
 			const osgIntrospection::Type &type = lookupType(base);
-			    //osgIntrospection::Reflection::getType(base);
+			//osgIntrospection::Reflection::getType(base);
 
 			// is it an enum ?
 			/// @todo Make methods that require an enum accept a long
@@ -163,8 +163,8 @@ namespace osgLua {
 		} catch (osgIntrospection::TypeNotFoundException&) {
 			// if base is not a valid type... supose that
 			// tbase.name is an static function
-			lua_pushstring(L,tbase.c_str());
-			lua_pushstring(L,name);
+			lua_pushstring(L, tbase.c_str());
+			lua_pushstring(L, name);
 			lua_pushcclosure(L, staticMethodCall, 2);
 			return 1;
 		}
@@ -176,7 +176,7 @@ namespace osgLua {
 		std::string name(lua_tostring(L, lua_upvalueindex(1)));
 		try {
 			const osgIntrospection::Type &type = lookupType(name);
-			    //osgIntrospection::Reflection::getType(name);
+			//osgIntrospection::Reflection::getType(name);
 
 			osgIntrospection::ValueList vl;
 			for (int i = 2; i <= top; ++i) {
@@ -188,7 +188,7 @@ namespace osgLua {
 			Value::push(L, returnedval);
 			return 1;
 		} catch (osgIntrospection::Exception &e) {
-			luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+			luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 		}
 		return 0;
 	}

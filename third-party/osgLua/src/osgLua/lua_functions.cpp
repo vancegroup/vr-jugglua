@@ -32,10 +32,13 @@ namespace osgLua {
 		const char *inout = "IN/OUT";
 
 		const char *type = in;
-		if (p->isInOut()) type = inout;
-		else if (p->isOut()) type = out;
+		if (p->isInOut()) {
+			type = inout;
+		} else if (p->isOut()) {
+			type = out;
+		}
 
-		lua_pushfstring(L, "[%s] %s %s",type,
+		lua_pushfstring(L, "[%s] %s %s", type,
 		                getName(p->getParameterType()),
 		                p->getName().c_str()
 		               );
@@ -50,12 +53,18 @@ namespace osgLua {
 		for (osgIntrospection::ParameterInfoList::const_iterator
 		        i = param.begin(); i != param.end(); ++i) {
 			pushParameter(L, *i);
-			lua_pushstring(L,", ");
+			lua_pushstring(L, ", ");
 		}
-		if (!param.empty()) lua_pop(L,1);
+		if (!param.empty()) {
+			lua_pop(L, 1);
+		}
 		lua_pushstring(L, ")");
-		if (mi->isConst()) lua_pushstring(L, " const");
-		if (mi->isStatic()) lua_pushstring(L, " static");
+		if (mi->isConst()) {
+			lua_pushstring(L, " const");
+		}
+		if (mi->isStatic()) {
+			lua_pushstring(L, " static");
+		}
 		lua_concat(L, lua_gettop(L) - top);
 	}
 
@@ -79,9 +88,11 @@ namespace osgLua {
 		for (osgIntrospection::ParameterInfoList::const_iterator
 		        i = param.begin(); i != param.end(); ++i) {
 			pushParameter(L, *i);
-			lua_pushstring(L,",");
+			lua_pushstring(L, ",");
 		}
-		if (!param.empty()) lua_pop(L,1);
+		if (!param.empty()) {
+			lua_pop(L, 1);
+		}
 		lua_pushstring(L, ")\t(indexed)");
 	}
 
@@ -120,7 +131,7 @@ namespace osgLua {
 		} else {
 			// should not happen
 			luaL_error(L, "%s:%d Property is neither array, indexed, nor simple!",
-			           __FILE__,__LINE__);
+			           __FILE__, __LINE__);
 		}
 
 		lua_concat(L, lua_gettop(L) - top);
@@ -135,9 +146,11 @@ namespace osgLua {
 		for (osgIntrospection::ParameterInfoList::const_iterator
 		        i = param.begin(); i != param.end(); ++i) {
 			pushParameter(L, *i);
-			lua_pushstring(L,",");
+			lua_pushstring(L, ",");
 		}
-		if (!param.empty()) lua_pop(L,1);
+		if (!param.empty()) {
+			lua_pop(L, 1);
+		}
 		lua_pushstring(L, ")");
 		lua_concat(L, lua_gettop(L) - top);
 	}
@@ -147,22 +160,28 @@ namespace osgLua {
 			lua_newtable(L);
 			int table = lua_gettop(L);
 
-			{ // Stdname
+			{
+				// Stdname
 				lua_pushstring(L,  type->getStdTypeInfo().name());
-				lua_setfield(L,table, "stdName");
+				lua_setfield(L, table, "stdName");
 			}
-			{ // Type_pointer
+			{
+				// Type_pointer
 				lua_pushinteger(L, (lua_Integer)(void*) type);
-				lua_setfield(L,table, "typePointer");
+				lua_setfield(L, table, "typePointer");
 			}
 
-			if (!type->isDefined()) return;
+			if (!type->isDefined()) {
+				return;
+			}
 
-			{ // name
+			{
+				// name
 				lua_pushstring(L,  type->getQualifiedName().c_str());
-				lua_setfield(L,table, "name");
+				lua_setfield(L, table, "name");
 			}
-			{ // methods
+			{
+				// methods
 				lua_newtable(L);
 				int count = 1;
 				osgIntrospection::MethodInfoList list;
@@ -170,11 +189,12 @@ namespace osgLua {
 				for (osgIntrospection::MethodInfoList::const_iterator
 				        i = list.begin(); i != list.end(); ++i, ++count) {
 					pushMethodInfo(L, *i);
-					lua_rawseti(L,-2, count);
+					lua_rawseti(L, -2, count);
 				}
 				lua_setfield(L, table, "methods");
 			}
-			{ // properties
+			{
+				// properties
 				lua_newtable(L);
 				int count = 1;
 				osgIntrospection::PropertyInfoList list;
@@ -182,11 +202,12 @@ namespace osgLua {
 				for (osgIntrospection::PropertyInfoList::const_iterator
 				        i = list.begin(); i != list.end(); ++i, ++count) {
 					pushPropertyInfo(L, *i);
-					lua_rawseti(L,-2, count);
+					lua_rawseti(L, -2, count);
 				}
 				lua_setfield(L, table, "properties");
 			}
-			{ // constructors
+			{
+				// constructors
 				lua_newtable(L);
 				int count = 1;
 				const osgIntrospection::ConstructorInfoList &list =
@@ -194,7 +215,7 @@ namespace osgLua {
 				for (osgIntrospection::ConstructorInfoList::const_iterator
 				        i = list.begin(); i != list.end(); ++i, ++count) {
 					pushConstructorInfo(L, *i);
-					lua_rawseti(L,-2, count);
+					lua_rawseti(L, -2, count);
 				}
 				lua_setfield(L, table, "constructors");
 			}

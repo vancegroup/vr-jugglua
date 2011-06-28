@@ -50,14 +50,14 @@ namespace osgLua {
 	namespace value_metamethods {
 
 		int tostring(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
+			Value *a = Value::getRequired(L, 1);
 
 			lua_pushstring(L, a->get().toString().c_str());
 			return 1;
 		}
 
 		int minimal_tostring(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
+			Value *a = Value::getRequired(L, 1);
 			std::stringstream s;
 			s << "osgLua::Value (" << a->get().getType().getQualifiedName() << ") " << a;
 			lua_pushstring(L, s.str().c_str());
@@ -65,14 +65,14 @@ namespace osgLua {
 		}
 
 		int eq(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
-			Value *b = Value::getRequired(L,2);
+			Value *a = Value::getRequired(L, 1);
+			Value *b = Value::getRequired(L, 2);
 
 			bool ret;
 			try {
 				ret = a->get() == b->get();
 			} catch (osgIntrospection::Exception &e) {
-				luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 			}
 
 			lua_pushboolean(L, ret);
@@ -81,14 +81,14 @@ namespace osgLua {
 		}
 
 		int lt(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
+			Value *a = Value::getRequired(L, 1);
 
-			Value *b = Value::getRequired(L,2);
+			Value *b = Value::getRequired(L, 2);
 			bool ret;
 			try {
 				ret = a->get() < b->get();
 			} catch (osgIntrospection::Exception &e) {
-				luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 			}
 
 			lua_pushboolean(L, ret);
@@ -97,14 +97,14 @@ namespace osgLua {
 		}
 
 		int le(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
+			Value *a = Value::getRequired(L, 1);
 
-			Value *b = Value::getRequired(L,2);
+			Value *b = Value::getRequired(L, 2);
 			bool ret;
 			try {
 				ret = a->get() <= b->get();
 			} catch (osgIntrospection::Exception &e) {
-				luaL_error(L,"[%s:%d] %s",__FILE__,__LINE__,e.what().c_str());
+				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 			}
 
 			lua_pushboolean(L, ret);

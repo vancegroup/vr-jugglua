@@ -33,7 +33,7 @@
 typedef osgDB::DynamicLibrary osglib;
 
 int unload_osgWrapper(lua_State *L) {
-	osglib **ptr = (osglib**) lua_touserdata(L,1);
+	osglib **ptr = (osglib**) lua_touserdata(L, 1);
 	osglib *lib = *ptr;
 	lib->unref();
 	return 0;
@@ -42,27 +42,27 @@ int unload_osgWrapper(lua_State *L) {
 void osgLua::open(lua_State *L) {
 	int top = lua_gettop(L);
 	lua_getfield(L, LUA_REGISTRYINDEX, "osgLuaLibs");
-	if (lua_isnil(L,-1)) {
-		lua_pop(L,1); // remove nil
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 1); // remove nil
 		lua_newtable(L); // create a table
-		lua_pushvalue(L,-1); // copy it
+		lua_pushvalue(L, -1); // copy it
 		lua_setfield(L, LUA_REGISTRYINDEX, "osgLuaLibs"); // one copy to reg.
 
 		lua_newtable(L);
-		lua_pushcfunction(L,osgLua::Value::getTypes);
-		lua_setfield(L,-2,  "getTypes");
-		lua_pushcfunction(L,osgLua::Value::getTypeInfo);
-		lua_setfield(L,-2, "getTypeInfo");
-		lua_pushcfunction(L,osgLua::Value::createByName);
-		lua_setfield(L,-2, "createByName");
+		lua_pushcfunction(L, osgLua::Value::getTypes);
+		lua_setfield(L, -2,  "getTypes");
+		lua_pushcfunction(L, osgLua::Value::getTypeInfo);
+		lua_setfield(L, -2, "getTypeInfo");
+		lua_pushcfunction(L, osgLua::Value::createByName);
+		lua_setfield(L, -2, "createByName");
 		lua_pushcfunction(L, osgLua::lua_loadWrapper);
-		lua_setfield(L,-2, "loadWrapper");
+		lua_setfield(L, -2, "loadWrapper");
 		lua_pushcfunction(L, osgLua::lua_loadObjectFile);
-		lua_setfield(L,-2, "loadObjectFile");
+		lua_setfield(L, -2, "loadObjectFile");
 		lua_pushcfunction(L, osgLua::lua_saveObjectFile);
-		lua_setfield(L,-2, "saveObjectFile");
+		lua_setfield(L, -2, "saveObjectFile");
 		lua_pushcfunction(L, osgLua::NodeCallback::createFromLua);
-		lua_setfield(L,-2, "NodeCallback");
+		lua_setfield(L, -2, "NodeCallback");
 
 		lua_setglobal(L, "osgLua");
 	}
@@ -72,7 +72,7 @@ void osgLua::open(lua_State *L) {
 
 void osgLua::get(lua_State *L) {
 	lua_getfield(L, LUA_REGISTRYINDEX, "osgLuaLibs");
-	if (lua_isnil(L,-1)) {
+	if (lua_isnil(L, -1)) {
 		osgLua::open(L);
 		lua_getfield(L, LUA_REGISTRYINDEX, "osgLuaLibs");
 	}
@@ -87,8 +87,8 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 
 	// check if the library exists, if not try load it
 	lua_getfield(L, osgLuaLibs , name);
-	if (lua_isnil(L,-1)) {
-		lua_pop(L,1);
+	if (lua_isnil(L, -1)) {
+		lua_pop(L, 1);
 		osglib * lib;
 		try {
 			lib = loadWrapperLib(name);
@@ -100,7 +100,7 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		/***********************************************************/
 		/* REMOVE THIS IN THE FUTURE!!! (when solved)              */
 		/***********************************************************/
-		if (std::strcmp(name,"osg") == 0) {
+		if (std::strcmp(name, "osg") == 0) {
 			const std::type_info &tcheck =
 			    osgIntrospection::Reflection::getType("osg::Vec3").
 			    getStdTypeInfo();
@@ -152,19 +152,19 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		lib->ref();
 	} else {
 		// the library was loaded...
-		lua_pop(L,1);
+		lua_pop(L, 1);
 	}
 
 	// enable the namespace
-	osgLua::Type::push(L,name);
-	lua_setglobal(L,name);
+	osgLua::Type::push(L, name);
+	lua_setglobal(L, name);
 
 	lua_settop(L, top);
 	return true;
 }
 
 int osgLua::lua_loadWrapper(lua_State *L) {
-	const char *name = lua_tostring(L,1);
+	const char *name = lua_tostring(L, 1);
 	luaL_argcheck(L, name != 0, 1, "need a string");
 	if (!osgLua::loadWrapper(L, name)) {
 		luaL_error(L, "Can not load osg wrapper for %s", name);

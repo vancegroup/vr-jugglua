@@ -21,7 +21,7 @@
 #include <osgDB/ReadFile>
 
 int osgLua::lua_loadObjectFile(lua_State *L) {
-	const char *name = lua_tostring(L,1);
+	const char *name = lua_tostring(L, 1);
 	luaL_argcheck(L, name != 0, 1, "need a string");
 	osg::Object *obj = osgDB::readObjectFile(name);
 	osgLua::Value::push(L, obj);

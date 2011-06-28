@@ -79,8 +79,8 @@ namespace osgLua {
 
 		template<class T>
 		int mul(lua_State *L) {
-			Value *a = Value::getRequired(L,1);
-			Value *b = Value::getRequired(L,2);
+			Value *a = Value::getRequired(L, 1);
+			Value *b = Value::getRequired(L, 2);
 
 			const osgIntrospection::Type &typeA = a->getType();
 			const osgIntrospection::Type &typeB = b->getType();
@@ -115,15 +115,15 @@ namespace osgLua {
 				}
 			}
 
-			luaL_error(L,"[%s:%d] Could not multiply instances of %s, %s",__FILE__,__LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
+			luaL_error(L, "[%s:%d] Could not multiply instances of %s, %s", __FILE__, __LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
 			return 0;
 		}
 
 		/// Shared function template to handle both equality and less-than comparison.
 		template<class T, typename FunctorType>
 		int apply_binary_bool_predicate(lua_State *L, FunctorType predicate) {
-			Value *a = Value::getRequired(L,1);
-			Value *b = Value::getRequired(L,2);
+			Value *a = Value::getRequired(L, 1);
+			Value *b = Value::getRequired(L, 2);
 
 			const osgIntrospection::Type &typeA = a->getType();
 			const osgIntrospection::Type &typeB = b->getType();
@@ -135,7 +135,7 @@ namespace osgLua {
 				lua_pushboolean(L, ret);
 				return 1;
 			} else {
-				luaL_error(L,"[%s:%d] Could not compare instances of %s, %s, in comparator for %s",__FILE__,__LINE__,
+				luaL_error(L, "[%s:%d] Could not compare instances of %s, %s, in comparator for %s", __FILE__, __LINE__,
 				           typeA.getQualifiedName().c_str(),
 				           typeB.getQualifiedName().c_str(),
 				           myType.getQualifiedName().c_str());
