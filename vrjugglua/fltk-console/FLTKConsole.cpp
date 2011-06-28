@@ -28,7 +28,9 @@
 #include <vrj/Kernel/Kernel.h>
 
 // Standard includes
+#ifdef VERBOSE
 #include <iostream>
+#endif
 #include <stdexcept>
 
 
