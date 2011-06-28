@@ -36,7 +36,6 @@
 #include <osgLua/IntrospectionValue>
 #include <osgLua/IntrospectionType>
 
-#include <iostream>
 #include <sstream>
 
 

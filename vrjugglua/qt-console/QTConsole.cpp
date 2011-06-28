@@ -32,7 +32,6 @@
 #include <vrj/Kernel/Kernel.h>
 
 // Standard includes
-#include <iostream>
 #include <fstream>
 #include <stdexcept>
 

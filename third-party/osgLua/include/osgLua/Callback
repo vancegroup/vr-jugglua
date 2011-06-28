@@ -73,7 +73,6 @@ namespace osgLua {
 #include <osg/Node>
 #include <osg/NodeVisitor>
 #include <osg/NodeCallback>
-#include <iostream>
 
 namespace osgLua {
 
