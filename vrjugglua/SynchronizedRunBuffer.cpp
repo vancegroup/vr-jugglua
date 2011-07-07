@@ -22,6 +22,7 @@
 
 // Standard includes
 #include <stdexcept>
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 namespace vrjLua {
 

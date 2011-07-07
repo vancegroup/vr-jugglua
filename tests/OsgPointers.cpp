@@ -10,6 +10,7 @@
 #define BOOST_TEST_MODULE OsgPointers tests
 
 // Internal Includes
+#include <luabind/scope.hpp>
 #include <luabind/function.hpp>
 #include <vrjugglua/osgLuaBind.h>
 #include <vrjugglua/LuaScript.h>
@@ -17,6 +18,10 @@
 // Library/third-party includes
 #include <BoostTestTargetConfig.h>
 #include <osg/Node>
+#include <osg/Group>
+#include <osg/Matrixd>
+#include <osg/Vec3d>
+#include <osg/ref_ptr>
 
 // Standard includes
 #include <iostream>

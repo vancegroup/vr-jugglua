@@ -16,18 +16,18 @@
 #include "OsgAppProxy.h"
 
 #include "osgLuaBind.h"
-
 #include "VRJLuaOutput.h"
-#include <util/gmtlToOsgMatrix.h>
+#include "LuaScript.h"
 
 // Library/third-party includes
 #include <luabind/class.hpp>
 
-#include <osg/LightModel>
-
-#include <osgDB/Registry>
-#include <osg/MatrixTransform>
 #include <osg/PositionAttitudeTransform>
+#include <osg/Group>
+#include <osgUtil/SceneView>
+
+#include <vrj/Kernel/Kernel.h>          // for Kernel
+#include <vrj/Kernel/User.h>            // for User
 
 // Standard includes
 #include <cstdlib>

@@ -21,8 +21,6 @@
 
 // OSG includes
 #include <osg/ref_ptr>
-#include <osg/Group>
-#include <osgUtil/SceneView>
 
 // VR Juggler includes
 #include <vrj/vrjParam.h>

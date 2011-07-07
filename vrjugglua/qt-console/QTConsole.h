@@ -29,7 +29,8 @@
 #include <QApplication>
 
 // Standard includes
-// - none
+#include <string>
+
 namespace Ui {
 	class MainWindow;
 }

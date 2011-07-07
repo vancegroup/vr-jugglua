@@ -22,9 +22,9 @@
 #include <vrjugglua/LuaInclude.h>
 
 // Standard includes
-#include <functional>
 #include <iostream>
 #include <sstream>
+#include <string>                       // for operator<<, string
 
 int luaopen_vrjugglua(lua_State *L) {
 	// Create a script and load the bindings

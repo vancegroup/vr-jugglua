@@ -16,18 +16,19 @@
 #include "LuaPath.h"
 #include "VRJLuaOutput.h"
 
-#include "LuaIncludeFull.h"
+#include "LuaScript.h"        // for LuaStatePtr
 
 // Library includes
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string/trim.hpp>
 
 #include <vpr/System.h>
+#include <vpr/vprDefines.h>             // for VPR_OS_Linux
 #include <vrj/vrjParam.h> // for __VJ_version define
 
 // Standard includes
 #include <fstream>
-#include <sstream>
+#include <stdexcept>                    // for runtime_error
 
 namespace fs = boost::filesystem;
 

@@ -15,7 +15,6 @@
 // Internal Includes
 #include "QTConsole.h"
 
-
 // uic-generated source
 #include <ui_QTConsoleMainWindow.h>
 
@@ -34,7 +33,7 @@
 // Standard includes
 #include <fstream>
 #include <stdexcept>
-
+#include <cassert>
 
 namespace vrjLua {
 

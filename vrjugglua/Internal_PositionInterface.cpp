@@ -18,7 +18,15 @@
 #include <util/gmtlToOsgMatrix.h>
 
 // Library/third-party includes
+#include <gadget/Type/Position/PositionUnitConversion.h>
 #include <gmtl/Generate.h>
+#include <gmtl/Matrix.h>                // for Matrix, Matrix44f
+#include <gmtl/Vec.h>                   // for Vec3d, Vec4f
+#include <gmtl/Xforms.h>                // for xform
+#include <osg/Matrix>                   // for Matrix
+#include <osg/Matrixd>                  // for Matrixd
+#include <osg/Quat>                     // for Quat
+#include <osg/Vec3d>                    // for Vec3d
 
 // Standard includes
 // - none
