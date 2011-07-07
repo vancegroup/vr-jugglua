@@ -19,9 +19,10 @@
 
 // Local includes
 #include <vrjugglua/LuaConsole.h>
+#include <vrjugglua/LuaScript.h>
 
 // Library/third-party includes
-#include <boost/utility.hpp> // for boost::noncopyable
+#include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <QMainWindow>

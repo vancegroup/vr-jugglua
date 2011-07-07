@@ -17,18 +17,20 @@
 #define INCLUDED_vrjugglua_Internal_PositionInterface_h
 
 // Internal Includes
-#include "LuaScript.h"
+// - none
 
 // Library/third-party includes
 #include <gadget/Type/PositionInterface.h>
+#include <gadget/Type/Position/PositionUnitConversion.h>
 
 #include <gmtl/Matrix.h>
 
-#include <osg/Matrix>
-#include <osg/Vec3>
+#include <osg/Matrixd>
+#include <osg/Quat>
+#include <osg/Vec3d>
 
 // Standard includes
-// - none
+#include <string>
 
 namespace vrjLua {
 	namespace Internal {

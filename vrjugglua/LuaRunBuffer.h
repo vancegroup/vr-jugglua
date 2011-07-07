@@ -19,10 +19,7 @@
 #include <vrjugglua/LuaScript.h>
 
 // Library/third-party includes
-
-// Requires Boost 1.35 or newer
 #include <boost/circular_buffer.hpp>
-#include <boost/scoped_ptr.hpp>
 
 #include <vpr/Sync/CondVar.h>
 #include <vpr/IO/SerializableObject.h>

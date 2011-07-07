@@ -16,12 +16,13 @@
 #define INCLUDED_vrjugglua_LuaScript_h
 
 // Local includes
-#include <vrjugglua/VRJLua_C_Interface.h>
+#include <vrjugglua/LuaInclude.h>
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
-#include <boost/program_options.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/variables_map.hpp>
 
 // Standard includes
 #include <string>

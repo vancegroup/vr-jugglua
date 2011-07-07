@@ -14,6 +14,8 @@
 
 // Internal Includes
 #include <vrjugglua/qt-console/QTConsole.h>
+#include <vrjugglua/LuaConsole.h>
+#include <vrjugglua/LuaScript.h>
 #include <vrjugglua/LuaPath.h>
 
 // Library/third-party includes
@@ -23,6 +25,8 @@
 // Standard includes
 #include <vector>
 #include <string>
+#include <cassert>
+#include <iostream>
 
 using namespace vrjLua;
 

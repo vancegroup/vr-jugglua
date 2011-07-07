@@ -28,6 +28,7 @@
 
 // Standard includes
 #include <vector>
+#include <string>
 #include <utility>
 
 namespace vrjLua {

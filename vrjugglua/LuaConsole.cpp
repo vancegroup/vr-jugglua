@@ -15,6 +15,7 @@
 // Internal Includes
 #include "LuaConsole.h"
 #include "VRJLuaOutput.h"
+#include "SynchronizedRunBuffer.h"
 
 // Library/third-party includes
 #include <luabind/object.hpp>

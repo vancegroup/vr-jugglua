@@ -20,11 +20,13 @@
 #include <vrjugglua/LuaScript.h>
 
 // OSG includes
+#include <osg/ref_ptr>
 #include <osg/Group>
 #include <osgUtil/SceneView>
 
 // VR Juggler includes
 #include <vrj/vrjParam.h>
+#include <vpr/Util/Interval.h>
 
 #if __VJ_version < 2003011
 #	include <vrj/Draw/OSG/OsgApp.h>
@@ -34,11 +36,16 @@ typedef vrj::OsgApp OsgApp;
 typedef vrj::osg::App OsgApp;
 #endif
 
+
 // LuaBind includes
 #include <luabind/object.hpp>
 
 // Standard includes
 // - none
+
+namespace osg { class Group; }
+namespace osgUtil { class SceneView; }
+namespace vrj { class Kernel; }
 
 namespace vrjLua {
 

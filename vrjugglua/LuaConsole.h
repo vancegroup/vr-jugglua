@@ -17,17 +17,16 @@
 
 // Local includes
 #include <vrjugglua/LuaScript.h>
-#include <vrjugglua/SynchronizedRunBuffer.h>
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
-#include <boost/function.hpp>
 
 // Standard includes
 #include <string>
 #include <sstream>
 
 namespace vrjLua {
+	class SynchronizedRunBuffer;
 
 	class LuaConsole {
 		public:

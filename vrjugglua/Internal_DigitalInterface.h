@@ -17,13 +17,13 @@
 #define INCLUDED_vrjugglua_Internal_DigitalInterface_h
 
 // Internal Includes
-#include "LuaScript.h"
+// - none
 
 // Library/third-party includes
 #include <gadget/Type/DigitalInterface.h>
 
 // Standard includes
-// - none
+#include <string>
 
 namespace vrjLua {
 	namespace Internal {

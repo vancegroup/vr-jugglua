@@ -14,6 +14,7 @@
 
 // Internal Includes
 #include "LuaScript.h"
+#include "VRJLua_C_Interface.h"
 
 #include "OsgAppProxy.h"
 #include "LuaPath.h"
