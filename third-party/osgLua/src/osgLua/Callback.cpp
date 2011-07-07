@@ -13,10 +13,13 @@
     OpenSceneGraph Public License for more details.
 */
 
+
 #include <osgLua/Callback>
 #include <osgLua/Value>
+#include <osgLua/IntrospectionValue>
 
 #include "LuaIncludeFull.h"
+
 
 namespace osgLua {
 

@@ -31,8 +31,11 @@
 #  define OSGLUA_API
 #endif
 
+#include <osg/ref_ptr>
 #include <osgLua/Script>
 #include <osgLua/LuaInclude>
+
+namespace osgIntrospection { class Value; }
 
 namespace osgLua {
 

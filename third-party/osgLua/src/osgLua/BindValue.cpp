@@ -18,8 +18,6 @@
 #include "Value_metamethods.h"
 #include "VectorTemplates.h"
 #include "MatrixTemplates.h"
-#include "Type.h"
-#include "lua_functions.h"
 #include "LuaIncludeFull.h"
 
 #include <osgLua/IntrospectionType>
@@ -111,6 +109,7 @@ namespace osgLua {
 
 			BIND_VECTOR(osg::Vec4d)
 			BIND_VECTOR(osg::Vec4f)
+			BIND_VECTOR(osg::Vec4b)
 			BIND_VECTOR(osg::Vec4ub)
 			BIND_VECTOR(osg::Vec4s)
 			BIND_VECTOR(osg::Vec4)
