@@ -14,8 +14,9 @@
     OpenSceneGraph Public License for more details.
 */
 
-#include <osgLua/Value>
 #include "Type.h"
+
+#include <osgLua/Value>                 // for getValue, Value
 
 #include "LuaIncludeFull.h"
 
@@ -24,19 +25,19 @@
 #ifdef OSGLUA_USE_CPPINTROSPECTION
 #	include <cppintrospection/Reflection>
 #	include <cppintrospection/MethodInfo>
-#	include <cppintrospection/ConstructorInfo>
-#	include <cppintrospection/Utility>
+#	include <cppintrospection/Exceptions>
 #else
 #	include <osgIntrospection/Reflection>
 #	include <osgIntrospection/MethodInfo>
-#	include <osgIntrospection/ConstructorInfo>
-#	include <osgIntrospection/Utility>
+#	include <osgIntrospection/Exceptions>
 #endif
 
-#include <osgLua/IntrospectionValue>
-#include <osgLua/IntrospectionType>
+#include <osgLua/IntrospectionValue>    // for ValueList, Value
+#include <osgLua/IntrospectionType>     // for EnumLabelMap, Type, etc
 
-#include <sstream>
+#include <map>                          // for _Rb_tree_const_iterator, etc
+#include <string>                       // for string, basic_string, etc
+#include <utility>                      // for pair, make_pair
 
 
 namespace osgLua {

@@ -17,8 +17,8 @@
 #ifndef _OSGLUA_LOADWRAPPERLIB_H_
 #define _OSGLUA_LOADWRAPPERLIB_H_
 
-#include <osgDB/DynamicLibrary>
 
+namespace osgDB { class DynamicLibrary; }
 #include <string>
 
 osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname);

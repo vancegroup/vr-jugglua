@@ -16,33 +16,19 @@
 
 #include "Value_metamethods.h"
 #include <osgLua/Value>
-#include "Value_rawget.inl"
-#include "Type.h"
-#include "lua_functions.h"
+
+#include <osgLua/Introspection_variant_cast>
+#include <osgLua/IntrospectionValue>
+#include <osgLua/IntrospectionType>
+#ifdef OSGLUA_USE_CPPINTROSPECTION
+#	include <cppintrospection/Exceptions>
+#else
+#	include <osgIntrospection/Exceptions>
+#endif
 
 #include "LuaIncludeFull.h"
 
-#include <osgLua/Config>
-
-#ifdef OSGLUA_USE_CPPINTROSPECTION
-#	include <cppintrospection/Reflection>
-#	include <cppintrospection/MethodInfo>
-#	include <cppintrospection/ConstructorInfo>
-#	include <cppintrospection/PropertyInfo>
-#	include <cppintrospection/Utility>
-#	include <cppintrospection/ExtendedTypeInfo>
-#else
-#	include <osgIntrospection/Reflection>
-#	include <osgIntrospection/MethodInfo>
-#	include <osgIntrospection/ConstructorInfo>
-#	include <osgIntrospection/PropertyInfo>
-#	include <osgIntrospection/Utility>
-#	include <osgIntrospection/ExtendedTypeInfo>
-#endif
-#include <osgLua/Introspection_variant_cast>
-
-
-
+#include <string>                       // for string, operator<<
 #include <sstream>
 
 namespace osgLua {

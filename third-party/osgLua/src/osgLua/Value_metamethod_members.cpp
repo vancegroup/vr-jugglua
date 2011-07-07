@@ -17,35 +17,34 @@
 #include <osgLua/Value>
 #include "Value_metamethods.h"
 #include "Value_rawget.inl"
-#include "Type.h"
 #include "lua_functions.h"
 
-#include "LuaIncludeFull.h"
-
-#include <osgLua/Config>
+#include <osgLua/IntrospectionValue>
+#include <osgLua/IntrospectionType>
+#include <osgLua/Introspection_variant_cast>
 
 #ifdef OSGLUA_USE_CPPINTROSPECTION
 #	include <cppintrospection/Reflection>
 #	include <cppintrospection/MethodInfo>
-#	include <cppintrospection/ConstructorInfo>
 #	include <cppintrospection/PropertyInfo>
 #	include <cppintrospection/Utility>
-#	include <cppintrospection/ExtendedTypeInfo>
+#	include <cppintrospection/Exceptions>
 #else
 #	include <osgIntrospection/Reflection>
 #	include <osgIntrospection/MethodInfo>
-#	include <osgIntrospection/ConstructorInfo>
 #	include <osgIntrospection/PropertyInfo>
 #	include <osgIntrospection/Utility>
-#	include <osgIntrospection/ExtendedTypeInfo>
+#	include <osgIntrospection/Exceptions>
 #endif
-#include <osgLua/Introspection_variant_cast>
 
 #include <osg/NodeVisitor>
 
-#include <osg/Vec3>
-#include <osg/Vec4>
-#include <osg/Matrix>
+#include "LuaIncludeFull.h"
+
+#include <iostream>                     // for basic_ostream, operator<<, etc
+#include <string>                       // for string, operator<<, etc
+#include <typeinfo>                     // for type_info
+#include <vector>                       // for vector, vector<>::iterator
 
 namespace osgLua {
 

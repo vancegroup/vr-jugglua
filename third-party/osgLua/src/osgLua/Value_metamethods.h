@@ -17,7 +17,6 @@
 #ifndef OSGLUA_VALUE_METAMETHODS
 #define OSGLUA_VALUE_METAMETHODS
 
-#include <osgLua/Value>
 #include <osgLua/LuaInclude>
 
 namespace osgLua {

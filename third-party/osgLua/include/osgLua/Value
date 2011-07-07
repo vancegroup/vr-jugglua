@@ -22,7 +22,7 @@
 #include <osgLua/IntrospectionValue>
 #include <osgLua/IntrospectionType>
 
-#include <osg/Referenced>
+namespace osg { class Referenced; }
 #include <osg/ref_ptr>
 
 namespace osgLua {

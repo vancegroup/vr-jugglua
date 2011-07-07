@@ -16,6 +16,7 @@
 
 #include "loadWrapperLib.h"
 
+#include <osgDB/DynamicLibrary>
 #include <osg/Version>
 
 #include <vector>
