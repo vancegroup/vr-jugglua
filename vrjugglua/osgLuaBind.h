@@ -33,6 +33,9 @@
 // Standard includes
 #ifdef BUILD_VERBOSE
 #include <iostream>
+#define OSGLUABIND_VERBOSE(X) std::cout << "[osgLuaBind.h:" << __LINE__ << "] " << X << std::endl
+#else
+#define OSGLUABIND_VERBOSE(X)
 #endif
 
 // lua_State is a commonly-passed incomplete type: let Boost know it's never derived from anything.
@@ -73,9 +76,7 @@ namespace luabind {
 #endif
 						return 0;
 					} else {
-#ifdef BUILD_VERBOSE
-						std::cout << "Polymorphic match for type." << std::endl;
-#endif
+						OSGLUABIND_VERBOSE("Polymorphic match for type.");
 						return 1;
 					}
 				}
@@ -116,23 +117,17 @@ namespace luabind {
 		static int compute_score(lua_State* L, int index) {
 			osgLua::Value * v = osgLua::Value::get(L, index);
 			if (!v) {
-#ifdef BUILD_VERBOSE
-				std::cout << "Not a osgLua value" << std::endl;
-#endif
+				OSGLUABIND_VERBOSE( "Not a osgLua value" );
 				return -1;
 			}
 			static const osgIntrospection::Type& destType =
 			    osgIntrospection::Reflection::getType(extended_typeid<OSG_QUALIFIED_TYPENAME*>());
 			const osgIntrospection::Type& type = v->get().getType();
-#ifdef BUILD_VERBOSE
-			std::cout << "Destination type: " << destType.getQualifiedName() << std::endl;
-			std::cout << "Value type: " << v->get().getType().getQualifiedName() << std::endl;
-#endif
+			OSGLUABIND_VERBOSE( "Destination type: " << destType.getQualifiedName());
+			OSGLUABIND_VERBOSE( "Value type: " << v->get().getType().getQualifiedName());
 			try {
 				if (type == destType) {
-#ifdef BUILD_VERBOSE
-					std::cout << "Exact match for type!" << std::endl;
-#endif
+					OSGLUABIND_VERBOSE("Exact match for type!");
 					return 2;
 				} else if (osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME*>(v->get()) != NULL) {
 					if (osgIntrospection::requires_conversion<OSG_QUALIFIED_TYPENAME*>(v->get())) {
