@@ -12,6 +12,7 @@
 // Internal Includes
 #include <luabind/scope.hpp>
 #include <luabind/function.hpp>
+#define BUILD_VERBOSE
 #include <vrjugglua/osgLuaBind.h>
 #include <vrjugglua/LuaScript.h>
 
