@@ -1,5 +1,6 @@
 /** @file
-	@brief Header
+	@brief Header defining type trait indicating whether a given type is
+	an OSG value type.
 
 	@date 2011
 
@@ -19,7 +20,7 @@
 #include "osgLuaBind_traitBase.h"
 
 // Library/third-party includes
-// - none
+#include <boost/type_traits/is_base_of.hpp>
 
 // Standard includes
 // - none
@@ -33,6 +34,15 @@ namespace osgLuaBind {
 	{};
 
 } // end of namespace osgLuaBind
+
+
+
+#include <boost/type_traits/detail/bool_trait_def.hpp>
+namespace boost {
+	/// Anything defined as an OSG Value does not inherit from the osg base referenced object type
+	BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, ::osgLuaBind::detail::RefBase, T, ::osgLuaBind::IsValueType<T>::falseIfTrue)
+}
+#include <boost/type_traits/detail/bool_trait_undef.hpp>
 
 #ifndef OSGLUABIND_IS_VALUE_TYPE
 
@@ -83,7 +93,6 @@ FORWARD_DECL_AND_DEFINE_VALUE_TRAIT(osg, Quat);
 
 // Sorry, you probably shouldn't use this macro in your own files.
 #undef FORWARD_DECL_AND_DEFINE_VALUE_TRAIT
-
 
 #endif // ifndef OSGLUABIND_IS_VALUE_TYPE
 
