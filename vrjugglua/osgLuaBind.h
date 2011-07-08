@@ -106,14 +106,14 @@ namespace luabind {
 
 			osgLua::Value * v = osgLua::Value::get(L, index);
 			if (!v) {
-				OSGLUABIND_VERBOSE( "Not a osgLua value" );
+				OSGLUABIND_VERBOSE( "Not a osgLua object" );
 				return -1;
 			}
 			static const osgIntrospection::Type& destType =
 			    osgIntrospection::Reflection::getType(extended_typeid<T>());
 			const osgIntrospection::Type& type = v->get().getType();
-			OSGLUABIND_VERBOSE( "Destination type: " << destType.getQualifiedName());
-			OSGLUABIND_VERBOSE( "Value type: " << v->get().getType().getQualifiedName());
+			OSGLUABIND_VERBOSE( "Source type: " << v->get().getType().getQualifiedName());
+			OSGLUABIND_VERBOSE( "Target type: " << destType.getQualifiedName());
 			try {
 				if (type == destType) {
 					OSGLUABIND_VERBOSE("Exact match for type!");
