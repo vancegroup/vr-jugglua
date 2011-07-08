@@ -355,8 +355,8 @@ namespace boost {
 /// not already mentioned at the bottom of this header, you'll need to use this
 /// macro in your source file to tag the type you're using as an OSG value type.
 /// Failing to do so will give you a weird error at runtime when trying to use that
-/// bound item that reads something like "no acceptable overloads found,
-/// candidates: functionname(custom [Z7osg...])"
+/// bound item that reads something like "No matching overload found, candidates:
+/// void functionname(custom [Z7osg...])"
 #define CREATE_OSGLUA_VALUE_CONVERTER(T) \
 	namespace luabind { \
 		template <> \
