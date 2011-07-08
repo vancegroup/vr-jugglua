@@ -261,18 +261,14 @@ namespace luabind {
 	: osglua_ref_converter_base<T>
 	{};
 	namespace detail {
-		template <typename T, typename Enable = void>
+		template <typename T>
 		struct osglua_ref_type_to_string
 		{
 			static void get(lua_State *L)
 			{
-				/// @TODO make this better!
-				lua_pushstring(L, "[osgLuaBind object] ");
-
 				static const osgIntrospection::Type& destType =
 					osgIntrospection::Reflection::getType(extended_typeid<T>());
 				lua_pushstring(L, destType.getQualifiedName().c_str());
-				lua_concat(L, 2);
 			}
 		};
 
@@ -280,9 +276,17 @@ namespace luabind {
 		struct type_to_string<T,
 			typename boost::enable_if<
 				typename boost::is_base_of< ::osg::Object, T>::type
-			>::type >
-		: osglua_ref_type_to_string<T>
-		{};
+			>::type
+		>
+		{
+			static void get(lua_State *L)
+			{
+				/// @TODO make this better!
+				lua_pushstring(L, "[osgLuaBind object] ");
+				osglua_ref_type_to_string<T>::get(L);
+				lua_concat(L, 2);
+			}
+		};
 
 		template <typename T>
 		struct type_to_string< osg::ref_ptr<T> >
@@ -290,9 +294,10 @@ namespace luabind {
 			static void get(lua_State* L)
 			{
 				/// @TODO make this better!
-				lua_pushstring(L, "osgLuaBind ref_ptr to object type ");
-				lua_pushstring(L, typeid(T).name());
-				lua_concat(L, 2);
+				lua_pushstring(L, "[osgLuaBind object] osg::ref_ptr<");
+				osglua_ref_type_to_string<T>::get(L);
+				lua_pushstring(L, ">");
+				lua_concat(L, 3);
 			}
 		};
 	}
@@ -320,6 +325,7 @@ namespace luabind {
 			{ \
 				static void get(lua_State* L) \
 				{ \
+					lua_pushstring(L, "[osgLuaBind value] "); \
 				    lua_pushstring(L, #T); \
 				} \
 			}; \
