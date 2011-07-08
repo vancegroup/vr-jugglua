@@ -3,7 +3,7 @@
 		conversions to/from osgLua values
 
 	@date
-	2009-2010
+	2009-2011
 
 	@author
 	Ryan Pavlik
