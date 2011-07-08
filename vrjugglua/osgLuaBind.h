@@ -35,6 +35,13 @@
 #include <iostream>
 #endif
 
+// lua_State is a commonly-passed incomplete type: let Boost know it's never derived from anything.
+#include <boost/type_traits/detail/bool_trait_def.hpp>
+namespace boost {
+BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T,is_base_and_derived,T,lua_State,false)
+}
+#include <boost/type_traits/detail/bool_trait_undef.hpp>
+
 namespace luabind {
 	/// Base class for converting osg referenced types to/from osgLua values
 	template<typename OSG_QUALIFIED_TYPENAME>
@@ -240,12 +247,6 @@ namespace luabind {
 
 
 //-- Reference Types --//
-namespace boost {
-	template <typename T>
-	struct is_base_of< T, lua_State > {
-		static const bool value = false;
-	};
-}
 namespace luabind {
 	template <typename T>
 	struct default_converter< ::osg::ref_ptr<T> >
