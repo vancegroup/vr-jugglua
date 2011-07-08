@@ -349,19 +349,22 @@ namespace boost {
 #include <boost/type_traits/detail/bool_trait_undef.hpp>
 
 #ifndef CREATE_OSGLUA_VALUE_CONVERTER
-/// Macro to create converters required to bind functions with osg-typed
-/// value arguments with Luabind
-#define CREATE_OSGLUA_VALUE_CONVERTER(NS, T) \
-	namespace NS { \
-		class T; \
-	} \
+/// Macro to define traits to indicate to Luabind that a type is an osg value type
+#define CREATE_OSGLUA_VALUE_CONVERTER(T) \
 	namespace luabind { \
 		template <> \
-		struct IsOSGValue< NS :: T > \
+		struct IsOSGValue< T > \
 		  : OSGTraitTrue \
 		{}; \
 		\
 	}
+/// Internal-use macro to forward declare and create value converter in one step
+#define FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(NS, T) \
+	namespace NS { \
+		class T; \
+	} \
+	CREATE_OSGLUA_VALUE_CONVERTER( NS :: T )
+
 /*
 		\
 		namespace detail {\
@@ -380,9 +383,11 @@ namespace boost {
 #endif
 
 
-CREATE_OSGLUA_VALUE_CONVERTER(osg, Matrixd);
-CREATE_OSGLUA_VALUE_CONVERTER(osg, Vec3d);
-CREATE_OSGLUA_VALUE_CONVERTER(osg, Vec4d);
-CREATE_OSGLUA_VALUE_CONVERTER(osg, Quat);
+FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Matrixd);
+FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Vec3d);
+FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Vec4d);
+FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Quat);
+
+#undef FORWARD_DECL_AND_CREATE_VALUE_CONVERTER
 
 #endif // INCLUDED_vrjugglua_osgLuaBind_h
