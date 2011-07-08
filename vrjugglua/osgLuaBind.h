@@ -365,21 +365,6 @@ namespace boost {
 	} \
 	CREATE_OSGLUA_VALUE_CONVERTER( NS :: T )
 
-/*
-		\
-		namespace detail {\
-			template <> \
-			struct type_to_string<T> \
-			{ \
-				static void get(lua_State* L) \
-				{ \
-					lua_pushstring(L, "[osgLuaBind value] "); \
-				    lua_pushstring(L, #T); \
-				} \
-			}; \
-		}\
-    }
- */
 #endif
 
 
