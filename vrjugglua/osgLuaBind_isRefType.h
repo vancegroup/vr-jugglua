@@ -1,5 +1,6 @@
 /** @file
-	@brief Header
+	@brief Header defining type trait indicating whether a given type is
+	an OSG reference object type.
 
 	@date 2011
 
@@ -42,11 +43,11 @@ namespace osgLuaBind {
 	using boost::is_base_of;
 
 	template <typename T, typename Enable = void>
-	struct IsPtrToRefType : TraitFalse
+	struct IsRefType : TraitFalse
 	{};
 
 	template <typename T>
-	struct IsPtrToRefType<
+	struct IsRefType<
 		T, 
 		typename enable_if<
 			typename is_base_of< detail::RefBase, T>::type
