@@ -9,10 +9,11 @@
 
 #define BOOST_TEST_MODULE OsgPointers tests
 
+#define BUILD_OSGLUABIND_VERBOSE
+
 // Internal Includes
 #include <luabind/scope.hpp>
 #include <luabind/function.hpp>
-#define BUILD_VERBOSE
 #include <vrjugglua/osgLuaBind.h>
 #include <vrjugglua/LuaScript.h>
 

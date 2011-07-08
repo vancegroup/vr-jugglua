@@ -31,7 +31,7 @@
 #include <boost/type_traits/is_base_of.hpp>
 
 // Standard includes
-#ifdef BUILD_VERBOSE
+#ifdef BUILD_OSGLUABIND_VERBOSE
 #include <iostream>
 #define OSGLUABIND_VERBOSE(X) std::cout << "[osgLuaBind.h:" << __LINE__ << "] " << X << std::endl
 #else
