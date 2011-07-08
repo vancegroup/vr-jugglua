@@ -26,6 +26,7 @@
 #include <luabind/luabind.hpp>
 
 #include <osgLua/Value>
+#include <osg/Quat>
 
 
 
