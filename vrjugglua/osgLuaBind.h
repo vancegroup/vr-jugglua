@@ -40,7 +40,6 @@
 namespace boost {
 BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T,is_base_and_derived,T,lua_State,false)
 }
-#include <boost/type_traits/detail/bool_trait_undef.hpp>
 
 namespace luabind {
 	/// Base class for converting osg referenced types to/from osgLua values
@@ -263,7 +262,7 @@ namespace luabind {
 	{};
 	namespace detail {
 		template <typename T>
-		struct osglua_ref_type_to_string
+		struct osglua_type_to_string
 		{
 			static void get(lua_State *L)
 			{
@@ -282,9 +281,8 @@ namespace luabind {
 		{
 			static void get(lua_State *L)
 			{
-				/// @TODO make this better!
 				lua_pushstring(L, "[osgLuaBind object] ");
-				osglua_ref_type_to_string<T>::get(L);
+				osglua_type_to_string<T>::get(L);
 				lua_concat(L, 2);
 			}
 		};
@@ -294,9 +292,8 @@ namespace luabind {
 		{
 			static void get(lua_State* L)
 			{
-				/// @TODO make this better!
 				lua_pushstring(L, "[osgLuaBind object] osg::ref_ptr<");
-				osglua_ref_type_to_string<T>::get(L);
+				osglua_type_to_string<T>::get(L);
 				lua_pushstring(L, ">");
 				lua_concat(L, 3);
 			}
@@ -305,20 +302,67 @@ namespace luabind {
 }
 //-- Value Types --//
 
+namespace luabind {
+	struct OSGTraitTrue {
+		static const bool value = true;
+		static const bool truevalue = true;
+		typedef void type;
+	};
+
+	template <typename T>
+	struct IsOSGValue {
+		static const bool value = false;
+	};
+
+	template <typename T>
+	struct default_converter< T,
+		typename boost::enable_if_c<
+			IsOSGValue<T>::value
+		>::type
+	>
+	: osglua_val_converter_base<T>
+	{};
+	namespace detail {
+
+		template <typename T>
+		struct type_to_string<T,
+			typename boost::enable_if_c<
+				IsOSGValue<T>::value
+			>::type
+		>
+		{
+			static void get(lua_State *L)
+			{
+				lua_pushstring(L, "[osgLuaBind value] ");
+				osglua_type_to_string<T>::get(L);
+				lua_concat(L, 2);
+			}
+		};
+	}
+}
+
+namespace boost {
+	// Anything defined as an OSG Value does not inherit from osg::Object
+	BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, ::osg::Object, T, luabind::IsOSGValue<T>::truevalue)
+}
+
+#include <boost/type_traits/detail/bool_trait_undef.hpp>
+
 #ifndef CREATE_OSGLUA_VALUE_CONVERTER
 /// Macro to create converters required to bind functions with osg-typed
 /// value arguments with Luabind
-#define CREATE_OSGLUA_VALUE_CONVERTER(T) \
+#define CREATE_OSGLUA_VALUE_CONVERTER(NS, T) \
+	namespace NS { \
+		class T; \
+	} \
 	namespace luabind { \
 		template <> \
-		struct default_converter<T> \
-		  : osglua_val_converter_base<T> \
+		struct IsOSGValue< NS :: T > \
+		  : OSGTraitTrue \
 		{}; \
 		\
-		template <> \
-		struct default_converter<T const&> \
-		  : default_converter<T> \
-		{}; \
+	}
+/*
 		\
 		namespace detail {\
 			template <> \
@@ -332,16 +376,13 @@ namespace luabind {
 			}; \
 		}\
     }
+ */
 #endif
 
-#include <osg/Matrixd>
-#include <osg/Vec3d>
-#include <osg/Vec4d>
-#include <osg/Quat>
 
-CREATE_OSGLUA_VALUE_CONVERTER(osg::Matrixd);
-CREATE_OSGLUA_VALUE_CONVERTER(osg::Vec3d);
-CREATE_OSGLUA_VALUE_CONVERTER(osg::Vec4d);
-CREATE_OSGLUA_VALUE_CONVERTER(osg::Quat);
+CREATE_OSGLUA_VALUE_CONVERTER(osg, Matrixd);
+CREATE_OSGLUA_VALUE_CONVERTER(osg, Vec3d);
+CREATE_OSGLUA_VALUE_CONVERTER(osg, Vec4d);
+CREATE_OSGLUA_VALUE_CONVERTER(osg, Quat);
 
 #endif // INCLUDED_vrjugglua_osgLuaBind_h
