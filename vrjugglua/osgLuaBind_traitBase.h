@@ -1,5 +1,5 @@
 /** @file
-	@brief Header
+	@brief Header defining the base true and false trait types
 
 	@date 2011
 
@@ -30,14 +30,21 @@ namespace osgLuaBind {
 	/// Base class for "true" osg type traits.
 	struct TraitTrue {
 		static const bool value = true;
-		static const bool truevalue = true;
+
+		static const bool trueIfTrue = true;
+		static const bool falseIfTrue = false;
+
 		typedef void trueType;
 		typedef void type;
 	};
-	
+
 	/// Base class for "false" osg type traits.
 	struct TraitFalse {
 		static const bool value = false;
+
+		static const bool trueIfFalse = true;
+		static const bool falseIfFalse = false;
+
 		typedef void falseType;
 	};
 
