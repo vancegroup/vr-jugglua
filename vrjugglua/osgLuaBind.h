@@ -22,8 +22,13 @@
 // Library/third-party includes
 #include <luabind/luabind.hpp>
 
+#include <osg/Object>
+#include <osg/ref_ptr>
 #include <osgLua/Value>
 #include <osgLua/Introspection_variant_cast>
+
+#include <boost/utility/enable_if.hpp>
+#include <boost/type_traits/is_base_of.hpp>
 
 // Standard includes
 #ifdef BUILD_VERBOSE
@@ -235,54 +240,63 @@ namespace luabind {
 
 
 //-- Reference Types --//
+namespace boost {
+	template <typename T>
+	struct is_base_of< T, lua_State > {
+		static const bool value = false;
+	};
+}
+namespace luabind {
+	template <typename T>
+	struct default_converter< ::osg::ref_ptr<T> >
+	: osglua_ref_refptr_converter_base<T>
+	{};
 
-#ifndef CREATE_OSGLUA_REFERENCE_CONVERTER
-/// Macro to create converters required to bind functions with osg-typed
-/// referenced arguments with Luabind
-#define CREATE_OSGLUA_REFERENCE_CONVERTER(T) \
-	namespace luabind { \
-		template <> \
-		struct default_converter<T*> \
-		  : osglua_ref_converter_base<T> \
-		{}; \
-		\
-		template <> \
-		struct default_converter<T* const&> \
-		  : default_converter<T*> \
-		{}; \
-		\
-		template <> \
-		struct default_converter< osg::ref_ptr<T> > \
-		  : osglua_ref_refptr_converter_base<T> \
-		{}; \
-		\
-		namespace detail {\
-			template <> \
-			struct type_to_string<T*> \
-			{ \
-				static void get(lua_State* L) \
-				{ \
-				    lua_pushstring(L, #T " *"); \
-				} \
-			}; \
-			\
-			template <> \
-			struct type_to_string< osg::ref_ptr<T> > \
-			{ \
-				static void get(lua_State* L) \
-				{ \
-				    lua_pushstring(L, "osg::ref_ptr<" #T ">"); \
-				} \
-			}; \
-		}\
-    }
-#endif
 
-#include <osg/Node>
-#include <osg/Group>
-CREATE_OSGLUA_REFERENCE_CONVERTER(osg::Node);
-CREATE_OSGLUA_REFERENCE_CONVERTER(osg::Group);
+	template <typename T>
+	struct default_converter< T*,
+		typename boost::enable_if<
+			typename boost::is_base_of< ::osg::Object, T>::type
+		>::type >
+	: osglua_ref_converter_base<T>
+	{};
+	namespace detail {
+		template <typename T, typename Enable = void>
+		struct osglua_ref_type_to_string
+		{
+			static void get(lua_State *L)
+			{
+				/// @TODO make this better!
+				lua_pushstring(L, "[osgLuaBind object] ");
 
+				static const osgIntrospection::Type& destType =
+					osgIntrospection::Reflection::getType(extended_typeid<T>());
+				lua_pushstring(L, destType.getQualifiedName().c_str());
+				lua_concat(L, 2);
+			}
+		};
+
+		template <typename T>
+		struct type_to_string<T,
+			typename boost::enable_if<
+				typename boost::is_base_of< ::osg::Object, T>::type
+			>::type >
+		: osglua_ref_type_to_string<T>
+		{};
+
+		template <typename T>
+		struct type_to_string< osg::ref_ptr<T> >
+		{
+			static void get(lua_State* L)
+			{
+				/// @TODO make this better!
+				lua_pushstring(L, "osgLuaBind ref_ptr to object type ");
+				lua_pushstring(L, typeid(T).name());
+				lua_concat(L, 2);
+			}
+		};
+	}
+}
 //-- Value Types --//
 
 #ifndef CREATE_OSGLUA_VALUE_CONVERTER
