@@ -49,23 +49,29 @@ namespace luabind {
 		// Convenience typedef for the root of the OSG referenced object class hierarchy.
 		typedef ::osg::Object osg_ref_base_t;
 
+		/// Function template to "unwrap" a pointer into another pointer
 		template <typename RetT, typename ClassT>
 		static RetT unwrap_osg_ptr(ClassT * const &ptr) {
 			return ptr;
 		}
 
+		/// Function template to "unwrap" a ref_ptr into a raw pointer
 		template <typename RetT, typename ClassT>
 		static RetT unwrap_osg_ptr(osg::ref_ptr<ClassT> const & ptr) {
 			return ptr.get();
 		}
 
+		/// Type-dispatched function for determine the score possible by casting.
+		/// Default version is for value types.
 		template <typename T>
 		struct osglua_casting_score_for_type {
 			typedef T target_t;
+
 			static int get(osgLua::Value * v) {
 				try {
 					osgIntrospection::variant_cast<target_t>(v->get());
 				} catch (...) {
+					/// @todo make this catch only osgIntrospection exceptions
 					return -1;
 				}
 				OSGLUABIND_VERBOSE("Convertible match for type.");
@@ -73,9 +79,11 @@ namespace luabind {
 			}
 		};
 
+		/// Partial specialization of casting score computation for referenced object types
 		template <typename T>
 		struct osglua_casting_score_for_type<T*> {
 			typedef T* target_t;
+
 			static int get(osgLua::Value * v) {
 				if (osgIntrospection::variant_cast<target_t>(v->get()) != NULL) {
 					if (osgIntrospection::requires_conversion<target_t>(v->get())) {
@@ -90,6 +98,9 @@ namespace luabind {
 			}
 		};
 
+		/// Template function for shared score computation (both value and reference) -
+		/// uses a type-dispatched partial specialized function for the "inner section"
+		/// that differs between value and reference.
 		template <typename T>
 		static int compute_osglua_score_for_type(lua_State* L, int index) {
 
@@ -118,6 +129,8 @@ namespace luabind {
 
 		}
 
+		/// Traits template for determining the luabind passing style type based on
+		/// the type of container (raw pointer or ref_ptr)
 		template <typename T>
 		struct osglua_passing_style;
 
@@ -132,21 +145,19 @@ namespace luabind {
 		};
 	} // end of namespace detail
 
-	/// Base class for converting osg referenced types to/from osgLua values
+	/// Base class for converting osg referenced types in C++/luabind to/from osgLua values
 	template<typename OSG_QUALIFIED_TYPENAME, typename CONTAINER_TYPENAME = OSG_QUALIFIED_TYPENAME*>
 	struct osglua_ref_converter_base : native_converter_base<CONTAINER_TYPENAME> {
 		typedef OSG_QUALIFIED_TYPENAME* raw_ptr_t;
 		typedef osg::ref_ptr<OSG_QUALIFIED_TYPENAME> ref_ptr_t;
 		typedef CONTAINER_TYPENAME container_t;
 
+		/// Compute type matching score for signature matching and overload resolution
 		static int compute_score(lua_State* L, int index) {
 			return detail::compute_osglua_score_for_type<raw_ptr_t>(L, index);
 		}
 
-		int match(lua_State* L, typename detail::osglua_passing_style<container_t>::type, int index) {
-			return compute_score(L, index);
-		}
-
+		/// Accept in C++ from Lua
 		raw_ptr_t from(lua_State* L, int index) {
 			osgLua::Value * v = osgLua::Value::get(L, index);
 			if (!v) {
@@ -155,6 +166,17 @@ namespace luabind {
 			return osgIntrospection::variant_cast<raw_ptr_t>(v->get());
 		}
 
+		/// Transition C++ to Lua
+		void to(lua_State* L, container_t const& x) {
+			osgLua::Value::push(L, detail::unwrap_osg_ptr<raw_ptr_t>(x));
+		}
+
+
+		/// @name Extra required methods for converter
+		/// I think these are not provided by the native_converter_base in luabind because that
+		/// library assumes that you won't make a converter for pointer types. These are minimal
+		/// forwarding functions in any case.
+		/// @{
 		raw_ptr_t apply(lua_State* L, typename detail::osglua_passing_style<container_t>::type &, int index) {
 			return from(L, index);
 		}
@@ -163,20 +185,23 @@ namespace luabind {
 			to(L, value);
 		}
 
-		void to(lua_State* L, container_t const& x) {
-			osgLua::Value::push(L, detail::unwrap_osg_ptr<raw_ptr_t>(x));
+		int match(lua_State* L, typename detail::osglua_passing_style<container_t>::type, int index) {
+			return compute_score(L, index);
 		}
+		/// @}
 	};
 
-	/// Base class for converting osg value types to/from osgLua values
+	/// Base class for converting osg value types in C++/luabind to/from osgLua values
 	template<typename OSG_QUALIFIED_TYPENAME>
 	struct osglua_val_converter_base : native_converter_base<OSG_QUALIFIED_TYPENAME> {
 		typedef OSG_QUALIFIED_TYPENAME value_t;
 
+		/// Compute type matching score for signature matching and overload resolution
 		static int compute_score(lua_State* L, int index) {
 			return detail::compute_osglua_score_for_type<value_t>(L, index);
 		}
 
+		/// Accept in C++ from Lua
 		value_t from(lua_State* L, int index) {
 			osgLua::Value * v = osgLua::Value::get(L, index);
 			if (!v) {
@@ -185,6 +210,7 @@ namespace luabind {
 			return osgIntrospection::variant_cast<value_t>(v->get());
 		}
 
+		/// Transition C++ to Lua
 		void to(lua_State* L, value_t const& x) {
 			osgLua::Value::push(L, x);
 		}
@@ -196,6 +222,8 @@ namespace luabind {
 //-- Reference Types --//
 namespace luabind {
 
+	/// Raw pointers to objects inheriting from luabind::detail::osg_ref_base_t
+	/// should be converted as osgLua reference objects
 	template <typename T>
 	struct default_converter< T*,
 		typename boost::enable_if<
@@ -204,12 +232,15 @@ namespace luabind {
 	: osglua_ref_converter_base<T>
 	{};
 
+	/// Anything held in an osg::ref_ptr should be converted as an osgLua reference object
 	template <typename T>
 	struct default_converter< ::osg::ref_ptr<T> >
 	: osglua_ref_converter_base<T, ::osg::ref_ptr<T> >
 	{};
 
 	namespace detail {
+		/// Shared template function for looking up a type name string in osgIntrospection
+		/// and pusing it onto the lua stack.
 		template <typename T>
 		struct osglua_type_to_string
 		{
@@ -221,6 +252,11 @@ namespace luabind {
 			}
 		};
 
+		/// type_to_string partial specialization for types inheriting from luabind::detail::osg_ref_base_t
+		/// includes annotation mentioning osgLuaBind and type name from osgIntrospection.
+		///
+		/// @note Luabind includes forwarding partial specializations to apply modifiers like *, &,
+		/// and const, so no need to define those here.
 		template <typename T>
 		struct type_to_string<T,
 			typename boost::enable_if<
@@ -236,6 +272,13 @@ namespace luabind {
 			}
 		};
 
+
+		/// type_to_string partial specialization for types held in an osg::ref_ptr
+		/// includes annotation mentioning osgLuaBind and type name from osgIntrospection,
+		/// wrapped in osg::ref_ptr< and >.
+		///
+		/// @note Luabind includes forwarding partial specializations to apply modifiers like *, &,
+		/// and const, so no need to define those here.
 		template <typename T>
 		struct type_to_string< osg::ref_ptr<T> >
 		{
@@ -252,17 +295,22 @@ namespace luabind {
 //-- Value Types --//
 
 namespace luabind {
+	/// Base class for "true" osg type traits.
 	struct OSGTraitTrue {
 		static const bool value = true;
 		static const bool truevalue = true;
 		typedef void type;
 	};
 
+	/// Templated type trait: all types are assumed to
+	/// not be OSG value types unless otherwise stated.
 	template <typename T>
 	struct IsOSGValue {
 		static const bool value = false;
 	};
 
+	/// Types flagged as being OSG value types should be converted
+	/// with the osglua value converter.
 	template <typename T>
 	struct default_converter< T,
 		typename boost::enable_if_c<
@@ -273,6 +321,9 @@ namespace luabind {
 	{};
 	namespace detail {
 
+		/// Types flagged as being OSG value types get a human-readable
+		/// name string from osgIntrospection with an annotation mentioning
+		/// osgLuaBind.
 		template <typename T>
 		struct type_to_string<T,
 			typename boost::enable_if_c<
@@ -298,7 +349,14 @@ namespace boost {
 #include <boost/type_traits/detail/bool_trait_undef.hpp>
 
 #ifndef CREATE_OSGLUA_VALUE_CONVERTER
-/// Macro to define traits to indicate to Luabind that a type is an osg value type
+
+/// Macro to define traits to indicate to Luabind that a type is an osg value type.
+/// If you're binding a function/method/property that involves an OSG value type
+/// not already mentioned at the bottom of this header, you'll need to use this
+/// macro in your source file to tag the type you're using as an OSG value type.
+/// Failing to do so will give you a weird error at runtime when trying to use that
+/// bound item that reads something like "no acceptable overloads found,
+/// candidates: functionname(custom [Z7osg...])"
 #define CREATE_OSGLUA_VALUE_CONVERTER(T) \
 	namespace luabind { \
 		template <> \
@@ -307,15 +365,25 @@ namespace boost {
 		{}; \
 		\
 	}
-/// Internal-use macro to forward declare and create value converter in one step
+
+/// Internal-use macro to forward declare and create value converter in one step.
 #define FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(NS, T) \
 	namespace NS { \
 		class T; \
 	} \
 	CREATE_OSGLUA_VALUE_CONVERTER( NS :: T )
 
-#endif
-
+/// @name Forward declaration and type trait tagging of common OSG value types.
+///
+/// To bind something using one of these types, you'll still need to include that type's
+/// header, but forward declaration here keeps this header from forcing every file
+/// using it to include lots of extra headers.
+///
+/// Any value types may be added here to make their converter available automatically when
+/// including this file and the corresponding osg header. To make a converter available
+/// without modifying this main header, use the CREATE_OSGLUA_VALUE_CONVERTER macro.
+///
+/// @{
 
 FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Matrixd);
 FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Matrixf);
@@ -325,6 +393,12 @@ FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Vec4d);
 FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Vec4f);
 FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Quat);
 
+/// @}
+
+// Sorry, you probably shouldn't use this macro in your own files.
 #undef FORWARD_DECL_AND_CREATE_VALUE_CONVERTER
+
+
+#endif // ifndef CREATE_OSGLUA_VALUE_CONVERTER
 
 #endif // INCLUDED_vrjugglua_osgLuaBind_h
