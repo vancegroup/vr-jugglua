@@ -118,7 +118,7 @@ namespace luabind {
 
 	/// Base class for converting osg referenced types to/from osgLua values
 	template<typename OSG_QUALIFIED_TYPENAME, typename CONTAINER_TYPENAME = OSG_QUALIFIED_TYPENAME*>
-	struct osglua_ref_converter_base : native_converter_base<OSG_QUALIFIED_TYPENAME*> {
+	struct osglua_ref_converter_base : native_converter_base<CONTAINER_TYPENAME> {
 		typedef OSG_QUALIFIED_TYPENAME* raw_ptr_t;
 		typedef osg::ref_ptr<OSG_QUALIFIED_TYPENAME> ref_ptr_t;
 		typedef CONTAINER_TYPENAME container_t;
