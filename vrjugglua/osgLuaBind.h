@@ -168,19 +168,21 @@ namespace luabind {
 	/// Base class for converting osg value types to/from osgLua values
 	template<typename OSG_QUALIFIED_TYPENAME>
 	struct osglua_val_converter_base : native_converter_base<OSG_QUALIFIED_TYPENAME> {
+		typedef OSG_QUALIFIED_TYPENAME value_t;
+
 		static int compute_score(lua_State* L, int index) {
-			return detail::compute_osglua_score_for_type<OSG_QUALIFIED_TYPENAME>(L, index);
+			return detail::compute_osglua_score_for_type<value_t>(L, index);
 		}
 
-		OSG_QUALIFIED_TYPENAME from(lua_State* L, int index) {
+		value_t from(lua_State* L, int index) {
 			osgLua::Value * v = osgLua::Value::get(L, index);
 			if (!v) {
-				return OSG_QUALIFIED_TYPENAME();
+				return value_t();
 			}
-			return osgIntrospection::variant_cast<OSG_QUALIFIED_TYPENAME>(v->get());
+			return osgIntrospection::variant_cast<value_t>(v->get());
 		}
 
-		void to(lua_State* L, OSG_QUALIFIED_TYPENAME const& x) {
+		void to(lua_State* L, value_t const& x) {
 			osgLua::Value::push(L, x);
 		}
 	};
