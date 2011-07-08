@@ -16,6 +16,7 @@
 #include "BindvrjLuaToLua.h"
 #include <vrjugglua/VRJLuaOutput.h>
 #include <vrjugglua/LuaPath.h>
+#include <vrjugglua/LuaInclude.h>
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
