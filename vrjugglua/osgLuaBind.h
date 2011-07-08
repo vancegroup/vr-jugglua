@@ -114,6 +114,19 @@ namespace luabind {
 			return -1;
 
 		}
+
+		template <typename T>
+		struct osglua_passing_style;
+
+		template <typename T>
+		struct osglua_passing_style<T*> {
+			typedef detail::by_pointer<T> type;
+		};
+
+		template <typename T>
+		struct osglua_passing_style< ::osg::ref_ptr<T> > {
+			typedef detail::by_value< ::osg::ref_ptr<T> > type;
+		};
 	} // end of namespace detail
 
 	/// Base class for converting osg referenced types to/from osgLua values
@@ -122,15 +135,12 @@ namespace luabind {
 		typedef OSG_QUALIFIED_TYPENAME* raw_ptr_t;
 		typedef osg::ref_ptr<OSG_QUALIFIED_TYPENAME> ref_ptr_t;
 		typedef CONTAINER_TYPENAME container_t;
+
 		static int compute_score(lua_State* L, int index) {
 			return detail::compute_osglua_score_for_type<raw_ptr_t>(L, index);
 		}
 
-		int match(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index) {
-			return compute_score(L, index);
-		}
-
-		int match(lua_State* L, detail::by_value<ref_ptr_t>&, int index) {
+		int match(lua_State* L, typename detail::osglua_passing_style<container_t>::type, int index) {
 			return compute_score(L, index);
 		}
 
@@ -142,11 +152,7 @@ namespace luabind {
 			return osgIntrospection::variant_cast<raw_ptr_t>(v->get());
 		}
 
-		raw_ptr_t apply(lua_State* L, detail::by_pointer<OSG_QUALIFIED_TYPENAME>, int index) {
-			return from(L, index);
-		}
-
-		ref_ptr_t apply(lua_State* L, detail::by_value<ref_ptr_t>&, int index) {
+		raw_ptr_t apply(lua_State* L, typename detail::osglua_passing_style<container_t>::type &, int index) {
 			return from(L, index);
 		}
 
