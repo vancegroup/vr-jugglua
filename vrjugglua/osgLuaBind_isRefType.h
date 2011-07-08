@@ -17,6 +17,7 @@
 
 // Internal Includes
 #include "osgLuaBind_traitBase.h"
+#include "osgLuaBind_RefBase.h"
 
 // Library/third-party includes
 #include <osg/Object>
@@ -39,11 +40,6 @@ namespace boost {
 namespace osgLuaBind {
 	using boost::enable_if;
 	using boost::is_base_of;
-
-	namespace detail {
-		/// Convenience typedef for the root of the OSG referenced object class hierarchy.
-		typedef ::osg::Object RefBase;
-	} // end of namespace detail
 
 	template <typename T, typename Enable = void>
 	struct IsPtrToRefType : TraitFalse

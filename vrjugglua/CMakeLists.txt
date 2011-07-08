@@ -42,8 +42,10 @@ set(SOURCES
 
 set(API
 	osgLuaBind.h
+	osgLuaBind_RefBase.h
 	osgLuaBind_isRefType.h
 	osgLuaBind_isValueType.h
+	osgLuaBind_pushTypeName.h
 	osgLuaBind_traitBase.h
 	osgLuaBind_verbose.h
 	Internal_AnalogInterface.h
