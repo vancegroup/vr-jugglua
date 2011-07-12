@@ -19,9 +19,10 @@
 #include "osgLuaBind_ConverterBase.h"
 #include "osgLuaBind_luabindPassingStyle.h"
 #include "osgLuaBind_isRefType.h"
+#include "osgLuaBind_pushTypeName.h"
 
 // Library/third-party includes
-// - none
+#include <luabind/lua_include.hpp>
 
 // Standard includes
 // - none
@@ -68,5 +69,23 @@ namespace luabind {
 	struct default_converter<T, typename osgLuaBind::IsRefType<T>::type>
 			: osgLuaBind::detail::RefConverter<typename osgLuaBind::detail::unwrapPtr<T>::value_t, T> {};
 
+	namespace detail {
+		template <typename T, typename Enable>
+		struct type_to_string;
+
+		/// Types flagged as being OSG value types get a human-readable
+		/// name string from osgIntrospection with an annotation mentioning
+		/// osgLuaBind.
+		template <typename T>
+		struct type_to_string < T,
+				typename osgLuaBind::IsRefType<T>::type
+				> {
+			static void get(lua_State *L) {
+				lua_pushstring(L, "[osgLuaBind object] ");
+				osgLuaBind::PushTypeName<T>::apply(L);
+				lua_concat(L, 2);
+			}
+		};
+	} // end of namespace detail
 } // end of namespace luabind
 #endif // INCLUDED_osgLuaBind_RefConverter_h_GUID_c42972ec_db46_44c0_8448_92bc76ca2bc0
