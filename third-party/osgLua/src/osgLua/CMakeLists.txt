@@ -30,21 +30,19 @@ set(OSGLUA_PRIVATE_API
 	osgLua.h
 	Type.h)
 
+set(HEADER_DIR ../../include/osgLua)
 set(OSGLUA_PUBLIC_API
-	../../include/osgLua/Callback
-	../../include/osgLua/IntrospectionType
-	../../include/osgLua/IntrospectionValue
-	../../include/osgLua/Introspection_variant_cast
-	../../include/osgLua/LoadWrapper
-	../../include/osgLua/LuaInclude
-	../../include/osgLua/Script
-	../../include/osgLua/Value
-	"${CMAKE_CURRENT_BINARY_DIR}/../../include/osgLua/Config")
-
+	${HEADER_DIR}/Callback
+	${HEADER_DIR}/LoadWrapper
+	${HEADER_DIR}/LuaInclude
+	${HEADER_DIR}/Script
+	${HEADER_DIR}/Value
+	"${CMAKE_CURRENT_BINARY_DIR}/${HEADER_DIR}/Config")
+include(${HEADER_DIR}/introspection/headers.cmake)
 source_group(API FILES ${OSGLUA_PUBLIC_API})
 
-file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../include/osgLua/")
-configure_file("../../include/osgLua/Config.in" "${CMAKE_CURRENT_BINARY_DIR}/../../include/osgLua/Config")
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${HEADER_DIR}/")
+configure_file("${HEADER_DIR}/Config.in" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER_DIR}/Config")
 
 if(BUILD_LUA_AS_CPP)
 	add_definitions(-DOSGLUA_LUA_BUILT_AS_CPP)
@@ -76,4 +74,7 @@ if(INSTALL_CXX_SDK)
 		LIBRARY DESTINATION ${LIB_DIR} COMPONENT runtime
 		ARCHIVE DESTINATION ${ARCH_DIR} COMPONENT sdk
 		PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/osgLua COMPONENT sdk)
+	install(FILES
+		${OSGLUA_INTROSPECTION_HEADERS}
+		DESTINATION ${INCLUDE_DIR}/osgLua/introspection COMPONENT sdk)
 endif()

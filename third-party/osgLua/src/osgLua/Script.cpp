@@ -21,8 +21,8 @@
 #include "Type.h"
 #include "LuaIncludeFull.h"
 
-#include <osgLua/IntrospectionValue>
-#include <osgLua/IntrospectionType>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/Type>
 
 namespace osgLua {
 
@@ -41,19 +41,19 @@ namespace osgLua {
 		L = 0;
 	}
 
-	void Script::loadFile(const char *filename, osgIntrospection::ValueList *vl) {
+	void Script::loadFile(const char *filename, introspection::ValueList *vl) {
 		execute(luaL_loadfile(L, filename) , vl);
 	}
 
-	void Script::execute(const std::string &code, osgIntrospection::ValueList *vl,
+	void Script::execute(const std::string &code, introspection::ValueList *vl,
 	                     const std::string &aux) {
 		execute(
 		    luaL_loadbuffer(L, code.c_str(), code.length(), aux.c_str()), vl
 		);
 	}
 
-	bool Script::call(const std::string &funcName, const osgIntrospection::ValueList *params,
-	                  osgIntrospection::ValueList *results) {
+	bool Script::call(const std::string &funcName, const introspection::ValueList *params,
+	                  introspection::ValueList *results) {
 		bool result = true;
 		int top = lua_gettop(L);
 
@@ -66,7 +66,7 @@ namespace osgLua {
 			int num_params = 0;
 			//2nd push the parameters
 			if (params) {
-				for (osgIntrospection::ValueList::const_iterator i =
+				for (introspection::ValueList::const_iterator i =
 				            params->begin(); i != params->end(); ++i) {
 					Value::push(L, (*i));
 					++num_params;
@@ -90,7 +90,7 @@ namespace osgLua {
 		return result; // return true or false
 	}
 
-	void Script::execute(int value, osgIntrospection::ValueList *vl) {
+	void Script::execute(int value, introspection::ValueList *vl) {
 		int top = lua_gettop(L) - 1;
 		if (value) {
 			Exception e(lua_tostring(L, -1));
@@ -114,15 +114,15 @@ namespace osgLua {
 		return loadWrapper(L, namespaceName.c_str());
 	}
 
-	void Script::set(const osgIntrospection::Value &val,
+	void Script::set(const introspection::Value &val,
 	                 const std::string &name) {
 		Value::push(L, val);
 		lua_setglobal(L, name.c_str());
 	}
 
-	osgIntrospection::Value Script::get(const std::string &name) {
+	introspection::Value Script::get(const std::string &name) {
 		int top = lua_gettop(L);
-		osgIntrospection::Value v;
+		introspection::Value v;
 		lua_getglobal(L, name.c_str());
 		if (!lua_isnil(L, -1)) {
 			v = getValue(L, -1);

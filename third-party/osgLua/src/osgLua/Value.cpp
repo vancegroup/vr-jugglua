@@ -20,20 +20,11 @@
 
 #include "LuaIncludeFull.h"
 
-#include <osgLua/Config>
-
-#ifdef OSGLUA_USE_CPPINTROSPECTION
-#	include <cppintrospection/Reflection>
-#	include <cppintrospection/Exceptions>
-#	include <cppintrospection/Utility>
-#	include <cppintrospection/ExtendedTypeInfo>
-#else
-#	include <osgIntrospection/Reflection>
-#	include <osgIntrospection/Exceptions>
-#	include <osgIntrospection/Utility>
-#	include <osgIntrospection/ExtendedTypeInfo>
-#endif
-#include <osgLua/Introspection_variant_cast>
+#include <osgLua/introspection/Reflection>
+#include <osgLua/introspection/Exceptions>
+#include <osgLua/introspection/Utility>
+#include <osgLua/introspection/ExtendedTypeInfo>
+#include <osgLua/introspection/variant_cast>
 
 #include <osg/Referenced>
 #include <osg/ref_ptr>
@@ -124,11 +115,11 @@ namespace osgLua {
 		};
 
 		template<typename T>
-		bool pushIfTypeIs(lua_State *L, const osgIntrospection::Value &original) {
-			static const osgIntrospection::Type& testType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
+		bool pushIfTypeIs(lua_State *L, const introspection::Value &original) {
+			static const introspection::Type& testType =
+			    introspection::Reflection::getType(extended_typeid<T>());
 			if (original.getType() == testType) {
-				ToLua<T>::push(L, osgIntrospection::getInstance<T>(original));
+				ToLua<T>::push(L, introspection::getInstance<T>(original));
 				return true;
 			}
 			return false;
@@ -136,19 +127,19 @@ namespace osgLua {
 
 	}
 
-	Value::Value(const osgIntrospection::Value &v) : _value(v) {
+	Value::Value(const introspection::Value &v) : _value(v) {
 
-		static const osgIntrospection::Type &t_referenced =
-		    osgIntrospection::Reflection::getType(extended_typeid<osg::Referenced>());
+		static const introspection::Type &t_referenced =
+		    introspection::Reflection::getType(extended_typeid<osg::Referenced>());
 
-		const osgIntrospection::Type &type = v.getType();
+		const introspection::Type &type = v.getType();
 		if (type.isDefined()) {
 			if (type.isNonConstPointer()) {
-				const osgIntrospection::Type &p_type = type.getPointedType();
+				const introspection::Type &p_type = type.getPointedType();
 				if (p_type.isDefined())
 					if (p_type.isSubclassOf(t_referenced)) {
 						_referenced =
-						    osgIntrospection::variant_cast<osg::Referenced*>(_value);
+						    introspection::variant_cast<osg::Referenced*>(_value);
 					}
 			}
 		}
@@ -157,7 +148,7 @@ namespace osgLua {
 	Value::~Value() {
 	}
 
-	osgIntrospection::Value getValue(lua_State *L, int index) {
+	introspection::Value getValue(lua_State *L, int index) {
 		int top = lua_gettop(L);
 		index = (index > 0) ? index : top + index + 1;
 
@@ -167,7 +158,7 @@ namespace osgLua {
 				return v->get();
 			} else {
 				luaL_error(L,
-				           "userdata can not be used as osgIntrospection::Value");
+				           "userdata can not be used as osgLua::introspection::Value");
 			}
 		}
 
@@ -176,32 +167,32 @@ namespace osgLua {
 			lua_Number  vf = lua_tonumber(L, index);
 
 			if (((lua_Number)vi) == vf) {
-				return osgIntrospection::Value(vi);
+				return introspection::Value(vi);
 			}
-			return osgIntrospection::Value(vf);
+			return introspection::Value(vf);
 		}
 
 		if (lua_isstring(L, index)) {
-			return osgIntrospection::Value(
+			return introspection::Value(
 			           std::string(lua_tostring(L, index))
 			       );
 		}
 
 		if (lua_isboolean(L, index)) {
-			return osgIntrospection::Value((lua_toboolean(L, index) == 0) ? false : true);
+			return introspection::Value((lua_toboolean(L, index) == 0) ? false : true);
 		}
 
 		luaL_error(L,
-		           "Value at %d(%s) can not be used as osgIntrospection::Value",
+		           "Value at %d(%s) can not be used as osgLua::introspection::Value",
 		           index, lua_typename(L, lua_type(L, index)));
 
-		return osgIntrospection::Value();
+		return introspection::Value();
 	}
 
 
 
 
-	void Value::push(lua_State *L, const osgIntrospection::Value &original) {
+	void Value::push(lua_State *L, const introspection::Value &original) {
 		if (detail::pushIfTypeIs<bool>(L, original)) {
 			return;
 		}
@@ -272,16 +263,16 @@ namespace osgLua {
 
 
 	int Value::getTypeInfo(lua_State *L) {
-		const osgIntrospection::Type *type = 0;
+		const introspection::Type *type = 0;
 		Value *v = Value::get(L, 1);
 		if (v) {
 			type = &(v->getType());
 		} else if (lua_isstring(L, 1)) {
 			try {
-				const osgIntrospection::Type &t =
-				    osgIntrospection::Reflection::getType(lua_tostring(L, 1));
+				const introspection::Type &t =
+				    introspection::Reflection::getType(lua_tostring(L, 1));
 				type = &t;
-			} catch (osgIntrospection::TypeNotFoundException&) {
+			} catch (introspection::TypeNotFoundException&) {
 				return 0;
 			}
 		}
@@ -295,15 +286,15 @@ namespace osgLua {
 	}
 
 	int Value::getTypes(lua_State *L) {
-		const osgIntrospection::TypeMap &map =
-		    osgIntrospection::Reflection::getTypes();
+		const introspection::TypeMap &map =
+		    introspection::Reflection::getTypes();
 		int counter = 1;
 
 		lua_newtable(L);
 
-		for (osgIntrospection::TypeMap::const_iterator i = map.begin();
+		for (introspection::TypeMap::const_iterator i = map.begin();
 		        i != map.end(); ++i) {
-			osgIntrospection::Type *type = i->second;
+			introspection::Type *type = i->second;
 			if (!type->isDefined() || type->isPointer()) {
 				continue;
 			}
@@ -319,19 +310,19 @@ namespace osgLua {
 		int top = lua_gettop(L);
 		std::string name(luaL_checkstring(L, 1));
 		try {
-			const osgIntrospection::Type &type =
-			    osgIntrospection::Reflection::getType(name);
+			const introspection::Type &type =
+			    introspection::Reflection::getType(name);
 
-			osgIntrospection::ValueList vl;
+			introspection::ValueList vl;
 			for (int i = 2; i <= top; ++i) {
 				vl.push_back(getValue(L, i));
 			}
 
-			osgIntrospection::Value returnedval = type.createInstance(vl);
+			introspection::Value returnedval = type.createInstance(vl);
 
 			Value::push(L, returnedval);
 			return 1;
-		} catch (osgIntrospection::Exception &e) {
+		} catch (introspection::Exception &e) {
 			luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 		}
 		return 0;

@@ -19,8 +19,8 @@
 
 #include <osgLua/LuaInclude>
 
-#include <osgLua/IntrospectionValue>
-#include <osgLua/IntrospectionType>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/Type>
 
 namespace osg { class Referenced; }
 #include <osg/ref_ptr>
@@ -29,13 +29,13 @@ namespace osgLua {
 
 	class Value {
 		public:
-			osgIntrospection::Value &get();
-			const osgIntrospection::Type &getRealType() const;
-			const osgIntrospection::Type &getType() const;
-			void set(const osgIntrospection::Value &v);
+			introspection::Value &get();
+			const introspection::Type &getRealType() const;
+			const introspection::Type &getType() const;
+			void set(const introspection::Value &v);
 
-			/// Push an osgIntrospection::Value on to the Lua stack.
-			static void push(lua_State *L, const osgIntrospection::Value &v);
+			/// Push an introspection::Value on to the Lua stack.
+			static void push(lua_State *L, const introspection::Value &v);
 
 			/** @brief Get an osgLua::Value from the Lua stack at the given index.
 				@returns a pointer to the osgLua::Value, or NULL if value at index
@@ -56,18 +56,18 @@ namespace osgLua {
 
 		private:
 			Value();
-			Value(const osgIntrospection::Value &v);
+			Value(const introspection::Value &v);
 			~Value();
 			Value(const Value &);
 			Value& operator=(const Value &);
 
-			osgIntrospection::Value _value;
+			introspection::Value _value;
 			osg::ref_ptr<osg::Referenced> _referenced;
 
-			/// Given an osgIntrospection::Type, create the metatable if it has
+			/// Given an introspection::Type, create the metatable if it has
 			/// not yet been created, and in any case, leave the metatable on the
 			/// top of the Lua stack.
-			static void _getOrCreateMetatable(lua_State* L, osgIntrospection::Type const& t);
+			static void _getOrCreateMetatable(lua_State* L, introspection::Type const& t);
 
 			/// Checks the value at the given index to see if its metatable
 			/// is one created by osgLua.
@@ -84,28 +84,28 @@ namespace osgLua {
 			/// @}
 	};
 
-	osgIntrospection::Value getValue(lua_State *L, int index);
+	introspection::Value getValue(lua_State *L, int index);
 
 
 	/****************************************************************/
 	/* --- Inline implementations --- *******************************/
 	/****************************************************************/
-	inline osgIntrospection::Value &Value::get() {
+	inline introspection::Value &Value::get() {
 		return _value;
 	}
 
-	inline const osgIntrospection::Type &Value::getRealType() const {
+	inline const introspection::Type &Value::getRealType() const {
 		return _value.getType();
 	}
 
-	inline const osgIntrospection::Type &Value::getType() const {
+	inline const introspection::Type &Value::getType() const {
 		if (_value.isTypedPointer()) {
 			return _value.getInstanceType();
 		}
 		return _value.getType();
 	}
 
-	inline void Value::set(const osgIntrospection::Value &v) {
+	inline void Value::set(const introspection::Value &v) {
 		_value = v;
 	}
 

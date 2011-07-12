@@ -17,14 +17,10 @@
 #include "Value_metamethods.h"
 #include <osgLua/Value>
 
-#include <osgLua/Introspection_variant_cast>
-#include <osgLua/IntrospectionValue>
-#include <osgLua/IntrospectionType>
-#ifdef OSGLUA_USE_CPPINTROSPECTION
-#	include <cppintrospection/Exceptions>
-#else
-#	include <osgIntrospection/Exceptions>
-#endif
+#include <osgLua/introspection/variant_cast>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/Type>
+#include <osgLua/introspection/Exceptions>
 
 #include "LuaIncludeFull.h"
 
@@ -57,7 +53,7 @@ namespace osgLua {
 			bool ret;
 			try {
 				ret = a->get() == b->get();
-			} catch (osgIntrospection::Exception &e) {
+			} catch (introspection::Exception &e) {
 				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 			}
 
@@ -73,7 +69,7 @@ namespace osgLua {
 			bool ret;
 			try {
 				ret = a->get() < b->get();
-			} catch (osgIntrospection::Exception &e) {
+			} catch (introspection::Exception &e) {
 				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 			}
 
@@ -89,7 +85,7 @@ namespace osgLua {
 			bool ret;
 			try {
 				ret = a->get() <= b->get();
-			} catch (osgIntrospection::Exception &e) {
+			} catch (introspection::Exception &e) {
 				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 			}
 

@@ -20,7 +20,7 @@
 #include "MatrixTemplates.h"
 #include "LuaIncludeFull.h"
 
-#include <osgLua/IntrospectionType>
+#include <osgLua/introspection/Type>
 
 // cd /usr/include && find osg -name "Vec*" | sort | sed 's/\(.*\)/\#include \<\1\>/g'
 #include <osg/Vec2>
@@ -70,7 +70,7 @@ namespace osgLua {
 	}
 
 
-	void Value::_getOrCreateMetatable(lua_State *L, osgIntrospection::Type const& t) {
+	void Value::_getOrCreateMetatable(lua_State *L, introspection::Type const& t) {
 		// create/get the metatable
 		if (luaL_newmetatable(L, t.getQualifiedName().c_str())) {
 #ifdef OSGLUA_VERBOSE

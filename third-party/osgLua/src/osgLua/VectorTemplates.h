@@ -20,27 +20,19 @@
 #include "MathValueTags.h"
 #include "LuaIncludeFull.h"
 
-#include <osgLua/Config>
-
-#ifdef OSGLUA_USE_CPPINTROSPECTION
-#	include <cppintrospection/Reflection>
-#	include <cppintrospection/ExtendedTypeInfo>
-#else
-#	include <osgIntrospection/Reflection>
-#	include <osgIntrospection/ExtendedTypeInfo>
-#endif
-
-#include <osgLua/IntrospectionValue>
-#include <osgLua/IntrospectionType>
-#include <osgLua/Introspection_variant_cast>
+#include <osgLua/introspection/Reflection>
+#include <osgLua/introspection/ExtendedTypeInfo>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/Type>
+#include <osgLua/introspection/variant_cast>
 
 namespace osgLua {
 
 
 	namespace detail {
 		template<class T>
-		T scaleVector(osgIntrospection::Value const& vector, double scalar) {
-			return osgIntrospection::variant_cast<T>(vector) * scalar;
+		T scaleVector(introspection::Value const& vector, double scalar) {
+			return introspection::variant_cast<T>(vector) * scalar;
 		}
 
 	} // end of namespace detail
@@ -53,13 +45,13 @@ namespace osgLua {
 			Value *a = Value::getRequired(L, 1);
 			Value *b = Value::getRequired(L, 2);
 
-			const osgIntrospection::Type &typeA = a->getType();
-			const osgIntrospection::Type &typeB = b->getType();
+			const introspection::Type &typeA = a->getType();
+			const introspection::Type &typeB = b->getType();
 
-			static const osgIntrospection::Type& myType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
+			static const introspection::Type& myType =
+			    introspection::Reflection::getType(extended_typeid<T>());
 			if (typeA == myType && typeB == myType) {
-				osgIntrospection::Value ret = predicate(osgIntrospection::variant_cast<T>(a->get()), osgIntrospection::variant_cast<T>(b->get()));
+				introspection::Value ret = predicate(introspection::variant_cast<T>(a->get()), introspection::variant_cast<T>(b->get()));
 				Value::push(L, ret);
 				return 1;
 			} else {
@@ -81,7 +73,7 @@ namespace osgLua {
 		template<class T>
 		int unm(lua_State *L) {
 			Value *a = Value::getRequired(L, 1);
-			osgIntrospection::Value ret = detail::scaleVector<T>(a->get(), -1);
+			introspection::Value ret = detail::scaleVector<T>(a->get(), -1);
 			Value::push(L, ret);
 			return 1;
 		}
@@ -122,15 +114,15 @@ namespace osgLua {
 				           __FILE__, __LINE__, lua_typename(L, lua_type(L, 1)), lua_typename(L, lua_type(L, 2)));
 			}
 
-			osgIntrospection::Value ret = detail::scaleVector<T>(vector->get(), scalar);
+			introspection::Value ret = detail::scaleVector<T>(vector->get(), scalar);
 			Value::push(L, ret);
 			return 1;
 		}
 
 		template<class T>
-		bool bind_metamethods(lua_State *L, const osgIntrospection::Type &valT) {
-			static const osgIntrospection::Type& myType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
+		bool bind_metamethods(lua_State *L, const introspection::Type &valT) {
+			static const introspection::Type& myType =
+			    introspection::Reflection::getType(extended_typeid<T>());
 			if (valT == myType) {
 				detail::setVector(L);
 				lua_pushcfunction(L, &Vector::add<T>);

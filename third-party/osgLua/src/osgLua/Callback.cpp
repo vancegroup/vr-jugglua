@@ -16,7 +16,7 @@
 
 #include <osgLua/Callback>
 #include <osgLua/Value>
-#include <osgLua/IntrospectionValue>
+#include <osgLua/introspection/Value>
 
 #include "LuaIncludeFull.h"
 

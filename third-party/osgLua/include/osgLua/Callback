@@ -34,7 +34,7 @@
 #include <osg/ref_ptr>
 #include <osgLua/Script>
 #include <osgLua/LuaInclude>
-#include <osgLua/IntrospectionValue>
+#include <osgLua/introspection/Value>
 
 namespace osgLua {
 
@@ -47,7 +47,7 @@ namespace osgLua {
 			Callback(lua_State *L);
 
 		protected:
-			typedef const osgIntrospection::Value &P;
+			typedef const introspection::Value &P;
 			virtual ~Callback();
 
 			void execute();

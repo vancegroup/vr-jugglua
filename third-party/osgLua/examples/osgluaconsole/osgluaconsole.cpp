@@ -4,9 +4,9 @@
 
 #include <osgDB/ReadFile>
 #include <osgViewer/Viewer>
-#include <osgIntrospection/Value>
-#include <osgIntrospection/Reflection>
-#include <osgIntrospection/variant_cast>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/Reflection>
+#include <osgLua/introspection/variant_cast>
 #include <osg/Vec3>
 #include <osg/io_utils>
 

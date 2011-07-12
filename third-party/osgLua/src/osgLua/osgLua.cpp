@@ -102,7 +102,7 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		/***********************************************************/
 		if (std::strcmp(name, "osg") == 0) {
 			const std::type_info &tcheck =
-			    osgIntrospection::Reflection::getType("osg::Vec3").
+			    introspection::Reflection::getType("osg::Vec3").
 			    getStdTypeInfo();
 			if (tcheck != typeid(osg::Vec3)) {
 				std::cerr <<

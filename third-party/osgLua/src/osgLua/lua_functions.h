@@ -14,32 +14,24 @@
 */
 
 #include <osgLua/Config>
-#ifdef OSGLUA_USE_CPPINTROSPECTION
-#	include <cppintrospection/Reflection>
-#	include <cppintrospection/MethodInfo>
-#	include <cppintrospection/ConstructorInfo>
-#	include <cppintrospection/PropertyInfo>
-#	include <cppintrospection/Utility>
-#else
-#	include <osgIntrospection/Reflection>
-#	include <osgIntrospection/MethodInfo>
-#	include <osgIntrospection/ConstructorInfo>
-#	include <osgIntrospection/PropertyInfo>
-#	include <osgIntrospection/Utility>
-#endif
-#include <osgLua/IntrospectionValue>
-#include <osgLua/IntrospectionType>
+#include <osgLua/introspection/Reflection>
+#include <osgLua/introspection/MethodInfo>
+#include <osgLua/introspection/ConstructorInfo>
+#include <osgLua/introspection/PropertyInfo>
+#include <osgLua/introspection/Utility>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/Type>
 
 #include <osgLua/LuaInclude>
 
 namespace osgLua {
 
-	void pushParameter(lua_State *L, const osgIntrospection::ParameterInfo *p);
-	void pushMethodInfo(lua_State *L, const osgIntrospection::MethodInfo *mi);
-	void pushPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *mi);
+	void pushParameter(lua_State *L, const introspection::ParameterInfo *p);
+	void pushMethodInfo(lua_State *L, const introspection::MethodInfo *mi);
+	void pushPropertyInfo(lua_State *L, const introspection::PropertyInfo *mi);
 	void pushConstructorInfo(lua_State *L,
-	                         const osgIntrospection::ConstructorInfo *ci);
-	void pushTypeInfo(lua_State *L, const osgIntrospection::Type *type);
+	                         const introspection::ConstructorInfo *ci);
+	void pushTypeInfo(lua_State *L, const introspection::Type *type);
 
 
 } // end of osgLua namespace

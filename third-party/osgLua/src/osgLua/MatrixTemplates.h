@@ -21,18 +21,11 @@
 
 #include "LuaIncludeFull.h"
 
-#include <osgLua/Config>
-#ifdef OSGLUA_USE_CPPINTROSPECTION
-#	include <cppintrospection/Reflection>
-#	include <cppintrospection/ExtendedTypeInfo>
-#else
-#	include <osgIntrospection/Reflection>
-#	include <osgIntrospection/ExtendedTypeInfo>
-#endif
-
-#include <osgLua/Introspection_variant_cast>
-#include <osgLua/IntrospectionValue>
-#include <osgLua/IntrospectionType>
+#include <osgLua/introspection/Reflection>
+#include <osgLua/introspection/ExtendedTypeInfo>
+#include <osgLua/introspection/variant_cast>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/Type>
 
 #include <osg/Vec4>
 #include <osg/Vec3>
@@ -48,13 +41,13 @@ namespace osgLua {
 
 	namespace detail {
 		template<class T>
-		T multMatrices(osgIntrospection::Value const& a, osgIntrospection::Value const& b) {
-			return osgIntrospection::variant_cast<T>(a) * osgIntrospection::variant_cast<T>(b);
+		T multMatrices(introspection::Value const& a, introspection::Value const& b) {
+			return introspection::variant_cast<T>(a) * introspection::variant_cast<T>(b);
 		}
 
 		template<class Mat, class Vec>
-		Vec xformVec(osgIntrospection::Value const& theVec, osgIntrospection::Value const& theMat) {
-			return osgIntrospection::variant_cast<Vec>(theVec) * osgIntrospection::variant_cast<Mat>(theMat);
+		Vec xformVec(introspection::Value const& theVec, introspection::Value const& theMat) {
+			return introspection::variant_cast<Vec>(theVec) * introspection::variant_cast<Mat>(theMat);
 		}
 
 	} // end of namespace detail
@@ -63,14 +56,14 @@ namespace osgLua {
 	namespace Matrix {
 		template<class Mat, class Vec>
 		bool xform(lua_State *L, Value *a, Value *b) {
-			const osgIntrospection::Type &typeA = a->getType();
-			const osgIntrospection::Type &typeB = b->getType();
-			static const osgIntrospection::Type& vecType =
-			    osgIntrospection::Reflection::getType(extended_typeid<Vec>());
-			static const osgIntrospection::Type& matType =
-			    osgIntrospection::Reflection::getType(extended_typeid<Mat>());
+			const introspection::Type &typeA = a->getType();
+			const introspection::Type &typeB = b->getType();
+			static const introspection::Type& vecType =
+			    introspection::Reflection::getType(extended_typeid<Vec>());
+			static const introspection::Type& matType =
+			    introspection::Reflection::getType(extended_typeid<Mat>());
 			if (typeA == vecType && typeB == matType) {
-				osgIntrospection::Value ret = detail::xformVec<Mat, Vec>(a->get(), b->get());
+				introspection::Value ret = detail::xformVec<Mat, Vec>(a->get(), b->get());
 				Value::push(L, ret);
 				return true;
 			}
@@ -82,14 +75,14 @@ namespace osgLua {
 			Value *a = Value::getRequired(L, 1);
 			Value *b = Value::getRequired(L, 2);
 
-			const osgIntrospection::Type &typeA = a->getType();
-			const osgIntrospection::Type &typeB = b->getType();
+			const introspection::Type &typeA = a->getType();
+			const introspection::Type &typeB = b->getType();
 
-			static const osgIntrospection::Type& myType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
+			static const introspection::Type& myType =
+			    introspection::Reflection::getType(extended_typeid<T>());
 			if (typeA == myType && typeB == myType) {
 				/// matrix multiplication
-				osgIntrospection::Value ret = detail::multMatrices<T>(a->get(), b->get());
+				introspection::Value ret = detail::multMatrices<T>(a->get(), b->get());
 				Value::push(L, ret);
 				return 1;
 			}
@@ -125,13 +118,13 @@ namespace osgLua {
 			Value *a = Value::getRequired(L, 1);
 			Value *b = Value::getRequired(L, 2);
 
-			const osgIntrospection::Type &typeA = a->getType();
-			const osgIntrospection::Type &typeB = b->getType();
+			const introspection::Type &typeA = a->getType();
+			const introspection::Type &typeB = b->getType();
 
-			static const osgIntrospection::Type& myType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
+			static const introspection::Type& myType =
+			    introspection::Reflection::getType(extended_typeid<T>());
 			if (typeA == myType && typeB == myType) {
-				bool ret = predicate(osgIntrospection::variant_cast<T>(a->get()), osgIntrospection::variant_cast<T>(b->get()));
+				bool ret = predicate(introspection::variant_cast<T>(a->get()), introspection::variant_cast<T>(b->get()));
 				lua_pushboolean(L, ret);
 				return 1;
 			} else {
@@ -154,9 +147,9 @@ namespace osgLua {
 		}
 
 		template<class T>
-		bool bind_metamethods(lua_State *L, const osgIntrospection::Type &valT) {
-			static const osgIntrospection::Type& myType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
+		bool bind_metamethods(lua_State *L, const introspection::Type &valT) {
+			static const introspection::Type& myType =
+			    introspection::Reflection::getType(extended_typeid<T>());
 			if (valT == myType) {
 				detail::setMatrix(L);
 				lua_pushcfunction(L, &Matrix::mul<T>);

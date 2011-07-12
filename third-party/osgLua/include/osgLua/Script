@@ -32,7 +32,7 @@
 
 #include <osg/ref_ptr>
 #include <osg/Referenced>
-#include <osgLua/IntrospectionType>
+#include <osgLua/introspection/Type>
 #include <osgLua/LuaInclude>
 
 namespace osgLua {
@@ -58,7 +58,7 @@ namespace osgLua {
 			/// @param vl, if vl is != 0 then the returned values from
 			/// the script will be appended to the value list. Note the function
 			/// doesn't clear the value list.
-			void loadFile(const char *filename = 0, osgIntrospection::ValueList *vl = 0);
+			void loadFile(const char *filename = 0, introspection::ValueList *vl = 0);
 
 			/// Executes the given code.
 			/// @param vl, if vl is != 0 then the returned values from
@@ -67,21 +67,21 @@ namespace osgLua {
 			/// @param name, If there is an error name is used
 			/// to identify the executed code.
 			void execute(const std::string &code,
-			             osgIntrospection::ValueList *vl = 0,
+			             introspection::ValueList *vl = 0,
 			             const std::string &name = "--inline_code--");
 
-			bool call(const std::string &funcName, const osgIntrospection::ValueList *params,
-			          osgIntrospection::ValueList *results = 0);
+			bool call(const std::string &funcName, const introspection::ValueList *params,
+			          introspection::ValueList *results = 0);
 
 			/// Loads the wrapper and enables the access to the given namespace
 			bool enable(const std::string &namespaceName = "osg");
 
 			/// Sets the value of global variable (name) in the script
-			void set(const osgIntrospection::Value &val, const std::string &name);
+			void set(const introspection::Value &val, const std::string &name);
 
 			/// Returns the value of a given global variable, returns empty
 			/// value if the variable do not exists.
-			osgIntrospection::Value get(const std::string &name);
+			introspection::Value get(const std::string &name);
 
 			lua_State *getLuaState() {
 				return L;
@@ -95,7 +95,7 @@ namespace osgLua {
 
 			/// Executes the function at the top of the stack, if vl != 0 append
 			/// to it the Values returned by the script.
-			void execute(int value, osgIntrospection::ValueList *vl = 0);
+			void execute(int value, introspection::ValueList *vl = 0);
 		private:
 			lua_State *L;
 

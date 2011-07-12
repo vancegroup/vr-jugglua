@@ -20,20 +20,11 @@
 
 #include "LuaIncludeFull.h"
 
-#include <osgLua/Config>
-
-#ifdef OSGLUA_USE_CPPINTROSPECTION
-#	include <cppintrospection/Reflection>
-#	include <cppintrospection/MethodInfo>
-#	include <cppintrospection/Exceptions>
-#else
-#	include <osgIntrospection/Reflection>
-#	include <osgIntrospection/MethodInfo>
-#	include <osgIntrospection/Exceptions>
-#endif
-
-#include <osgLua/IntrospectionValue>    // for ValueList, Value
-#include <osgLua/IntrospectionType>     // for EnumLabelMap, Type, etc
+#include <osgLua/introspection/Reflection>
+#include <osgLua/introspection/MethodInfo>
+#include <osgLua/introspection/Exceptions>
+#include <osgLua/introspection/Value>    // for ValueList, Value
+#include <osgLua/introspection/Type>     // for EnumLabelMap, Type, etc
 
 #include <map>                          // for _Rb_tree_const_iterator, etc
 #include <string>                       // for string, basic_string, etc
@@ -48,15 +39,15 @@ namespace osgLua {
 		int call(lua_State *L);
 	}
 
-	const osgIntrospection::Type & lookupType(std::string const& name) {
-		typedef std::map<std::string, const osgIntrospection::Type *> TypeNameMap;
+	const introspection::Type & lookupType(std::string const& name) {
+		typedef std::map<std::string, const introspection::Type *> TypeNameMap;
 		static TypeNameMap usedTypes;
 		TypeNameMap::iterator it = usedTypes.find(name);
 		if (it != usedTypes.end()) {
 			return *(it->second);
 		}
-		const osgIntrospection::Type &type =
-		    osgIntrospection::Reflection::getType(name);
+		const introspection::Type &type =
+		    introspection::Reflection::getType(name);
 		usedTypes.insert(std::make_pair(name, &type));
 		return type;
 	}
@@ -66,16 +57,16 @@ namespace osgLua {
 		const char *tname  = lua_tostring(L, lua_upvalueindex(1));
 		const char *method = lua_tostring(L, lua_upvalueindex(2));
 		try {
-			const osgIntrospection::Type &type =
-			    osgIntrospection::Reflection::getType(tname);
+			const introspection::Type &type =
+			    introspection::Reflection::getType(tname);
 
-			osgIntrospection::ValueList vl;
+			introspection::ValueList vl;
 			for (int i = 1; i <= top; ++i) {
 				vl.push_back(getValue(L, i));
 			}
 
-			osgIntrospection::ParameterInfoList params;
-			const osgIntrospection::MethodInfo *mi =
+			introspection::ParameterInfoList params;
+			const introspection::MethodInfo *mi =
 			    type.getCompatibleMethod(method, vl, false);
 
 			if (mi) {
@@ -87,14 +78,14 @@ namespace osgLua {
 						if (type.isEnum())
 						{
 							// create a table with the values
-							const osgIntrospection::EnumLabelMap &map =
+							const introspection::EnumLabelMap &map =
 								type.getEnumLabels();
-							for( osgIntrospection::EnumLabelMap::const_iterator
+							for( introspection::EnumLabelMap::const_iterator
 								i = map.begin(); i != map.end(); ++i)
 							{
 								if (i->second == method) {
 
-									osgIntrospection::Value v;
+									introspection::Value v;
 									std::istringstream s(i->second);
 									std::stringstream os;
 
@@ -109,7 +100,7 @@ namespace osgLua {
 
 			luaL_error(L, "Class %s do not have static method %s",
 			           tname, method);
-		} catch (osgIntrospection::Exception &e) {
+		} catch (introspection::Exception &e) {
 			luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 		}
 		return 0;
@@ -135,20 +126,20 @@ namespace osgLua {
 		// traverse the namespace
 		try {
 
-			const osgIntrospection::Type &type = lookupType(base);
-			//osgIntrospection::Reflection::getType(base);
+			const introspection::Type &type = lookupType(base);
+			//introspection::Reflection::getType(base);
 
 			// is it an enum ?
 			/// @todo Make methods that require an enum accept a long
 
 			if (type.isEnum()) {
 				// create a table with the values
-				const osgIntrospection::EnumLabelMap &map =
+				const introspection::EnumLabelMap &map =
 				    type.getEnumLabels();
 				//Type::push(L, base.c_str());
 
 				lua_newtable(L);
-				for (osgIntrospection::EnumLabelMap::const_iterator
+				for (introspection::EnumLabelMap::const_iterator
 				        i = map.begin(); i != map.end(); ++i) {
 					lua_pushinteger(L, i->first);
 
@@ -161,7 +152,7 @@ namespace osgLua {
 			// if not... push the type
 			Type::push(L, base.c_str());
 			return 1;
-		} catch (osgIntrospection::TypeNotFoundException&) {
+		} catch (introspection::TypeNotFoundException&) {
 			// if base is not a valid type... supose that
 			// tbase.name is an static function
 			lua_pushstring(L, tbase.c_str());
@@ -176,19 +167,19 @@ namespace osgLua {
 		int top = lua_gettop(L);
 		std::string name(lua_tostring(L, lua_upvalueindex(1)));
 		try {
-			const osgIntrospection::Type &type = lookupType(name);
-			//osgIntrospection::Reflection::getType(name);
+			const introspection::Type &type = lookupType(name);
+			//introspection::Reflection::getType(name);
 
-			osgIntrospection::ValueList vl;
+			introspection::ValueList vl;
 			for (int i = 2; i <= top; ++i) {
 				vl.push_back(getValue(L, i));
 			}
 
-			osgIntrospection::Value returnedval = type.createInstance(vl);
+			introspection::Value returnedval = type.createInstance(vl);
 
 			Value::push(L, returnedval);
 			return 1;
-		} catch (osgIntrospection::Exception &e) {
+		} catch (introspection::Exception &e) {
 			luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 		}
 		return 0;

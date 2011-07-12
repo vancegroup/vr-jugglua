@@ -19,14 +19,14 @@
 
 namespace osgLua {
 
-	const char *getName(const osgIntrospection::Type &type) {
+	const char *getName(const introspection::Type &type) {
 		if (type.isDefined()) {
 			return type.getName().c_str();
 		}
 		return "(not defined)";
 	}
 
-	void pushParameter(lua_State *L, const osgIntrospection::ParameterInfo *p) {
+	void pushParameter(lua_State *L, const introspection::ParameterInfo *p) {
 		const char *in = "IN";
 		const char *out = "OUT";
 		const char *inout = "IN/OUT";
@@ -44,13 +44,13 @@ namespace osgLua {
 		               );
 	}
 
-	void pushMethodInfo(lua_State *L, const osgIntrospection::MethodInfo *mi) {
+	void pushMethodInfo(lua_State *L, const introspection::MethodInfo *mi) {
 		int top = lua_gettop(L);
 		lua_pushfstring(L, "%s\t%s(",
 		                getName(mi->getReturnType()),
 		                mi->getName().c_str());
-		const osgIntrospection::ParameterInfoList &param = mi->getParameters();
-		for (osgIntrospection::ParameterInfoList::const_iterator
+		const introspection::ParameterInfoList &param = mi->getParameters();
+		for (introspection::ParameterInfoList::const_iterator
 		        i = param.begin(); i != param.end(); ++i) {
 			pushParameter(L, *i);
 			lua_pushstring(L, ", ");
@@ -68,7 +68,7 @@ namespace osgLua {
 		lua_concat(L, lua_gettop(L) - top);
 	}
 
-	void pushArrayPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
+	void pushArrayPropertyInfo(lua_State *L, const introspection::PropertyInfo *pi) {
 		lua_pushstring(L, getName(pi->getPropertyType()));
 		lua_pushstring(L, "\t");
 
@@ -77,15 +77,15 @@ namespace osgLua {
 		lua_pushstring(L, "[i]\t(array)");
 	}
 
-	void pushIndexedPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
+	void pushIndexedPropertyInfo(lua_State *L, const introspection::PropertyInfo *pi) {
 
 		lua_pushstring(L, getName(pi->getPropertyType()));
 		lua_pushstring(L, "\t");
 		lua_pushstring(L, pi->getName().c_str());
 
 		lua_pushstring(L, "(");
-		const osgIntrospection::ParameterInfoList & param = pi->getIndexParameters();
-		for (osgIntrospection::ParameterInfoList::const_iterator
+		const introspection::ParameterInfoList & param = pi->getIndexParameters();
+		for (introspection::ParameterInfoList::const_iterator
 		        i = param.begin(); i != param.end(); ++i) {
 			pushParameter(L, *i);
 			lua_pushstring(L, ",");
@@ -96,7 +96,7 @@ namespace osgLua {
 		lua_pushstring(L, ")\t(indexed)");
 	}
 
-	void pushSimplePropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
+	void pushSimplePropertyInfo(lua_State *L, const introspection::PropertyInfo *pi) {
 
 
 		lua_pushstring(L, getName(pi->getPropertyType()));
@@ -114,7 +114,7 @@ namespace osgLua {
 		}
 	}
 
-	void pushPropertyInfo(lua_State *L, const osgIntrospection::PropertyInfo *pi) {
+	void pushPropertyInfo(lua_State *L, const introspection::PropertyInfo *pi) {
 
 		int top = lua_gettop(L);
 
@@ -138,12 +138,12 @@ namespace osgLua {
 	}
 
 	void pushConstructorInfo(lua_State *L,
-	                         const osgIntrospection::ConstructorInfo *ci) {
+	                         const introspection::ConstructorInfo *ci) {
 		int top = lua_gettop(L);
 		lua_pushfstring(L, "%s (",
 		                getName(ci->getDeclaringType()));
-		const osgIntrospection::ParameterInfoList &param = ci->getParameters();
-		for (osgIntrospection::ParameterInfoList::const_iterator
+		const introspection::ParameterInfoList &param = ci->getParameters();
+		for (introspection::ParameterInfoList::const_iterator
 		        i = param.begin(); i != param.end(); ++i) {
 			pushParameter(L, *i);
 			lua_pushstring(L, ",");
@@ -155,7 +155,7 @@ namespace osgLua {
 		lua_concat(L, lua_gettop(L) - top);
 	}
 
-	void pushTypeInfo(lua_State *L, const osgIntrospection::Type *type) {
+	void pushTypeInfo(lua_State *L, const introspection::Type *type) {
 		if (type) {
 			lua_newtable(L);
 			int table = lua_gettop(L);
@@ -184,9 +184,9 @@ namespace osgLua {
 				// methods
 				lua_newtable(L);
 				int count = 1;
-				osgIntrospection::MethodInfoList list;
+				introspection::MethodInfoList list;
 				type->getAllMethods(list);
-				for (osgIntrospection::MethodInfoList::const_iterator
+				for (introspection::MethodInfoList::const_iterator
 				        i = list.begin(); i != list.end(); ++i, ++count) {
 					pushMethodInfo(L, *i);
 					lua_rawseti(L, -2, count);
@@ -197,9 +197,9 @@ namespace osgLua {
 				// properties
 				lua_newtable(L);
 				int count = 1;
-				osgIntrospection::PropertyInfoList list;
+				introspection::PropertyInfoList list;
 				type->getAllProperties(list);
-				for (osgIntrospection::PropertyInfoList::const_iterator
+				for (introspection::PropertyInfoList::const_iterator
 				        i = list.begin(); i != list.end(); ++i, ++count) {
 					pushPropertyInfo(L, *i);
 					lua_rawseti(L, -2, count);
@@ -210,9 +210,9 @@ namespace osgLua {
 				// constructors
 				lua_newtable(L);
 				int count = 1;
-				const osgIntrospection::ConstructorInfoList &list =
+				const introspection::ConstructorInfoList &list =
 				    type->getConstructors();
-				for (osgIntrospection::ConstructorInfoList::const_iterator
+				for (introspection::ConstructorInfoList::const_iterator
 				        i = list.begin(); i != list.end(); ++i, ++count) {
 					pushConstructorInfo(L, *i);
 					lua_rawseti(L, -2, count);
