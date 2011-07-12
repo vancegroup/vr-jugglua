@@ -17,11 +17,11 @@
 #define INCLUDED_osgLuaBind_pushTypeName_h_GUID_90af8585_72fe_4b92_9c3c_36e2e0329520
 
 // Internal Includes
-#include "LuaInclude.h"
+#include "osgLuaBind_refPtrFwd.h"
 
 // Library/third-party includes
-#include <osg/ref_ptr>
 #include <osgLua/introspection/Type>
+#include <luabind/lua_include.hpp>
 
 // Standard includes
 // - none
@@ -36,7 +36,7 @@ namespace osgLuaBind {
 
 			lua_pushstring(L, destType.getQualifiedName().c_str());
 		}
-	}
+	};
 
 	template <typename T>
 	struct PushTypeName< ::osg::ref_ptr<T> > {
@@ -46,7 +46,7 @@ namespace osgLuaBind {
 			lua_pushstring(L, ">");
 			lua_concat(L, 3);
 		}
-	}
+	};
 
 } // end of namespace osgLuaBind
 
