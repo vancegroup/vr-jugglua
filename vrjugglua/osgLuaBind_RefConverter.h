@@ -31,10 +31,10 @@ namespace osgLuaBind {
 
 	namespace detail {
 
-		template<typename ValueType, typename ContainerType>
-		struct RefConverter : ConverterBase<ValueType, ContainerType> {
-			typedef ContainerType container_t;
-			typedef ValueType * raw_ptr_t;
+		template<typename T, typename ContainedType>
+		struct RefConverter : ConverterBase<T, ContainedType> {
+			typedef T container_t;
+			typedef ContainedType * raw_ptr_t;
 			/// @name Extra required methods for converter
 			/// I think these are not provided by the native_converter_base in luabind because that
 			/// library assumes that you won't make a converter for pointer types. These are minimal
@@ -67,7 +67,7 @@ namespace luabind {
 	/// OSG referenced objects should be converted as such
 	template <typename T>
 	struct default_converter<T, typename osgLuaBind::IsRefType<T>::type>
-			: osgLuaBind::detail::RefConverter<typename osgLuaBind::detail::unwrapPtr<T>::value_t, T> {};
+			: osgLuaBind::detail::RefConverter<T, typename osgLuaBind::detail::unwrapPtr<T>::value_t> {};
 
 	namespace detail {
 		template <typename T, typename Enable>

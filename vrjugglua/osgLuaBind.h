@@ -22,8 +22,9 @@
 #ifndef INCLUDED_vrjugglua_osgLuaBind_h
 #define INCLUDED_vrjugglua_osgLuaBind_h
 
+#define USE_NEW_OSGLUABIND
 #ifdef USE_NEW_OSGLUABIND
-
+#define BUILD_OSGLUABIND_VERBOSE
 #include "osgLuaBind_RefConverter.h"
 #include "osgLuaBind_ValueConverter.h"
 

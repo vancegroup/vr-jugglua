@@ -30,7 +30,7 @@ namespace osgLuaBind {
 	/// Get the human-readable fully-qualified type name of the static type
 	/// passed as the template parameter, retrieved from osgIntrospection wrappers.
 	template <typename T>
-	inline std::string const& getQualifiedName() {
+	inline std::string getQualifiedName() {
 		static const ::osgLua::introspection::Type& destType =
 		    ::osgLua::introspection::Reflection::getType(extended_typeid<T>());
 		return destType.getQualifiedName();
@@ -38,7 +38,7 @@ namespace osgLuaBind {
 
 	/// Get the human-readable fully-qualified type name of an osgIntrospection value
 	/// at runtime, retrieved from osgIntrospection wrappers.
-	inline std::string const& getQualifiedName(::osgLua::introspection::Value const& v) {
+	inline std::string getQualifiedName(::osgLua::introspection::Value const& v) {
 		return v.getType().getQualifiedName();
 	}
 

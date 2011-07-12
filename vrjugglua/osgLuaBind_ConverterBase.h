@@ -34,11 +34,13 @@ namespace osgLuaBind {
 
 	namespace detail {
 		/// Base class for converting osg typed values/objects in C++/luabind to/from osgLua representations
-		template<typename ValueType, typename ContainerType = ValueType>
-		struct ConverterBase : ::luabind::native_converter_base<ContainerType> {
-			typedef ValueType value_t;
+		template<typename T, typename ContainedType = T>
+		struct ConverterBase : ::luabind::native_converter_base<T> {
+			typedef ContainedType osg_t;
 
-			typedef ContainerType container_t;
+			typedef T container_t;
+
+			//typedef typename unwrapPtr<container_t>::return_t from_return_t;
 
 			/// Compute type matching score for signature matching and overload resolution
 			static int compute_score(lua_State* L, int index) {
@@ -60,7 +62,7 @@ namespace osgLuaBind {
 				if (!v) {
 					return container_t();
 				}
-				return osgLua::introspection::variant_cast<typename unwrapPtr<container_t>::return_t>(v->get());
+				return osgLua::introspection::variant_cast<container_t>(v->get());
 			}
 
 			/// Transition C++ to Lua
