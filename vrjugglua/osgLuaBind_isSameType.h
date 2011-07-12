@@ -29,7 +29,7 @@
 
 namespace osgLuaBind {
 	template <typename T>
-	bool isSameType(osgLua::introspection::Value const& v) {
+	inline bool isSameType(osgLua::introspection::Value const& v) {
 		static const osgLua::introspection::Type& destType =
 		    osgLua::introspection::Reflection::getType(extended_typeid<T>());
 		try {
