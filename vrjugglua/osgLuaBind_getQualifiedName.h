@@ -19,10 +19,11 @@
 // - none
 
 // Library/third-party includes
-// - none
+#include <osgLua/introspection/Type>
+#include <osgLua/introspection/Reflection>
 
 // Standard includes
-// - none
+#include <string>
 
 namespace osgLuaBind {
 

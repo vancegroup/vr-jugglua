@@ -42,11 +42,20 @@ set(SOURCES
 
 set(API
 	osgLuaBind.h
-	osgLuaBind_RefBase.h
+	osgLuaBind_castingScoreForType.h
+	osgLuaBind_ConverterBase.h
+	osgLuaBind_getQualifiedName.h
 	osgLuaBind_isRefType.h
+	osgLuaBind_isSameType.h
 	osgLuaBind_isValueType.h
+	osgLuaBind_luabindPassingStyle.h
 	osgLuaBind_pushTypeName.h
+	osgLuaBind_RefBase.h
+	osgLuaBind_RefConverter.h
+	osgLuaBind_refPtrFwd.h
 	osgLuaBind_traitBase.h
+	osgLuaBind_unwrapPtr.h
+	osgLuaBind_ValueConverter.h
 	osgLuaBind_verbose.h
 	Internal_AnalogInterface.h
 	Internal_DigitalInterface.h

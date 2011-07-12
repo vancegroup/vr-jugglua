@@ -18,9 +18,14 @@
 // Internal Includes
 #include "osgLuaBind_verbose.h"
 #include "osgLuaBind_getQualifiedName.h"
+#include "osgLuaBind_castingScoreForType.h"
+#include "osgLuaBind_unwrapPtr.h"
+#include "osgLuaBind_isSameType.h"
 
 // Library/third-party includes
-// - none
+#include <luabind/lua_state_fwd.hpp>
+#include <osgLua/Value>
+#include <osgLua/introspection/variant_cast>
 
 // Standard includes
 // - none
@@ -29,7 +34,7 @@ namespace osgLuaBind {
 
 	namespace detail {
 		/// Base class for converting osg typed values/objects in C++/luabind to/from osgLua representations
-		template<typename ValueType, typename ContainerType = T>
+		template<typename ValueType, typename ContainerType = ValueType>
 		struct ConverterBase : ::luabind::native_converter_base<ContainerType> {
 			typedef ValueType value_t;
 
@@ -42,37 +47,25 @@ namespace osgLuaBind {
 					OSGLUABIND_VERBOSE("Not a osgLua object");
 					return -1;
 				}
-				static const osgLua::introspection::Type& destType =
-				    osgLua::introspection::Reflection::getType(extended_typeid<T>());
-				const osgLua::introspection::Type& type = v->get().getType();
-				OSGLUABIND_VERBOSE("Source type: " << getQualifiedName(v->get()));
-				OSGLUABIND_VERBOSE("Target type: " << getQualifiedName<T>());
-				try {
-					if (type == destType) {
-						OSGLUABIND_VERBOSE("Exact match for type!");
-						return 2;
-					} else {
-						return osglua_casting_score_for_type<T>::get(v);
-					}
-				} catch (...) {
-					/// @todo make this catch only osgIntrospection exceptions
-					return -1;
+				if (isSameType<container_t>(v->get())) {
+					OSGLUABIND_VERBOSE("Exact match for type!");
+					return 2;
 				}
-				return -1;
+				return castingScoreForType<container_t>::get(v->get());
 			}
 
 			/// Accept in C++ from Lua
-			value_t from(lua_State* L, int index) {
+			container_t from(lua_State* L, int index) {
 				osgLua::Value * v = osgLua::Value::get(L, index);
 				if (!v) {
-					return value_t();
+					return container_t();
 				}
-				return osgLua::introspection::variant_cast<value_t>(v->get());
+				return osgLua::introspection::variant_cast<typename unwrapPtr<container_t>::return_t>(v->get());
 			}
 
 			/// Transition C++ to Lua
-			void to(lua_State* L, value_t const& x) {
-				osgLua::Value::push(L, x);
+			void to(lua_State* L, container_t const& x) {
+				osgLua::Value::push(L, unwrapPtr<container_t>::apply(x));
 			}
 		};
 	} // end of namespace detail
