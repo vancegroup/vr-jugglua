@@ -1,7 +1,7 @@
 #!/bin/bash
 (
 cd $(dirname "${0}")
-GENERATION_DIR="include/osgLua/Introspection"
+GENERATION_DIR="include/osgLua/introspection"
 HEADER_LIST_FILE="${GENERATION_DIR}/headers.cmake"
 mkdir -p ${GENERATION_DIR}
 cat > "${HEADER_LIST_FILE}" <<EOS

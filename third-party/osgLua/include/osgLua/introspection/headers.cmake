@@ -1,0 +1,32 @@
+# Header paths relative to the source directory
+set(OSGLUA_INTROSPECTION_HEADERS
+	../../include/osgLua/introspection/Attributes
+	../../include/osgLua/introspection/Comparator
+	../../include/osgLua/introspection/ConstructorInfo
+	../../include/osgLua/introspection/Converter
+	../../include/osgLua/introspection/ConverterProxy
+	../../include/osgLua/introspection/CustomAttribute
+	../../include/osgLua/introspection/CustomAttributeProvider
+	../../include/osgLua/introspection/Exceptions
+	../../include/osgLua/introspection/Export
+	../../include/osgLua/introspection/ExtendedTypeInfo
+	../../include/osgLua/introspection/InstanceCreator
+	../../include/osgLua/introspection/MethodInfo
+	../../include/osgLua/introspection/ParameterInfo
+	../../include/osgLua/introspection/PropertyInfo
+	../../include/osgLua/introspection/PublicMemberAccessor
+	../../include/osgLua/introspection/ReaderWriter
+	../../include/osgLua/introspection/Reflection
+	../../include/osgLua/introspection/ReflectionMacros
+	../../include/osgLua/introspection/Reflector
+	../../include/osgLua/introspection/StaticMethodInfo
+	../../include/osgLua/introspection/Type
+	../../include/osgLua/introspection/TypedConstructorInfo
+	../../include/osgLua/introspection/TypedMethodInfo
+	../../include/osgLua/introspection/TypeNameAliasProxy
+	../../include/osgLua/introspection/type_traits
+	../../include/osgLua/introspection/Utility
+	../../include/osgLua/introspection/Value
+	../../include/osgLua/introspection/variant_cast
+	../../include/osgLua/introspection/Version
+)
