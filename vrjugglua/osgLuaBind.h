@@ -22,6 +22,13 @@
 #ifndef INCLUDED_vrjugglua_osgLuaBind_h
 #define INCLUDED_vrjugglua_osgLuaBind_h
 
+#ifdef USE_NEW_OSGLUABIND
+
+#include "osgLuaBind_RefConverter.h"
+#include "osgLuaBind_ValueConverter.h"
+
+#else
+
 // Local includes
 // - none
 
@@ -399,4 +406,5 @@ FORWARD_DECL_AND_CREATE_VALUE_CONVERTER(osg, Quat);
 
 #endif // ifndef CREATE_OSGLUA_VALUE_CONVERTER
 
+#endif // ifdef USE_NEW_LUABIND
 #endif // INCLUDED_vrjugglua_osgLuaBind_h
