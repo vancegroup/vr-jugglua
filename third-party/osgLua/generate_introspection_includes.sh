@@ -49,6 +49,7 @@ namespace osgLua {
 		using namespace osgIntrospection;
 	} // end of namespace introspection
 } // end of namespace osgLua
+#endif // which introspection namespace/headers
 
 #endif // ${INCLUDEGUARD}
 EOS
