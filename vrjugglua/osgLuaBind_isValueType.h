@@ -30,8 +30,7 @@ namespace osgLuaBind {
 	/// Templated type trait: all types are assumed to
 	/// not be OSG value types unless otherwise stated.
 	template <typename T>
-	struct IsValueType : TraitFalse
-	{};
+	struct IsValueType : TraitFalse {};
 
 } // end of namespace osgLuaBind
 
@@ -57,8 +56,7 @@ namespace boost {
 	namespace osgLuaBind { \
 		template <> \
 		struct IsValueType< T > \
-		  : TraitTrue \
-		{}; \
+		  : TraitTrue {}; \
 		\
 	} /* end of namespace osgLuaBind */
 

@@ -32,7 +32,7 @@ namespace osgLuaBind {
 	struct PushTypeName {
 		static void apply(lua_State * L) {
 			static const osgLua::introspection::Type& destType =
-				osgLua::introspection::Reflection::getType(extended_typeid<T>());
+			    osgLua::introspection::Reflection::getType(extended_typeid<T>());
 
 			lua_pushstring(L, destType.getQualifiedName().c_str());
 		}

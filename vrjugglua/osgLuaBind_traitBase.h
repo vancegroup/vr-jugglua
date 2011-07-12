@@ -24,7 +24,6 @@
 // Standard includes
 // - none
 
-
 namespace osgLuaBind {
 
 	/// Base class for "true" osg type traits.
