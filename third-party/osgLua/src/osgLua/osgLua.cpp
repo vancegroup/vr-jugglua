@@ -26,7 +26,7 @@
 #include <osgLua/Callback>
 
 
-#include <osg/Vec3> // FIXME!!! (this is for checkings)
+#include <osg/Vec3d> // FIXME!!! (this is for checkings)
 
 #include <osgDB/DynamicLibrary>
 
@@ -101,34 +101,41 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		/* REMOVE THIS IN THE FUTURE!!! (when solved)              */
 		/***********************************************************/
 		if (std::strcmp(name, "osg") == 0) {
-			const std::type_info &tcheck =
-			    introspection::Reflection::getType("osg::Vec3").
-			    getStdTypeInfo();
-			if (tcheck != typeid(osg::Vec3)) {
-				std::cerr <<
-				          "\n **********************************************************"
-				          "\n ****************     W A R N I N G     *******************"
-				          "\n **********************************************************"
-				          "\n * osgWrapper was not correctly  loaded. osgIntrospection *"
-				          "\n * requires in unix systems to be loaded with RTLD_GLOBAL *"
-				          "\n * flag enabled, but  currently lua standard distribution *"
-				          "\n * doesn't use it.                                        *"
-				          "\n *                                                        *"
-				          "\n * You can use osgLua interpreter (in osgLua/examples) it *"
-				          "\n * is  the standard  lua interpreter  linked with osgLua, *"
-				          "\n * that sovles the problem.                               *"
-				          "\n *                                                        *"
-				          "\n * If you have lua embedded  in your application you will *"
-				          "\n * need to patch your lua distribution:                   *"
-				          "\n * Search in  loadlib.c the line:                         *"
-				          "\n *        void *lib = dlopen(path, RTLD_NOW);             *"
-				          "\n * and replace it with:                                   *"
-				          "\n *        void *lib = dlopen(path, RTLD_NOW|RTLD_GLOBAL); *"
-				          "\n *                                                        *"
-				          "\n * We expect lua developers solve this issue some time in *"
-				          "\n * the future.                                            *"
-				          "\n **********************************************************"
-				          << std::endl;
+
+			try {
+				const std::type_info &tcheck =
+				    introspection::Reflection::getType("osg::Vec3d").
+				    getStdTypeInfo();
+
+				if (tcheck != typeid(osg::Vec3d)) {
+					std::cerr <<
+					          "\n **********************************************************"
+					          "\n ****************     W A R N I N G     *******************"
+					          "\n **********************************************************"
+					          "\n * osgWrapper was not correctly  loaded. osgIntrospection *"
+					          "\n * requires in unix systems to be loaded with RTLD_GLOBAL *"
+					          "\n * flag enabled, but  currently lua standard distribution *"
+					          "\n * doesn't use it.                                        *"
+					          "\n *                                                        *"
+					          "\n * You can use osgLua interpreter (in osgLua/examples) it *"
+					          "\n * is  the standard  lua interpreter  linked with osgLua, *"
+					          "\n * that sovles the problem.                               *"
+					          "\n *                                                        *"
+					          "\n * If you have lua embedded  in your application you will *"
+					          "\n * need to patch your lua distribution:                   *"
+					          "\n * Search in  loadlib.c the line:                         *"
+					          "\n *        void *lib = dlopen(path, RTLD_NOW);             *"
+					          "\n * and replace it with:                                   *"
+					          "\n *        void *lib = dlopen(path, RTLD_NOW|RTLD_GLOBAL); *"
+					          "\n *                                                        *"
+					          "\n * We expect lua developers solve this issue some time in *"
+					          "\n * the future.                                            *"
+					          "\n **********************************************************"
+					          << std::endl;
+					return false;
+				}
+			} catch (introspection::Exception & e) {
+				std::cerr << "Could not get type info for osg::Vec3d in " << __FILE__ << ":" << __LINE__ << " - exception: " << e.what() << std::endl;
 				return false;
 			}
 		}
