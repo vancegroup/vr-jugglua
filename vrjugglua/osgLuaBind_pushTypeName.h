@@ -21,7 +21,7 @@
 
 // Library/third-party includes
 #include <osg/ref_ptr>
-#include <osgLua/IntrospectionType>
+#include <osgLua/introspection/Type>
 
 // Standard includes
 // - none
@@ -31,8 +31,8 @@ namespace osgLuaBind {
 	template <typename T>
 	struct PushTypeName {
 		static void apply(lua_State * L) {
-			static const osgIntrospection::Type& destType =
-				osgIntrospection::Reflection::getType(extended_typeid<T>());
+			static const osgLua::introspection::Type& destType =
+				osgLua::introspection::Reflection::getType(extended_typeid<T>());
 
 			lua_pushstring(L, destType.getQualifiedName().c_str());
 		}
