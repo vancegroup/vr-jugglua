@@ -120,19 +120,23 @@ namespace osgLua {
 
 			const introspection::Type &typeA = a->getType();
 			const introspection::Type &typeB = b->getType();
-
-			static const introspection::Type& myType =
-			    introspection::Reflection::getType(extended_typeid<T>());
-			if (typeA == myType && typeB == myType) {
-				bool ret = predicate(introspection::variant_cast<T>(a->get()), introspection::variant_cast<T>(b->get()));
-				lua_pushboolean(L, ret);
-				return 1;
-			} else {
-				luaL_error(L, "[%s:%d] Could not compare instances of %s, %s, in comparator for %s", __FILE__, __LINE__,
-				           typeA.getQualifiedName().c_str(),
-				           typeB.getQualifiedName().c_str(),
-				           myType.getQualifiedName().c_str());
+			try {
+				static const introspection::Type& myType =
+				    introspection::Reflection::getType(extended_typeid<T>());
+				if (typeA == myType && typeB == myType) {
+					bool ret = predicate(introspection::variant_cast<T>(a->get()), introspection::variant_cast<T>(b->get()));
+					lua_pushboolean(L, ret);
+					return 1;
+				} else {
+					luaL_error(L, "[%s:%d] Could not compare instances of %s, %s, in comparator for %s", __FILE__, __LINE__,
+					           typeA.getQualifiedName().c_str(),
+					           typeB.getQualifiedName().c_str(),
+					           myType.getQualifiedName().c_str());
+				}
+			} catch (std::exception & e) {
+				luaL_error(L, "[%s:%d] Could not compare instances in comparator for %s - got exception %s", __FILE__, __LINE__, e.what());
 			}
+
 			return 0;
 		}
 
@@ -148,17 +152,22 @@ namespace osgLua {
 
 		template<class T>
 		bool bind_metamethods(lua_State *L, const introspection::Type &valT) {
-			static const introspection::Type& myType =
-			    introspection::Reflection::getType(extended_typeid<T>());
-			if (valT == myType) {
-				detail::setMatrix(L);
-				lua_pushcfunction(L, &Matrix::mul<T>);
-				lua_setfield(L, -2, "__mul");
-				lua_pushcfunction(L, &Matrix::eq<T>);
-				lua_setfield(L, -2, "__eq");
-				lua_pushcfunction(L, &Matrix::lt<T>);
-				lua_setfield(L, -2, "__lt");
-				return true;
+			try {
+				static const introspection::Type& myType =
+				    introspection::Reflection::getType(extended_typeid<T>());
+				if (valT == myType) {
+					detail::setMatrix(L);
+					lua_pushcfunction(L, &Matrix::mul<T>);
+					lua_setfield(L, -2, "__mul");
+					lua_pushcfunction(L, &Matrix::eq<T>);
+					lua_setfield(L, -2, "__eq");
+					lua_pushcfunction(L, &Matrix::lt<T>);
+					lua_setfield(L, -2, "__lt");
+					return true;
+				}
+			} catch (introspection::Exception & e) {
+				std::cerr << "Caught exception trying to bind metamethods for " << valT.getQualifiedName() << " - info: " << e.what() << std::endl;
+				throw;
 			}
 			return false;
 		}
