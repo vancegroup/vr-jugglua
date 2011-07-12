@@ -28,8 +28,8 @@
 
 #include <osgLua/Value>
 
-#include <osgLua/IntrospectionValue>
-#include <osgLua/Introspection_variant_cast>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/variant_cast>
 
 // Standard includes
 #include <iostream>
@@ -55,7 +55,7 @@ namespace vrjLua {
 
 		osg::Node * node;
 
-		node = osgIntrospection::variant_cast<osg::Node*>(v->get());
+		node = osgLua::introspection::variant_cast<osg::Node*>(v->get());
 
 		if (!node) {
 			lua_pushstring(L, "Could not convert argument 1 to an osg::Node* !");

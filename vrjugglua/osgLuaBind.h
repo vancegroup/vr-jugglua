@@ -31,7 +31,7 @@
 #include <osg/Object>
 #include <osg/ref_ptr>
 #include <osgLua/Value>
-#include <osgLua/Introspection_variant_cast>
+#include <osgLua/introspection/variant_cast>
 
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits/is_base_of.hpp>
@@ -75,7 +75,7 @@ namespace luabind {
 
 			static int get(osgLua::Value * v) {
 				try {
-					osgIntrospection::variant_cast<target_t>(v->get());
+					osgLua::introspection::variant_cast<target_t>(v->get());
 				} catch (...) {
 					/// @todo make this catch only osgIntrospection exceptions
 					return -1;
@@ -91,8 +91,8 @@ namespace luabind {
 			typedef T* target_t;
 
 			static int get(osgLua::Value * v) {
-				if (osgIntrospection::variant_cast<target_t>(v->get()) != NULL) {
-					if (osgIntrospection::requires_conversion<target_t>(v->get())) {
+				if (osgLua::introspection::variant_cast<target_t>(v->get()) != NULL) {
+					if (osgLua::introspection::requires_conversion<target_t>(v->get())) {
 						OSGLUABIND_VERBOSE("Convertible match for type.");
 						return 0;
 					} else {
@@ -115,9 +115,9 @@ namespace luabind {
 				OSGLUABIND_VERBOSE("Not a osgLua object");
 				return -1;
 			}
-			static const osgIntrospection::Type& destType =
-			    osgIntrospection::Reflection::getType(extended_typeid<T>());
-			const osgIntrospection::Type& type = v->get().getType();
+			static const osgLua::introspection::Type& destType =
+			    osgLua::introspection::Reflection::getType(extended_typeid<T>());
+			const osgLua::introspection::Type& type = v->get().getType();
 			OSGLUABIND_VERBOSE("Source type: " << v->get().getType().getQualifiedName());
 			OSGLUABIND_VERBOSE("Target type: " << destType.getQualifiedName());
 			try {
@@ -169,7 +169,7 @@ namespace luabind {
 			if (!v) {
 				return NULL;
 			}
-			return osgIntrospection::variant_cast<raw_ptr_t>(v->get());
+			return osgLua::introspection::variant_cast<raw_ptr_t>(v->get());
 		}
 
 		/// Transition C++ to Lua
@@ -213,7 +213,7 @@ namespace luabind {
 			if (!v) {
 				return value_t();
 			}
-			return osgIntrospection::variant_cast<value_t>(v->get());
+			return osgLua::introspection::variant_cast<value_t>(v->get());
 		}
 
 		/// Transition C++ to Lua
@@ -250,8 +250,8 @@ namespace luabind {
 		template <typename T>
 		struct osglua_type_to_string {
 			static void get(lua_State *L) {
-				static const osgIntrospection::Type& destType =
-				    osgIntrospection::Reflection::getType(extended_typeid<T>());
+				static const osgLua::introspection::Type& destType =
+				    osgLua::introspection::Reflection::getType(extended_typeid<T>());
 				lua_pushstring(L, destType.getQualifiedName().c_str());
 			}
 		};
