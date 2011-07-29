@@ -74,7 +74,6 @@ add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API})
 set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
 target_link_libraries(vrjugglua ${EXTRA_LIBS})
 
-stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua)
 add_cppcheck(vrjugglua)
 
 set_property(TARGET
