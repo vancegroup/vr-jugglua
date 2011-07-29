@@ -44,10 +44,10 @@ namespace fs = boost::filesystem;
 
 extern "C" {
 	int sharedObjectCallback(struct dl_phdr_info *info,
-	                         size_t size, void *data);
+	                         size_t, void *data);
 }
 
-int sharedObjectCallback(struct dl_phdr_info *info, size_t size, void *data) {
+int sharedObjectCallback(struct dl_phdr_info *info, size_t, void *data) {
 	std::string fn(info->dlpi_name);
 	if (fn.find("vpr") != std::string::npos) {
 		(*static_cast<std::string*>(data)) = fn;
