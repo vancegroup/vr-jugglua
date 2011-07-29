@@ -38,7 +38,7 @@
 #include "binding_detail/BindvrjLuaToLua.inl"
 
 // Library/third-party includes
-#include <vrjugglua/LuaInclude.h>
+#include <vrjugglua/LuaIncludeFull.h>
 
 #include <luabind/luabind.hpp>
 #include <luabind/class_info.hpp>
