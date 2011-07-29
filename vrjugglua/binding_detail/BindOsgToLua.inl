@@ -19,21 +19,14 @@
 
 
 // Local includes
-#ifndef LUABIND_COMBINED_COMPILE
-#include <vrjugglua/osgLuaBind.h>
-#endif
 #include "BindOsgToLua.h"
-#include "OsgHelpers.h"
-#include "../LuaIncludeFull.h"
 
 // Library/third-party includes
 #include <osgLua/LoadWrapper>
 #include <osgLua/Value>
 
-
 // Standard includes
 #include <iostream>
-
 
 namespace vrjLua {
 
@@ -59,8 +52,6 @@ void bindOsgToLua(LuaStatePtr state) {
 		lua_error(state.get());
 		std::terminate();
 	}
-
-	manuallyBindOsgHelpers(state);
 }
 
 }// end of vrjLua namespace

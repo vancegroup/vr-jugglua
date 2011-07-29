@@ -66,8 +66,6 @@ set(LUA_BINDING_SOURCES
 	binding_detail/BindGadgetInterfacesToLua.h
 	binding_detail/BindRunBufferToLua.h
 	binding_detail/BindvrjLuaToLua.h
-	binding_detail/OsgHelpers.h
-	binding_detail/OsgHelpers.cpp
 	binding_detail/BindKernelToLua.inl
 	binding_detail/BindOsgToLua.inl
 	binding_detail/BindSonixToLua.inl
