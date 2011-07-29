@@ -54,11 +54,6 @@ set(API
 	VRJLua_C_Interface.h
 	VRJLuaOutput.h)
 
-set(GENERATED
-	"${CMAKE_CURRENT_BINARY_DIR}/VRJLuaConfig.h")
-
-source_group("Generated Files - Do Not Edit" FILES ${GENERATED})
-
 set(LUA_BINDING_SOURCES
 	binding_detail/BindKernelToLua.h
 	binding_detail/BindOsgToLua.h
@@ -75,9 +70,10 @@ set(LUA_BINDING_SOURCES
 
 source_group("Binding Details" FILES ${LUA_BINDING_SOURCES})
 
-add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API} ${GENERATED})
-set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API};${GENERATED}")
+add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API})
+set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
 target_link_libraries(vrjugglua ${EXTRA_LIBS})
+
 stamp_target_with_version("${CPACK_PACKAGE_VERSION}" vrjugglua)
 add_cppcheck(vrjugglua)
 
@@ -97,6 +93,9 @@ if(INSTALL_CXX_SDK)
 		LIBRARY DESTINATION	${LIB_DIR} COMPONENT runtime
 		ARCHIVE DESTINATION	${ARCH_DIR} COMPONENT sdk
 		PUBLIC_HEADER DESTINATION ${INCLUDE_DIR}/vrjugglua COMPONENT sdk)
+	install(FILES
+		"${CMAKE_CURRENT_BINARY_DIR}/VRJLuaConfig.h"
+		DESTINATION ${INCLUDE_DIR}/vrjugglua COMPONENT sdk)
 endif()
 
 ###
