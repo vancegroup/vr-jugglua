@@ -1,4 +1,4 @@
-/**	@file	LuaIncludeFull.h
+/**	@file
 	@brief	header
 
 	@date

@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindRunBufferToLua.h
+/**	@file
 	@brief	header exposing binding function for SynchronizedRunBuffer
 
 	@date

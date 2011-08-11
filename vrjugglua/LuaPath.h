@@ -1,4 +1,4 @@
-/**	@file	LuaPath.h
+/**	@file
 	@brief	header
 
 	@date

@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindvrjLuaToLua.inl
+/**	@file
 	@brief	implementation of convenience binding
 
 	@date

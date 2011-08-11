@@ -1,4 +1,4 @@
-/**	@file	LuaScript.h
+/**	@file
 	@brief	header
 
 	@date

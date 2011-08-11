@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindGadgetInterfacesToLua.h
+/**	@file
 	@brief	header exposing binding function for Gadgeteer
 
 	@date

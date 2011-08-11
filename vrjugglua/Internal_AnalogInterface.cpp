@@ -1,4 +1,4 @@
-/**	@file	Internal_AnalogInterface.cpp
+/**	@file
 	@brief	implementation
 
 	@date

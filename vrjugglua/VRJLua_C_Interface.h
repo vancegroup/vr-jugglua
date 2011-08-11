@@ -1,4 +1,4 @@
-/**	@file	VRJLua_C_Interface.h
+/**	@file
 	@brief	header for the C interface to VRJuggLua
 
 	@date

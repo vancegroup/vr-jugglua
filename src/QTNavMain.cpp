@@ -1,4 +1,4 @@
-/**	@file	QTNavMain.cpp
+/**	@file
 	@brief	implementation
 
 	@date

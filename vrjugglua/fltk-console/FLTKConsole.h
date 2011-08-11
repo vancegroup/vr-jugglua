@@ -1,4 +1,4 @@
-/**	@file	fltk-console/FLTKConsole.h
+/**	@file
 	@brief	header for an FLTK-based GUI console
 
 	@date

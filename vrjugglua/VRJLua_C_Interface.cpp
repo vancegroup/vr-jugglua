@@ -1,4 +1,4 @@
-/**	@file	VRJLua_C_Interface.cpp
+/**	@file
 	@brief	implementation
 
 	@date

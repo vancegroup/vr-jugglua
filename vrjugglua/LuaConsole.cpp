@@ -1,4 +1,4 @@
-/**	@file	LuaConsole.cpp
+/**	@file
 	@brief	implementation
 
 	@date

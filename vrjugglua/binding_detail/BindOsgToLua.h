@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindOsgToLua.h
+/**	@file
 	@brief	header exposing binding function for OSG
 
 	@date

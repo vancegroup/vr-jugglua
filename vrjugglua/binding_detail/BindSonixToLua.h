@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindSonixToLua.h
+/**	@file
 	@brief	header exposing binding function for Sonix
 
 	@date

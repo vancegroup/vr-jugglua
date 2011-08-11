@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindOsgToLua.inl
+/**	@file
 	@brief	implementation of binding using osgLua
 
 	@date

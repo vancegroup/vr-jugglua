@@ -1,4 +1,4 @@
-/** @file LuaGCBlock.h
+/** @file
 	@brief
 
 	@date 2011

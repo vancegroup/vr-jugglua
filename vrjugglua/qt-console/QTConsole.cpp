@@ -1,4 +1,4 @@
-/**	@file	qt-console/QTConsole.cpp
+/**	@file
 	@brief	implementation of QT console GUI
 
 	@date

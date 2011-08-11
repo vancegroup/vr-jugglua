@@ -1,4 +1,4 @@
-/**	@file	Internal_AnalogInterface.h
+/**	@file
 	@brief	AnalogInterface wrapper class for LuaBind
 
 	@date

@@ -1,4 +1,4 @@
-/**	@file	OsgAppProxy.h
+/**	@file
 	@brief Application proxy object header
 
 	@date

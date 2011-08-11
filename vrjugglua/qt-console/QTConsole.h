@@ -1,4 +1,4 @@
-/**	@file	qt-console/QTConsole.h
+/**	@file
 	@brief	header for an Qt-based GUI console
 
 	@date

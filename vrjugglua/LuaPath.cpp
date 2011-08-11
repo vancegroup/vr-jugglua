@@ -1,4 +1,4 @@
-/**	@file	LuaRunBuffer.cpp
+/**	@file
 	@brief	implementation
 
 	@date

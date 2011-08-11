@@ -1,4 +1,4 @@
-/**	@file	FLTKNavMain.cpp
+/**	@file
 	@brief	implementation
 
 	@date

@@ -1,4 +1,4 @@
-/**	@file	SynchronizedRunBuffer.h
+/**	@file
 	@brief	header
 
 	@date

@@ -1,4 +1,4 @@
-/**	@file	Internal_DigitalInterface.h
+/**	@file
 	@brief	DigitalInterface wrapper class for LuaBind
 
 	@date

@@ -1,4 +1,4 @@
-/**	@file	OsgAppProxy.cpp
+/**	@file
 	@brief Application proxy object implementation
 
 	@date

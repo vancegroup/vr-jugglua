@@ -1,4 +1,4 @@
-/**	@file	Internal_PositionInterface.h
+/**	@file
 	@brief	PositionInterface wrapper class for LuaBind
 
 	@date

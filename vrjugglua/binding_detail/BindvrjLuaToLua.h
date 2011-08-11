@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindvrjLuaToLua.h
+/**	@file
 	@brief	header exposing binding function for vrjLua convenience functions
 
 	@date

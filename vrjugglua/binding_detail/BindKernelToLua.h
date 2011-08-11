@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindKernelToLua.h
+/**	@file
 	@brief	header exposing binding function for vrjKernel and standard
 			components
 

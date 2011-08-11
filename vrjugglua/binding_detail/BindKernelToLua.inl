@@ -1,4 +1,4 @@
-/**	@file	binding_detail/BindKernelToLua.inl
+/**	@file
 	@brief	implementation of kernel and print overload binding
 
 	@date

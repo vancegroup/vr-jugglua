@@ -1,4 +1,4 @@
-/**	@file	fltk-console/FLTKConsole.cpp
+/**	@file
 	@brief	implementation of FLTK console GUI
 
 	@date
