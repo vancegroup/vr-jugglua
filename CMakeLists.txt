@@ -133,9 +133,7 @@ if(NOT BUILD_WITH_CPPINTROSPECTION)
 endif()
 include(SearchProgramFilesForOpenSceneGraph)
 find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgUtil ${OSGINTROSPECTION_COMPONENT})
-list(APPEND EXTRA_LIBS ${OPENSCENEGRAPH_LIBRARIES})
 
-include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
 get_directory_list(OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS ${OPENSCENEGRAPH_LIBRARIES})
 list(APPEND RUNTIME_LIBRARY_DIRS ${OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS})
 if(WIN32)
@@ -147,8 +145,8 @@ endif()
 
 if(BUILD_WITH_CPPINTROSPECTION)
 	find_package(cppintrospection)
-	list(APPEND EXTRA_LIBS ${CPPINTROSPECTION_LIBRARIES})
-	include_directories(${CPPINTROSPECTION_INCLUDE_DIRS})
+	list(APPEND OPENSCENEGRAPH_LIBRARIES ${CPPINTROSPECTION_LIBRARIES})
+	list(APPEND OPENSCENEGRAPH_INCLUDE_DIRS ${CPPINTROSPECTION_INCLUDE_DIRS})
 endif()
 
 # VR Juggler
@@ -166,17 +164,16 @@ list(APPEND RUNTIME_LIBRARY_DIRS ${VRJUGGLER_RUNTIME_LIBRARY_DIRS})
 
 # Lua
 if(BUILD_EMBEDDED_LUA)
-	add_definitions(-DLUABIND_MAX_BASES=3)
-	add_definitions(-DLUABIND_MAX_ARITY=3)
+	set(LUABIND_DEFINITIONS -DLUABIND_MAX_BASES=3 -DLUABIND_MAX_ARITY=3)
+	set(LUABIND_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/luabind")
+	set(LUABIND_LIBRARIES luabind)
+
+	set(OSGLUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/osgLua")
+	set(OSGLUA_LIBRARIES osgLua_static)
 else()
 	find_package(Luabind REQUIRED)
-	list(APPEND EXTRA_LIBS ${LUABIND_LIBRARIES})
-	include_directories(${LUABIND_INCLUDE_DIRS})
-	add_definitions(${LUABIND_DEFINITIONS})
 
 	find_package(osgLua REQUIRED)
-	list(APPEND EXTRA_LIBS ${OSGLUA_LIBRARIES})
-	include_directories(${OSGLUA_INCLUDE_DIRS})
 endif()
 
 # FLTK
@@ -213,12 +210,10 @@ add_subdirectory(third-party)
 
 if(BUILD_EMBEDDED_LUA)
 	list(APPEND EXTRA_LIBS luabind osgLua_static)
-	include_directories(${LUABIND_INCLUDE_DIRS} ${OSGLUA_INCLUDE_DIRS})
 endif()
 
 if(BUILD_FLTK_GUI)
 	set(FLTK_GUI_LIBS ${FNFC_LIBRARY})
-	include_directories(${FNFC_INCLUDE_DIRS} ${FLTK_INCLUDE_DIR})
 endif()
 
 # Add a flag for indicating the source tree location
@@ -286,7 +281,7 @@ export(TARGETS ${BUILD_TREE_TARGETS}
 	FILE vrjugglua-targets.cmake)
 if(BUILD_LUA_UTILS)
 	export(TARGETS luac
-		NAMESPACE 
+		NAMESPACE
 		FILE vrjugglua-luac-target.cmake)
 endif()
 export(PACKAGE VRJuggLua)
@@ -300,7 +295,7 @@ if(INSTALL_CXX_SDK)
 		FILE vrjlua-targets.cmake)
 	install(EXPORT vrjlua-luac
 		DESTINATION ${EXPORT_DIR}
-		NAMESPACE 
+		NAMESPACE
 		FILE vrjlua-luac-target.cmake)
 	configure_file(vrjugglua-config.cmake.in vrjugglua-config-for-install.cmake @ONLY)
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vrjugglua-config-for-install.cmake

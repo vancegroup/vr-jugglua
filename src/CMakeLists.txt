@@ -17,8 +17,13 @@ endif()
 
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
-include_directories(${Boost_INCLUDE_DIRS})
-include_directories(${VRJUGGLER_INCLUDE_DIRS})
+add_definitions(${LUABIND_DEFINITIONS})
+
+include_directories(${VRJUGGLER_INCLUDE_DIRS}
+	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${LUABIND_INCLUDE_DIRS}
+	${OSGLUA_INCLUDE_DIRS}
+)
 
 ###
 # Standard Lua interpreter with VRJ and OSG automatically loaded

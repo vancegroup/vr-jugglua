@@ -13,6 +13,8 @@ set(API
 fltk_wrap_ui(vrjugglua-fltk vrjlua-fltk-console.fl)
 source_group("FLTK Generated Files - Do Not Edit" FILES ${vrjugglua-fltk_FLTK_UI_SRCS})
 
+include_directories(${FNFC_INCLUDE_DIRS} ${FLTK_INCLUDE_DIRS})
+
 add_library(vrjugglua-fltk ${SOURCES} ${API} ${vrjugglua-fltk_FLTK_UI_SRCS})
 set_target_properties(vrjugglua-fltk PROPERTIES PUBLIC_HEADER "${API}")
 target_link_libraries(vrjugglua-fltk vrjugglua ${FLTK_GUI_LIBS})

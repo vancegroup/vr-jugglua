@@ -17,7 +17,13 @@ endif()
 
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
-include_directories(${VRJUGGLER_INCLUDE_DIRS})
+add_definitions(${LUABIND_DEFINITIONS})
+
+include_directories(${VRJUGGLER_INCLUDE_DIRS}
+	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${LUABIND_INCLUDE_DIRS}
+	${OSGLUA_INCLUDE_DIRS}
+)
 
 ###
 # Let the Lua files install themselves
@@ -72,7 +78,7 @@ source_group("Binding Details" FILES ${LUA_BINDING_SOURCES})
 
 add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API})
 set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
-target_link_libraries(vrjugglua ${EXTRA_LIBS})
+target_link_libraries(vrjugglua ${VRJUGGLER_LIBRARIES} ${OPENSCENEGRAPH_LIBRARIES} ${LUABIND_LIBRARIES} ${OSGLUA_LIBRARIES})
 
 add_cppcheck(vrjugglua)
 
