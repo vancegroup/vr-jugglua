@@ -43,39 +43,39 @@
 
 namespace vrjLua {
 
-using namespace luabind;
+	using namespace luabind;
 
-void bindGadgetInterfacesToLua(LuaStatePtr state) {
+	void bindGadgetInterfacesToLua(LuaStatePtr state) {
 #ifdef VERBOSE
-	std::cerr << "Registering Gadgeteer device interfaces with Lua..." << std::flush << std::endl;
+		std::cerr << "Registering Gadgeteer device interfaces with Lua..." << std::flush << std::endl;
 #endif
-	luabind::scope position = class_<Internal::PositionInterface,
-			boost::shared_ptr<Internal::PositionInterface> >("PositionInterface")
-					.def(constructor<const std::string &>())
-					.property("matrix", & Internal::PositionInterface::getMatrix)
-					.property("position", & Internal::PositionInterface::getPosition)
-					.property("orientation", & Internal::PositionInterface::getOrientation)
-					.property("forwardVector", & Internal::PositionInterface::getForwardVector);
+		luabind::scope position = class_ < Internal::PositionInterface,
+		               boost::shared_ptr<Internal::PositionInterface> > ("PositionInterface")
+		               .def(constructor<const std::string &>())
+		               .property("matrix", & Internal::PositionInterface::getMatrix)
+		               .property("position", & Internal::PositionInterface::getPosition)
+		               .property("orientation", & Internal::PositionInterface::getOrientation)
+		               .property("forwardVector", & Internal::PositionInterface::getForwardVector);
 
-	luabind::scope digital = class_<Internal::DigitalInterface,
-				boost::shared_ptr<Internal::DigitalInterface> >("DigitalInterface")
-					.def(constructor<const std::string &>())
-					.property("pressed", & Internal::DigitalInterface::pressed)
-					.property("justChanged", & Internal::DigitalInterface::justChanged)
-					.property("justPressed", & Internal::DigitalInterface::justPressed)
-					.property("justReleased", & Internal::DigitalInterface::justReleased);
+		luabind::scope digital = class_ < Internal::DigitalInterface,
+		               boost::shared_ptr<Internal::DigitalInterface> > ("DigitalInterface")
+		               .def(constructor<const std::string &>())
+		               .property("pressed", & Internal::DigitalInterface::pressed)
+		               .property("justChanged", & Internal::DigitalInterface::justChanged)
+		               .property("justPressed", & Internal::DigitalInterface::justPressed)
+		               .property("justReleased", & Internal::DigitalInterface::justReleased);
 
-	luabind::scope analog = class_<Internal::AnalogInterface,
-			boost::shared_ptr<Internal::AnalogInterface> >("AnalogInterface")
-					.def(constructor<const std::string &>())
-					.property("data", & Internal::AnalogInterface::getData)
-					.property("centered", & Internal::AnalogInterface::getCentered);
+		luabind::scope analog = class_ < Internal::AnalogInterface,
+		               boost::shared_ptr<Internal::AnalogInterface> > ("AnalogInterface")
+		               .def(constructor<const std::string &>())
+		               .property("data", & Internal::AnalogInterface::getData)
+		               .property("centered", & Internal::AnalogInterface::getCentered);
 
-	module(state.get(), "gadget") [
-		position,
-		digital,
-		analog
-	];
-}
+		module(state.get(), "gadget") [
+		    position,
+		    digital,
+		    analog
+		];
+	}
 
 }// end of vrjLua namespace

@@ -33,24 +33,24 @@
 #endif
 
 namespace vrjLua {
-using namespace luabind;
+	using namespace luabind;
 
-void bindRunBufferToLua(LuaStatePtr state) {
+	void bindRunBufferToLua(LuaStatePtr state) {
 #ifdef VERBOSE
-	std::cerr << "Registering vrjSync.RunBuffer object with Lua..." << std::flush << std::endl;
+		std::cerr << "Registering vrjSync.RunBuffer object with Lua..." << std::flush << std::endl;
 #endif
-	module(state.get(), "vrjSync") [
-		class_<SynchronizedRunBuffer, boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
-			.def(constructor<luabind::object>())
-			.def("init", &SynchronizedRunBuffer::init)
-			.def("addFile", &SynchronizedRunBuffer::addFile)
-			.def("addFile", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addFile)
-			.def("addString", &SynchronizedRunBuffer::addString)
-			.def("addString", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addString)
-			.def("runBuffer", &SynchronizedRunBuffer::runBuffer)
-			.property("local", &SynchronizedRunBuffer::isLocal)
-	];
+		module(state.get(), "vrjSync") [
+		    class_<SynchronizedRunBuffer, boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
+		    .def(constructor<luabind::object>())
+		    .def("init", &SynchronizedRunBuffer::init)
+		    .def("addFile", &SynchronizedRunBuffer::addFile)
+		    .def("addFile", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addFile)
+		    .def("addString", &SynchronizedRunBuffer::addString)
+		    .def("addString", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addString)
+		    .def("runBuffer", &SynchronizedRunBuffer::runBuffer)
+		    .property("local", &SynchronizedRunBuffer::isLocal)
+		];
 
-}
+	}
 
 }// end of vrjLua namespace

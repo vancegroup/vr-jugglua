@@ -30,28 +30,28 @@
 
 namespace vrjLua {
 
-void bindOsgToLua(LuaStatePtr state) {
+	void bindOsgToLua(LuaStatePtr state) {
 #ifdef VERBOSE
-	std::cerr << "Started binding OSG to Lua..." << std::flush << std::endl;
+		std::cerr << "Started binding OSG to Lua..." << std::flush << std::endl;
 #endif
-	osgLua::open(state.get());
-	bool ret = true;
+		osgLua::open(state.get());
+		bool ret = true;
 
-	try {
-		ret = osgLua::loadWrapper(state.get(), "osg");
-	} catch (std::exception & e) {
-		std::cerr << "ERROR: Caught an exception trying to load osgwrappers : " << e.what() << std::endl;
-		std::cerr << "Make sure you have the osgwrappers installed in their default location with respect to OSG itself." << std::endl;
-		std::cerr << "Cannot continue, exiting!" << std::endl;
-		std::terminate();
-	}
+		try {
+			ret = osgLua::loadWrapper(state.get(), "osg");
+		} catch (std::exception & e) {
+			std::cerr << "ERROR: Caught an exception trying to load osgwrappers : " << e.what() << std::endl;
+			std::cerr << "Make sure you have the osgwrappers installed in their default location with respect to OSG itself." << std::endl;
+			std::cerr << "Cannot continue, exiting!" << std::endl;
+			std::terminate();
+		}
 
-	if (!ret) {
-		std::cerr << "Failure return code, trying to load wrappers for osg!" << std::endl;
-		lua_pushstring(state.get(), "Failure return code, trying to load wrappers for osg!");
-		lua_error(state.get());
-		std::terminate();
+		if (!ret) {
+			std::cerr << "Failure return code, trying to load wrappers for osg!" << std::endl;
+			lua_pushstring(state.get(), "Failure return code, trying to load wrappers for osg!");
+			lua_error(state.get());
+			std::terminate();
+		}
 	}
-}
 
 }// end of vrjLua namespace

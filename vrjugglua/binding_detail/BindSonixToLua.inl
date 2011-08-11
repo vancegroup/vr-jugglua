@@ -33,47 +33,47 @@
 #endif
 
 namespace vrjLua {
-using namespace luabind;
+	using namespace luabind;
 
-namespace Sonix {
-	void changeAPI(const std::string & api) {
-		snx::sonix::instance()->changeAPI(api);
-	}
-} // end of Internal namespace
+	namespace Sonix {
+		void changeAPI(const std::string & api) {
+			snx::sonix::instance()->changeAPI(api);
+		}
+	} // end of Internal namespace
 
-void bindSonixToLua(LuaStatePtr state) {
+	void bindSonixToLua(LuaStatePtr state) {
 #ifdef VERBOSE
-	std::cerr << "Registering snx module functions and objects with Lua..." << std::flush << std::endl;
+		std::cerr << "Registering snx module functions and objects with Lua..." << std::flush << std::endl;
 #endif
-	module(state.get(), "snx") [
-		def("changeAPI", &Sonix::changeAPI),
+		module(state.get(), "snx") [
+		    def("changeAPI", &Sonix::changeAPI),
 
-		class_<snx::SoundInfo>("SoundInfo")
-			.def(constructor<>())
-			.def_readwrite("alias", &snx::SoundInfo::alias)
-			.def_readwrite("filename", &snx::SoundInfo::filename)
-			.def_readwrite("ambient", &snx::SoundInfo::ambient)
-			.def_readwrite("repeat", &snx::SoundInfo::repeat)
-			.def_readwrite("volume", &snx::SoundInfo::volume)
-			.def_readwrite("streaming", &snx::SoundInfo::streaming)
-		,
+		    class_<snx::SoundInfo>("SoundInfo")
+		    .def(constructor<>())
+		    .def_readwrite("alias", &snx::SoundInfo::alias)
+		    .def_readwrite("filename", &snx::SoundInfo::filename)
+		    .def_readwrite("ambient", &snx::SoundInfo::ambient)
+		    .def_readwrite("repeat", &snx::SoundInfo::repeat)
+		    .def_readwrite("volume", &snx::SoundInfo::volume)
+		    .def_readwrite("streaming", &snx::SoundInfo::streaming)
+		    ,
 
-		class_<snx::SoundHandle>("SoundHandle")
-			.def(constructor<const std::string &>())
-			.def("configure", &snx::SoundHandle::configure)
-			.def("remove", &snx::SoundHandle::remove)
-			.property("name", &snx::SoundHandle::getName)
-			.def("trigger", &snx::SoundHandle::trigger)
-			.property("isPlaying", &snx::SoundHandle::isPlaying)
-			.def("stop", &snx::SoundHandle::stop)
-			.def("pause", &snx::SoundHandle::pause)
-			.def("unpause", &snx::SoundHandle::unpause)
-			.property("isPaused", &snx::SoundHandle::isPaused)
-			.property("ambient", &snx::SoundHandle::isAmbient, &snx::SoundHandle::setAmbient)
-			.property("retriggerable", &snx::SoundHandle::isRetriggerable, &snx::SoundHandle::setRetriggerable)
-			.def("setPosition", &snx::SoundHandle::setPosition)
-	];
+		    class_<snx::SoundHandle>("SoundHandle")
+		    .def(constructor<const std::string &>())
+		    .def("configure", &snx::SoundHandle::configure)
+		    .def("remove", &snx::SoundHandle::remove)
+		    .property("name", &snx::SoundHandle::getName)
+		    .def("trigger", &snx::SoundHandle::trigger)
+		    .property("isPlaying", &snx::SoundHandle::isPlaying)
+		    .def("stop", &snx::SoundHandle::stop)
+		    .def("pause", &snx::SoundHandle::pause)
+		    .def("unpause", &snx::SoundHandle::unpause)
+		    .property("isPaused", &snx::SoundHandle::isPaused)
+		    .property("ambient", &snx::SoundHandle::isAmbient, &snx::SoundHandle::setAmbient)
+		    .property("retriggerable", &snx::SoundHandle::isRetriggerable, &snx::SoundHandle::setRetriggerable)
+		    .def("setPosition", &snx::SoundHandle::setPosition)
+		];
 
-}
+	}
 
 }// end of vrjLua namespace
