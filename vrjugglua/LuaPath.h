@@ -63,6 +63,7 @@ namespace vrjLua {
 
 			void _populateSearchPathsVector(LuaStatePtr state);
 			void _setLuaSearchPaths(LuaStatePtr state);
+			std::string _findJuggler();
 			bool _setJugglerEnvironment() const;
 
 			std::string _initialPath;

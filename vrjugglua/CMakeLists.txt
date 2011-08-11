@@ -31,6 +31,8 @@ include_directories(${VRJUGGLER_INCLUDE_DIRS}
 add_subdirectory(lua)
 
 set(SOURCES
+	FindVPRDLL.cpp
+	FindVPRDLL.h
 	Internal_AnalogInterface.cpp
 	Internal_DigitalInterface.cpp
 	Internal_PositionInterface.cpp

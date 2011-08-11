@@ -1,0 +1,228 @@
+
+    Graph-includes report
+    =====================
+
+General statistics:
+-------------------
+
+39 files, 26 nodes (33% dropped)
+32 dependencies, 16 edges (50% dropped)
+16 root node(s)
+
+62 dependencies not found
+29 dependencies identified as system headers
+
+Declared dependencies not found:
+--------------------------------
+
+ ../LuaIncludeFull.h
+  from binding_detail/OsgHelpers.cpp
+ ../VRJLuaOutput.h
+  from fltk-console/FLTKConsole.cpp
+ FL/Fl_Native_File_Chooser.H
+  from fltk-console/FLTKConsole.cpp
+ QApplication
+  from qt-console/QTConsole.h
+ QFileDialog
+  from qt-console/QTConsole.cpp
+ QFontDatabase
+  from qt-console/QTConsole.cpp
+ QMainWindow
+  from qt-console/QTConsole.h
+ QScrollBar
+  from qt-console/QTConsole.cpp
+ QTimer
+  from qt-console/QTConsole.cpp
+ binding_detail/BindGadgetInterfacesToLua.inl
+  from LuaScript.cpp
+ binding_detail/BindKernelToLua.inl
+  from LuaScript.cpp
+ binding_detail/BindOsgToLua.inl
+  from LuaScript.cpp
+ binding_detail/BindRunBufferToLua.inl
+  from LuaScript.cpp
+ binding_detail/BindSonixToLua.inl
+  from LuaScript.cpp
+ binding_detail/BindvrjLuaToLua.inl
+  from LuaScript.cpp
+ cstdlib
+  from OsgAppProxy.cpp
+ fstream
+  from qt-console/QTConsole.cpp
+  from LuaRunBuffer.cpp
+  from LuaPath.cpp
+ functional
+  from LuaScript.cpp
+  from VRJLua_C_Interface.cpp
+ gadget/Type/AnalogInterface.h
+  from Internal_AnalogInterface.h
+ gadget/Type/DigitalInterface.h
+  from Internal_DigitalInterface.h
+ gadget/Type/PositionInterface.h
+  from Internal_PositionInterface.h
+ gmtl/Generate.h
+  from Internal_PositionInterface.cpp
+ gmtl/Matrix.h
+  from Internal_PositionInterface.h
+ iostream
+  from qt-console/QTConsole.cpp
+  from osgLuaBind.h
+  from fltk-console/FLTKConsole.cpp
+  from LuaScript.cpp
+  from VRJLua_C_Interface.cpp
+  from LuaConsole.cpp
+  from binding_detail/OsgHelpers.cpp
+ lauxlib.h
+  from LuaIncludeFull.h
+ lua.h
+  from LuaInclude.h
+ luabind/class.hpp
+  from OsgAppProxy.cpp
+ luabind/class_info.hpp
+  from LuaScript.cpp
+ luabind/luabind.hpp
+  from osgLuaBind.h
+  from LuaScript.cpp
+ luabind/object.hpp
+  from OsgAppProxy.h
+  from SynchronizedRunBuffer.h
+  from LuaConsole.cpp
+ lualib.h
+  from LuaIncludeFull.h
+ osgLua/IntrospectionValue
+  from binding_detail/OsgHelpers.cpp
+ osgLua/Introspection_variant_cast
+  from osgLuaBind.h
+  from binding_detail/OsgHelpers.cpp
+ osgLua/Value
+  from osgLuaBind.h
+  from binding_detail/OsgHelpers.cpp
+ plugins/ApplicationDataManager/UserData.h
+  from SynchronizedRunBuffer.h
+ queue
+  from LuaPath.h
+ sstream
+  from LuaScript.cpp
+  from VRJLua_C_Interface.cpp
+  from LuaPath.cpp
+  from LuaConsole.h
+ stdexcept
+  from qt-console/QTConsole.cpp
+  from fltk-console/FLTKConsole.cpp
+  from SynchronizedRunBuffer.cpp
+  from LuaConsole.cpp
+  from LuaGCBlock.h
+  from LuaScript.h
+ string
+  from LuaRunBuffer.h
+  from LuaPath.h
+  from LuaScript.h
+  from LuaConsole.h
+ ui_QTConsoleMainWindow.h
+  from qt-console/QTConsole.cpp
+ util/gmtlToOsgMatrix.h
+  from Internal_PositionInterface.cpp
+  from OsgAppProxy.cpp
+ utility
+  from SynchronizedRunBuffer.h
+ vector
+  from SynchronizedRunBuffer.h
+  from LuaPath.h
+ vpr/IO/ObjectReader.h
+  from LuaRunBuffer.cpp
+ vpr/IO/ObjectWriter.h
+  from LuaRunBuffer.cpp
+ vpr/IO/SerializableObject.h
+  from LuaRunBuffer.h
+ vpr/Sync/CondVar.h
+  from LuaRunBuffer.h
+ vpr/Sync/Guard.h
+  from LuaRunBuffer.cpp
+ vpr/System.h
+  from LuaPath.cpp
+ vpr/Util/Debug.h
+  from VRJLuaOutput.h
+ vpr/Util/GUID.h
+  from LuaRunBuffer.h
+ vrj/Draw/OSG/App.h
+  from OsgAppProxy.h
+ vrj/Draw/OSG/OsgApp.h
+  from OsgAppProxy.h
+ vrj/Kernel/Kernel.h
+  from qt-console/QTConsole.cpp
+  from fltk-console/FLTKConsole.cpp
+  from LuaConsole.cpp
+ vrj/vrjParam.h
+  from OsgAppProxy.h
+  from LuaPath.cpp
+ vrjlua-fltk-console.h
+  from fltk-console/FLTKConsole.cpp
+ vrjugglua/LuaConsole.h
+  from fltk-console/FLTKConsole.h
+  from qt-console/QTConsole.h
+ vrjugglua/LuaInclude.h
+  from VRJLua_C_Interface.h
+  from LuaScript.cpp
+  from VRJLua_C_Interface.cpp
+  from LuaGCBlock.h
+  from LuaIncludeFull.h
+ vrjugglua/LuaScript.h
+  from binding_detail/BindSonixToLua.h
+  from binding_detail/OsgHelpers.h
+  from binding_detail/BindGadgetInterfacesToLua.h
+  from OsgAppProxy.h
+  from LuaRunBuffer.h
+  from binding_detail/BindOsgToLua.h
+  from LuaPath.h
+  from binding_detail/BindvrjLuaToLua.h
+  from LuaConsole.h
+  from binding_detail/BindKernelToLua.h
+  from binding_detail/BindRunBufferToLua.h
+ vrjugglua/SynchronizedRunBuffer.h
+  from LuaConsole.h
+ vrjugglua/VRJLuaConfig.h
+  from LuaInclude.h
+ vrjugglua/VRJLua_C_Interface.h
+  from LuaScript.h
+
+Used system headers:
+--------------------
+
+ FL/Fl_Text_Buffer.H
+ boost/algorithm/string/classification.hpp
+ boost/algorithm/string/replace.hpp
+ boost/algorithm/string/split.hpp
+ boost/algorithm/string/trim.hpp
+ boost/circular_buffer.hpp
+ boost/filesystem.hpp
+ boost/function.hpp
+ boost/program_options.hpp
+ boost/scoped_ptr.hpp
+ boost/shared_ptr.hpp
+ boost/utility.hpp
+ boost/weak_ptr.hpp
+ link.h
+ osg/ComputeBoundsVisitor
+ osg/Group
+ osg/LightModel
+ osg/Matrix
+ osg/MatrixTransform
+ osg/Matrixd
+ osg/Node
+ osg/PositionAttitudeTransform
+ osg/Quat
+ osg/Vec3
+ osg/Vec3d
+ osg/Vec4d
+ osgDB/FileUtils
+ osgDB/Registry
+ osgUtil/SceneView
+
+Command-line used:
+------------------
+
+/usr/bin/graph-includes binding_detail CMakeLists.txt fltk-console Internal_AnalogInterface.cpp Internal_AnalogInterface.h Internal_DigitalInterface.cpp Internal_DigitalInterface.h Internal_PositionInterface.cpp Internal_PositionInterface.h lua LuaConsole.cpp LuaConsole.h LuaGCBlock.h LuaIncludeFull.h LuaInclude.h LuaPath.cpp LuaPath.h LuaRunBuffer.cpp LuaRunBuffer.h LuaScript.cpp LuaScript.h OsgAppProxy.cpp OsgAppProxy.h osgLuaBind.h qt-console SynchronizedRunBuffer.cpp SynchronizedRunBuffer.h VRJLua_C_Interface.cpp VRJLua_C_Interface.h VRJLuaConfig.h.in VRJLuaOutput.h
+
+This was /usr/bin/graph-includes version 0.13
+
+=== End of report ===

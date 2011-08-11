@@ -21,6 +21,7 @@
 // Internal Includes
 #include "LuaPath.h"
 #include "VRJLuaOutput.h"
+#include "FindVPRDLL.h"
 
 #include "LuaScript.h"        // for LuaStatePtr
 
@@ -174,43 +175,37 @@ namespace vrjLua {
 			}
 		}
 		_shareDir = _findFilePath(startingPlaces, "assets/fonts/droid-fonts/DroidSans.ttf");
+		_jugglerRoot = _findJuggler();
+		_setJugglerEnvironment();
+	}
+
+	std::string LuaPath::_findJuggler() {
 #if __VJ_version >= 2003000
-		fs::path jugglerTest = "share/vrjuggler-3.0/data/definitions/simulated_positional_device.jdef";
+		static const fs::path jugglerTest = "share/vrjuggler-3.0/data/definitions/simulated_positional_device.jdef";
 #else
-		fs::path jugglerTest = "share/vrjuggler-2.2/data/definitions/simulated_positional_device.jdef";
+		static const fs::path jugglerTest = "share/vrjuggler-2.2/data/definitions/simulated_positional_device.jdef";
 #endif
-		fs::path jugglerTestFallback = "share/vrjuggler/data/definitions/simulated_positional_device.jdef";
+		static const fs::path jugglerTestFallback = "share/vrjuggler/data/definitions/simulated_positional_device.jdef";
 
 		if (fs::exists(_root / jugglerTest) || fs::exists(_root / jugglerTestFallback)) {
-			_foundJuggler = true;
-			_jugglerRoot = _root;
+			return _root;
 		}
 
-
-#ifdef VPR_OS_Linux
-		if (!_foundJuggler) {
-			std::string vprLibraryPath;
-			dl_iterate_phdr(&sharedObjectCallback, &vprLibraryPath);
-			if (!vprLibraryPath.empty()) {
-				try {
+		std::string vprLibraryPath = findVPRDLL();
+		if (!vprLibraryPath.empty()) {
+			try {
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
-					_jugglerRoot = _findFilePath(fs::complete(vprLibraryPath).remove_filename().string(), jugglerTest.string());
+				return _findFilePath(fs::complete(vprLibraryPath).remove_filename().string(), jugglerTest.string());
 #else
-					_jugglerRoot = _findFilePath(fs::complete(vprLibraryPath).remove_leaf().string(), jugglerTest.string());
+				return _findFilePath(fs::complete(vprLibraryPath).remove_leaf().string(), jugglerTest.string());
 #endif
-					_foundJuggler = true;
-				} catch (std::runtime_error &) {
-					// nothing
-				}
+			} catch (std::runtime_error &) {
+				// nothing
 			}
 		}
-#endif
-
-		if (!_foundJuggler) {
-			vpr::System::getenv("VJ_BASE_DIR", _jugglerRoot);
-		}
-
-		_setJugglerEnvironment();
+		std::string ret;
+		vpr::System::getenv("VJ_BASE_DIR", ret);
+		return ret;
 	}
 
 	std::string LuaPath::findFilePath(std::string const& fn) {
