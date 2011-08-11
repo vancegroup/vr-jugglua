@@ -1,7 +1,3 @@
-# 2009-2010 Ryan Pavlik <rpavlik@iastate.edu>
-# http://academic.cleardefinition.com/
-# Iowa State University HCI Graduate Program/VRAC
-
 if(BUILD_FLTK_GUI)
 	add_subdirectory(Fl_Native_File_Chooser-0.86)
 	set(FNFC_LIBRARY ${FNFC_LIBRARY} PARENT_SCOPE)

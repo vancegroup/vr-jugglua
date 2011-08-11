@@ -1,11 +1,7 @@
-# CMake cross-platform build system
-# 2009-2010 Ryan Pavlik <rpavlik@iastate.edu>
-# http://academic.cleardefinition.com/
-# Iowa State University HCI Graduate Program/VRAC
-
 if(BUILD_LUA_AS_CPP)
 	add_definitions(-DLUABIND_CPLUSPLUS_LUA)
 endif()
+
 add_definitions(-DOSGLUA_LIBRARY_STATIC)
 
 add_definitions(${LUABIND_DEFINITIONS})

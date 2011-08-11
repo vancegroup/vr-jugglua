@@ -1,7 +1,4 @@
 # Embedded build for Lua 5.1
-# 2009-2010 Ryan Pavlik <rpavlik@iastate.edu>
-# http://academic.cleardefinition.com/
-# Iowa State University HCI Graduate Program/VRAC
 
 set(LUA_SRCS
 	lapi.c
