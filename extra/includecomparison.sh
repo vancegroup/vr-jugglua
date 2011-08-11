@@ -25,10 +25,11 @@ if echo "$*" | egrep -e "--" > /dev/null; then
 fi
 
 for fn; do
+	cleanfn=$(echo ${fn} | sed -e 's/_/ /g')
 	includes=$(g++ -E -M -H ${extraargs} ${fn} 2>&1 | grep "^\..*" | sed 's/^\.* \(.*\)/\1/')
 	count=$(echo "${includes}" | wc -l)
 	uniques=$(echo "${includes}" | sort | uniq | wc -l)
 	dupes=$(expr $count - $uniques)
-	echo -e "\"${fn}\",${count},${uniques},${dupes}"
+	echo -e "\"${cleanfn}\",${count},${uniques},${dupes}"
 done
 
