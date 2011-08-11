@@ -62,10 +62,10 @@ struct Fixture {
 	Fixture() {
 		LuaStatePtr ptr(s.getLuaState().lock());
 		module(ptr.get())[
-			def("nodeFunc", &nodeFunc),
-			def("groupFunc", &groupFunc),
-			def("vecFunc", &vecFunc),
-			def("matrixFunc", &matrixFunc)
+		    def("nodeFunc", &nodeFunc),
+		    def("groupFunc", &groupFunc),
+		    def("vecFunc", &vecFunc),
+		    def("matrixFunc", &matrixFunc)
 		];
 	}
 	LuaScript s;
