@@ -1,0 +1,11 @@
+--indent-classes
+--indent-switches
+--indent-cases
+--indent-namespaces
+--pad-oper
+--pad-header
+--unpad-paren
+--indent=tab=4
+--brackets=attach
+--add-brackets
+--lineend=linux
