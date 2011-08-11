@@ -92,7 +92,7 @@ namespace vrjLua {
 	}
 
 	LuaScript::LuaScript(lua_State * state, bool bind) :
-		_state(state, std::ptr_fun(no_op_deleter)) {
+		_state(borrowStatePtr(state)) {
 #ifdef VERBOSE
 		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
@@ -136,7 +136,12 @@ namespace vrjLua {
 		if (!other._state) {
 			std::cerr << "Warning: setting a LuaScript equal to another LuaScript with an empty state smart pointer!" << std::endl;
 		}
-		// Self-assignment is OK: we're using smart pointers
+
+		if (&other == this) {
+			/// self assignment
+			return *this;
+		}
+
 		_state = other._state;
 		return *this;
 	}
@@ -168,8 +173,8 @@ namespace vrjLua {
 		if (!_state) {
 			throw NoValidLuaState();
 		}
-		int ret = luaL_dofile(_state.get(), fn.c_str());
-		return _handleLuaReturnCode(ret,
+
+		return _handleLuaReturnCode(luaL_dofile(_state.get(), fn.c_str()),
 		                            std::string("vrjLua ERROR: Could not run Lua file ") + fn + ".",
 		                            silentSuccess ? "" : std::string("Successfully ran Lua file ") + fn);
 	}
@@ -197,8 +202,7 @@ namespace vrjLua {
 			throw NoValidLuaState();
 		}
 
-		int ret = luaL_dostring(_state.get(), str.c_str());
-		return _handleLuaReturnCode(ret,
+		return _handleLuaReturnCode(luaL_dostring(_state.get(), str.c_str()),
 		                            "vrjLua ERROR: Could not run provided Lua string.",
 		                            silentSuccess ? "" : "Lua string executed successfully.");
 	}
