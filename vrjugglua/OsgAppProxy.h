@@ -47,9 +47,15 @@ typedef vrj::osg::App OsgApp;
 // Standard includes
 // - none
 
-namespace osg { class Group; }
-namespace osgUtil { class SceneView; }
-namespace vrj { class Kernel; }
+namespace osg {
+	class Group;
+}
+namespace osgUtil {
+	class SceneView;
+}
+namespace vrj {
+	class Kernel;
+}
 
 namespace vrjLua {
 

@@ -56,12 +56,12 @@ int main(int argc, char * argv[]) {
 
 	/// Create the script object
 	LuaScript script;
-	
+
 	/// Create the "arg" table
 	luabind::object arg = luabind::newtable(script.getLuaRawState());
 	arg[0] = std::string(argv[0]);
 	for (unsigned int i = 0; i < args.size(); ++i) {
-		arg[i+1] = args[i];
+		arg[i + 1] = args[i];
 	}
 	luabind::globals(script.getLuaRawState())["arg"] = arg;
 
