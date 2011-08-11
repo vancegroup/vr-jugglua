@@ -32,6 +32,7 @@ set(TESTS
 	lua_classes
 	null_pointer
 	object
+	object_identity
 	operators
 	policies
 	private_destructors
@@ -57,7 +58,7 @@ add_library(test_main main.cpp)
 foreach(test ${TESTS})
 	add_executable(test_${test} test_${test}.cpp)
 	target_link_libraries(test_${test} test_main luabind)
-	add_test(NAME ${test} COMMAND test_${test})	
+	add_test(NAME ${test} COMMAND test_${test})
 endforeach()
 
 if(BUILD_TESTING)
