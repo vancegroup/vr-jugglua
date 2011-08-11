@@ -208,11 +208,37 @@ namespace vrjLua {
 	};
 
 // -- inline implementations -- //
-// -- only safe for functions not callable from lua -- /
 	inline OsgAppProxy* OsgAppProxy::getApp() {
 		return _pApp;
 	}
 
 
+	inline void OsgAppProxy::latePreFrame() {
+		_forwardCallToDelegate("latePreFrame");
+
+		// Finish updating the scene graph.
+		vrj::OsgApp::latePreFrame();
+	}
+
+	inline void OsgAppProxy::intraFrame() {
+		_forwardCallToDelegate("intraFrame");
+	}
+
+	inline void OsgAppProxy::postFrame() {
+		_forwardCallToDelegate("postFrame");
+	}
+
+	inline unsigned int OsgAppProxy::getSceneViewDefaults() {
+		return (osgUtil::SceneView::SKY_LIGHT | osgUtil::SceneView::COMPILE_GLOBJECTS_AT_INIT);
+		//return osgUtil::SceneView::NO_SCENEVIEW_LIGHT;
+	}
+
+	inline osg::Group* OsgAppProxy::getScene() {
+		return _rootNode.get();
+	}
+
+	inline double OsgAppProxy::getTimeDelta() {
+		return _timeDelta;
+	}
 } // end of vrjLua namespace
 #endif // INCLUDED_vrjugglua_LuaOSGApp_h
