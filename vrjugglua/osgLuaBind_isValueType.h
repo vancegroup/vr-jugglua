@@ -12,6 +12,12 @@
 	Human-Computer Interaction Graduate Program
 */
 
+//          Copyright Iowa State University 2010-2011.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+
 #pragma once
 #ifndef INCLUDED_osgLuaBind_isValueType_h_GUID_9fe524ca_d43a_4ae1_8abe_b29b53f05918
 #define INCLUDED_osgLuaBind_isValueType_h_GUID_9fe524ca_d43a_4ae1_8abe_b29b53f05918
@@ -59,6 +65,12 @@ namespace boost {
 		  : TraitTrue {}; \
 		\
 	} /* end of namespace osgLuaBind */
+
+//          Copyright Iowa State University 2010-2011.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
 
 /// Internal-use macro to forward declare and create value type trait in one step.
 #define FORWARD_DECL_AND_DEFINE_VALUE_TRAIT(NS, T) \
