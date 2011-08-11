@@ -205,6 +205,34 @@ namespace vrjLua {
 		_lastPreFrameTime = cur_time;
 	}
 
+	void OsgAppProxy::latePreFrame() {
+		_forwardCallToDelegate("latePreFrame");
+
+		// Finish updating the scene graph.
+		vrj::OsgApp::latePreFrame();
+	}
+
+	void OsgAppProxy::intraFrame() {
+		_forwardCallToDelegate("intraFrame");
+	}
+
+	void OsgAppProxy::postFrame() {
+		_forwardCallToDelegate("postFrame");
+	}
+
+	unsigned int OsgAppProxy::getSceneViewDefaults() {
+		return (osgUtil::SceneView::SKY_LIGHT | osgUtil::SceneView::COMPILE_GLOBJECTS_AT_INIT);
+		//return osgUtil::SceneView::NO_SCENEVIEW_LIGHT;
+	}
+
+	osg::Group* OsgAppProxy::getScene() {
+		return _rootNode.get();
+	}
+
+	double OsgAppProxy::getTimeDelta() {
+		return _timeDelta;
+	}
+
 	bool OsgAppProxy::_forwardCallToDelegate(const char * call, bool required) {
 		if (_delegate && luabind::type(_delegate[call]) == LUA_TFUNCTION) {
 			try {
