@@ -11,6 +11,12 @@
 	Human-Computer Interaction Graduate Program
 */
 
+//          Copyright Iowa State University 2010-2011.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+
 #pragma once
 #ifndef INCLUDED_LuaGCBlock_h_GUID_8c906cef_6f6d_49c4_b436_f774451856d1
 #define INCLUDED_LuaGCBlock_h_GUID_8c906cef_6f6d_49c4_b436_f774451856d1
@@ -41,6 +47,7 @@ namespace vrjLua {
 
 				@throws NullStateError if state pointer given is NULL
 			*/
+
 			LuaGCBlock(lua_State * L) : _L(L) {
 				if (!_L) {
 					throw NullStateError();

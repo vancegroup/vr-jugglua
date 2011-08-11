@@ -12,6 +12,12 @@
 	Human-Computer Interaction Graduate Program
 */
 
+//          Copyright Iowa State University 2010-2011.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+
 // Internal Includes
 #include "LuaScript.h"
 #include "VRJLua_C_Interface.h"
@@ -241,6 +247,7 @@ namespace vrjLua {
 											   def_readwrite(&LuaScript::exitOnError)
 											   ];
 		*/
+
 	}
 
 	bool LuaScript::call(const std::string & func, bool silentSuccess) {
