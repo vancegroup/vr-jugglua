@@ -1,59 +1,65 @@
 "Filename","Total Includes","Unique Includes","Duplicate Includes"
-"luabind/back_reference_fwd.hpp",1,1,0
-"luabind/from_stack.hpp",1,1,0
+"luabind/back reference fwd.hpp",1,1,0
+"luabind/from stack.hpp",1,1,0
+"luabind/lua state fwd.hpp",1,1,0
 "luabind/prefix.hpp",1,1,0
-"luabind/return_reference_to_policy.hpp",1,1,0
 "luabind/version.hpp",1,1,0
+"osgLua/Config.in",1,1,0
+"osgLua/introspection",1,1,0
 "vrjugglua/VRJLuaOutput.h",1,1,0
 "osgLua/LuaInclude",22,19,3
 "osgLua/LoadWrapper",23,20,3
 "vrjugglua/LuaInclude.h",23,20,3
-"vrjugglua/VRJLua_C_Interface.h",24,21,3
+"vrjugglua/VRJLua C Interface.h",24,21,3
+"luabind/lua include.hpp",36,27,9
 "vrjugglua/LuaIncludeFull.h",39,30,9
-"luabind/lua_include.hpp",40,31,9
-"luabind/get_pointer.hpp",44,37,7
+"luabind/get pointer.hpp",44,37,7
 "luabind/config.hpp",66,51,15
-"luabind/get_main_thread.hpp",67,52,15
 "luabind/nil.hpp",67,52,15
-"luabind/open.hpp",67,52,15
-"luabind/weak_ref.hpp",67,52,15
-"luabind/scope.hpp",126,97,29
-"luabind/value_wrapper.hpp",132,110,22
-"luabind/handle.hpp",164,134,30
-"osgLua/Value",176,138,38
-"osgLua/Script",177,138,39
+"luabind/error callback fun.hpp",68,53,15
+"luabind/get main thread.hpp",68,53,15
+"luabind/open.hpp",68,53,15
+"luabind/weak ref.hpp",68,53,15
+"vrjugglua/FindVPRDLL.h",104,77,27
+"vrjugglua/Internal AnalogInterface.h",104,77,27
+"vrjugglua/Internal DigitalInterface.h",104,77,27
+"vrjugglua/LuaGCBlock.h",121,91,30
+"luabind/scope.hpp",122,93,29
+"luabind/value wrapper.hpp",132,110,22
+"vrjugglua/Internal PositionInterface.h",135,105,30
+"luabind/handle.hpp",160,130,30
+"osgLua/Value",171,133,38
+"osgLua/Script",178,139,39
 "luabind/typeid.hpp",187,136,51
-"luabind/error.hpp",189,138,51
-"luabind/tag_function.hpp",254,223,31
-"osgLua/Callback",266,218,48
-"luabind/exception_handler.hpp",336,235,101
-"luabind/copy_policy.hpp",563,383,180
-"luabind/dependency_policy.hpp",563,383,180
-"luabind/discard_result_policy.hpp",563,383,180
-"luabind/no_dependency.hpp",563,383,180
-"luabind/raw_policy.hpp",563,383,180
-"luabind/yield_policy.hpp",563,383,180
-"luabind/container_policy.hpp",564,383,181
-"luabind/out_value_policy.hpp",564,383,181
-"luabind/iterator_policy.hpp",565,384,181
-"luabind/operator.hpp",575,393,182
-"luabind/shared_ptr_converter.hpp",589,404,185
-"vrjugglua/LuaScript.h",622,389,233
-"vrjugglua/Internal_AnalogInterface.h",623,390,233
-"vrjugglua/Internal_DigitalInterface.h",623,390,233
-"vrjugglua/LuaPath.h",628,395,233
-"vrjugglua/Internal_PositionInterface.h",657,421,236
-"luabind/object.hpp",694,465,229
-"luabind/wrapper_base.hpp",729,472,257
-"luabind/back_reference.hpp",730,472,258
-"luabind/adopt_policy.hpp",731,472,259
-"vrjugglua/LuaRunBuffer.h",821,514,307
-"vrjugglua/SynchronizedRunBuffer.h",822,515,307
-"vrjugglua/LuaConsole.h",851,516,335
-"luabind/make_function.hpp",881,540,341
-"luabind/function.hpp",893,543,350
-"vrjugglua/OsgAppProxy.h",1016,663,353
-"luabind/class.hpp",1021,606,415
-"luabind/class_info.hpp",1021,608,413
-"luabind/luabind.hpp",1022,607,415
-"vrjugglua/osgLuaBind.h",1117,694,423
+"luabind/error.hpp",191,140,51
+"osgLua/Callback",246,200,46
+"luabind/tag function.hpp",255,224,31
+"luabind/exception handler.hpp",332,231,101
+"luabind/copy policy.hpp",561,381,180
+"luabind/dependency policy.hpp",561,381,180
+"luabind/discard result policy.hpp",561,381,180
+"luabind/no dependency.hpp",561,381,180
+"luabind/raw policy.hpp",561,381,180
+"luabind/return reference to policy.hpp",561,381,180
+"luabind/yield policy.hpp",561,381,180
+"luabind/container policy.hpp",562,381,181
+"luabind/out value policy.hpp",562,381,181
+"luabind/iterator policy.hpp",563,382,181
+"vrjugglua/LuaScript.h",574,377,197
+"vrjugglua/LuaConsole.h",575,378,197
+"vrjugglua/LuaPath.h",578,381,197
+"luabind/operator.hpp",587,401,186
+"luabind/shared ptr converter.hpp",587,402,185
+"luabind/object.hpp",692,463,229
+"luabind/wrapper base.hpp",727,470,257
+"luabind/back reference.hpp",728,470,258
+"luabind/adopt policy.hpp",729,470,259
+"vrjugglua/LuaRunBuffer.h",772,502,270
+"vrjugglua/SynchronizedRunBuffer.h",773,503,270
+"vrjugglua/OsgAppProxy.h",855,544,311
+"luabind/make function.hpp",879,538,341
+"luabind/function.hpp",891,541,350
+"luabind/class.hpp",1019,604,415
+"luabind/class info.hpp",1019,606,413
+"luabind/luabind.hpp",1020,605,415
+"vrjugglua/osgLuaBind.h",1080,655,425
