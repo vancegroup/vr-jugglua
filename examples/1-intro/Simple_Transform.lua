@@ -19,7 +19,7 @@ xform:addChild(s)
 RelativeTo.World:addChild(xform)
 
 --[[ OPTIONAL: try changing the Transform's position and see what happens to the sphere
-You may do this interactively, but loading this script into VRJuggLua then type:
+You may do this interactively, by loading this script into VRJuggLua then type:
 xform:setPosition(osg.Vec3d(x,y,z)) 
 where x,y,z are position values.
 ]]--
