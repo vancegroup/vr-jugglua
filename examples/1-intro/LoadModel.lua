@@ -1,3 +1,8 @@
+--[[
+Simple_Model
+This file loads a model and  adds it as a child to the root node (RelativeTo.World)
+]]--
+
 -- Here we are loading a model. Don't worry about where the model file is located right now.
 teapot = Model("assets/models/teapot.osg")
 
