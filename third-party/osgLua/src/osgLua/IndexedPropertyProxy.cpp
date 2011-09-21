@@ -79,7 +79,7 @@ namespace osgLua {
 
 	int IndexedPropertyProxy::newindex(lua_State *L) {
 		int eltIndex = luaL_checkint(L, 1) - 1;
-		_propInfo->setArrayItem(*instance, eltIndex, Value::getRequired(L, 2)->get());
+		_propInfo->setArrayItem(*_instance, eltIndex, Value::getRequired(L, 2)->get());
 		return 0;
 	}
 
