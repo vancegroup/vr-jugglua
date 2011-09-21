@@ -88,8 +88,31 @@ namespace osgLua {
 		lua_pushinteger(L, _propInfo->getNumArrayItems(_instance));
 		return 1;
 	}
+
 	int IndexedPropertyProxy::insert(lua_State *L) {
-		/// @todo
+		int numItems = _propInfo->getNumArrayItems(_instance);
+		int location = -1;
+		bool atEnd = true;
+		introspection::Value newval;
+		switch (lua_gettop(L)) {
+			case 2:
+				newval = Value::getRequired(L, 2)->get();
+				break;
+			case 3:
+				location = luaL_checkint(L, 2) - 1;
+				newval = Value::getRequired(L, 3)->get();
+				atEnd = (location == numItems);
+				break;
+			default:
+				return luaL_error(L, "Indexed property %s call to 'insert' expected at least a value, and potentially a location and a value", _propInfo->getName().c_str());
+		}
+
+		if (atEnd) {
+			_propInfo->addArrayItem(_instance, newval);
+		} else {
+			_propInfo->insertArrayItem(_instance, location, newval);
+		}
+
 		return 0;
 	}
 
