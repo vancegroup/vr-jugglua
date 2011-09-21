@@ -15,6 +15,7 @@
 */
 
 #include <osgLua/Value>
+#include "IndexedPropertyProxy.h"
 #include "Value_metamethods.h"
 #include "Value_rawget.inl"
 #include "lua_functions.h"
@@ -72,7 +73,8 @@ namespace osgLua {
 			if (prop) {
 				if (prop->isArray()) {
 					/// @todo implement indexed properties
-					luaL_error(L, "Indexed properties are not yet implemented in osgLua");
+					IndexedPropertyProxy::pushNew(L, v->get(), prop);
+					return 1;
 				} else if (!prop->canGet()) {
 					luaL_error(L, "Property %s defined as not gettable", prop->getName().c_str());
 				} else {
