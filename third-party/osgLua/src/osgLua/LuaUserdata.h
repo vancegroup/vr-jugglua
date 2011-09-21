@@ -129,6 +129,8 @@ namespace osgLua {
 				if (!ud) {
 					throw std::bad_alloc();
 				}
+				_pushMetatable(L);
+				lua_setmetatable(L, -2);
 				return ud;
 			}
 			static PointerToDerivedType pushNewWithLuaParam(lua_State * L) {
