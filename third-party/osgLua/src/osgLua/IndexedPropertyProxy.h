@@ -43,7 +43,7 @@ namespace osgLua {
 			static IndexedPropertyProxy * get(lua_State * L, int index);
 			static IndexedPropertyProxy * pushNew(lua_State * L, introspection::Value & instance, const introspection::PropertyInfo * property);
 			*/
-			static void pushNew(lua_State * L, introspection::Value & instance, const introspection::PropertyInfo * property) {
+			static void pushNew(lua_State * L, introspection::Value const& instance, const introspection::PropertyInfo * property) {
 				Base::pushNew(L, instance, property);
 			}
 
@@ -52,10 +52,10 @@ namespace osgLua {
 			int len(lua_State *L);
 			int insert(lua_State *L);
 		private:
-			IndexedPropertyProxy(introspection::Value & instance, const introspection::PropertyInfo * property);
+			IndexedPropertyProxy(introspection::Value const& instance, const introspection::PropertyInfo * property);
 			static void registerAdditionalMetamethods(lua_State *L);
 
-			introspection::Value * _instance;
+			introspection::Value _instance;
 			const introspection::PropertyInfo * _propInfo;
 	};
 

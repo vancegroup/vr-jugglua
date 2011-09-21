@@ -55,8 +55,8 @@ namespace osgLua {
 			}
 		}
 	*/
-	IndexedPropertyProxy::IndexedPropertyProxy(introspection::Value & instance, const introspection::PropertyInfo * property)
-		: _instance(&instance)
+	IndexedPropertyProxy::IndexedPropertyProxy(introspection::Value  const& instance, const introspection::PropertyInfo * property)
+		: _instance(instance)
 		, _propInfo(property)
 	{}
 
@@ -71,7 +71,7 @@ namespace osgLua {
 			}
 		} else if (lua_isnumber(L, 1)) {
 			/// indexed property element access
-			Value::push(L, _propInfo->getArrayItem(*_instance, lua_tointeger(L, 1) - 1));
+			Value::push(L, _propInfo->getArrayItem(_instance, lua_tointeger(L, 1) - 1));
 			return 1;
 		}
 		return luaL_error(L, "Indexed property %s expected access of element by index, starting at 1, or a method call to 'insert'", _propInfo->getName().c_str());
@@ -79,12 +79,13 @@ namespace osgLua {
 
 	int IndexedPropertyProxy::newindex(lua_State *L) {
 		int eltIndex = luaL_checkint(L, 1) - 1;
-		_propInfo->setArrayItem(*_instance, eltIndex, Value::getRequired(L, 2)->get());
+		_propInfo->setArrayItem(_instance, eltIndex, Value::getRequired(L, 2)->get());
 		return 0;
 	}
 
 	int IndexedPropertyProxy::len(lua_State *L) {
-		lua_pushinteger(L, _propInfo->getNumArrayItems(*_instance));
+		assert(_propInfo);
+		lua_pushinteger(L, _propInfo->getNumArrayItems(_instance));
 		return 1;
 	}
 	int IndexedPropertyProxy::insert(lua_State *L) {
