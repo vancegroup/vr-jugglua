@@ -30,10 +30,12 @@
 #include <typeinfo>
 #include <cassert>
 
+/// @todo this is bad
+#define LUA_INDEX_METAMETHOD_NAME "__index"
 namespace osgLua {
 	class LuaUserdataBase {
 		public:
-			static const char LUA_INDEX_METAMETHOD_NAME[] = "__index";
+			//static const char LUA_INDEX_METAMETHOD_NAME[] = "__index";
 	};
 	template<typename Derived>
 	class LuaUserdata : public LuaUserdataBase {
