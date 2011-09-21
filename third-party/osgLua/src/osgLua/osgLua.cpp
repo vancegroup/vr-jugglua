@@ -17,6 +17,7 @@
 #include <osgLua/LoadWrapper>
 #include <osgLua/Value>
 #include "osgLua.h"
+#include "IndexedPropertyProxy.h"
 #include "loadWrapperLib.h"
 #include "LuaIncludeFull.h"
 
@@ -65,6 +66,7 @@ void osgLua::open(lua_State *L) {
 		lua_setfield(L, -2, "NodeCallback");
 
 		lua_setglobal(L, "osgLua");
+		IndexedPropertyProxy::createMetatable(L);
 	}
 
 	lua_settop(L, top);
