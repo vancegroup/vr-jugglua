@@ -89,7 +89,7 @@ namespace osgLua {
 
 					template<PtrToMemberFuncType M>
 					static int _callInstanceMethod(lua_State * L) {
-						PointerToDerivedType instance = lua_checkudata(L, 1, _getRegistryString());
+						PointerToDerivedType instance = static_cast<PointerToDerivedType>(luaL_checkudata(L, 1, _getRegistryString()));
 						if (!instance) {
 							return luaL_error(L, "Trying to call an instance method of %s, but first argument is not an instance!", _getRegistryString());
 						}
