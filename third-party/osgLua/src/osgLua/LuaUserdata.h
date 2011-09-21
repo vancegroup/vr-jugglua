@@ -213,7 +213,7 @@ namespace osgLua {
 						lua_pop(L, 1); /// pop the metatable off the stack.
 					}
 					//NonConstInstanceMethod::template registerMetamethod <&Derived::~Derived> (L, );
-					registerAdditionalMetamethods(L);
+					Derived::registerAdditionalMetamethods(L);
 				}
 			}
 
