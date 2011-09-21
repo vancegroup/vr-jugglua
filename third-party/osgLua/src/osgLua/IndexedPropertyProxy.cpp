@@ -87,7 +87,10 @@ namespace osgLua {
 		lua_pushinteger(L, _propInfo->getNumArrayItems(*_instance));
 		return 1;
 	}
-	int IndexedPropertyProxy::insert(lua_State *L);
+	int IndexedPropertyProxy::insert(lua_State *L) {
+		/// @todo
+		return 0;
+	}
 
 
 
