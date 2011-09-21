@@ -71,7 +71,7 @@ namespace osgLua {
 			}
 		} else if (lua_isinteger(L, 1)) {
 			/// indexed property element access
-			Value::push(L, _propInfo->getArrayItem(*instance, lua_tointeger(L, 1)-1));
+			Value::push(L, _propInfo->getArrayItem(*_instance, lua_tointeger(L, 1)-1));
 			return 1;
 		}
 		return luaL_error(L, "Indexed property %s expected access of element by index, starting at 1, or a method call to 'insert'", _propInfo->getName().c_str());
