@@ -74,14 +74,12 @@ namespace osgLua {
 				/// Remove the metatable from the stack so that all we have pushed is the __index table
 				lua_remove(L, -2);
 			}
-			/*
-						static int _gc(lua_State * L) {
-							PointerType instance = lua_checkudata(L, 1, _getRegistryString());
-							assert(instance);
-							/// explicitly call destructor before Lua deletes the memory.
-							instance->~Derived();
-						}
-			*/
+			static int _gc(lua_State * L) {
+				PointerToDerivedType instance = static_cast<PointerToDerivedType>(luaL_checkudata(L, 1, _getRegistryString()));
+				assert(instance);
+				/// explicitly call destructor before Lua deletes the memory.
+				instance->~Derived();
+			}
 		protected:
 			template<typename PtrToMemberFuncType>
 			class InstanceMethodHandler {
@@ -206,7 +204,13 @@ namespace osgLua {
 		public:
 			static void createMetatable(lua_State * L) {
 				if (luaL_newmetatable(L, _getRegistryString())) {
-					NonConstInstanceMethod::registerMetamethod < Derived::~Derived > (L, "__gc");
+					{
+						_pushMetatable(L);
+						lua_pushcfunction(L, &_gc);
+						lua_setfield(L, -2, "__gc"); /// table is one below the top of the stack
+						lua_pop(L, 1); /// pop the metatable off the stack.
+					}
+					//NonConstInstanceMethod::template registerMetamethod <&Derived::~Derived> (L, );
 					registerAdditionalMetamethods(L);
 				}
 			}
