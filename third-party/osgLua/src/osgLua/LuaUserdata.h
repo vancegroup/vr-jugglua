@@ -138,7 +138,7 @@ namespace osgLua {
 					p = new(ud) DerivedType(L);
 					return p;
 				} catch (...) {
-					lua_pop(L);
+					lua_pop(L, 1);
 					return NULL;
 				}
 			}
@@ -150,7 +150,7 @@ namespace osgLua {
 					p = new(ud) DerivedType();
 					return p;
 				} catch (...) {
-					lua_pop(L);
+					lua_pop(L, 1);
 					return NULL;
 				}
 			}
@@ -163,7 +163,7 @@ namespace osgLua {
 					p = new(ud) DerivedType(a1);
 					return p;
 				} catch (...) {
-					lua_pop(L);
+					lua_pop(L, 1);
 					return NULL;
 				}
 			}
@@ -176,7 +176,7 @@ namespace osgLua {
 					p = new(ud) DerivedType(a1, a2);
 					return p;
 				} catch (...) {
-					lua_pop(L);
+					lua_pop(L, 1);
 					return NULL;
 				}
 			}
@@ -189,7 +189,7 @@ namespace osgLua {
 					p = new(ud) DerivedType(a1, a2, a3);
 					return p;
 				} catch (...) {
-					lua_pop(L);
+					lua_pop(L, 1);
 					return NULL;
 				}
 			}
