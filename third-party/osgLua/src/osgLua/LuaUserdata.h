@@ -28,6 +28,7 @@
 
 // Standard includes
 #include <typeinfo>
+#include <new>
 #include <cassert>
 
 /// @todo this is bad
