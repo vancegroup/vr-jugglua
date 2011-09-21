@@ -30,6 +30,7 @@
 #include <typeinfo>
 #include <new>
 #include <cassert>
+#include <cstring>
 
 /// @todo this is bad
 #define LUA_INDEX_METAMETHOD_NAME "__index"
@@ -44,6 +45,7 @@ namespace osgLua {
 			typedef int (Derived::*NonConstInstanceMethodPtrType)(lua_State *);
 			typedef int (Derived::*ConstInstanceMethodPtrType)(lua_State *) const;
 			typedef Derived * PointerToDerivedType;
+			typedef Derived ** DerivedPtrPtr;
 			typedef Derived DerivedType;
 
 		private:
@@ -75,10 +77,15 @@ namespace osgLua {
 				lua_remove(L, -2);
 			}
 			static int _gc(lua_State * L) {
-				PointerToDerivedType instance = static_cast<PointerToDerivedType>(luaL_checkudata(L, 1, _getRegistryString()));
+				void * instancePtr = luaL_checkudata(L, 1, _getRegistryString());
+				assert(instancePtr);
+
+				PointerToDerivedType instance;
+				std::memcpy(&instance, instancePtr, sizeof(PointerToDerivedType));
 				assert(instance);
-				/// explicitly call destructor before Lua deletes the memory.
-				instance->~Derived();
+				/// explicitly delete before Lua deletes the pointer.
+				delete instance;
+				instance = NULL;
 				return 0;
 			}
 		protected:
@@ -88,10 +95,12 @@ namespace osgLua {
 
 					template<PtrToMemberFuncType M>
 					static int _callInstanceMethod(lua_State * L) {
-						PointerToDerivedType instance = static_cast<PointerToDerivedType>(luaL_checkudata(L, 1, _getRegistryString()));
-						if (!instance) {
+						void * instancePtr = luaL_checkudata(L, 1, _getRegistryString());
+						if (!instancePtr) {
 							return luaL_error(L, "Trying to call an instance method of %s, but first argument is not an instance!", _getRegistryString());
 						}
+						PointerToDerivedType instance;
+						std::memcpy(&instance, instancePtr, sizeof(PointerToDerivedType));
 						lua_remove(L, 1); /// remove the instance from the stack, since it's been handled.
 						return ((*instance).*(M))(L);
 					}
@@ -124,76 +133,74 @@ namespace osgLua {
 			typedef InstanceMethodHandler<NonConstInstanceMethodPtrType> NonConstInstanceMethod;
 			typedef InstanceMethodHandler<ConstInstanceMethodPtrType> ConstInstanceMethod;
 
-			static void * allocate(lua_State * L) {
-				void * ud = lua_newuserdata(L, sizeof(Derived));
+			static const size_t ALIGNMENT = sizeof(void *);
+
+			static PointerToDerivedType allocate(lua_State * L, PointerToDerivedType instance) {
+				void * ud = lua_newuserdata(L, sizeof(PointerToDerivedType));
 				if (!ud) {
 					throw std::bad_alloc();
 				}
 				_pushMetatable(L);
 				lua_setmetatable(L, -2);
-				return ud;
+				std::memcpy(ud, &instance, sizeof(PointerToDerivedType));
+				return instance;
 			}
 			static PointerToDerivedType pushNewWithLuaParam(lua_State * L) {
-				void * ud = allocate(L);
 				PointerToDerivedType p;
 				try {
-					p = new(ud) DerivedType(L);
-					return p;
+					p = new DerivedType(L);
 				} catch (...) {
-					lua_pop(L, 1);
 					return NULL;
 				}
+				allocate(L, p);
+				return p;
 			}
 
 			static PointerToDerivedType pushNew(lua_State * L) {
-				void * ud = allocate(L);
 				PointerToDerivedType p;
 				try {
-					p = new(ud) DerivedType();
-					return p;
+					p = new DerivedType();
 				} catch (...) {
-					lua_pop(L, 1);
 					return NULL;
 				}
+				allocate(L, p);
+				return p;
 			}
 
 			template<typename T1>
 			static PointerToDerivedType pushNew(lua_State * L, T1 a1) {
-				void * ud = allocate(L);
 				PointerToDerivedType p;
 				try {
-					p = new(ud) DerivedType(a1);
-					return p;
+					p = new DerivedType(a1);
 				} catch (...) {
-					lua_pop(L, 1);
 					return NULL;
 				}
+				allocate(L, p);
+				return p;
 			}
 
 			template<typename T1, typename T2>
 			static PointerToDerivedType pushNew(lua_State * L, T1 a1, T2 a2) {
-				void * ud = allocate(L);
 				PointerToDerivedType p;
 				try {
-					p = new(ud) DerivedType(a1, a2);
-					return p;
+					p = new DerivedType(a1, a2);
 				} catch (...) {
-					lua_pop(L, 1);
 					return NULL;
 				}
+				allocate(L, p);
+				return p;
 			}
 
 			template<typename T1, typename T2, typename T3>
 			static PointerToDerivedType pushNew(lua_State * L, T1 a1, T2 a2, T3 a3) {
-				void * ud = allocate(L);
 				PointerToDerivedType p;
 				try {
-					p = new(ud) DerivedType(a1, a2, a3);
-					return p;
+					p = new DerivedType(a1, a2, a3);
 				} catch (...) {
-					lua_pop(L, 1);
 					return NULL;
 				}
+				allocate(L, p);
+				return p;
 			}
 
 			static void pushCreatorFunction(lua_State * L) {
