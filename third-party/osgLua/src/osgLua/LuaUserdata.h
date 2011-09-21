@@ -95,17 +95,18 @@ namespace osgLua {
 						return ((*instance).*(M))(L);
 					}
 
-					template<PtrToMemberFuncType M>
-					static void _pushInstanceMethod(lua_State * L) {
-						lua_pushcfunction(L, &_callInstanceMethod<M>);
-					}
+
 
 				public:
+					template<PtrToMemberFuncType M>
+					static void pushInstanceMethod(lua_State * L) {
+						lua_pushcfunction(L, &_callInstanceMethod<M>);
+					}
 
 					template<PtrToMemberFuncType M>
 					static void registerMetamethod(lua_State * L, const char * metamethodName) {
 						_pushMetatable(L, _getRegistryString());
-						_pushInstanceMethod<M>(L);
+						pushInstanceMethod<M>(L);
 						lua_setfield(L, -2, metamethodName); /// table is one below the top of the stack
 						lua_pop(L, 1); /// pop the metatable off the stack.
 					}
@@ -113,7 +114,7 @@ namespace osgLua {
 					template<PtrToMemberFuncType M>
 					static void registerObjectMethod(lua_State * L, const char * methodName) {
 						_pushIndexMetatable(L);
-						_pushInstanceMethod<M>(L);
+						pushInstanceMethod<M>(L);
 						lua_setfield(L, -2, methodName); /// table is one below the top of the stack
 						lua_pop(L, 1); /// pop the __index table off the stack.
 					}
