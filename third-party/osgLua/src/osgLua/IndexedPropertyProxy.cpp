@@ -20,6 +20,7 @@
 // Internal Includes
 #include "IndexedPropertyProxy.h"
 #include "LuaIncludeFull.h"
+#include <osgLua/Value>
 
 // Library/third-party includes
 // - none
