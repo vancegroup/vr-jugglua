@@ -30,31 +30,31 @@
 
 namespace osgLua {
 	static const char INDEXED_PROPERTY_PROXY_REGISTRY_NAME[] = "osgLua.IndexedPropertyProxy";
-
-	void IndexedPropertyProxy::addToRegistry(lua_State * L) {
-		luaL_newmetatable(L, INDEXED_PROPERTY_PROXY_REGISTRY_NAME);
-	}
-	IndexedPropertyProxy * IndexedPropertyProxy::get(lua_State * L, int index) {
-		void * ud = luaL_checkudata(L, index, INDEXED_PROPERTY_PROXY_REGISTRY_NAME);
-		luaL_argcheck(L, ud != NULL, index, "osgLua IndexedPropertyProxy expected");
-		return static_cast<IndexedPropertyProxy *>(ud);
-	}
-
-	IndexedPropertyProxy * IndexedPropertyProxy::pushNew(lua_State * L, introspection::Value & instance, const introspection::PropertyInfo * property) {
-		IndexedPropertyProxy * p;
-		void * ud = lua_newuserdata(L, sizeof(IndexedPropertyProxy));
-		if (!ud) {
-			throw std::bad_alloc();
+	/*
+		void IndexedPropertyProxy::addToRegistry(lua_State * L) {
+			luaL_newmetatable(L, INDEXED_PROPERTY_PROXY_REGISTRY_NAME);
 		}
-		try {
-			p = new(ud) IndexedPropertyProxy(instance, property);
-			return p;
-		} catch (...) {
-			lua_pop(L);
-			return NULL;
+		IndexedPropertyProxy * IndexedPropertyProxy::get(lua_State * L, int index) {
+			void * ud = luaL_checkudata(L, index, INDEXED_PROPERTY_PROXY_REGISTRY_NAME);
+			luaL_argcheck(L, ud != NULL, index, "osgLua IndexedPropertyProxy expected");
+			return static_cast<IndexedPropertyProxy *>(ud);
 		}
-	}
 
+		IndexedPropertyProxy * IndexedPropertyProxy::pushNew(lua_State * L, introspection::Value & instance, const introspection::PropertyInfo * property) {
+			IndexedPropertyProxy * p;
+			void * ud = lua_newuserdata(L, sizeof(IndexedPropertyProxy));
+			if (!ud) {
+				throw std::bad_alloc();
+			}
+			try {
+				p = new(ud) IndexedPropertyProxy(instance, property);
+				return p;
+			} catch (...) {
+				lua_pop(L);
+				return NULL;
+			}
+		}
+	*/
 	IndexedPropertyProxy::IndexedPropertyProxy(introspection::Value & instance, const introspection::PropertyInfo * property)
 		: _instance(&instance)
 		, _propInfo(property)
