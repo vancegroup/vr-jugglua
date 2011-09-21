@@ -47,7 +47,6 @@ namespace osgLua {
 			typedef Derived DerivedType;
 
 		private:
-			static const size_t ALLOCATION_SIZE = sizeof(Derived);
 
 			static const char * _getRegistryString() {
 				return typeid(Derived).name();
@@ -127,7 +126,7 @@ namespace osgLua {
 			typedef InstanceMethodHandler<ConstInstanceMethodPtrType> ConstInstanceMethod;
 
 			static void * allocate(lua_State * L) {
-				void * ud = lua_newuserdata(L, ALLOCATION_SIZE);
+				void * ud = lua_newuserdata(L, sizeof(Derived));
 				if (!ud) {
 					throw std::bad_alloc();
 				}
