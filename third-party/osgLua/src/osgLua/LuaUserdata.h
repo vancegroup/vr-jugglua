@@ -108,7 +108,7 @@ namespace osgLua {
 
 					template<PtrToMemberFuncType M>
 					static void registerMetamethod(lua_State * L, const char * metamethodName) {
-						_pushMetatable(L, _getRegistryString());
+						_pushMetatable(L);
 						pushInstanceMethod<M>(L);
 						lua_setfield(L, -2, metamethodName); /// table is one below the top of the stack
 						lua_pop(L, 1); /// pop the metatable off the stack.
