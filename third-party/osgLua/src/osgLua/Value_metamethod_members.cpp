@@ -70,7 +70,7 @@ namespace osgLua {
 
 			const introspection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));
 			if (prop) {
-				if (prop->isIndexed()) {
+				if (prop->isArray()) {
 					/// @todo implement indexed properties
 					luaL_error(L, "Indexed properties are not yet implemented in osgLua");
 				} else if (!prop->canGet()) {
