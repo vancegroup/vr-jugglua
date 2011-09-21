@@ -43,6 +43,9 @@ namespace osgLua {
 			static IndexedPropertyProxy * get(lua_State * L, int index);
 			static IndexedPropertyProxy * pushNew(lua_State * L, introspection::Value & instance, const introspection::PropertyInfo * property);
 			*/
+			static void pushNew(lua_State * L, introspection::Value & instance, const introspection::PropertyInfo * property) {
+				Base::pushNew(L, instance, property);
+			}
 
 			int index(lua_State *L);
 			int newindex(lua_State *L);
