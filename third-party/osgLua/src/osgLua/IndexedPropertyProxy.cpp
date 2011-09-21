@@ -95,8 +95,8 @@ namespace osgLua {
 
 
 	void IndexedPropertyProxy::registerAdditionalMetamethods(lua_State *L) {
-		Base::NonConstInstanceMethod::registerMetamethod<IndexedPropertyProxy::index>(L, "__index");
-		Base::NonConstInstanceMethod::registerMetamethod<IndexedPropertyProxy::newindex>(L, "__newindex");
-		Base::NonConstInstanceMethod::registerMetamethod<IndexedPropertyProxy::len>(L, "__len");
+		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::index>(L, "__index");
+		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::newindex>(L, "__newindex");
+		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::len>(L, "__len");
 	}
 }
