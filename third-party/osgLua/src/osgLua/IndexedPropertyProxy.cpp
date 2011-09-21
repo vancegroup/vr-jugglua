@@ -69,7 +69,7 @@ namespace osgLua {
 				Base::NonConstInstanceMethod::pushInstanceMethod<&IndexedPropertyProxy::insert>(L);
 				return lua_gettop(L);
 			}
-		} else if (lua_isinteger(L, 1)) {
+		} else if (lua_isnumber(L, 1)) {
 			/// indexed property element access
 			Value::push(L, _propInfo->getArrayItem(*_instance, lua_tointeger(L, 1)-1));
 			return 1;
