@@ -76,7 +76,7 @@ namespace osgLua {
 					IndexedPropertyProxy::pushNew(L, v->get(), prop);
 					return 1;
 				} else if (!prop->canGet()) {
-					luaL_error(L, "Property %s defined as not gettable", prop->getName().c_str());
+					return luaL_error(L, "Property %s defined as not gettable", prop->getName().c_str());
 				} else {
 					//std::cout << "Getting a property named " << props[i]->getName() << std::endl;
 					introspection::Value propVal = prop->getValue(v->get());
