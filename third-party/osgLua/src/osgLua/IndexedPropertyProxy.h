@@ -21,7 +21,7 @@
 #define INCLUDED_IndexedPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
 
 // Internal Includes
-//
+#include "LuaUserdata.h"
 
 // Library/third-party includes
 #include <osgLua/LuaInclude>
@@ -33,20 +33,24 @@
 
 namespace osgLua {
 	class Value;
-	class IndexedPropertyProxy {
+	class IndexedPropertyProxy : public LuaUserdata<IndexedPropertyProxy> {
 		public:
+			typedef LuaUserdata<IndexedPropertyProxy> Base;
+
+			friend class LuaUserdata<IndexedPropertyProxy>;
+			/*
 			static void addToRegistry(lua_State * L);
 			static IndexedPropertyProxy * get(lua_State * L, int index);
 			static IndexedPropertyProxy * pushNew(lua_State * L, introspection::Value & instance, const introspection::PropertyInfo * property);
+			*/
 
 			int index(lua_State *L);
 			int newindex(lua_State *L);
+			int len(lua_State *L);
 			int insert(lua_State *L);
 		private:
 			IndexedPropertyProxy(introspection::Value & instance, const introspection::PropertyInfo * property);
-			//static int _gc(lua_State *L);
-			static int _index(lua_State *L);
-			static int _newindex(lua_State *L);
+			static void registerAdditionalMetamethods(lua_State *L);
 
 			introspection::Value * _instance;
 			const introspection::PropertyInfo * _propInfo;

@@ -6,6 +6,7 @@
 set(OSGLUA_SRCS
 	BindValue.cpp
 	Callback.cpp
+	IndexedPropertyProxy.cpp
 	loadObjectFile.cpp
 	lua_functions.cpp
 	MathValueTags.cpp
@@ -24,8 +25,10 @@ set(OSGLUA_SRCS
 	VectorTemplates.h)
 
 set(OSGLUA_PRIVATE_API
+	IndexedPropertyProxy.h
 	lua_functions.h
 	LuaIncludeFull.h
+	LuaUserdata.h
 	MathValueTags.h
 	osgLua.h
 	Type.h)
