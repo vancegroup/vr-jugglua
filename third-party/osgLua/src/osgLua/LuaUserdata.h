@@ -79,6 +79,7 @@ namespace osgLua {
 				assert(instance);
 				/// explicitly call destructor before Lua deletes the memory.
 				instance->~Derived();
+				return 0;
 			}
 		protected:
 			template<typename PtrToMemberFuncType>
