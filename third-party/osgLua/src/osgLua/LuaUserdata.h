@@ -101,7 +101,7 @@ namespace osgLua {
 						}
 						PointerToDerivedType instance;
 						std::memcpy(&instance, instancePtr, sizeof(PointerToDerivedType));
-						lua_remove(L, 1); /// remove the instance from the stack, since it's been handled.
+						//lua_remove(L, 1); /// remove the instance from the stack, since it's been handled.
 						return ((*instance).*(M))(L);
 					}
 
