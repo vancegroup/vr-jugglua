@@ -128,6 +128,7 @@ namespace osgLua {
 				if (!ud) {
 					throw std::bad_alloc();
 				}
+				return ud;
 			}
 			static PointerToDerivedType pushNewWithLuaParam(lua_State * L) {
 				void * ud = allocate(L);
