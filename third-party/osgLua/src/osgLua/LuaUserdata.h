@@ -125,9 +125,9 @@ namespace osgLua {
 
 				public:
 					template<PtrToMemberFuncType M>
-					static void pushInstanceMethod(lua_State * L) {
-						lua_pushcfunction(L, &_callInstanceMethod<M>);
+					static void pushInstanceMethod(lua_State * L, int upvalues = 0) {
 						LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString() << ":\tMethod " << _getMethodDescription<M>() << "\t" << "Pushing an instance method");
+						lua_pushcclosure(L, &_callInstanceMethod<M>, upvalues);
 					}
 
 					template<PtrToMemberFuncType M>
