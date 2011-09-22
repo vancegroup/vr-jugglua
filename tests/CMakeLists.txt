@@ -31,6 +31,7 @@ set(LUA_TEST_SCRIPTS
 	osgapp-delegate-devicedata
 	osg-accept-visitor
 	osglua-allwrappers
+	osglua-basicwrappers
 	osglua-dotnotcolon
 	osglua-enums
 	osglua-matrixmath
