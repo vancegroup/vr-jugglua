@@ -1,3 +1,7 @@
+require("help")
+
+help(osg.Vec3Array())
+
 assert(#(osg.Vec3Array().Item) == 0)
 print "Creating empty array"
 a = osg.Vec3Array()
