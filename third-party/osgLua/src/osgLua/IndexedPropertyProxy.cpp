@@ -86,9 +86,42 @@ namespace osgLua {
 	}
 
 	int IndexedPropertyProxy::newindex(lua_State *L) {
-		int eltIndex = luaL_checkint(L, 2) - 1;
-		_propInfo->setArrayItem(_instance, eltIndex, Value::getRequired(L, 3)->get());
-		return 0;
+		const int eltIndex = luaL_checkint(L, 2) - 1;
+		const int n = _propInfo->getNumArrayItems(_instance);
+		std::cerr << "newindex got passed " << lua_gettop(L) << " params, eltIndex = " << eltIndex << std::endl;
+		introspection::Value newval = Value::getRequired(L, 3)->get();
+
+		/// handle the "modify existing array element" case
+		if (eltIndex < n && eltIndex >= 0) {
+			try {
+				_propInfo->setArrayItem(_instance, eltIndex, newval);
+				return 0;
+			} catch (introspection::Exception & e) {
+				return luaL_error(L, "Can't assign given value to index %d: got osg exception '%s'", eltIndex + 1, e.what().c_str());
+			}
+		}
+
+		/// handle the "append new array element" case
+		if (eltIndex == n) {
+			try {
+				/// actually an insert, at the end of the array
+				_propInfo->addArrayItem(_instance, newval);
+				return 0;
+			} catch (introspection::Exception & e) {
+				return luaL_error(L, "Can't append given value at the end of array (index %d): got osg exception '%s'", eltIndex + 1, e.what().c_str());
+			}
+		}
+
+		/// else, we've fallen through to an error
+
+
+		if (n == 0) {
+			return luaL_error(L, "Can't assign to index %d: array has 0 elements, and not assigning to index 1", eltIndex + 1);
+		}
+		return luaL_error(L, "Can't assign to index %d: out of existing range 1-%d, and not contiguous at end location %d",
+		                  eltIndex + 1,
+		                  n,
+		                  n + 1);
 	}
 
 	int IndexedPropertyProxy::len(lua_State *L) {
