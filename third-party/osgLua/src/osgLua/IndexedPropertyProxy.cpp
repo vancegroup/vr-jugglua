@@ -73,7 +73,7 @@ namespace osgLua {
 		} else if (argType == LUA_TNUMBER) {
 			/// indexed property element access
 			int i = lua_tointeger(L, 2) - 1;
-			if (i < _propInfo->getNumArrayItems(_instance)) {
+			if (i < _propInfo->getNumArrayItems(_instance) && i >= 0) {
 				std::cerr << "In " << __FUNCTION__ << " getting item " << i << std::endl << std::flush;
 				Value::push(L, _propInfo->getArrayItem(_instance, i));
 				return 1;
