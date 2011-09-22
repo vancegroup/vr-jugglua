@@ -36,6 +36,7 @@ set(LUA_TEST_SCRIPTS
 	osglua-matrixmath
 	osglua-missingmethod
 	osglua-props
+	osglua-vec3array
 	osglua-vectormath)
 
 foreach(script ${LUA_TEST_SCRIPTS})
