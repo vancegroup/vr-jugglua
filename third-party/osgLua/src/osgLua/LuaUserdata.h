@@ -34,6 +34,13 @@
 
 /// @todo this is bad
 #define LUA_INDEX_METAMETHOD_NAME "__index"
+
+#ifdef ENABLE_LUA_USERDATA_VERBOSE
+#	include <iostream>
+#	define LUA_USERDATA_VERBOSE(X) {std::cerr << "LuaUserdata.h:" << __LINE__ << ":\t" << X << std::endl;}
+#else
+#	define LUA_USERDATA_VERBOSE(X) {}
+#endif
 namespace osgLua {
 	class LuaUserdataBase {
 		public:
@@ -82,6 +89,7 @@ namespace osgLua {
 
 				PointerToDerivedType instance;
 				std::memcpy(&instance, instancePtr, sizeof(PointerToDerivedType));
+				LUA_USERDATA_VERBOSE("Userdata " << instance << ":\t" << "Deleting instance of type " << _getRegistryString());
 				assert(instance);
 				/// explicitly delete before Lua deletes the pointer.
 				delete instance;
@@ -92,6 +100,10 @@ namespace osgLua {
 			template<typename PtrToMemberFuncType>
 			class InstanceMethodHandler {
 				private:
+					template<PtrToMemberFuncType M>
+					static void * _getMethodDescription() {
+						return reinterpret_cast<void *>(&_callInstanceMethod<M>);
+					}
 
 					template<PtrToMemberFuncType M>
 					static int _callInstanceMethod(lua_State * L) {
@@ -101,8 +113,12 @@ namespace osgLua {
 						}
 						PointerToDerivedType instance;
 						std::memcpy(&instance, instancePtr, sizeof(PointerToDerivedType));
+
+						LUA_USERDATA_VERBOSE("Userdata " << instance << ":\tMethod " << _getMethodDescription<M>() << "\t" << "Before instance method call with lua_gettop(L)==" << lua_gettop(L));
 						//lua_remove(L, 1); /// remove the instance from the stack, since it's been handled.
-						return ((*instance).*(M))(L);
+						int ret = ((*instance).*(M))(L);
+						LUA_USERDATA_VERBOSE("Userdata " << instance << ":\tMethod " << _getMethodDescription<M>() << "\t" << "After instance method call returning " << ret);
+						return ret;
 					}
 
 
@@ -111,10 +127,12 @@ namespace osgLua {
 					template<PtrToMemberFuncType M>
 					static void pushInstanceMethod(lua_State * L) {
 						lua_pushcfunction(L, &_callInstanceMethod<M>);
+						LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString() << ":\tMethod " << _getMethodDescription<M>() << "\t" << "Pushing an instance method");
 					}
 
 					template<PtrToMemberFuncType M>
 					static void registerMetamethod(lua_State * L, const char * metamethodName) {
+						LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\tMethod " << _getMethodDescription<M>() << "\t" << "Registering metamethod " << metamethodName);
 						_pushMetatable(L);
 						pushInstanceMethod<M>(L);
 						lua_setfield(L, -2, metamethodName); /// table is one below the top of the stack
@@ -123,6 +141,7 @@ namespace osgLua {
 
 					template<PtrToMemberFuncType M>
 					static void registerObjectMethod(lua_State * L, const char * methodName) {
+						LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\tMethod " << _getMethodDescription<M>() << "\t" << "Registering object method " << methodName);
 						_pushIndexMetatable(L);
 						pushInstanceMethod<M>(L);
 						lua_setfield(L, -2, methodName); /// table is one below the top of the stack
@@ -136,6 +155,7 @@ namespace osgLua {
 			static const size_t ALIGNMENT = sizeof(void *);
 
 			static PointerToDerivedType allocate(lua_State * L, PointerToDerivedType instance) {
+				LUA_USERDATA_VERBOSE("Userdata " << instance << ":\t" << "Created instance of type " << _getRegistryString());
 				void * ud = lua_newuserdata(L, sizeof(PointerToDerivedType));
 				if (!ud) {
 					throw std::bad_alloc();
@@ -216,6 +236,7 @@ namespace osgLua {
 			static void createMetatable(lua_State * L) {
 				if (luaL_newmetatable(L, _getRegistryString())) {
 					{
+						LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\t" << "Registering garbage collection metamethod");
 						_pushMetatable(L);
 						lua_pushcfunction(L, &_gc);
 						lua_setfield(L, -2, "__gc"); /// table is one below the top of the stack
