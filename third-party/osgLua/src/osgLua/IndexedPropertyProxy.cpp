@@ -82,7 +82,7 @@ namespace osgLua {
 
 		//lua_pushnil(L);
 		//return 1;
-		return luaL_error(L, "Indexed property %s expected access of element by index, starting at 1, or a method call to 'insert'", _propInfo->getName().c_str());
+		return luaL_error(L, "Indexed property %s expected access of element by index, in 1 through %d, or a method call to 'insert'", _propInfo->getName().c_str(), _propInfo->getNumArrayItems(_instance));
 	}
 
 	int IndexedPropertyProxy::newindex(lua_State *L) {
