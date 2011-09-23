@@ -26,7 +26,7 @@
 // - none
 
 // Standard includes
-// - none
+#include <typeinfo>
 
 namespace osgLua {
 
@@ -34,6 +34,11 @@ namespace osgLua {
 		: _instance(instance)
 		, _propInfo(property)
 	{}
+
+	const char * IndexedPropertyProxy::_getMethodRegistryString() {
+		static std::string regString = std::string(typeid(IndexedPropertyProxy).name()) + ":MethodTable";
+		return regString.c_str();
+	}
 
 	bool IndexedPropertyProxy::_pushItemAtArrayIndex(lua_State *L, int i) {
 		if (i < _propInfo->getNumArrayItems(_instance) && i >= 0) {
@@ -47,9 +52,10 @@ namespace osgLua {
 		int argType = lua_type(L, 2);
 		if (argType == LUA_TSTRING) {
 			int top = lua_gettop(L);
-			lua_pushliteral(L, "insert");
-			if (lua_equal(L, 2, -1)) {
-				Base::NonConstInstanceMethod::pushInstanceMethod<&IndexedPropertyProxy::insert>(L);
+			luaL_getmetatable(L, _getMethodRegistryString());
+			lua_pushvalue(L, 2);
+			lua_gettable(L, 3);
+			if (!lua_isnil(L, -1)) {
 				return 1;
 			}
 			lua_settop(L, top);
@@ -155,5 +161,10 @@ namespace osgLua {
 		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::index>(L, "__index");
 		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::newindex>(L, "__newindex");
 		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::len>(L, "__len");
+		luaL_newmetatable(L, _getMethodRegistryString());
+		Base::NonConstInstanceMethod::pushInstanceMethod<&IndexedPropertyProxy::insert>(L);
+		lua_setfield(L, -2, "insert");
+		Base::NonConstInstanceMethod::pushInstanceMethod<&IndexedPropertyProxy::remove>(L);
+		lua_setfield(L, -2, "remove");
 	}
 }

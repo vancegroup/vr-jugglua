@@ -50,6 +50,7 @@ namespace osgLua {
 			int remove(lua_State *L);
 		private:
 			/// Look up item i, if in range, push and return true, else return false
+			static const char * _getMethodRegistryString();
 			bool _pushItemAtArrayIndex(lua_State *L, int i);
 			IndexedPropertyProxy(introspection::Value const& instance, const introspection::PropertyInfo * property);
 			static void registerAdditionalMetamethods(lua_State *L);
