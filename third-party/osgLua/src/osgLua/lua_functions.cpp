@@ -184,11 +184,17 @@ namespace osgLua {
 				lua_newtable(L);
 				int count = 1;
 				introspection::MethodInfoList list;
-				type->getAllMethods(list);
-				for (introspection::MethodInfoList::const_iterator
-				        i = list.begin(); i != list.end(); ++i, ++count) {
-					pushMethodInfo(L, *i);
-					lua_rawseti(L, -2, count);
+				try {
+					type->getAllMethods(list);
+					for (introspection::MethodInfoList::const_iterator
+					        i = list.begin(); i != list.end(); ++i, ++count) {
+						pushMethodInfo(L, *i);
+						lua_rawseti(L, -2, count);
+					}
+				} catch (introspection::Exception & e) {
+					//lua_pushstring(L, "caught exception!");
+					luaL_error(L, "Caught exception %s in type named %s", e.what().c_str(), type->getQualifiedName().c_str());
+					return;
 				}
 				lua_setfield(L, table, "methods");
 			}
