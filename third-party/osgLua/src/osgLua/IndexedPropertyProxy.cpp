@@ -78,7 +78,7 @@ namespace osgLua {
 				_propInfo->setArrayItem(_instance, eltIndex, newval);
 				return 0;
 			} catch (introspection::Exception & e) {
-				return luaL_error(L, "Can't assign given value to index %d: got osg exception '%s'", eltIndex + 1, e.what().c_str());
+				return luaL_error(L, "[%s:%d] Can't assign given value to index %d: got OSG exception '%s'", __FILE__, __LINE__, eltIndex + 1, e.what().c_str());
 			}
 		}
 
@@ -89,17 +89,18 @@ namespace osgLua {
 				_propInfo->addArrayItem(_instance, newval);
 				return 0;
 			} catch (introspection::Exception & e) {
-				return luaL_error(L, "Can't append given value at the end of array (index %d): got osg exception '%s'", eltIndex + 1, e.what().c_str());
+				return luaL_error(L, "[%s:%d] Can't append given value at the end of array (index %d): got OSG exception '%s'", __FILE__, __LINE__, eltIndex + 1, e.what().c_str());
 			}
 		}
 
 		/// else, we've fallen through to an error
 
-
 		if (n == 0) {
-			return luaL_error(L, "Can't assign to index %d: array has 0 elements, and not assigning to index 1", eltIndex + 1);
+			return luaL_error(L, "[%s:%d] Can't assign to index %d: array has 0 elements, and not assigning to index 1", __FILE__, __LINE__, eltIndex + 1);
 		}
-		return luaL_error(L, "Can't assign to index %d: out of existing range 1-%d, and not contiguous at end location %d",
+		return luaL_error(L, "[%s:%d] Can't assign to index %d: out of existing range 1-%d, and not contiguous at end location %d",
+		                  __FILE__,
+		                  __LINE__,
 		                  eltIndex + 1,
 		                  n,
 		                  n + 1);
