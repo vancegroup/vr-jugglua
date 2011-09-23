@@ -65,7 +65,7 @@ namespace osgLua {
 				luaL_getmetatable(L, _getRegistryString());
 			}
 
-			static void _pushIndexMetatable(lua_State * L) {
+			static void _pushIndexTable(lua_State * L) {
 				_pushMetatable(L);
 				int metatableIndex = lua_gettop(L);
 				lua_getfield(L, metatableIndex, LUA_INDEX_METAMETHOD_NAME);
@@ -142,7 +142,7 @@ namespace osgLua {
 					template<PtrToMemberFuncType M>
 					static void registerObjectMethod(lua_State * L, const char * methodName) {
 						LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\tMethod " << _getMethodDescription<M>() << "\t" << "Registering object method " << methodName);
-						_pushIndexMetatable(L);
+						_pushIndexTable(L);
 						pushInstanceMethod<M>(L);
 						lua_setfield(L, -2, methodName); /// table is one below the top of the stack
 						lua_pop(L, 1); /// pop the __index table off the stack.
