@@ -35,6 +35,14 @@ namespace osgLua {
 		, _propInfo(property)
 	{}
 
+	bool IndexedPropertyProxy::_pushItemAtArrayIndex(lua_State *L, int i) {
+		if (i < _propInfo->getNumArrayItems(_instance) && i >= 0) {
+			Value::push(L, _propInfo->getArrayItem(_instance, i));
+			return true;
+		}
+		return false; // in case of out of range
+	}
+
 	int IndexedPropertyProxy::index(lua_State *L) {
 		int argType = lua_type(L, 2);
 		if (argType == LUA_TSTRING) {
@@ -48,9 +56,7 @@ namespace osgLua {
 		} else if (argType == LUA_TNUMBER) {
 			/// indexed property element access
 			int i = lua_tointeger(L, 2) - 1;
-			if (i < _propInfo->getNumArrayItems(_instance) && i >= 0) {
-				std::cerr << "In " << __FUNCTION__ << " getting item " << i << std::endl << std::flush;
-				Value::push(L, _propInfo->getArrayItem(_instance, i));
+			if (_pushItemAtArrayIndex(L, i)) {
 				return 1;
 			}
 		}
