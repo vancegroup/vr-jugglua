@@ -75,7 +75,6 @@ namespace osgLua {
 	int IndexedPropertyProxy::newindex(lua_State *L) {
 		const int eltIndex = luaL_checkint(L, 2) - 1;
 		const int n = _propInfo->getNumArrayItems(_instance);
-		std::cerr << "newindex got passed " << lua_gettop(L) << " params, eltIndex = " << eltIndex << std::endl;
 		introspection::Value newval = Value::getRequired(L, 3)->get();
 
 		/// handle the "modify existing array element" case
