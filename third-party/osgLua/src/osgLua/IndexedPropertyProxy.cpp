@@ -139,7 +139,17 @@ namespace osgLua {
 		return 0;
 	}
 
-
+	int IndexedPropertyProxy::remove(lua_State *L) {
+		/// Default to removing the last item.
+		int i = luaL_optinteger(L, 2, _propInfo->getNumArrayItems(_instance)) - 1;
+		if (_pushItemAtArrayIndex(L, i)) {
+			/// OK, this is in range, so we now have to delete it.
+			_propInfo->removeArrayItem(_instance, i);
+			return 1;
+		}
+		/// If we get down here, we were out of range.
+		return luaL_error(L, "Can't remove item %d from array property %s: out of range. (Contains %d elements, starting at 1)", i = 1, _propInfo->getName().c_str(), _propInfo->getNumArrayItems(_instance));
+	}
 
 	void IndexedPropertyProxy::registerAdditionalMetamethods(lua_State *L) {
 		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::index>(L, "__index");

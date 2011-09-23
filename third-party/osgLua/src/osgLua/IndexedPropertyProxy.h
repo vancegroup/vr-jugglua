@@ -47,6 +47,7 @@ namespace osgLua {
 			int newindex(lua_State *L);
 			int len(lua_State *L);
 			int insert(lua_State *L);
+			int remove(lua_State *L);
 		private:
 			/// Look up item i, if in range, push and return true, else return false
 			bool _pushItemAtArrayIndex(lua_State *L, int i);
