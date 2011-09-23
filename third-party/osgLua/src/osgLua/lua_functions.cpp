@@ -192,7 +192,6 @@ namespace osgLua {
 						lua_rawseti(L, -2, count);
 					}
 				} catch (introspection::Exception & e) {
-					//lua_pushstring(L, "caught exception!");
 					luaL_error(L, "Caught exception %s in type named %s", e.what().c_str(), type->getQualifiedName().c_str());
 					return;
 				}
