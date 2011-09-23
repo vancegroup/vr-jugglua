@@ -47,7 +47,7 @@ namespace osgLua {
 			//static const char LUA_INDEX_METAMETHOD_NAME[] = "__index";
 	};
 	template<typename Derived>
-	class LuaUserdata : public LuaUserdataBase {
+	class LuaUserdata : private LuaUserdataBase {
 		public:
 			typedef int (Derived::*NonConstInstanceMethodPtrType)(lua_State *);
 			typedef int (Derived::*ConstInstanceMethodPtrType)(lua_State *) const;
