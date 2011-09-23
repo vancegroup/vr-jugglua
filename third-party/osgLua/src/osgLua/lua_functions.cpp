@@ -74,7 +74,7 @@ namespace osgLua {
 
 		lua_pushstring(L, pi->getName().c_str());
 
-		lua_pushstring(L, "[i]\t(array)");
+		lua_pushstring(L, "[i]\t(array - access through 1-based index, the # operator for size, or method calls :insert)");
 	}
 
 	void pushIndexedPropertyInfo(lua_State *L, const introspection::PropertyInfo *pi) {
@@ -119,9 +119,8 @@ namespace osgLua {
 		int top = lua_gettop(L);
 
 		if (pi->isArray()) {
-			/// @todo array properties not yet supported - no sense in showing them
 			lua_pushstring(L, " ");
-			//pushArrayPropertyInfo(L, pi);
+			pushArrayPropertyInfo(L, pi);
 		} else if (pi->isIndexed()) {
 			/// @todo indexed properties not yet supported - no sense in showing them
 			lua_pushstring(L, " ");
