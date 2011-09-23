@@ -36,3 +36,5 @@ a.Item:remove(1)
 assert(#(a.Item) == 1)
 assert(a.Item[1] == osg.Vec3(2,2,2))
 
+assert(pcall(function() a.Item[2] = osg.Vec4(2,2,2,2) end) == false)
+assert(pcall(function() a.Item[1] = osg.Vec4(2,2,2,2) end) == false)
