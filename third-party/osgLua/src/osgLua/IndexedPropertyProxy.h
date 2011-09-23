@@ -38,11 +38,7 @@ namespace osgLua {
 			typedef LuaUserdata<IndexedPropertyProxy> Base;
 
 			friend class LuaUserdata<IndexedPropertyProxy>;
-			/*
-			static void addToRegistry(lua_State * L);
-			static IndexedPropertyProxy * get(lua_State * L, int index);
-			static IndexedPropertyProxy * pushNew(lua_State * L, introspection::Value & instance, const introspection::PropertyInfo * property);
-			*/
+
 			static void pushNew(lua_State * L, introspection::Value const& instance, const introspection::PropertyInfo * property) {
 				Base::pushNew(L, instance, property);
 			}
