@@ -90,6 +90,10 @@ if(LUA_EXTRA_LIBS)
 	target_link_libraries(lua ${LUA_EXTRA_LIBS})
 endif()
 
+if(NOT MSVC)
+	target_link_libraries(lua m)
+endif()
+
 if(BUILD_LUA_UTILS)
 	add_executable(lua-interp ${LUA_INTERP_SOURCES})
 	target_link_libraries(lua-interp lua)
