@@ -167,6 +167,9 @@ namespace osgLua {
 			lua_Number  vf = lua_tonumber(L, index);
 
 			if (((lua_Number)vi) == vf) {
+				if (vi >= 0) {
+					return introspection::Value(unsigned int(vi));
+				}
 				return introspection::Value(vi);
 			}
 			return introspection::Value(vf);
