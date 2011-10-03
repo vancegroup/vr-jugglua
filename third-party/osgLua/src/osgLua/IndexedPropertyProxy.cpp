@@ -75,7 +75,7 @@ namespace osgLua {
 	int IndexedPropertyProxy::newindex(lua_State *L) {
 		const int eltIndex = luaL_checkint(L, 2) - 1;
 		const int n = _propInfo->getNumArrayItems(_instance);
-		introspection::Value newval = Value::getRequired(L, 3)->get();
+		introspection::Value newval = getValue(L, 3);
 
 		/// handle the "modify existing array element" case
 		if (eltIndex < n && eltIndex >= 0) {
@@ -124,11 +124,11 @@ namespace osgLua {
 		introspection::Value newval;
 		switch (lua_gettop(L)) {
 			case 2:
-				newval = Value::getRequired(L, 2)->get();
+				newval = getValue(L, 2);
 				break;
 			case 3:
 				location = luaL_checkint(L, 2) - 1;
-				newval = Value::getRequired(L, 3)->get();
+				newval = getValue(L, 3);
 				atEnd = (location == numItems);
 				break;
 			default:
