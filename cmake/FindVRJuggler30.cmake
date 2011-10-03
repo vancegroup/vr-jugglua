@@ -334,6 +334,20 @@ if(VRJUGGLER30_FOUND)
 			list(APPEND _plugin_dirs "${_libdir}/sonix-1.4/plugins/dbg")
 			list(APPEND _plugin_dirs "${_libdir}/sonix-1.4/plugins/opt")
 		endif()
+
+		# Find directories of JCCL plugins
+		if(EXISTS "${_libdir}/jccl/plugins")
+			list(APPEND _plugin_dirs "${_libdir}/jccl/plugins")
+		elseif(EXISTS "${_libdir}/jccl-1.4/plugins")
+			list(APPEND _plugin_dirs "${_libdir}/jccl-1.4/plugins")
+		endif()
+
+		# Find directories of VR Juggler plugins
+		if(EXISTS "${_libdir}/vrjuggler/plugins")
+			list(APPEND _plugin_dirs "${_libdir}/vrjuggler/plugins")
+		elseif(EXISTS "${_libdir}/vrjuggler-3.0/plugins")
+			list(APPEND _plugin_dirs "${_libdir}/vrjuggler-3.0/plugins")
+		endif()
 	endforeach()
 
 	# Grab the actual plugins
