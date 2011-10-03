@@ -30,3 +30,12 @@ endif()
 add_subdirectory(stdlib/modules)
 
 add_subdirectory(lua_modules)
+
+if(WIN32)
+	option(INSTALL_SCITE "Install a customized version of ScITE text editor?" ON)
+	if(INSTALL_SCITE)
+		install(DIRECTORY ScITE
+			DESTINATION .
+			COMPONENT scite)
+	endif()
+endif()
