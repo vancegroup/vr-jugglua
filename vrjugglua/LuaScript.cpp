@@ -51,6 +51,12 @@
 #include <iostream>
 #include <sstream>
 
+#ifdef VERBOSE
+#	define VERBOSE_MSG(X) std::cout << "In " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << ": " << X << std::endl
+#else
+#	define VERBOSE_MSG(X)
+#endif
+
 namespace vrjLua {
 
 /// @brief no-op deleter for externally-provided state pointers
@@ -62,13 +68,9 @@ namespace vrjLua {
 	boost::function<void (std::string const&)> LuaScript::_printFunc;
 
 	LuaScript::LuaScript(const bool create) {
-#ifdef VERBOSE
-		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
+		VERBOSE_MSG("Constructor");
 		if (create) {
-#ifdef VERBOSE
-			std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
+			VERBOSE_MSG("Create=true");
 			_state = LuaStatePtr(luaL_newstate(), std::ptr_fun(lua_close));
 
 			if (!_state) {
@@ -93,9 +95,7 @@ namespace vrjLua {
 
 	LuaScript::LuaScript(lua_State * state, bool bind) :
 		_state(borrowStatePtr(state)) {
-#ifdef VERBOSE
-		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
+		VERBOSE_MSG("Constructor from lua_State * with bind = " << bind);
 		if (!state) {
 			std::cerr << "Warning: constructing a LuaScript from a null state pointer!" << std::endl;
 		}
@@ -108,28 +108,19 @@ namespace vrjLua {
 
 	LuaScript::LuaScript(const LuaScript & other) :
 		_state(other._state) {
-#ifdef VERBOSE
-		std::cout << "**** LuaScript copy constructor invoked" << std::endl;
-#endif
-#ifdef VERBOSE
-		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
+		VERBOSE_MSG("Copy constructor");
 	}
 
 	LuaScript::LuaScript(const LuaStatePtr & otherptr) :
 		_state(otherptr) {
+		VERBOSE_MSG("Constructor from LuaStatePtr (smart pointer)");
 		if (!otherptr) {
 			std::cerr << "Warning: constructing a LuaScript from an empty state smart pointer!" << std::endl;
 		}
-#ifdef VERBOSE
-		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
 	}
 
 	LuaScript::~LuaScript() {
-#ifdef VERBOSE
-		std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
+		VERBOSE_MSG("Destructor");
 	}
 
 	LuaScript & LuaScript::operator=(const LuaScript & other) {
