@@ -70,7 +70,8 @@ namespace osgLua {
 
 		//lua_pushnil(L);
 		//return 1;
-		return luaL_error(L, "Indexed property %s expected access of element by index, in 1 through %d, or a method call to 'insert'", _propInfo->getName().c_str(), _propInfo->getNumArrayItems(_instance));
+		return luaL_error(L, "[%s:%d] Indexed property '%s' expected access of element by index, in 1 through %d, or a method call to 'insert'",
+		                  __FILE__, __LINE__, _propName.c_str(), _propInfo->getNumArrayItems(_instance));
 	}
 
 	int IndexedPropertyProxy::newindex(lua_State *L) {
@@ -84,7 +85,8 @@ namespace osgLua {
 				_propInfo->setArrayItem(_instance, eltIndex, newval);
 				return 0;
 			} catch (introspection::Exception & e) {
-				return luaL_error(L, "[%s:%d] Can't assign given value to index %d: got OSG exception '%s'", __FILE__, __LINE__, eltIndex + 1, e.what().c_str());
+				return luaL_error(L, "[%s:%d] Can't assign given value to index %d: got OSG exception '%s'",
+				                  __FILE__, __LINE__, eltIndex + 1, e.what().c_str());
 			}
 		}
 
@@ -95,14 +97,16 @@ namespace osgLua {
 				_propInfo->addArrayItem(_instance, newval);
 				return 0;
 			} catch (introspection::Exception & e) {
-				return luaL_error(L, "[%s:%d] Can't append given value at the end of array (index %d): got OSG exception '%s'", __FILE__, __LINE__, eltIndex + 1, e.what().c_str());
+				return luaL_error(L, "[%s:%d] Can't append given value at the end of array (index %d): got OSG exception '%s'",
+				                  __FILE__, __LINE__, eltIndex + 1, e.what().c_str());
 			}
 		}
 
 		/// else, we've fallen through to an error
 
 		if (n == 0) {
-			return luaL_error(L, "[%s:%d] Can't assign to index %d: array has 0 elements, and not assigning to index 1", __FILE__, __LINE__, eltIndex + 1);
+			return luaL_error(L, "[%s:%d] Can't assign to index %d: array has 0 elements, and not assigning to index 1",
+			                  __FILE__, __LINE__, eltIndex + 1);
 		}
 		return luaL_error(L, "[%s:%d] Can't assign to index %d: out of existing range 1-%d, and not contiguous at end location %d",
 		                  __FILE__,
@@ -133,7 +137,8 @@ namespace osgLua {
 				atEnd = (location == numItems);
 				break;
 			default:
-				return luaL_error(L, "Indexed property %s call to 'insert' expected at least a value, and potentially a location and a value", _propInfo->getName().c_str());
+				return luaL_error(L, "[%s:%d] Indexed property '%s' call to 'insert' expected at least a value, and potentially a location and a value",
+				                  __FILE__, __LINE__, _propInfo->getName().c_str());
 		}
 
 		if (atEnd) {
@@ -154,7 +159,8 @@ namespace osgLua {
 			return 1;
 		}
 		/// If we get down here, we were out of range.
-		return luaL_error(L, "Can't remove item %d from array property %s: out of range. (Contains %d elements, starting at 1)", i + 1, _propInfo->getName().c_str(), _propInfo->getNumArrayItems(_instance));
+		return luaL_error(L, "[%s:%d] Can't remove item %d from array property %s: out of range. (Contains %d elements, starting at 1)",
+		                  __FILE__, __LINE__, i + 1, _propInfo->getName().c_str(), _propInfo->getNumArrayItems(_instance));
 	}
 
 	void IndexedPropertyProxy::registerAdditionalMetamethods(lua_State *L) {
