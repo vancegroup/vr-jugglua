@@ -151,13 +151,18 @@ namespace osgLua {
 				                  __FILE__, __LINE__, _propInfo->getName().c_str());
 		}
 
-		if (atEnd) {
-			_propInfo->addArrayItem(_instance, newval);
-		} else {
-			_propInfo->insertArrayItem(_instance, location, newval);
-		}
+		try {
+			if (atEnd) {
+				_propInfo->addArrayItem(_instance, newval);
+			} else {
+				_propInfo->insertArrayItem(_instance, location, newval);
+			}
 
-		return 0;
+			return 0;
+		} catch (introspection::Exception & e) {
+			return luaL_error(L, "[%s:%d] Caught exception trying to insert item into property '%s': %s",
+			                  __FILE__, __LINE__, _propName.c_str(), e.what().c_str());
+		}
 	}
 
 	int IndexedPropertyProxy::remove(lua_State *L) {
