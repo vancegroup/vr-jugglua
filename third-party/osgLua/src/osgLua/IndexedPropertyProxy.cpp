@@ -63,8 +63,13 @@ namespace osgLua {
 		} else if (argType == LUA_TNUMBER) {
 			/// indexed property element access
 			int i = lua_tointeger(L, 2) - 1;
-			if (_pushItemAtArrayIndex(L, i)) {
-				return 1;
+			try {
+				if (_pushItemAtArrayIndex(L, i)) {
+					return 1;
+				}
+			} catch (introspection::Exception & e) {
+				return luaL_error(L, "[%s:%d] Indexed property '%s' caught exception: %s",
+				                  __FILE__, __LINE__, _propName.c_str(), e.what().c_str());
 			}
 		}
 
@@ -118,8 +123,13 @@ namespace osgLua {
 
 	int IndexedPropertyProxy::len(lua_State *L) {
 		assert(_propInfo);
-		lua_pushinteger(L, _propInfo->getNumArrayItems(_instance));
-		return 1;
+		try {
+			lua_pushinteger(L, _propInfo->getNumArrayItems(_instance));
+			return 1;
+		} catch (introspection::Exception & e) {
+			return luaL_error(L, "[%s:%d] Caught exception trying to get length of property '%s': %s",
+			                  __FILE__, __LINE__, _propName.c_str(), e.what().c_str());
+		}
 	}
 
 	int IndexedPropertyProxy::insert(lua_State *L) {
