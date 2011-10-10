@@ -73,7 +73,7 @@ its natural exit.
 	end
 	if n ~= nil then
 		table.remove(Actions._frameActions, n)
-	end		
+	end
 end
 
 Actions.waitForRedraw = help.docstring[[
@@ -128,9 +128,19 @@ If that made no sense to you, you do not need to use this function.
 		--- TODO handle errors here
 		local succeeded, result = coroutine.resume(v, Actions.appProxy:getTimeDelta())
 		if not succeeded then
-			print(string.format("Frame action %s failed and will be stopped/removed. Error details: %s",
-				tostring(v),
-				debug.traceback(v, result)))
+			print(("Frame action %s failed and will be stopped/removed."):format(
+				tostring(v)))
+			local tb = debug.traceback(v, result)
+			if type(tb) == "string" then
+				print(("Error details: %s"):format(tb))
+			elseif type(tb) == "table" then
+				print("Error details:")
+				for k, v in pairs(tb) do
+					print(k, v)
+				end
+			else
+				print(("Error details: %s"):format(tostring(tb)))
+			end
 		elseif coroutine.status(v) ~= 'dead' then
 			table.insert(Actions._frameActions, v)
 		end
