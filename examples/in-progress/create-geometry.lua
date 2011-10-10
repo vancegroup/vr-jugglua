@@ -10,11 +10,12 @@ vertices.Item:insert(osg.Vec3(2, .5, 0))
 
 geom:setVertexArray(vertices)
 
-linestrip = osg.DrawElementsUInt(osg.PrimitiveSet.Mode.TRIANGLES, 0)
+--[[linestrip = osg.DrawElementsUInt(osg.PrimitiveSet.Mode.TRIANGLES, 0)
 -- counter-clockwise order
 linestrip.Item:insert(0)
 linestrip.Item:insert(1)
-linestrip.Item:insert(2)
+linestrip.Item:insert(2)]]
+linestrip = osg.DrawArrays(osg.PrimitiveSet.Mode.TRIANGLES)
 
 
 geom:addPrimitiveSet(linestrip)
