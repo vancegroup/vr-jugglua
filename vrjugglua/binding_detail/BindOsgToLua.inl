@@ -38,7 +38,7 @@ namespace vrjLua {
 		bool ret = true;
 
 		try {
-			ret = osgLua::loadWrapper(state.get(), "osg");
+			ret = osgLua::loadWrapper(state.get(), "OpenThreads") && osgLua::loadWrapper(state.get(), "osg");
 		} catch (std::exception & e) {
 			std::cerr << "ERROR: Caught an exception trying to load osgwrappers : " << e.what() << std::endl;
 			std::cerr << "Make sure you have the osgwrappers installed in their default location with respect to OSG itself." << std::endl;
