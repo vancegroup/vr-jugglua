@@ -33,6 +33,7 @@ namespace osgLua {
 	IndexedPropertyProxy::IndexedPropertyProxy(introspection::Value  const& instance, const introspection::PropertyInfo * property)
 		: _instance(instance)
 		, _propInfo(property)
+		, _propName(_propInfo->getName())
 	{}
 
 	const char * IndexedPropertyProxy::_getMethodRegistryString() {

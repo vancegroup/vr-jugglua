@@ -29,7 +29,7 @@
 #include <osgLua/introspection/Value>
 
 // Standard includes
-// - none
+#include <string>
 
 namespace osgLua {
 	class Value;
@@ -57,6 +57,7 @@ namespace osgLua {
 
 			introspection::Value _instance;
 			const introspection::PropertyInfo * _propInfo;
+			std::string _propName;
 	};
 
 } // end of namespace osgLua
