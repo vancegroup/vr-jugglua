@@ -153,7 +153,7 @@ namespace osgLua {
 			return 1;
 		}
 		/// If we get down here, we were out of range.
-		return luaL_error(L, "Can't remove item %d from array property %s: out of range. (Contains %d elements, starting at 1)", i = 1, _propInfo->getName().c_str(), _propInfo->getNumArrayItems(_instance));
+		return luaL_error(L, "Can't remove item %d from array property %s: out of range. (Contains %d elements, starting at 1)", i + 1, _propInfo->getName().c_str(), _propInfo->getNumArrayItems(_instance));
 	}
 
 	void IndexedPropertyProxy::registerAdditionalMetamethods(lua_State *L) {
