@@ -44,7 +44,7 @@ getColor = coroutine.wrap(function()
 		coroutine.yield(osg.Vec4(0, 0, 1, 1))
 	end
 end)
--[[
+--[[
 do
 	local function addPointToLine(line, point, color)
 		line.vertices.Item:insert(point)
@@ -75,7 +75,7 @@ do
 		return line
 	end
 
-	
+
 	Line = setmetatable({}, {__call = createLine} )
 end
 ]]
@@ -96,7 +96,7 @@ Actions.addFrameAction(function()
 		local line = Line()
 		local geode = osg.Geode()
 		line:addToGeode(geode)
-		
+
 		--table.insert(lines, line)
 		--RelativeTo.World:addChild(line.node)
 		RelativeTo.World:addChild(geode)
