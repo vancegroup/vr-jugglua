@@ -34,7 +34,9 @@ namespace osgLua {
 		: _instance(instance)
 		, _propInfo(property)
 		, _propName(_propInfo->getName())
-	{}
+	{
+		assert(_propInfo);
+	}
 
 	const char * IndexedPropertyProxy::_getMethodRegistryString() {
 		static std::string regString = std::string(typeid(IndexedPropertyProxy).name()) + ":MethodTable";
@@ -42,6 +44,7 @@ namespace osgLua {
 	}
 
 	bool IndexedPropertyProxy::_pushItemAtArrayIndex(lua_State *L, int i) {
+		assert(_propInfo);
 		if (i < _propInfo->getNumArrayItems(_instance) && i >= 0) {
 			Value::push(L, _propInfo->getArrayItem(_instance, i));
 			return true;
@@ -81,6 +84,7 @@ namespace osgLua {
 
 	int IndexedPropertyProxy::newindex(lua_State *L) {
 		const int eltIndex = luaL_checkint(L, 2) - 1;
+		assert(_propInfo);
 		const int n = _propInfo->getNumArrayItems(_instance);
 		introspection::Value newval = getValue(L, 3);
 
@@ -133,6 +137,7 @@ namespace osgLua {
 	}
 
 	int IndexedPropertyProxy::insert(lua_State *L) {
+		assert(_propInfo);
 		int numItems = _propInfo->getNumArrayItems(_instance);
 		int location = -1;
 		bool atEnd = true;
