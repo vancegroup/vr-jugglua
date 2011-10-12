@@ -237,11 +237,20 @@ namespace osgLua {
 			}
 
 			/// Implement your own method to override this if you want to
-			/// register more than just __gc. You can call registerNonConstInstanceMetamethod()
-			/// and registerConstInstanceMetamethod() from within your method.
+			/// register more than just __gc. You can call
+			///  - NonConstInstanceMethod::registerMetamethod<>()
+			///  - NonConstInstanceMethod::registerObjectMethod<>()
+			///  - NonConstInstanceMethod::pushInstanceMethod<>()
+			///  - ConstInstanceMethod::registerMetamethod<>()
+			///  - ConstInstanceMethod::registerObjectMethod<>()
+			///  - ConstInstanceMethod::pushInstanceMethod<>()
+			/// from within your method, as desired.
 			static void registerAdditionalMetamethods(lua_State *) {}
 
 		public:
+			/// This method must be called for a given lua state before
+			/// pushing the first instance of the derived class to that
+			/// state.
 			static void createMetatable(lua_State * L) {
 				if (luaL_newmetatable(L, _getRegistryString())) {
 					{
