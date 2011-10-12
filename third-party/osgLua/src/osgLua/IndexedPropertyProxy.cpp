@@ -172,6 +172,8 @@ namespace osgLua {
 	}
 
 	int IndexedPropertyProxy::remove(lua_State *L) {
+		assert(_propInfo);
+
 		/// Default to removing the last item.
 		int i = luaL_optinteger(L, 2, _propInfo->getNumArrayItems(_instance)) - 1;
 		if (_pushItemAtArrayIndex(L, i)) {
