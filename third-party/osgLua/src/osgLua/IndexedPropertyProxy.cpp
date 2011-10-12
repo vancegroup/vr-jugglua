@@ -76,6 +76,7 @@ namespace osgLua {
 			}
 		}
 
+		/// @todo should out-of-range reads get a nil instead of an error?
 		//lua_pushnil(L);
 		//return 1;
 		return luaL_error(L, "[%s:%d] Indexed property '%s' expected access of element by index, in 1 through %d, or a method call to 'insert'",
