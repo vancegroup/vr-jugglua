@@ -18,7 +18,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 // Internal Includes
-#include "IndexedPropertyProxy.h"
+#include "ArrayPropertyProxy.h"
 #include "LuaIncludeFull.h"
 #include <osgLua/Value>
 
@@ -30,7 +30,7 @@
 
 namespace osgLua {
 
-	IndexedPropertyProxy::IndexedPropertyProxy(introspection::Value  const& instance, const introspection::PropertyInfo * property)
+	ArrayPropertyProxy::ArrayPropertyProxy(introspection::Value  const& instance, const introspection::PropertyInfo * property)
 		: _instance(instance)
 		, _propInfo(property)
 		, _propName(_propInfo->getName())
@@ -38,12 +38,12 @@ namespace osgLua {
 		assert(_propInfo);
 	}
 
-	const char * IndexedPropertyProxy::_getMethodRegistryString() {
-		static std::string regString = std::string(typeid(IndexedPropertyProxy).name()) + ":MethodTable";
+	const char * ArrayPropertyProxy::_getMethodRegistryString() {
+		static std::string regString = std::string(typeid(ArrayPropertyProxy).name()) + ":MethodTable";
 		return regString.c_str();
 	}
 
-	bool IndexedPropertyProxy::_pushItemAtArrayIndex(lua_State *L, int i) {
+	bool ArrayPropertyProxy::_pushItemAtArrayIndex(lua_State *L, int i) {
 		assert(_propInfo);
 		if (i < _propInfo->getNumArrayItems(_instance) && i >= 0) {
 			Value::push(L, _propInfo->getArrayItem(_instance, i));
@@ -52,7 +52,7 @@ namespace osgLua {
 		return false; // in case of out of range
 	}
 
-	int IndexedPropertyProxy::index(lua_State *L) {
+	int ArrayPropertyProxy::index(lua_State *L) {
 		int argType = lua_type(L, 2);
 		if (argType == LUA_TSTRING) {
 			int top = lua_gettop(L);
@@ -83,7 +83,7 @@ namespace osgLua {
 		                  __FILE__, __LINE__, _propName.c_str(), _propInfo->getNumArrayItems(_instance));
 	}
 
-	int IndexedPropertyProxy::newindex(lua_State *L) {
+	int ArrayPropertyProxy::newindex(lua_State *L) {
 		const int eltIndex = luaL_checkint(L, 2) - 1;
 		assert(_propInfo);
 		const int n = _propInfo->getNumArrayItems(_instance);
@@ -126,7 +126,7 @@ namespace osgLua {
 		                  n + 1);
 	}
 
-	int IndexedPropertyProxy::len(lua_State *L) {
+	int ArrayPropertyProxy::len(lua_State *L) {
 		assert(_propInfo);
 		try {
 			lua_pushinteger(L, _propInfo->getNumArrayItems(_instance));
@@ -137,7 +137,7 @@ namespace osgLua {
 		}
 	}
 
-	int IndexedPropertyProxy::insert(lua_State *L) {
+	int ArrayPropertyProxy::insert(lua_State *L) {
 		assert(_propInfo);
 		int numItems = _propInfo->getNumArrayItems(_instance);
 		int location = -1;
@@ -171,7 +171,7 @@ namespace osgLua {
 		}
 	}
 
-	int IndexedPropertyProxy::remove(lua_State *L) {
+	int ArrayPropertyProxy::remove(lua_State *L) {
 		assert(_propInfo);
 
 		/// Default to removing the last item.
@@ -186,14 +186,14 @@ namespace osgLua {
 		                  __FILE__, __LINE__, i + 1, _propInfo->getName().c_str(), _propInfo->getNumArrayItems(_instance));
 	}
 
-	void IndexedPropertyProxy::registerAdditionalMetamethods(lua_State *L) {
-		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::index>(L, "__index");
-		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::newindex>(L, "__newindex");
-		Base::NonConstInstanceMethod::registerMetamethod<&IndexedPropertyProxy::len>(L, "__len");
+	void ArrayPropertyProxy::registerAdditionalMetamethods(lua_State *L) {
+		Base::NonConstInstanceMethod::registerMetamethod<&ArrayPropertyProxy::index>(L, "__index");
+		Base::NonConstInstanceMethod::registerMetamethod<&ArrayPropertyProxy::newindex>(L, "__newindex");
+		Base::NonConstInstanceMethod::registerMetamethod<&ArrayPropertyProxy::len>(L, "__len");
 		luaL_newmetatable(L, _getMethodRegistryString());
-		Base::NonConstInstanceMethod::pushInstanceMethod<&IndexedPropertyProxy::insert>(L);
+		Base::NonConstInstanceMethod::pushInstanceMethod<&ArrayPropertyProxy::insert>(L);
 		lua_setfield(L, -2, "insert");
-		Base::NonConstInstanceMethod::pushInstanceMethod<&IndexedPropertyProxy::remove>(L);
+		Base::NonConstInstanceMethod::pushInstanceMethod<&ArrayPropertyProxy::remove>(L);
 		lua_setfield(L, -2, "remove");
 	}
 }

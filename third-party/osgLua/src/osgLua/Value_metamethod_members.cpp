@@ -15,7 +15,7 @@
 */
 
 #include <osgLua/Value>
-#include "IndexedPropertyProxy.h"
+#include "ArrayPropertyProxy.h"
 #include "Value_metamethods.h"
 #include "Value_rawget.inl"
 #include "lua_functions.h"
@@ -72,8 +72,7 @@ namespace osgLua {
 			const introspection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));
 			if (prop) {
 				if (prop->isArray()) {
-					/// @todo implement indexed properties
-					IndexedPropertyProxy::pushNew(L, v->get(), prop);
+					ArrayPropertyProxy::pushNew(L, v->get(), prop);
 					return 1;
 				} else if (!prop->canGet()) {
 					return luaL_error(L, "Property %s defined as not gettable", prop->getName().c_str());

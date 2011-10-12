@@ -17,8 +17,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_IndexedPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
-#define INCLUDED_IndexedPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
+#ifndef INCLUDED_ArrayPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
+#define INCLUDED_ArrayPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
 
 #define LUACPP_LUA_INCLUDE_FULL "LuaIncludeFull.h"
 
@@ -35,11 +35,11 @@
 
 namespace osgLua {
 	class Value;
-	class IndexedPropertyProxy : public ::luacpputils::LuaUserdata<IndexedPropertyProxy> {
+	class ArrayPropertyProxy : public ::luacpputils::LuaUserdata<ArrayPropertyProxy> {
 		public:
-			typedef LuaUserdata<IndexedPropertyProxy> Base;
+			typedef LuaUserdata<ArrayPropertyProxy> Base;
 
-			friend class LuaUserdata<IndexedPropertyProxy>;
+			friend class LuaUserdata<ArrayPropertyProxy>;
 
 			static void pushNew(lua_State * L, introspection::Value const& instance, const introspection::PropertyInfo * property) {
 				Base::pushNew(L, instance, property);
@@ -54,7 +54,7 @@ namespace osgLua {
 			/// Look up item i, if in range, push and return true, else return false
 			static const char * _getMethodRegistryString();
 			bool _pushItemAtArrayIndex(lua_State *L, int i);
-			IndexedPropertyProxy(introspection::Value const& instance, const introspection::PropertyInfo * property);
+			ArrayPropertyProxy(introspection::Value const& instance, const introspection::PropertyInfo * property);
 			static void registerAdditionalMetamethods(lua_State *L);
 
 			introspection::Value _instance;
@@ -64,4 +64,4 @@ namespace osgLua {
 
 } // end of namespace osgLua
 
-#endif // INCLUDED_IndexedPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
+#endif // INCLUDED_ArrayPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9

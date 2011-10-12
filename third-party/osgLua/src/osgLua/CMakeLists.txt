@@ -4,9 +4,9 @@
 # Iowa State University HCI Graduate Program/VRAC
 
 set(OSGLUA_SRCS
+	ArrayPropertyProxy.cpp
 	BindValue.cpp
 	Callback.cpp
-	IndexedPropertyProxy.cpp
 	loadObjectFile.cpp
 	lua_functions.cpp
 	MathValueTags.cpp
@@ -25,7 +25,7 @@ set(OSGLUA_SRCS
 	VectorTemplates.h)
 
 set(OSGLUA_PRIVATE_API
-	IndexedPropertyProxy.h
+	ArrayPropertyProxy.h
 	lua_functions.h
 	LuaIncludeFull.h
 	LuaUserdata.h
