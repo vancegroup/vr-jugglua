@@ -172,9 +172,6 @@ namespace osgLua {
 		}
 	} // end of Matrix namespace
 
-
-
-
 } // end of osgLua namespace
 
 #endif

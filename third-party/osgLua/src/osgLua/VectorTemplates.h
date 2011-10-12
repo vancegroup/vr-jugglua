@@ -145,7 +145,6 @@ namespace osgLua {
 		}
 	} // end of Vector namespace
 
-
 } // end of osgLua namespace
 
 #endif

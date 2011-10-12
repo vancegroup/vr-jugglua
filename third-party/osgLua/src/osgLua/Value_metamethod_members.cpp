@@ -67,7 +67,6 @@ namespace osgLua {
 				return luaL_error(L, "Type not defined '%s'",
 				           type.getStdTypeInfo().name());
 			}
-			//std::string cname = type.getQualifiedName();
 
 			const introspection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));
 			if (prop) {
@@ -77,7 +76,6 @@ namespace osgLua {
 				} else if (!prop->canGet()) {
 					return luaL_error(L, "Property '%s' defined as not gettable", prop->getName().c_str());
 				} else {
-					//std::cout << "Getting a property named " << props[i]->getName() << std::endl;
 					introspection::Value propVal = prop->getValue(v->get());
 					Value::push(L, propVal);
 					return 1;
@@ -109,24 +107,11 @@ namespace osgLua {
 			const introspection::MethodInfo *method = 0;
 			const introspection::Type &type = value->getType();
 			method = type.getCompatibleMethod(name, vl, true);
-			/* This code is no longer needed if getCompatibleMethod
-			 * finds methods in base types correctly.
-			if (!method)
-			{
-				//manual method finding... d'oh!
-				for(int i = 0; i < type.getNumBaseTypes() && !method; ++i)
-				{
-					const introspection::Type &base =
-						type.getBaseType(i);
-					if (!base.isDefined()) continue;
-					method = base.getCompatibleMethod(name,vl,false);
-				}
-			}
-			*/
 
 			if (!method && vl.size() > 0) {
 				if (vl.back().getType().isNonConstPointer() &&
 				        vl.back().getInstanceType().isSubclassOf(introspection::Reflection::getType("osg::NodeVisitor"))) {
+					/// @todo make this more general instead of a visitor-specific hack
 					// OK, we have a pointer to a visitor, let's search again after dereferencing
 					introspection::Value vPointer = vl.back();
 					vl.pop_back();
@@ -179,7 +164,6 @@ namespace osgLua {
 				return luaL_error(L, "Type not defined %s",
 				           type.getStdTypeInfo().name());
 			}
-			//std::string cname = type.getQualifiedName();
 
 			const introspection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));
 			if (prop) {
@@ -198,6 +182,7 @@ namespace osgLua {
 			return luaL_error(L, "No property '%s' defined in '%s'", lua_tostring(L, 2), type.getQualifiedName().c_str());
 
 		}
+		/// @todo error here?
 		// maybe ... if is an integer... access indexed data
 		return 0;
 	}
