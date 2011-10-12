@@ -20,6 +20,8 @@
 #ifndef INCLUDED_IndexedPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
 #define INCLUDED_IndexedPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
 
+#define LUACPP_LUA_INCLUDE_FULL "LuaIncludeFull.h"
+
 // Internal Includes
 #include "LuaUserdata.h"
 
@@ -33,7 +35,7 @@
 
 namespace osgLua {
 	class Value;
-	class IndexedPropertyProxy : public LuaUserdata<IndexedPropertyProxy> {
+	class IndexedPropertyProxy : public ::luacpputils::LuaUserdata<IndexedPropertyProxy> {
 		public:
 			typedef LuaUserdata<IndexedPropertyProxy> Base;
 

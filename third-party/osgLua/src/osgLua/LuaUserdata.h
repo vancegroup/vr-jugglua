@@ -21,7 +21,15 @@
 #define INCLUDED_LuaUserdata_h_GUID_52d4ca22_cd5a_420e_b6fd_f46db9eb1f93
 
 // Internal Includes
-#include "LuaIncludeFull.h"
+#ifdef LUACPP_LUA_INCLUDE_FULL
+#include LUACPP_LUA_INCLUDE_FULL
+#else
+extern "C" {
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+}
+#endif
 
 // Library/third-party includes
 // - none
@@ -39,7 +47,9 @@
 #	define LUA_USERDATA_VERBOSE(X) {}
 #endif
 
-namespace osgLua {
+namespace luacpputils {
+	/// base class providing string constants.
+	/// @internal
 	class LuaUserdataBase {
 		public:
 			static const char * indexMetamethodName() {
@@ -52,6 +62,9 @@ namespace osgLua {
 			}
 	};
 
+	/// Template class to derive from (using the CRTP) to allow pushing
+	/// with a metatable. Intended for Lua-specific classes, not wrapping
+	/// other C++ classes.
 	template<typename Derived>
 	class LuaUserdata : private LuaUserdataBase {
 		public:
