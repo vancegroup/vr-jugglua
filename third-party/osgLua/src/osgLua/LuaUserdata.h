@@ -90,12 +90,14 @@ namespace osgLua {
 				/// Remove the metatable from the stack so that all we have pushed is the __index table
 				lua_remove(L, -2);
 			}
+
 			static int _gc(lua_State * L) {
 				void * instancePtr = luaL_checkudata(L, 1, _getRegistryString());
 				assert(instancePtr);
 
 				PointerToDerivedType instance;
 				std::memcpy(&instance, instancePtr, sizeof(PointerToDerivedType));
+
 				LUA_USERDATA_VERBOSE("Userdata " << instance << ":\t" << "Deleting instance of type " << _getRegistryString());
 				assert(instance);
 				/// explicitly delete before Lua deletes the pointer.
@@ -103,6 +105,19 @@ namespace osgLua {
 				instance = NULL;
 				return 0;
 			}
+
+			static PointerToDerivedType _allocateInLua(lua_State * L, PointerToDerivedType instance) {
+				LUA_USERDATA_VERBOSE("Userdata " << instance << ":\t" << "Created instance of type " << _getRegistryString());
+				void * ud = lua_newuserdata(L, sizeof(PointerToDerivedType));
+				if (!ud) {
+					throw std::bad_alloc();
+				}
+				_pushMetatable(L);
+				lua_setmetatable(L, -2);
+				std::memcpy(ud, &instance, sizeof(PointerToDerivedType));
+				return instance;
+			}
+
 		protected:
 			template<typename PtrToMemberFuncType>
 			class InstanceMethodHandler {
@@ -159,19 +174,6 @@ namespace osgLua {
 			typedef InstanceMethodHandler<NonConstInstanceMethodPtrType> NonConstInstanceMethod;
 			typedef InstanceMethodHandler<ConstInstanceMethodPtrType> ConstInstanceMethod;
 
-			static const size_t ALIGNMENT = sizeof(void *);
-
-			static PointerToDerivedType allocate(lua_State * L, PointerToDerivedType instance) {
-				LUA_USERDATA_VERBOSE("Userdata " << instance << ":\t" << "Created instance of type " << _getRegistryString());
-				void * ud = lua_newuserdata(L, sizeof(PointerToDerivedType));
-				if (!ud) {
-					throw std::bad_alloc();
-				}
-				_pushMetatable(L);
-				lua_setmetatable(L, -2);
-				std::memcpy(ud, &instance, sizeof(PointerToDerivedType));
-				return instance;
-			}
 			static PointerToDerivedType pushNewWithLuaParam(lua_State * L) {
 				PointerToDerivedType p;
 				try {
@@ -179,7 +181,7 @@ namespace osgLua {
 				} catch (...) {
 					return NULL;
 				}
-				allocate(L, p);
+				_allocateInLua(L, p);
 				return p;
 			}
 
@@ -190,7 +192,7 @@ namespace osgLua {
 				} catch (...) {
 					return NULL;
 				}
-				allocate(L, p);
+				_allocateInLua(L, p);
 				return p;
 			}
 
@@ -202,7 +204,7 @@ namespace osgLua {
 				} catch (...) {
 					return NULL;
 				}
-				allocate(L, p);
+				_allocateInLua(L, p);
 				return p;
 			}
 
@@ -214,7 +216,7 @@ namespace osgLua {
 				} catch (...) {
 					return NULL;
 				}
-				allocate(L, p);
+				_allocateInLua(L, p);
 				return p;
 			}
 
@@ -226,7 +228,7 @@ namespace osgLua {
 				} catch (...) {
 					return NULL;
 				}
-				allocate(L, p);
+				_allocateInLua(L, p);
 				return p;
 			}
 
