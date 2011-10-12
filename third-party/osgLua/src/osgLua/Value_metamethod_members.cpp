@@ -183,9 +183,9 @@ namespace osgLua {
 
 			const introspection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));
 			if (prop) {
-				if (prop->isIndexed()) {
-					/// @todo implement indexed properties
-					luaL_error(L, "Indexed properties are not yet implemented in osgLua");
+				if (!prop->isSimple()) {
+					/// @todo implement other types of properties?
+					return luaL_error(L, "Non-simple properties are not yet settable in osgLua");
 				} else if (!prop->canSet()) {
 					return luaL_error(L, "Property %s defined as not settable", prop->getName().c_str());
 				} else {
