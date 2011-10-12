@@ -32,20 +32,26 @@
 #include <cassert>
 #include <cstring>
 
-/// @todo this is bad
-#define LUA_INDEX_METAMETHOD_NAME "__index"
-
 #ifdef ENABLE_LUA_USERDATA_VERBOSE
 #	include <iostream>
 #	define LUA_USERDATA_VERBOSE(X) {std::cerr << "LuaUserdata.h:" << __LINE__ << ":\t" << X << std::endl;}
 #else
 #	define LUA_USERDATA_VERBOSE(X) {}
 #endif
+
 namespace osgLua {
 	class LuaUserdataBase {
 		public:
-			//static const char LUA_INDEX_METAMETHOD_NAME[] = "__index";
+			static const char * indexMetamethodName() {
+				static const char ret[] = "__index";
+				return ret;
+			}
+			static const char * gcMetamethodName() {
+				static const char ret[] = "__gc";
+				return ret;
+			}
 	};
+
 	template<typename Derived>
 	class LuaUserdata : private LuaUserdataBase {
 		public:
@@ -67,13 +73,14 @@ namespace osgLua {
 
 			static void _pushIndexTable(lua_State * L) {
 				_pushMetatable(L);
+
 				int metatableIndex = lua_gettop(L);
-				lua_getfield(L, metatableIndex, LUA_INDEX_METAMETHOD_NAME);
+				lua_getfield(L, metatableIndex, indexMetamethodName());
 				if (lua_isnil(L, -1)) {
 					lua_pop(L, 1);
 					lua_newtable(L);
 					lua_pushvalue(L, -1); /// now the top two values are the __index table
-					lua_setfield(L, metatableIndex, LUA_INDEX_METAMETHOD_NAME);
+					lua_setfield(L, metatableIndex, indexMetamethodName());
 				} else if (!lua_istable(L, -1)) {
 					luaL_error(L, "While registering an instance method of %s: __index metamethod already set to value of type %s!", _getRegistryString(), lua_typename(L, -1));
 					return;
@@ -239,7 +246,7 @@ namespace osgLua {
 						LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\t" << "Registering garbage collection metamethod");
 						_pushMetatable(L);
 						lua_pushcfunction(L, &_gc);
-						lua_setfield(L, -2, "__gc"); /// table is one below the top of the stack
+						lua_setfield(L, -2, gcMetamethodName()); /// table is one below the top of the stack
 						lua_pop(L, 1); /// pop the metatable off the stack.
 					}
 					//NonConstInstanceMethod::template registerMetamethod <&Derived::~Derived> (L, );
