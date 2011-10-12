@@ -108,8 +108,7 @@ namespace osgLua {
 				}
 			}
 
-			luaL_error(L, "[%s:%d] Could not multiply instances of %s, %s", __FILE__, __LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
-			return 0;
+			return luaL_error(L, "[%s:%d] Could not multiply instances of %s, %s", __FILE__, __LINE__, typeA.getQualifiedName().c_str(), typeB.getQualifiedName().c_str());
 		}
 
 		/// Shared function template to handle both equality and less-than comparison.

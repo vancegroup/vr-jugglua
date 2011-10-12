@@ -64,7 +64,7 @@ namespace osgLua {
 		if (lua_isstring(L, 2)) {
 			const introspection::Type &type = v->getType();
 			if (!type.isDefined()) {
-				luaL_error(L, "Type not defined %s",
+				return luaL_error(L, "Type not defined '%s'",
 				           type.getStdTypeInfo().name());
 			}
 			//std::string cname = type.getQualifiedName();
@@ -75,7 +75,7 @@ namespace osgLua {
 					ArrayPropertyProxy::pushNew(L, v->get(), prop);
 					return 1;
 				} else if (!prop->canGet()) {
-					return luaL_error(L, "Property %s defined as not gettable", prop->getName().c_str());
+					return luaL_error(L, "Property '%s' defined as not gettable", prop->getName().c_str());
 				} else {
 					//std::cout << "Getting a property named " << props[i]->getName() << std::endl;
 					introspection::Value propVal = prop->getValue(v->get());
@@ -154,8 +154,7 @@ namespace osgLua {
 				}
 				lua_pushstring(L, ") not found");
 				lua_concat(L, lua_gettop(L) - top);
-				lua_error(L);
-
+				return lua_error(L);
 			}
 
 			// OK, we got a method!
@@ -163,7 +162,7 @@ namespace osgLua {
 			Value::push(L, returnedval);
 			return 1;
 		} catch (introspection::Exception &e) {
-			luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
+			return luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
 		}
 		return 0;
 
@@ -177,7 +176,7 @@ namespace osgLua {
 		if (lua_isstring(L, 2)) {
 			const introspection::Type &type = v->getType();
 			if (!type.isDefined()) {
-				luaL_error(L, "Type not defined %s",
+				return luaL_error(L, "Type not defined %s",
 				           type.getStdTypeInfo().name());
 			}
 			//std::string cname = type.getQualifiedName();
@@ -188,7 +187,7 @@ namespace osgLua {
 					/// @todo implement indexed properties
 					luaL_error(L, "Indexed properties are not yet implemented in osgLua");
 				} else if (!prop->canSet()) {
-					luaL_error(L, "Property %s defined as not settable", prop->getName().c_str());
+					return luaL_error(L, "Property %s defined as not settable", prop->getName().c_str());
 				} else {
 					std::cout << "Setting a property named " << prop->getName() << std::endl;
 					prop->setValue(v->get(), newVal->get());
@@ -196,7 +195,7 @@ namespace osgLua {
 				}
 			}
 
-			luaL_error(L, "No property %s defined in %s", lua_tostring(L, 2), type.getQualifiedName().c_str());
+			return luaL_error(L, "No property '%s' defined in '%s'", lua_tostring(L, 2), type.getQualifiedName().c_str());
 
 		}
 		// maybe ... if is an integer... access indexed data
