@@ -80,13 +80,20 @@ BOOST_AUTO_TEST_CASE(ConstructionVec3fToVec3d) {
 	BOOST_CHECK_NO_THROW(typeof(osg::Vec3d).createInstance(args));
 }
 
+BOOST_AUTO_TEST_CASE(Vec3fToVec3dCompatibleSet) {
+	osgLua::introspection::Value vf = osg::Vec3f(1, 1, 1);
+    osgLua::introspection::ValueList args;
+    args.push_back(vf);
+
+	BOOST_CHECK(typeof(osg::Vec3d).getCompatibleMethod("set", args, true));
+}
+
 BOOST_AUTO_TEST_CASE(Vec3fToVec3dUsingSet) {
 	osgLua::introspection::Value vf = osg::Vec3f(1, 1, 1);
     osgLua::introspection::ValueList args;
     args.push_back(vf);
     
 	osgLua::introspection::Value vd = osg::Vec3d();
-	//BOOST_CHECK_NO_THROW(typeof(osg::Vec3d).invokeMethod("set", vd, args, true));
-	BOOST_CHECK(typeof(osg::Vec3d).getCompatibleMethod("set", args, true));
+	BOOST_CHECK_NO_THROW(typeof(osg::Vec3d).invokeMethod("set", vd, args, true));
 }
 
