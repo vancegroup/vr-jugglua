@@ -132,7 +132,7 @@ namespace vrjLua {
 			//  while (drawing)
 			//  {
 			//        preFrame();
-			//       <Application Data Syncronization>
+			//       <Application Data Synchronization>
 			//        latePreFrame();
 			//       draw();
 			//        intraFrame();     // Drawing is happening while here

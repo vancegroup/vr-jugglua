@@ -1,7 +1,7 @@
 --[[
 Simple_Object_Orientation
 This file creates a model object (m) and adds to a Transform object (xform)
-We set the orientation of the transform, which by extention, sets the orientation of all of its children (m)
+We set the orientation of the transform, which by extension, sets the orientation of all of its children (m)
 Then the "xform" transform object is added to the root node (RelativeTo.World)
 ]]--
 

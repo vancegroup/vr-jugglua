@@ -100,7 +100,7 @@ namespace osgLua {
 			lua_setfield(L, -2, "__tostring");
 
 			/// Bind mathematically-inclined values specially - only
-			/// one such binding will suceed for a type, obviously, so
+			/// one such binding will succeed for a type, obviously, so
 			/// exit the method immediately at that point.
 #define BIND_VECTOR(TYPE) \
 			if (Vector::bind_metamethods<TYPE>(L, t)) { \

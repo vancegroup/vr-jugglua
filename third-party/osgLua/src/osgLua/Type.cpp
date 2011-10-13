@@ -153,7 +153,7 @@ namespace osgLua {
 			Type::push(L, base.c_str());
 			return 1;
 		} catch (introspection::TypeNotFoundException&) {
-			// if base is not a valid type... supose that
+			// if base is not a valid type... suppose that
 			// tbase.name is an static function
 			lua_pushstring(L, tbase.c_str());
 			lua_pushstring(L, name);

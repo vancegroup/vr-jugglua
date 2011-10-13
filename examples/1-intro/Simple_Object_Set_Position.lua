@@ -14,7 +14,7 @@ s = Sphere{ radius = .5, position = {0,0,0}}
 -- 3) Add the sphere (s) to xform
 xform:addChild(s)
 
- -- 4) Add xform to root node, so it becomes visable:
+ -- 4) Add xform to root node, so it becomes visible:
  RelativeTo.World:addChild(xform)
  
  -- 5) Move the xform object with the setPosition method, you can do this inside of your script, or in the VRJuggLua
