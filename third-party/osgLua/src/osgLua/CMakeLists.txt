@@ -7,6 +7,7 @@ set(OSGLUA_SRCS
 	ArrayPropertyProxy.cpp
 	BindValue.cpp
 	Callback.cpp
+	CustomConverters.cpp
 	loadObjectFile.cpp
 	lua_functions.cpp
 	MathValueTags.cpp
@@ -26,6 +27,7 @@ set(OSGLUA_SRCS
 
 set(OSGLUA_PRIVATE_API
 	ArrayPropertyProxy.h
+	CustomConverters.h
 	lua_functions.h
 	LuaIncludeFull.h
 	LuaUserdata.h

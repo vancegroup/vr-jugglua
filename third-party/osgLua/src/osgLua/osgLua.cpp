@@ -19,6 +19,7 @@
 #include "osgLua.h"
 #include "ArrayPropertyProxy.h"
 #include "loadWrapperLib.h"
+#include "CustomConverters.h"
 #include "LuaIncludeFull.h"
 
 #include <iostream>
@@ -145,6 +146,10 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 		/***********************************************************/
 		/***********************************************************/
 
+		if (std::strcmp(name, "osg") == 0) {
+			/// For the OSG main library, must register converters.
+			registerCustomConverters();
+		}
 		osglib **ptr = reinterpret_cast<osglib**>(
 		                   lua_newuserdata(L, sizeof(osglib*)));
 
