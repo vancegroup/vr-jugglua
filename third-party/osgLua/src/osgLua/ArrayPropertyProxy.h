@@ -37,9 +37,9 @@ namespace osgLua {
 	class Value;
 	class ArrayPropertyProxy : public ::luacpputils::LuaUserdata<ArrayPropertyProxy> {
 		public:
-			typedef LuaUserdata<ArrayPropertyProxy> Base;
+			typedef ::luacpputils::LuaUserdata<ArrayPropertyProxy> Base;
 
-			friend class LuaUserdata<ArrayPropertyProxy>;
+			friend class ::luacpputils::LuaUserdata<ArrayPropertyProxy>;
 
 			static void pushNew(lua_State * L, introspection::Value const& instance, const introspection::PropertyInfo * property) {
 				Base::pushNew(L, instance, property);
