@@ -98,3 +98,9 @@ add_boost_test(OsgPointers
 	#MatrixSingleConversionFromRef
 	#MatrixSingleConversionFromFloatRef
 	)
+
+add_boost_test(OsgVectorConversion
+	SOURCES
+	OsgVectorConversion.cpp
+	LIBRARIES
+	vrjugglua)
