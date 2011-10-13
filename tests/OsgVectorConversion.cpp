@@ -86,6 +86,7 @@ BOOST_AUTO_TEST_CASE(Vec3fToVec3dUsingSet) {
     args.push_back(vf);
     
 	osgLua::introspection::Value vd = osg::Vec3d();
-	BOOST_CHECK_NO_THROW(typeof(osg::Vec3d).invokeMethod("set", vd, args, true));
+	//BOOST_CHECK_NO_THROW(typeof(osg::Vec3d).invokeMethod("set", vd, args, true));
+	BOOST_CHECK(typeof(osg::Vec3d).getCompatibleMethod("set", args, true));
 }
 
