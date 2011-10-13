@@ -133,22 +133,16 @@ namespace osgLua {
 				}
 		};
 
-		template<typename T>
-		inline introspection::Type const& getIntrospectionType() {
-			static introspection::Type const& t = typeof(T);
-			return t;
-		}
-
 		template<typename T1, typename T2>
 		inline void registerVectorPrecisionConverter() {
-			static introspection::ConverterProxy cvt1to2(getIntrospectionType<T1>(), getIntrospectionType<T2>(), new VectorPrecisionConverter<T1, T2>());
-			static introspection::ConverterProxy cvt2to1(getIntrospectionType<T2>(), getIntrospectionType<T1>(), new VectorPrecisionConverter<T2, T1>());
+			static introspection::ConverterProxy cvt1to2(typeof(T1), typeof(T2), new VectorPrecisionConverter<T1, T2>());
+			static introspection::ConverterProxy cvt2to1(typeof(T2), typeof(T1), new VectorPrecisionConverter<T2, T1>());
 		}
 
 		template<typename T1, typename T2>
 		inline void registerMatrixPrecisionConverter() {
-			static introspection::ConverterProxy cvt1to2(getIntrospectionType<T1>(), getIntrospectionType<T2>(), new MatrixPrecisionConverter<T1, T2>());
-			static introspection::ConverterProxy cvt2to1(getIntrospectionType<T2>(), getIntrospectionType<T1>(), new MatrixPrecisionConverter<T2, T1>());
+			static introspection::ConverterProxy cvt1to2(typeof(T1), typeof(T2), new MatrixPrecisionConverter<T1, T2>());
+			static introspection::ConverterProxy cvt2to1(typeof(T2), typeof(T1), new MatrixPrecisionConverter<T2, T1>());
 		}
 
 	} // end of anonymous namespace
