@@ -103,4 +103,11 @@ add_boost_test(OsgNumericConversion
 	SOURCES
 	OsgNumericConversion.cpp
 	LIBRARIES
-	vrjugglua)
+	vrjugglua
+	TESTS
+	ConversionPathVec3fToVec3d
+	ConstructionVec3fToVec3d
+	Vec3fToVec3dCompatibleSet
+	Vec3fToVec3dUsingSet
+	GetConversionVec3fToVec3d
+)
