@@ -99,8 +99,8 @@ add_boost_test(OsgPointers
 	MatrixSingleConversionFromFloatRef
 )
 
-add_boost_test(OsgVectorConversion
+add_boost_test(OsgNumericConversion
 	SOURCES
-	OsgVectorConversion.cpp
+	OsgNumericConversion.cpp
 	LIBRARIES
 	vrjugglua)

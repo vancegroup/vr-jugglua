@@ -7,7 +7,7 @@
 	Human-Computer Interaction Graduate Program
 */
 
-#define BOOST_TEST_MODULE OSG Vector Conversion tests
+#define BOOST_TEST_MODULE OSG Numeric Conversion tests
 
 #define BUILD_OSGLUABIND_VERBOSE
 
