@@ -67,7 +67,6 @@ void osgLua::open(lua_State *L) {
 		lua_setfield(L, -2, "NodeCallback");
 
 		lua_setglobal(L, "osgLua");
-		ArrayPropertyProxy::createMetatable(L);
 	}
 
 	lua_settop(L, top);

@@ -81,7 +81,15 @@ namespace luacpputils {
 			}
 
 			static void _pushMetatable(lua_State * L) {
-				luaL_getmetatable(L, _getRegistryString());
+				if (luaL_newmetatable(L, _getRegistryString())) {
+					LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\t" << "Registering garbage collection metamethod");
+					lua_pushvalue(L, -1);
+					lua_pushcfunction(L, &_gc);
+					lua_setfield(L, -2, gcMetamethodName()); /// table is one below the top of the stack
+					lua_pop(L, 1); /// pop the metatable off the stack.
+					//NonConstInstanceMethod::template registerMetamethod <&Derived::~Derived> (L, );
+					Derived::registerAdditionalMetamethods(L);
+				}
 			}
 
 			static void _pushIndexTable(lua_State * L) {
@@ -259,26 +267,6 @@ namespace luacpputils {
 			///  - ConstInstanceMethod::pushInstanceMethod<>()
 			/// from within your method, as desired.
 			static void registerAdditionalMetamethods(lua_State *) {}
-
-		public:
-			/// This method must be called for a given lua state before
-			/// pushing the first instance of the derived class to that
-			/// state.
-			static void createMetatable(lua_State * L) {
-				if (luaL_newmetatable(L, _getRegistryString())) {
-					{
-						LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\t" << "Registering garbage collection metamethod");
-						_pushMetatable(L);
-						lua_pushcfunction(L, &_gc);
-						lua_setfield(L, -2, gcMetamethodName()); /// table is one below the top of the stack
-						lua_pop(L, 1); /// pop the metatable off the stack.
-					}
-					//NonConstInstanceMethod::template registerMetamethod <&Derived::~Derived> (L, );
-					Derived::registerAdditionalMetamethods(L);
-				}
-			}
-
-
 	};
 
 
