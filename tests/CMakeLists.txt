@@ -37,6 +37,7 @@ set(LUA_TEST_SCRIPTS
 	osglua-matrixmath
 	osglua-missingmethod
 	osglua-props
+	osglua-usedisplaylistprop
 	osglua-vec3array
 	osglua-vectormath)
 

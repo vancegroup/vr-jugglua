@@ -88,7 +88,7 @@ local newarg = {}
 for _, argument in ipairs(arg) do
 	if optionFlags[argument] then
 		-- this is an option, not a file, and we recognize it!
-		optionFlags[argument]()
+		optionFlags[argument].action()
 
 	elseif argument:find("[.]jconf$") then
 		-- OK, a jconf to load
