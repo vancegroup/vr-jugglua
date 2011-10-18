@@ -172,15 +172,7 @@ reference "sec:Requirements"
 .
  Each requirement's title is a short description for easy reference to the
  requirement (both in discussion and in the Table of Contents).
- A 
-\begin_inset Quotes eld
-\end_inset
-
-Paragraph*
-\begin_inset Quotes erd
-\end_inset
-
- label, followed by content, is included for a subset of the fields below.
+ A label, followed by content, is included for a subset of the fields below.
  
 \begin_inset Quotes eld
 \end_inset
@@ -191,6 +183,24 @@ Full Description
 
  is the only required field, since it's the actual requirement itself.
  All others may be included as it seems useful.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The field label is defined as a 
+\begin_inset Quotes eld
+\end_inset
+
+Paragraph *
+\begin_inset Quotes erd
+\end_inset
+
+ in LyX.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -270,7 +280,213 @@ Any history of changes to this requirement that are important to the continuing
 \end_layout
 
 \begin_layout Section
-Definitions/System Description
+Definitions and System Description
+\end_layout
+
+\begin_layout Subsection
+People and Systems
+\end_layout
+
+\begin_layout Standard
+There are several people involved that may be considered 
+\begin_inset Quotes eld
+\end_inset
+
+users,
+\begin_inset Quotes erd
+\end_inset
+
+ and several possible meanings of 
+\begin_inset Quotes eld
+\end_inset
+
+application,
+\begin_inset Quotes erd
+\end_inset
+
+ so these terms must be clarified.
+ A single human may play multiple roles, but these roles should be distinguished
+ when possible for clarity.
+ The following presents the definitions as used in this document.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+When using these terms, you may consider selecting the word and inserting
+ a cross-reference to the appropriate definition.
+ (This is equivalent to choosing 
+\begin_inset Quotes eld
+\end_inset
+
+Textual Reference
+\begin_inset Quotes erd
+\end_inset
+
+ from the cross-reference right-click menu, and inserts the word, hyperlinked
+ to its definition.)
+\end_layout
+
+\begin_layout Plain Layout
+This shows up like 
+\begin_inset Quotes eld
+\end_inset
+
+NameRef:def:User
+\begin_inset Quotes erd
+\end_inset
+
+ in LyX and hyperlinked 
+\begin_inset Quotes eld
+\end_inset
+
+User
+\begin_inset Quotes erd
+\end_inset
+
+ in the rendered PDF.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "def:App-Developer"
+
+\end_inset
+
+Application Developer
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+ is the person interacting with the VR
+\begin_inset space ~
+\end_inset
+
+JuggLua software to build a virtual environment.
+ The same human may also play the role of 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+, but their interaction in that role is considered separately from their
+ interaction as the 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+ consumes API (and by extension, examples).
+ Their technical expertise and goals may vary, from simply using defaults
+ to explore a scenegraph, to producing an interactive environment working
+ with or overriding parts of navigation defaults.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "def:Application"
+
+\end_inset
+
+Application
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+ is the virtual environment constructed by the 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+ using VR
+\begin_inset space ~
+\end_inset
+
+JuggLua and experienced by the 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+.
+ The application may be created interactively in NavTestbed or run from
+ a script (with the 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+vrjlua
+\end_layout
+
+\end_inset
+
+ interpreter or NavTestbed).
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "def:User"
+
+\end_inset
+
+User
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+ refers to the end-user experiencing an immersive virtual environment (the
+ 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Subsection
@@ -319,7 +535,14 @@ Moving the World
 On the technical side, the projection matrices are fixed such that the room
  doesn't move, and so to navigate we actually move the world.
  This is functionally equivalent to moving the room in the world, but inverse.
- This technicality may be confusing.
+ This technicality may be confusing to the 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -327,8 +550,15 @@ Application Sees Two Roots
 \end_layout
 
 \begin_layout Standard
-The application writer by default is provided with two scenegraph root nodes
- that they can add children to: 
+The 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+ by default is provided with two scenegraph root nodes that they can add
+ children to: 
 \begin_inset Flex Code
 status collapsed
 
@@ -351,7 +581,7 @@ RelativeTo.Room
 , with the obvious meaning.
  Though they are of course related, neither is a child of the other, to
  keep the transform between room and world under navigation control and
- preserve the two-root sense.
+ preserve the appearance of two roots.
 \end_layout
 
 \begin_layout Subsubsection
@@ -359,9 +589,16 @@ Tracked Coordinate Frames
 \end_layout
 
 \begin_layout Standard
-The pose of the user's head and other input devices are also tracked (situating
- a coordinate system at them in some standard or known location), with the
- transform reported with respect to the world frame.
+The pose of the 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+'s head and other input devices are also tracked (situating a coordinate
+ system at them in some standard or known location), with the transform
+ reported with respect to the world frame.
 \begin_inset Newpage pagebreak
 \end_inset
 
@@ -496,7 +733,14 @@ Full Description
 
 \begin_layout Standard
 Navigation techniques are an open field, so no single technique should be
- imposed on all applications.
+ imposed on all 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+s.
 \end_layout
 
 \begin_layout Subsection
@@ -533,8 +777,21 @@ Full Description
 \end_layout
 
 \begin_layout Standard
-User actions in an application may need to be interpreted with respect to
- the world frame or the room frame.
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+ actions in an 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+ may need to be interpreted with respect to the world frame or the room
+ frame.
 \end_layout
 
 \begin_layout Paragraph*
