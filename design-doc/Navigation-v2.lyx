@@ -245,13 +245,24 @@ Rationale
 \begin_layout Plain Layout
 This text presents the reason that this requirement exists and is in the
  spec.
- Often includes a cross-reference to an assumption - all of which are labels
- in the source document starting with 
+ Often includes a cross-reference to an assumption.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+All assumptions in the LyX document have labels starting with 
 \begin_inset Flex Code
 status collapsed
 
 \begin_layout Plain Layout
 sub:assume-
+\end_layout
+
+\end_inset
+
+ so please just insert a cross-reference rather than repeat the intent of
+ an assumption.
 \end_layout
 
 \end_inset
