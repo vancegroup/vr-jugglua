@@ -469,6 +469,25 @@ vrjlua
 \end_inset
 
  interpreter or NavTestbed).
+ Insofaras a default navigation behavior of VR
+\begin_inset space ~
+\end_inset
+
+JuggLua is retained by an 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+, it too can be considered part of the 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -878,8 +897,15 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-Navigation must update the transform between the room and the world frames
- based on user input.
+Navigation shall update the transform between the room and the world frames
+ based on 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+ input.
 \end_layout
 
 \begin_layout Paragraph*
@@ -903,8 +929,14 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-Navigation must be able to update in such a way to simulate user translation
- and rotation about the 
+Navigation shall be able to update in such a way to simulate 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+ translation and rotation about the 
 \begin_inset Formula $y$
 \end_inset
 
@@ -937,8 +969,14 @@ The initial navigation system does support rotation (about the
 \begin_inset Formula $y$
 \end_inset
 
- axis at the room origin) but only for user-defined navigation functions,
- not the default.
+ axis at the room origin) but only for 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+-defined navigation functions, not the default.
 \end_layout
 
 \begin_layout Subsection
@@ -950,7 +988,14 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-The relationship between user input and transform updates (
+The relationship between 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+ input and transform updates (
 \begin_inset Quotes eld
 \end_inset
 
@@ -958,7 +1003,14 @@ navigation function
 \begin_inset Quotes erd
 \end_inset
 
-) must be separate and able to be defined by an application.
+) shall be separate and able to be defined by an 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Paragraph*
@@ -989,7 +1041,7 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-Potentially more than one navigation function should be supported simultaneously.
+Potentially more than one navigation function shall be supported simultaneously.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1016,7 +1068,7 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-A default navigation function must be provided.
+A default navigation function shall be provided.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1035,7 +1087,21 @@ reference "sub:assume-navigation-useful"
 
 \end_inset
 
- - so unless an application specifies otherwise, navigation should be provided.
+ - so unless an 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+ (and thus, an 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+) specifies otherwise, navigation should be provided.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1047,7 +1113,7 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-The default navigation function should allow 4 DoF navigation.
+The default navigation function shall allow 4 DoF navigation.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1075,8 +1141,8 @@ History
 
 \begin_layout Standard
 The previous version of navigation only allowed translation, resulting in
- difficult situations in immersive environments and use of simulated head
- movement controls in a simulator environment.
+ difficult situations in immersive environments and observed field use of
+ simulated head movement controls in a simulator environment.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1088,7 +1154,18 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-The default navigation function should be able to be replaced.
+The default navigation function shall be able to be replaced by the 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:App-Developer"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
 \end_layout
 
 \begin_layout Standard
@@ -1115,7 +1192,14 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-Incremental changes to navigation state must be supported
+Incremental changes to navigation state by an 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+ shall be supported.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1155,7 +1239,7 @@ room
 \begin_inset Quotes erd
 \end_inset
 
- frame
+ frame.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1175,7 +1259,14 @@ reference "sub:assume-incremental-common"
 \end_inset
 
 .
- User-centric.
+ 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+-centric.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1191,7 +1282,7 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-Incremental rotation shall be a scalar (in radians) along with a 2-d location
+Incremental rotation shall be a scalar (in radians) along with a 2D location
  in the current 
 \begin_inset Quotes eld
 \end_inset
@@ -1212,7 +1303,14 @@ Perhaps defaulting to rotation about head position projected on the
 \begin_inset Formula $(x,z)$
 \end_inset
 
- plane? (user-centric rotation)
+ plane? (
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:User"
+
+\end_inset
+
+-centric rotation)
 \end_layout
 
 \begin_layout Paragraph*
@@ -1255,7 +1353,14 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-Absolute changes to navigation state (set/reset) must be supported
+Absolute changes to navigation state (set/reset) by an 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "def:Application"
+
+\end_inset
+
+ shall be supported.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1291,7 +1396,7 @@ reference "sub:assume-incremental-common"
 \end_inset
 
 .
- That assumption also indicatest that the importance here is that the interface
+ That assumption also indicates that the importance here is that the interface
  exists, and not necessarily that it is ideal - it may evolve over time.
 \end_layout
 
@@ -1300,7 +1405,15 @@ Access Both Transforms
 \end_layout
 
 \begin_layout Standard
-Easy access to the room-to-world and world-to-room transforms must be provided.
+Easy access to the room-to-world and world-to-room transforms shall be provided
+ for use by the 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:App-Developer"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Paragraph*
@@ -1331,7 +1444,7 @@ Full Requirement
 \end_layout
 
 \begin_layout Standard
-Navigation actions must be able to be validated, by e.g.
+Navigation actions shall be able to be validated, by e.g.
  some physics or collision detection
 \end_layout
 
@@ -1341,10 +1454,17 @@ Questions
 
 \begin_layout Standard
 Lots - do we just make collision detection an additional Action that applies
- navigation updates when the user is somewhere they shouldn't be? (essentially
- penalty-based - problems include tunnelling.) Do we have a stack of navigation
- validating functions that are called before any navigation change is incorporat
-ed into the navigation matrix?
+ navigation updates when the 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "def:User"
+
+\end_inset
+
+ is somewhere they shouldn't be? (essentially penalty-based - problems include
+ tunnelling.) Do we have a stack of navigation validating functions that
+ are called before any navigation change is incorporated into the navigation
+ matrix?
 \end_layout
 
 \end_body
