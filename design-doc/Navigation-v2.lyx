@@ -235,7 +235,31 @@ Full Description
 
 \begin_layout Plain Layout
 This is the full, canonical description of a sample requirement expressed
- as a single sentence.
+ as a single sentence and phrased using 
+\begin_inset Quotes eld
+\end_inset
+
+shall
+\begin_inset Quotes erd
+\end_inset
+
+ (not 
+\begin_inset Quotes eld
+\end_inset
+
+must
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+should
+\begin_inset Quotes erd
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Paragraph*
