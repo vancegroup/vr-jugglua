@@ -145,9 +145,18 @@ Participants in Requirements Process
 \begin_layout Standard
 Ryan A.
  Pavlik drafted the initial version of this document.
- It will soon be reviewed by Judy M.
- Vance and Leif P.
- Berg.
+ Reviewers' and contributors' names will go here.
+ You can also see the history of this file in the 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+git
+\end_layout
+
+\end_inset
+
+ source control system for a revision log.
 \end_layout
 
 \begin_layout Subsection
