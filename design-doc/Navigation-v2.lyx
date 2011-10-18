@@ -84,6 +84,10 @@ Requirements for VR
 JuggLua Navigation Redesign
 \end_layout
 
+\begin_layout Author
+Ryan Pavlik
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
@@ -93,8 +97,173 @@ LatexCommand tableofcontents
 
 \end_layout
 
+\begin_layout Section
+Introduction
+\end_layout
+
 \begin_layout Standard
-\begin_inset Newpage clearpage
+VR
+\begin_inset space ~
+\end_inset
+
+JuggLua, and the commonly-used front-end application, known as 
+\begin_inset Quotes eld
+\end_inset
+
+NavTestbed,
+\begin_inset Quotes erd
+\end_inset
+
+ allow the user to construct a scene graph and navigate in it by default.
+ Additional interactivity is possible by adding Actions.
+ The existing navigation code in VR
+\begin_inset space ~
+\end_inset
+
+JuggLua was written very early in the development process, and while it
+ has allowed the successful testing of alternate navigation strategies,
+ its weaknesses are becoming more evident at a rapid rate.
+ To ensure the next version of the navigation system addresses the motivation
+ for providing navigation, provides the functionality needed to replicate
+ the desired behavior of earlier experiments, and resolves the issues noticed
+ with the current system, this requirements specification was prepared.
+\end_layout
+
+\begin_layout Standard
+While this spec does add formality to the process, it is intended primarily
+ to ensure that no important issues are overlooked, rather than as an exhaustive
+ contractual System Requirements Specification.
+ Elaboration should only be provided where it is useful to clarify or improve
+ the result, and not for the sake of being a comprehensive specification
+ of requirements.
+\end_layout
+
+\begin_layout Subsection
+Participants in Requirements Process
+\end_layout
+
+\begin_layout Standard
+Ryan A.
+ Pavlik drafted the initial version of this document.
+ It will soon be reviewed by Judy M.
+ Vance and Leif P.
+ Berg.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Structure-of-Requirements"
+
+\end_inset
+
+Structure of Requirements
+\end_layout
+
+\begin_layout Standard
+Requirements are presented as subsections (and subsubsections, where the
+ nested structure is informative) of 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Requirements"
+
+\end_inset
+
+.
+ Each requirement's title is a short description for easy reference to the
+ requirement (both in discussion and in the Table of Contents).
+ A 
+\begin_inset Quotes eld
+\end_inset
+
+Paragraph*
+\begin_inset Quotes erd
+\end_inset
+
+ label, followed by content, is included for a subset of the fields below.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Full Description
+\begin_inset Quotes erd
+\end_inset
+
+ is the only required field, since it's the actual requirement itself.
+ All others may be included as it seems useful.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Subsubsection
+Sample Requirement
+\end_layout
+
+\begin_layout Paragraph*
+Question
+\end_layout
+
+\begin_layout Plain Layout
+Any unresolved questions can go here.
+\end_layout
+
+\begin_layout Paragraph*
+Full Description
+\end_layout
+
+\begin_layout Plain Layout
+This is the full, canonical description of a sample requirement expressed
+ as a single sentence.
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Plain Layout
+This text presents the reason that this requirement exists and is in the
+ spec.
+ Often includes a cross-reference to an assumption - all of which are labels
+ in the source document starting with 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+sub:assume-
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+History
+\end_layout
+
+\begin_layout Plain Layout
+Any history of changes to this requirement that are important to the continuing
+ development (that is, that cannot be left just as commit messages) go here.
+ Also, the history of this requirement's implementation in previous systems
+ goes here.
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
 \end_inset
 
 
@@ -193,10 +362,7 @@ Tracked Coordinate Frames
 The pose of the user's head and other input devices are also tracked (situating
  a coordinate system at them in some standard or known location), with the
  transform reported with respect to the world frame.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage clearpage
+\begin_inset Newpage pagebreak
 \end_inset
 
 
@@ -206,13 +372,50 @@ The pose of the user's head and other input devices are also tracked (situating
 Assumptions
 \end_layout
 
-\begin_layout Paragraph*
-Question
+\begin_layout Standard
+The structure of these assumptions is similar to the structure of the requiremen
+ts (see
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Structure-of-Requirements"
+
+\end_inset
+
+).
+ However, there is often minimal detail beyond a full description sentence;
+ if assumptions are considered to be similar to axioms, then any proof seems
+ contrary to the definition of axiom as an unproven proposition accepted
+ to be true.
+ That said, there may be some use for recording arguments for the reasonableness
+ of making these assumptions.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Shadowbox
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
 Are any of these assumptions questionable? Should any be supported by some
  citations for our future reference?
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -334,6 +537,10 @@ User actions in an application may need to be interpreted with respect to
  the world frame or the room frame.
 \end_layout
 
+\begin_layout Paragraph*
+Notes
+\end_layout
+
 \begin_layout Standard
 See 
 \begin_inset CommandInset ref
@@ -343,16 +550,19 @@ reference "sub:Coordinate-frames"
 \end_inset
 
  for details.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage clearpage
+\begin_inset Newpage pagebreak
 \end_inset
 
 
 \end_layout
 
 \begin_layout Section
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Requirements"
+
+\end_inset
+
 Requirements
 \end_layout
 
