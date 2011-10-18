@@ -4,6 +4,9 @@
 \begin_header
 \textclass scrartcl
 \use_default_options true
+\begin_modules
+logicalmkup
+\end_modules
 \maintain_unincluded_children false
 \language english
 \language_package default
@@ -90,12 +93,25 @@ LatexCommand tableofcontents
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Definitions/System Description
 \end_layout
 
 \begin_layout Subsection
-Coordinate frames
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Coordinate-frames"
+
+\end_inset
+
+Coordinate Frames
 \end_layout
 
 \begin_layout Standard
@@ -120,6 +136,16 @@ room frame
  relationship between them.
 \end_layout
 
+\begin_layout Subsubsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Moving-the-world"
+
+\end_inset
+
+Moving the World
+\end_layout
+
 \begin_layout Standard
 On the technical side, the projection matrices are fixed such that the room
  doesn't move, and so to navigate we actually move the world.
@@ -128,7 +154,7 @@ On the technical side, the projection matrices are fixed such that the room
 \end_layout
 
 \begin_layout Subsubsection
-Tracked coordinate frames
+Tracked Coordinate Frames
 \end_layout
 
 \begin_layout Standard
@@ -137,8 +163,24 @@ The pose of the user's head and other input devices are also tracked (situating
  transform reported with respect to the world frame.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Assumptions
+\end_layout
+
+\begin_layout Paragraph*
+Question
+\end_layout
+
+\begin_layout Standard
+Are any of these assumptions questionable? Should any be supported by some
+ citations for our future reference?
 \end_layout
 
 \begin_layout Subsection
@@ -148,6 +190,14 @@ name "sub:assume-navigation-useful"
 
 \end_inset
 
+Navigation Broadly Useful
+\end_layout
+
+\begin_layout Paragraph*
+Full Description
+\end_layout
+
+\begin_layout Standard
 Navigation is a generally-useful operation for a wide range of VR applications.
 \end_layout
 
@@ -179,6 +229,14 @@ name "sub:assume-4dof-nav"
 
 \end_inset
 
+4DoF Necessary and Sufficient
+\end_layout
+
+\begin_layout Paragraph
+Full Description
+\end_layout
+
+\begin_layout Standard
 Navigation in 4 degrees of freedom (3 translation, and rotation about 
 \begin_inset Formula $y$
 \end_inset
@@ -194,6 +252,14 @@ name "sub:assume-one-size-doesnt-fit-all"
 
 \end_inset
 
+One Size Doesn't Fit All
+\end_layout
+
+\begin_layout Paragraph*
+Full Description
+\end_layout
+
+\begin_layout Standard
 Navigation techniques are an open field, so no single technique should be
  imposed on all applications.
 \end_layout
@@ -205,6 +271,14 @@ name "sub:assume-incremental-common"
 
 \end_inset
 
+Incremental Navigation Common
+\end_layout
+
+\begin_layout Paragraph*
+Full Description
+\end_layout
+
+\begin_layout Standard
 Incremental navigation is the more common scenario (as opposed to absolute
  navigation).
 \end_layout
