@@ -325,6 +325,14 @@ Requirements
 \end_layout
 
 \begin_layout Subsection
+Navigation Controls Room-World Transform
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 Navigation must update the transform between the room and the world frames
  based on user input.
 \end_layout
@@ -338,6 +346,18 @@ This is the motivating purpose of navigation.
 \end_layout
 
 \begin_layout Subsubsection
+User Translation and Rotation About 
+\begin_inset Formula $y$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 Navigation must be able to update in such a way to simulate user translation
  and rotation about the 
 \begin_inset Formula $y$
@@ -377,6 +397,14 @@ The initial navigation system does support rotation (about the
 \end_layout
 
 \begin_layout Subsection
+Application-Definable Navigation Functions
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 The relationship between user input and transform updates (
 \begin_inset Quotes eld
 \end_inset
@@ -407,11 +435,15 @@ reference "sub:assume-one-size-doesnt-fit-all"
 .
 \end_layout
 
-\begin_layout Paragraph*
-History
+\begin_layout Subsubsection
+Multiple Navigation Functions
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 Potentially more than one navigation function should be supported simultaneously.
 \end_layout
 
@@ -431,6 +463,14 @@ This should integrate well with Actions - multiple Actions should be able
 \end_layout
 
 \begin_layout Subsection
+Navigation by Default
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 A default navigation function must be provided.
 \end_layout
 
@@ -454,6 +494,14 @@ reference "sub:assume-navigation-useful"
 \end_layout
 
 \begin_layout Subsubsection
+4 DoF by Default
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 The default navigation function should allow 4 DoF navigation.
 \end_layout
 
@@ -487,7 +535,15 @@ The previous version of navigation only allowed translation, resulting in
 \end_layout
 
 \begin_layout Subsubsection
-The default navigation function should be allowed to be replaced.
+Default Replaceable
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
+The default navigation function should be able to be replaced.
 \end_layout
 
 \begin_layout Standard
@@ -506,6 +562,14 @@ reference "sub:assume-one-size-doesnt-fit-all"
 \end_layout
 
 \begin_layout Subsection
+Incremental Navigation
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 Incremental changes to navigation state must be supported
 \end_layout
 
@@ -529,6 +593,14 @@ reference "sub:assume-incremental-common"
 \end_layout
 
 \begin_layout Subsubsection
+Incremental Translation in Room Frame
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 Incremental translation shall be a vector specified/interpreted with respect
  to the current 
 \begin_inset Quotes eld
@@ -562,6 +634,18 @@ reference "sub:assume-incremental-common"
 \end_layout
 
 \begin_layout Subsubsection
+Incremental Rotation About 
+\begin_inset Formula $y$
+\end_inset
+
+ at Point In Room Frame
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 Incremental rotation shall be a scalar (in radians) along with a 2-d location
  in the current 
 \begin_inset Quotes eld
@@ -618,6 +702,14 @@ Initially all rotation was about
 \end_layout
 
 \begin_layout Subsection
+Absolute Navigation
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 Absolute changes to navigation state (set/reset) must be supported
 \end_layout
 
@@ -659,6 +751,10 @@ reference "sub:assume-incremental-common"
 \end_layout
 
 \begin_layout Subsection
+Access Both Transforms
+\end_layout
+
+\begin_layout Standard
 Easy access to the room-to-world and world-to-room transforms must be provided.
 \end_layout
 
@@ -682,6 +778,14 @@ reference "sub:assume-both-frames-important"
 \end_layout
 
 \begin_layout Subsection
+Design for Collision Detection
+\end_layout
+
+\begin_layout Paragraph*
+Full Requirement
+\end_layout
+
+\begin_layout Standard
 Navigation actions must be able to be validated, by e.g.
  some physics or collision detection
 \end_layout
