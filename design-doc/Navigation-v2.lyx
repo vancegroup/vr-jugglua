@@ -532,6 +532,41 @@ room frame
  relationship between them.
 \end_layout
 
+\begin_layout Standard
+All coordinate frames are right-handed, with the convention that 
+\begin_inset Formula $x$
+\end_inset
+
+ extends to the right, 
+\begin_inset Formula $y$
+\end_inset
+
+ goes up (opposite the direction of gravity), and 
+\begin_inset Formula $z$
+\end_inset
+
+ goes toward the user (in a non-immersive description, 
+\begin_inset Quotes eld
+\end_inset
+
+out of the screen
+\begin_inset Quotes erd
+\end_inset
+
+).
+ The origin of the room frame may be anywhere, but is typically on the floor
+ of the immersive system in the 
+\begin_inset Formula $y$
+\end_inset
+
+ direction and somewhere in the immersive space (at a corner or in the middle)
+ in the 
+\begin_inset Formula $(x,z)$
+\end_inset
+
+ plane.
+\end_layout
+
 \begin_layout Subsubsection
 \begin_inset CommandInset label
 LatexCommand label
