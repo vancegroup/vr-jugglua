@@ -1,0 +1,551 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass scrartcl
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 4
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Requirements for VR
+\begin_inset space ~
+\end_inset
+
+JuggLua Navigation Redesign
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Definitions/System Description
+\end_layout
+
+\begin_layout Subsection
+Coordinate frames
+\end_layout
+
+\begin_layout Standard
+The primary coordinate frames are the 
+\begin_inset Quotes eld
+\end_inset
+
+world frame
+\begin_inset Quotes erd
+\end_inset
+
+ (the virtual environment) and the 
+\begin_inset Quotes eld
+\end_inset
+
+room frame
+\begin_inset Quotes erd
+\end_inset
+
+ (the physical space of the VR system).
+ Initially they are aligned, but navigation is performed by changing the
+ relationship between them.
+\end_layout
+
+\begin_layout Standard
+On the technical side, the projection matrices are fixed such that the room
+ doesn't move, and so to navigate we actually move the world.
+ This is functionally equivalent to moving the room in the world, but inverse.
+ This technicality may be confusing.
+\end_layout
+
+\begin_layout Subsubsection
+Tracked coordinate frames
+\end_layout
+
+\begin_layout Standard
+The pose of the user's head and other input devices are also tracked (situating
+ a coordinate system at them in some standard or known location), with the
+ transform reported with respect to the world frame.
+\end_layout
+
+\begin_layout Section
+Assumptions
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:assume-navigation-useful"
+
+\end_inset
+
+Navigation is a generally-useful operation for a wide range of VR applications.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Santos 2008 (EGVE) cited 
+\begin_inset Quotes eld
+\end_inset
+
+3D user interfaces : theory and practice
+\begin_inset Quotes erd
+\end_inset
+
+ book by Bowman et al here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:assume-4dof-nav"
+
+\end_inset
+
+Navigation in 4 degrees of freedom (3 translation, and rotation about 
+\begin_inset Formula $y$
+\end_inset
+
+ - the direction of gravity) is both sufficient, and preferable to full
+ 6DoF navigation.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:assume-one-size-doesnt-fit-all"
+
+\end_inset
+
+Navigation techniques are an open field, so no single technique should be
+ imposed on all applications.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:assume-incremental-common"
+
+\end_inset
+
+Incremental navigation is the more common scenario (as opposed to absolute
+ navigation)
+\end_layout
+
+\begin_layout Section
+Requirements
+\end_layout
+
+\begin_layout Subsection
+Navigation must update the transform between the room and the world frames
+ based on user input.
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+This is the motivating purpose of navigation.
+\end_layout
+
+\begin_layout Subsubsection
+Navigation must be able to update in such a way to simulate user translation
+ and rotation about the 
+\begin_inset Formula $y$
+\end_inset
+
+ axis.
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+This is effectively walking/hovering in 3D and turning without changing
+ the direction of gravity to reduce DoF from a full 3 translation and 3
+ rotational DoF.
+\end_layout
+
+\begin_layout Paragraph*
+History
+\end_layout
+
+\begin_layout Standard
+Initially only translation was supported, based on the idea that we have
+ a C6 and body-based rotation is superior.
+ However, not having rotation has been shown to be insufficient - you don't
+ usually have a C6.
+\end_layout
+
+\begin_layout Standard
+The initial navigation system does support rotation (about the 
+\begin_inset Formula $y$
+\end_inset
+
+ axis at the room origin) but only for user-defined navigation functions,
+ not the default.
+\end_layout
+
+\begin_layout Subsection
+The relationship between user input and transform updates (
+\begin_inset Quotes eld
+\end_inset
+
+navigation function
+\begin_inset Quotes erd
+\end_inset
+
+) must be separate and able to be defined by an application.
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+See assumption
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:assume-one-size-doesnt-fit-all"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph*
+History
+\end_layout
+
+\begin_layout Subsubsection
+Potentially more than one navigation function should be supported simultaneously.
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+Consider, for example, having a redirected-walking-in-place with a gamepad
+ for precision movement.
+ Each frame, the sum of translation and sum of rotation updates are applied.
+\end_layout
+
+\begin_layout Standard
+This should integrate well with Actions - multiple Actions should be able
+ to submit navigation updates without having to know about each other.
+\end_layout
+
+\begin_layout Subsection
+A default navigation function must be provided.
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+See assumption
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:assume-navigation-useful"
+
+\end_inset
+
+ - so unless an application specifies otherwise, navigation should be provided.
+\end_layout
+
+\begin_layout Subsubsection
+The default navigation function should allow 4 DoF navigation.
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+See assumption
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:assume-4dof-nav"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph*
+History
+\end_layout
+
+\begin_layout Standard
+The previous version of navigation only allowed translation, resulting in
+ difficult situations in immersive environments and use of simulated head
+ movement controls in a simulator environment.
+\end_layout
+
+\begin_layout Subsubsection
+The default navigation function should be allowed to be replaced.
+\end_layout
+
+\begin_layout Standard
+See assumption
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:assume-one-size-doesnt-fit-all"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Incremental changes to navigation state must be supported
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+See assumption
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:assume-incremental-common"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Incremental translation shall be a vector specified/interpreted with respect
+ to the current 
+\begin_inset Quotes eld
+\end_inset
+
+room
+\begin_inset Quotes erd
+\end_inset
+
+ frame
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+Seems to follow from assumption
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:assume-incremental-common"
+
+\end_inset
+
+.
+ User-centric.
+\end_layout
+
+\begin_layout Subsubsection
+Incremental rotation shall be a scalar (in radians) along with a 2-d location
+ in the current 
+\begin_inset Quotes eld
+\end_inset
+
+room
+\begin_inset Quotes erd
+\end_inset
+
+ frame specifying an axis of rotation.
+\end_layout
+
+\begin_layout Paragraph*
+Questions
+\end_layout
+
+\begin_layout Standard
+Perhaps defaulting to rotation about head position projected on the 
+\begin_inset Formula $(x,z)$
+\end_inset
+
+ plane? (user-centric rotation)
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+See assumption
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:assume-4dof-nav"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph*
+History
+\end_layout
+
+\begin_layout Standard
+Initially all rotation was about 
+\begin_inset Formula $y$
+\end_inset
+
+ axis at room origin, which isn't too natural feeling.
+\end_layout
+
+\begin_layout Subsection
+Absolute changes to navigation state (set/reset) must be supported
+\end_layout
+
+\begin_layout Paragraph*
+Questions
+\end_layout
+
+\begin_layout Standard
+Do we require the specification of a full transform matrix here?
+\end_layout
+
+\begin_layout Paragraph*
+Rationale
+\end_layout
+
+\begin_layout Standard
+May want to 
+\begin_inset Quotes eld
+\end_inset
+
+return to start,
+\begin_inset Quotes erd
+\end_inset
+
+ or programmatically move to a different part of the world, despite assumption
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:assume-incremental-common"
+
+\end_inset
+
+.
+ That assumption also indicatest that the importance here is that the interface
+ exists, and not necessarily that it is ideal - it may evolve over time.
+\end_layout
+
+\end_body
+\end_document
