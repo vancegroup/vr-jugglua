@@ -154,6 +154,38 @@ On the technical side, the projection matrices are fixed such that the room
 \end_layout
 
 \begin_layout Subsubsection
+Application Sees Two Roots
+\end_layout
+
+\begin_layout Standard
+The application writer by default is provided with two scenegraph root nodes
+ that they can add children to: 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+RelativeTo.World
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex Code
+status collapsed
+
+\begin_layout Plain Layout
+RelativeTo.Room
+\end_layout
+
+\end_inset
+
+, with the obvious meaning.
+ Though they are of course related, neither is a child of the other, to
+ keep the transform between room and world under navigation control and
+ preserve the two-root sense.
+\end_layout
+
+\begin_layout Subsubsection
 Tracked Coordinate Frames
 \end_layout
 
