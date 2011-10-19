@@ -17,6 +17,11 @@ Dependencies:
 LuaBind, osgLua, and Lua 5.1.4 are included in the source tree and integrated
 in to the build - you do not need to build these separately.
 
+Community:
+----------
+You can email our mailing list at <vrjugglua@librelist.com> or see the archives at http://librelist.com/browser/vrjugglua/
+
+
 Maintainer:
 -----------
 Ryan Pavlik
