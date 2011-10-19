@@ -12,7 +12,7 @@ xform = Transform{
 	orientation = AngleAxis(Degrees(-90), Axis{1.0, 0.0, 0.0}),
 }
 -- 1)import a model:
-m = Model("examples/model/cessna.osg")
+m = Model("examples/models/cessna.osg")
 
 -- 3) Add the model object "m" to the transform node "xform", using the 'addChild' method, the orientation
 --will be inherted by the children of xform 
