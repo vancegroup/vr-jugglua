@@ -72,21 +72,28 @@ namespace vrjLua {
 		/// Set max # to run so we don't run anything added between
 		/// data synchronization and postframe
 		_maxRun = _buf.size();
+#ifdef RUNBUFFER_VERBOSE
 		if (_maxRun > 0) {
 			VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_STATUS)
 			        << "Told to write objects - will write " << _maxRun
 			        << VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_STATUS);
 		}
+#endif
+
 		writer->writeUint32(_maxRun);
 		for (unsigned int i = 0; i < _maxRun; ++i) {
+#ifdef RUNBUFFER_VERBOSE
 			VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_STATUS)
 			        << "Writing: " << _buf[i]
 			        << VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_STATUS);
+#endif
 			writer->writeString(_buf[i]);
 		}
+#ifdef RUNBUFFER_VERBOSE
 		VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_STATUS)
 		        << "Done writing."
 		        << VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_STATUS);
+#endif
 
 	}
 
@@ -94,9 +101,11 @@ namespace vrjLua {
 		vpr::Guard<vpr::CondVar> guard(_cond, true);
 		_maxRun = reader->readUint32();
 		if (_maxRun > 0) {
+#ifdef RUNBUFFER_VERBOSE
 			VRJLUA_MSG_START(dbgVRJLUA_BUFFER, MSG_STATUS)
 			        << "Told to read objects - will read " << _maxRun
 			        << VRJLUA_MSG_END(dbgVRJLUA_BUFFER, MSG_STATUS);
+#endif
 		}
 		_buf.clear();
 		for (unsigned int i = 0; i < _maxRun; ++i) {

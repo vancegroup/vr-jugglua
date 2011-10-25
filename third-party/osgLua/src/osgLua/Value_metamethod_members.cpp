@@ -65,7 +65,7 @@ namespace osgLua {
 			const introspection::Type &type = v->getType();
 			if (!type.isDefined()) {
 				return luaL_error(L, "Type not defined '%s'",
-				           type.getStdTypeInfo().name());
+				                  type.getStdTypeInfo().name());
 			}
 
 			const introspection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));
@@ -162,7 +162,7 @@ namespace osgLua {
 			const introspection::Type &type = v->getType();
 			if (!type.isDefined()) {
 				return luaL_error(L, "Type not defined %s",
-				           type.getStdTypeInfo().name());
+				                  type.getStdTypeInfo().name());
 			}
 
 			const introspection::PropertyInfo * prop = lookupProperty(type, lua_tostring(L, 2));

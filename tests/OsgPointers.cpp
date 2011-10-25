@@ -45,6 +45,10 @@ void vecFunc(osg::Vec3d vec) {
 	std::cout << "Got the vector " << vec.x() << "," << vec.y() << "," << vec.z() << std::endl;
 }
 
+void vecfFunc(osg::Vec3f vec) {
+	std::cout << "Got the float vector " << vec.x() << "," << vec.y() << "," << vec.z() << std::endl;
+}
+
 void matrixFunc(osg::Matrixd mat) {
 	std::cout << "Got the matrix:" << std::endl;
 	for (unsigned int row = 0; row < 4; ++row) {
@@ -65,6 +69,7 @@ struct Fixture {
 		    def("nodeFunc", &nodeFunc),
 		    def("groupFunc", &groupFunc),
 		    def("vecFunc", &vecFunc),
+		    def("vecfFunc", &vecfFunc),
 		    def("matrixFunc", &matrixFunc)
 		];
 	}
@@ -139,6 +144,11 @@ BOOST_AUTO_TEST_CASE(ValSingleConversion) {
 BOOST_AUTO_TEST_CASE(ValSingleConversionFromFloat) {
 	Fixture f;
 	BOOST_CHECK(f.s.runString("vec = osg.Vec3f(); vecFunc(vec)"));
+}
+
+BOOST_AUTO_TEST_CASE(ValSingleConversionFromDouble) {
+	Fixture f;
+	BOOST_CHECK(f.s.runString("vec = osg.Vec3d(); vecfFunc(vec)"));
 }
 
 BOOST_AUTO_TEST_CASE(ValInvalidConversion) {

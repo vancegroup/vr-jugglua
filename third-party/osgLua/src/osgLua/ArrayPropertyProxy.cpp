@@ -33,8 +33,7 @@ namespace osgLua {
 	ArrayPropertyProxy::ArrayPropertyProxy(introspection::Value  const& instance, const introspection::PropertyInfo * property)
 		: _instance(instance)
 		, _propInfo(property)
-		, _propName(_propInfo->getName())
-	{
+		, _propName(_propInfo->getName()) {
 		assert(_propInfo);
 	}
 

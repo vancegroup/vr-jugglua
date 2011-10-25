@@ -194,14 +194,14 @@ namespace osgLua {
 
 	void Value::push(lua_State *L, const introspection::Value &original) {
 		if (detail::pushIfTypeIs<bool>(L, original) ||
-			detail::pushIfTypeIs<int>(L, original) ||
-			detail::pushIfTypeIs<unsigned int>(L, original) ||
-			detail::pushIfTypeIs<lua_Integer>(L, original) ||
-			detail::pushIfTypeIs<float>(L, original) ||
-			detail::pushIfTypeIs<double>(L, original) ||
-			detail::pushIfTypeIs<lua_Number>(L, original) ||
-			detail::pushIfTypeIs<const char*>(L, original) ||
-			detail::pushIfTypeIs<const std::string>(L, original)) {
+		        detail::pushIfTypeIs<int>(L, original) ||
+		        detail::pushIfTypeIs<unsigned int>(L, original) ||
+		        detail::pushIfTypeIs<lua_Integer>(L, original) ||
+		        detail::pushIfTypeIs<float>(L, original) ||
+		        detail::pushIfTypeIs<double>(L, original) ||
+		        detail::pushIfTypeIs<lua_Number>(L, original) ||
+		        detail::pushIfTypeIs<const char*>(L, original) ||
+		        detail::pushIfTypeIs<const std::string>(L, original)) {
 			return;
 		}
 
