@@ -310,6 +310,7 @@ namespace luabind {
 				typename boost::enable_if <
 				IsOSGValue<T>
 				>::type
+				/// typename boost::enable_if< boost::remove_const< typename boost::remove_reference<IsOSGValue<T> >::type >::type > >::type>
 				> {
 			static void get(lua_State *L) {
 				lua_pushstring(L, "[osgLuaBind value] ");
