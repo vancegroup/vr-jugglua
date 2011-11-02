@@ -322,7 +322,7 @@ namespace luabind {
 
 namespace boost {
 	/// Anything defined as an OSG Value does not inherit from the osg base referenced object type
-	BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, ::luabind::detail::osg_ref_base_t, T, luabind::IsOSGValue<T>::value)
+	//BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, ::luabind::detail::osg_ref_base_t, T, luabind::IsOSGValue<T>::value)
 }
 
 #include <boost/type_traits/detail/bool_trait_undef.hpp>
