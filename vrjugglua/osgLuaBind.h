@@ -287,27 +287,16 @@ namespace luabind {
 //-- Value Types --//
 
 namespace luabind {
-	/// Base class for "true" osg type traits.
-	struct OSGTraitTrue {
-		static const bool value = true;
-		static const bool truevalue = true;
-		typedef void type;
-	};
-
 	/// Templated type trait: all types are assumed to
 	/// not be OSG value types unless otherwise stated.
 	template <typename T>
-	struct IsOSGValue {
-		static const bool value = false;
-	};
+	struct IsOSGValue : boost::false_type {};
 
 	/// Types flagged as being OSG value types should be converted
 	/// with the osglua value converter.
 	template <typename T>
 	struct default_converter < T,
-			typename boost::enable_if_c <
-			IsOSGValue<T>::value
-			>::type
+			typename boost::enable_if< IsOSGValue<T> >::type
 			>
 			: osglua_val_converter_base<T>
 		{};
@@ -318,8 +307,8 @@ namespace luabind {
 		/// osgLuaBind.
 		template <typename T>
 		struct type_to_string < T,
-				typename boost::enable_if_c <
-				IsOSGValue<T>::value
+				typename boost::enable_if <
+				IsOSGValue<T>
 				>::type
 				> {
 			static void get(lua_State *L) {
