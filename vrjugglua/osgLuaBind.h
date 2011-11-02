@@ -225,7 +225,7 @@ namespace luabind {
 	template <typename T>
 	struct default_converter < T*,
 			typename boost::enable_if <
-			typename boost::is_base_of< detail::osg_ref_base_t, T>::type
+			typename boost::is_base_and_derived< detail::osg_ref_base_t, T>::type
 			>::type >
 			: osglua_ref_converter_base<T>
 		{};
