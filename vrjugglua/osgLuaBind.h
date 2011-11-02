@@ -48,24 +48,16 @@
 #include <boost/type_traits/detail/bool_trait_def.hpp>
 namespace boost {
 	BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, T, lua_State, false)
+	template<typename T>
+	static T* get_pointer(osg::ref_ptr<T> const & ptr) {
+		return ptr.get();
+	}
 }
 
 namespace luabind {
 	namespace detail {
 		// Convenience typedef for the root of the OSG referenced object class hierarchy.
 		typedef ::osg::Object osg_ref_base_t;
-
-		/// Function template to "unwrap" a pointer into another pointer
-		template <typename RetT, typename ClassT>
-		static RetT unwrap_osg_ptr(ClassT * const &ptr) {
-			return ptr;
-		}
-
-		/// Function template to "unwrap" a ref_ptr into a raw pointer
-		template <typename RetT, typename ClassT>
-		static RetT unwrap_osg_ptr(osg::ref_ptr<ClassT> const & ptr) {
-			return ptr.get();
-		}
 
 		/// Type-dispatched function for determine the score possible by casting.
 		/// Default version is for value types.
@@ -174,7 +166,7 @@ namespace luabind {
 
 		/// Transition C++ to Lua
 		void to(lua_State* L, container_t const& x) {
-			osgLua::Value::push(L, detail::unwrap_osg_ptr<raw_ptr_t>(x));
+			osgLua::Value::push(L, get_pointer(x));
 		}
 
 
@@ -341,7 +333,7 @@ namespace luabind {
 
 namespace boost {
 	/// Anything defined as an OSG Value does not inherit from the osg base referenced object type
-	BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, ::luabind::detail::osg_ref_base_t, T, luabind::IsOSGValue<T>::truevalue)
+	BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, ::luabind::detail::osg_ref_base_t, T, luabind::IsOSGValue<T>::value)
 }
 
 #include <boost/type_traits/detail/bool_trait_undef.hpp>
@@ -359,7 +351,7 @@ namespace boost {
 	namespace luabind { \
 		template <> \
 		struct IsOSGValue< T > \
-		  : OSGTraitTrue \
+		: boost::true_type \
 		{}; \
 		\
 	}
