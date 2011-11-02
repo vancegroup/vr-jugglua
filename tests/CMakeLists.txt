@@ -87,6 +87,8 @@ endforeach()
 add_boost_test(OsgPointers
 	SOURCES
 	OsgPointers.cpp
+	LAUNCHER
+	${GENERIC_LAUNCHER_COMMAND}
 	LIBRARIES
 	vrjugglua
 	TESTS
@@ -117,6 +119,8 @@ add_boost_test(OsgPointers
 add_boost_test(OsgNumericConversion
 	SOURCES
 	OsgNumericConversion.cpp
+	LAUNCHER
+	${GENERIC_LAUNCHER_COMMAND}
 	LIBRARIES
 	vrjugglua
 	TESTS
