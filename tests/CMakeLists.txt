@@ -15,6 +15,10 @@ include_directories(${VRJUGGLER_INCLUDE_DIRS}
 set(TESTS_DATA "${CMAKE_CURRENT_SOURCE_DIR}/data")
 set(LUA_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luatests")
 
+###
+# Begin Lua-only tests
+###
+
 set(LUA_TEST_SCRIPTS
 	actions-loads
 	actions-canremove
@@ -51,6 +55,7 @@ foreach(script ${LUA_TEST_SCRIPTS})
         "${LUA_TEST_DIR}/${script}.lua")
 endforeach()
 
+# Test to make sure all the examples run.
 set(EXAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../examples")
 file(GLOB_RECURSE EXAMPLES
 	RELATIVE "${EXAMPLE_DIR}"
@@ -69,6 +74,15 @@ foreach(EXAMPLE ${EXAMPLES})
 			"${CMAKE_CURRENT_SOURCE_DIR}/shutdown-after-5-frames.lua")
 	endif()
 endforeach()
+
+
+###
+# End Lua-only tests
+###
+
+###
+# Begin C++ tests
+###
 
 add_boost_test(OsgPointers
 	SOURCES
