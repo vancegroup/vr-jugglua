@@ -130,3 +130,16 @@ add_boost_test(OsgNumericConversion
 	Vec3fToVec3dUsingSet
 	GetConversionVec3fToVec3d
 )
+
+add_boost_test(SetPropertyWithOsgType
+	SOURCES
+	SetPropertyWithOsgType.cpp
+	LAUNCHER
+	${GENERIC_LAUNCHER_COMMAND}
+	LIBRARIES
+	vrjugglua
+	TESTS
+	TestMatrixAssignment
+	TestPassConstByRef
+	TestPassConst
+)
