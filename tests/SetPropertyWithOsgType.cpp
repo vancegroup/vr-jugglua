@@ -99,10 +99,10 @@ BOOST_AUTO_TEST_CASE(TestMatrixAssignment) {
 
 BOOST_AUTO_TEST_CASE(TestPassConstByRef) {
 	Fixture f;
-	BOOST_CHECK(f.s.runString("passconstbyref(osg.Matrixd.identity()"));
+	BOOST_CHECK(f.s.runString("passconstbyref(osg.Matrixd.identity())"));
 }
 
 BOOST_AUTO_TEST_CASE(TestPassConst) {
 	Fixture f;
-	BOOST_CHECK(f.s.runString("passconst(osg.Matrixd.identity()"));
+	BOOST_CHECK(f.s.runString("passconst(osg.Matrixd.identity())"));
 }
