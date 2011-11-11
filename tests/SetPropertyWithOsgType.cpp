@@ -34,9 +34,9 @@ using namespace luabind;
 
 //To run the tests:
 //change directory to build\vr-jugglua
-//ctest -C RelWithDebInfo -R OsgPointer
-//or for verbose
-//ctest -C RelWithDebInfo -R OsgPointer -V
+//ctest -C RelWithDebInfo -R SetPropertyWithOsgType --output-on-failure
+//or for verbose output for all
+//ctest -C RelWithDebInfo -R SetPropertyWithOsgType -V
 
 //define how to output a matrix (this will be used later by BOOST)
 namespace osg {
