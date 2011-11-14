@@ -133,42 +133,34 @@ namespace osgLua {
 				}
 		};
 
-		template<typename T1, typename T2>
-		inline void registerVectorPrecisionConverter() {
+		template<template<typename, typename> class Converter, typename T1, typename T2>
+		inline void registerUnidirectionalConverter() {
 			if (!introspection::Reflection::getConverter(typeof(T1), typeof(T2))) {
-				introspection::ConverterProxy cvt1to2(typeof(T1), typeof(T2), new VectorPrecisionConverter<T1, T2>());
-			}
-			if (!introspection::Reflection::getConverter(typeof(T2), typeof(T1))) {
-				introspection::ConverterProxy cvt2to1(typeof(T2), typeof(T1), new VectorPrecisionConverter<T2, T1>());
+				introspection::ConverterProxy cvt1to2(typeof(T1), typeof(T2), new Converter<T1, T2>());
 			}
 		}
-
-		template<typename T1, typename T2>
-		inline void registerMatrixPrecisionConverter() {
-			if (!introspection::Reflection::getConverter(typeof(T1), typeof(T2))) {
-				introspection::ConverterProxy cvt1to2(typeof(T1), typeof(T2), new MatrixPrecisionConverter<T1, T2>());
-			}
-			if (!introspection::Reflection::getConverter(typeof(T2), typeof(T1))) {
-				introspection::ConverterProxy cvt2to1(typeof(T2), typeof(T1), new MatrixPrecisionConverter<T2, T1>());
-			}
+		template<template<typename, typename> class Converter, typename T1, typename T2>
+		inline void registerBidirectionalConverter() {
+			registerUnidirectionalConverter<Converter, T1, T2>();
+			registerUnidirectionalConverter<Converter, T2, T1>();
 		}
 
 	} // end of anonymous namespace
 
 	void registerCustomConverters() {
 		std::cerr << "Registering custom converters." << std::endl;
-		registerVectorPrecisionConverter<osg::Vec2d, osg::Vec2f>();
-		registerVectorPrecisionConverter<osg::Vec2s, osg::Vec2b>();
+		registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec2d, osg::Vec2f>();
+		registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec2s, osg::Vec2b>();
 
-		registerVectorPrecisionConverter<osg::Vec3d, osg::Vec3f>();
+		registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec3d, osg::Vec3f>();
 
-		registerVectorPrecisionConverter<osg::Vec4d, osg::Vec4f>();
-		//registerVectorPrecisionConverter<osg::Vec4f, osg::Vec4s>();
-		registerVectorPrecisionConverter<osg::Vec4s, osg::Vec4b>();
-		registerVectorPrecisionConverter<osg::Vec4b, osg::Vec4ub>();
+		registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec4d, osg::Vec4f>();
+		//registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec4f, osg::Vec4s>();
+		registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec4s, osg::Vec4b>();
+		registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec4b, osg::Vec4ub>();
 
-		registerMatrixPrecisionConverter<osg::Matrixd, osg::Matrixf>();
-		registerMatrixPrecisionConverter<osg::Matrixd, osg::RefMatrixd>();
-		registerMatrixPrecisionConverter<osg::Matrixf, osg::RefMatrixf>();
+		registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixd, osg::Matrixf>();
+		registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixd, osg::RefMatrixd>();
+		registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixf, osg::RefMatrixf>();
 	}
 } // end of namespace osgLua
