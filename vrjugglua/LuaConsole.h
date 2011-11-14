@@ -68,7 +68,7 @@ namespace vrjLua {
 
 
 			private:
-				friend class LuaConsole;
+				friend class ::vrjLua::LuaConsole;
 				LuaConsoleInitialOutputProxy(LuaConsole * console)
 					: _console(console)
 					{}
