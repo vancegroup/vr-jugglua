@@ -206,6 +206,10 @@ namespace osgLua {
 		}
 
 		// if not is a basic type...
+		_pushWrappedValue(L, original);
+	}
+
+	void Value::_pushWrappedValue(lua_State *L, const introspection::Value &original) {
 		// create a userdata
 		Value** data = (Value**) lua_newuserdata(L, sizeof(Value*));
 
@@ -216,7 +220,6 @@ namespace osgLua {
 		Value *v = new Value(original); //lua's copy
 		*data = v;
 	}
-
 
 
 	Value* Value::get(lua_State *L, int index) {

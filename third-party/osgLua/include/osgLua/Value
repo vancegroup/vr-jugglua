@@ -26,6 +26,9 @@ namespace osg { class Referenced; }
 #include <osg/ref_ptr>
 
 namespace osgLua {
+	namespace detail {
+		template<typename T> int explicitNumericType(lua_State * L);
+	}
 
 	class Value {
 		public:
@@ -55,6 +58,7 @@ namespace osgLua {
 			static int createByName(lua_State *L);
 
 		private:
+			template<typename T> friend int detail::explicitNumericType(lua_State * L);
 			Value();
 			Value(const introspection::Value &v);
 			~Value();
@@ -63,6 +67,10 @@ namespace osgLua {
 
 			introspection::Value _value;
 			osg::ref_ptr<osg::Referenced> _referenced;
+
+			/// Create a osgLua::Value wrapper for the object passed and
+			/// push it on the Lua stack.
+			static void _pushWrappedValue(lua_State *L, const introspection::Value &original);
 
 			/// Given an introspection::Type, create the metatable if it has
 			/// not yet been created, and in any case, leave the metatable on the

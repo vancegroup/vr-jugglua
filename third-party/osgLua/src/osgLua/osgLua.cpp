@@ -34,6 +34,23 @@
 
 typedef osgDB::DynamicLibrary osglib;
 
+namespace osgLua {
+	namespace detail {
+		template<typename ValueType>
+		inline int explicitNumericType(lua_State *L) {
+			if (lua_gettop(L) < 1) {
+				return luaL_error(L, "Must pass a number!");
+			}
+			if (!lua_isnumber(L, 1)) {
+				return luaL_error(L, "Expected a number as the first and only parameter!");
+			}
+			lua_Number x = lua_tonumber(L, 1);
+			Value::_pushWrappedValue(L, introspection::Value(static_cast<ValueType>(x)));
+			return 1;
+		}
+	} // end of namespace detail
+} // end of namespace osgLua
+
 int unload_osgWrapper(lua_State *L) {
 	osglib **ptr = (osglib**) lua_touserdata(L, 1);
 	osglib *lib = *ptr;
@@ -65,6 +82,19 @@ void osgLua::open(lua_State *L) {
 		lua_setfield(L, -2, "saveObjectFile");
 		lua_pushcfunction(L, osgLua::NodeCallback::createFromLua);
 		lua_setfield(L, -2, "NodeCallback");
+
+#define REGISTER_EXPLICIT_NUMERIC_TYPE(X) \
+		lua_pushcfunction(L, &osgLua::detail::explicitNumericType<X>); \
+		lua_setfield(L, -2, #X)
+
+		REGISTER_EXPLICIT_NUMERIC_TYPE(GLbyte);
+		REGISTER_EXPLICIT_NUMERIC_TYPE(GLshort);
+		REGISTER_EXPLICIT_NUMERIC_TYPE(GLint);
+		REGISTER_EXPLICIT_NUMERIC_TYPE(GLubyte);
+		REGISTER_EXPLICIT_NUMERIC_TYPE(GLushort);
+		REGISTER_EXPLICIT_NUMERIC_TYPE(GLfloat);
+		REGISTER_EXPLICIT_NUMERIC_TYPE(GLdouble);
+#undef REGISTER_EXPLICIT_NUMERIC_TYPE
 
 		lua_setglobal(L, "osgLua");
 	}
