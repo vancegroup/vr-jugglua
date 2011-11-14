@@ -84,6 +84,18 @@ namespace osgLua {
 				}
 		};
 
+		template<typename SrcType, typename DestType>
+		class NumberPrecisionConverter : public introspection::Converter {
+
+				virtual ~NumberPrecisionConverter() {}
+				virtual introspection::Value convert(const introspection::Value& src) const {
+					return introspection::Value(static_cast<DestType>(introspection::variant_cast<SrcType>(src)));
+				}
+
+				virtual introspection::CastType getCastType() const {
+					return introspection::STATIC_CAST;
+				}
+		};
 
 		template<typename T>
 		struct MatrixInfo;
@@ -162,5 +174,8 @@ namespace osgLua {
 		registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixd, osg::Matrixf>();
 		registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixd, osg::RefMatrixd>();
 		registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixf, osg::RefMatrixf>();
+
+		registerUnidirectionalConverter<NumberPrecisionConverter, int, float>();
+		registerUnidirectionalConverter<NumberPrecisionConverter, int, double>();
 	}
 } // end of namespace osgLua
