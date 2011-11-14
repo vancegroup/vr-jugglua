@@ -148,6 +148,7 @@ namespace osgLua {
 		template<template<typename, typename> class Converter, typename T1, typename T2>
 		inline void registerUnidirectionalConverter() {
 			if (!introspection::Reflection::getConverter(typeof(T1), typeof(T2))) {
+				std::cerr << "Registering converter from " << typeof(T1).getQualifiedName() << " to " << typeof(T2).getQualifiedName() << std::endl;
 				introspection::ConverterProxy cvt1to2(typeof(T1), typeof(T2), new Converter<T1, T2>());
 			}
 		}
