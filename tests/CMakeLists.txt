@@ -34,6 +34,7 @@ set(LUA_TEST_SCRIPTS
 	osglua-basicwrappers
 	osglua-dotnotcolon
 	osglua-enums
+	osglua-explicitnumerictypes
 	osglua-matrixmath
 	osglua-missingmethod
 	osglua-props
