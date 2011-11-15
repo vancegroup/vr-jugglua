@@ -80,11 +80,11 @@ struct Fixture {
 	Fixture() {
 		LuaStatePtr ptr(s.getLuaState().lock());
 		module(ptr.get())[
+			def("passconstbyref", &passconstbyref),
+			def("passconst", &passconst),
 			class_<A>("A")
 			.def(constructor<>())
 			.property("val", &A::get, &A::set)
-			.def("passconstbyref", &passconstbyref)
-			.def("passconst", &passconst)
 		];
 	}
 	LuaScript s;
