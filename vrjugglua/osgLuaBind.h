@@ -225,7 +225,7 @@ namespace luabind {
 	template <typename T>
 	struct default_converter < T*,
 			typename boost::enable_if <
-			typename boost::is_base_of< detail::osg_ref_base_t, T>::type
+			typename boost::is_base_and_derived< detail::osg_ref_base_t, T>::type
 			>::type >
 			: osglua_ref_converter_base<T>
 		{};
@@ -287,27 +287,16 @@ namespace luabind {
 //-- Value Types --//
 
 namespace luabind {
-	/// Base class for "true" osg type traits.
-	struct OSGTraitTrue {
-		static const bool value = true;
-		static const bool truevalue = true;
-		typedef void type;
-	};
-
 	/// Templated type trait: all types are assumed to
 	/// not be OSG value types unless otherwise stated.
 	template <typename T>
-	struct IsOSGValue {
-		static const bool value = false;
-	};
+	struct IsOSGValue : boost::false_type {};
 
 	/// Types flagged as being OSG value types should be converted
 	/// with the osglua value converter.
 	template <typename T>
 	struct default_converter < T,
-			typename boost::enable_if_c <
-			IsOSGValue<T>::value
-			>::type
+			typename boost::enable_if< IsOSGValue<T> >::type
 			>
 			: osglua_val_converter_base<T>
 		{};
@@ -318,9 +307,10 @@ namespace luabind {
 		/// osgLuaBind.
 		template <typename T>
 		struct type_to_string < T,
-				typename boost::enable_if_c <
-				IsOSGValue<T>::value
+				typename boost::enable_if <
+				IsOSGValue<T>
 				>::type
+				/// typename boost::enable_if< boost::remove_const< typename boost::remove_reference<IsOSGValue<T> >::type >::type > >::type>
 				> {
 			static void get(lua_State *L) {
 				lua_pushstring(L, "[osgLuaBind value] ");
@@ -333,7 +323,7 @@ namespace luabind {
 
 namespace boost {
 	/// Anything defined as an OSG Value does not inherit from the osg base referenced object type
-	BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, ::luabind::detail::osg_ref_base_t, T, luabind::IsOSGValue<T>::value)
+	//BOOST_TT_AUX_BOOL_TRAIT_PARTIAL_SPEC2_1(typename T, is_base_and_derived, ::luabind::detail::osg_ref_base_t, T, luabind::IsOSGValue<T>::value)
 }
 
 #include <boost/type_traits/detail/bool_trait_undef.hpp>

@@ -15,6 +15,10 @@ include_directories(${VRJUGGLER_INCLUDE_DIRS}
 set(TESTS_DATA "${CMAKE_CURRENT_SOURCE_DIR}/data")
 set(LUA_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luatests")
 
+###
+# Begin Lua-only tests
+###
+
 set(LUA_TEST_SCRIPTS
 	actions-loads
 	actions-canremove
@@ -52,6 +56,7 @@ foreach(script ${LUA_TEST_SCRIPTS})
         "${LUA_TEST_DIR}/${script}.lua")
 endforeach()
 
+# Test to make sure all the examples run.
 set(EXAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../examples")
 file(GLOB_RECURSE EXAMPLES
 	RELATIVE "${EXAMPLE_DIR}"
@@ -71,9 +76,20 @@ foreach(EXAMPLE ${EXAMPLES})
 	endif()
 endforeach()
 
+
+###
+# End Lua-only tests
+###
+
+###
+# Begin C++ tests
+###
+
 add_boost_test(OsgPointers
 	SOURCES
 	OsgPointers.cpp
+	LAUNCHER
+	${GENERIC_LAUNCHER_COMMAND}
 	LIBRARIES
 	vrjugglua
 	TESTS
@@ -104,6 +120,8 @@ add_boost_test(OsgPointers
 add_boost_test(OsgNumericConversion
 	SOURCES
 	OsgNumericConversion.cpp
+	LAUNCHER
+	${GENERIC_LAUNCHER_COMMAND}
 	LIBRARIES
 	vrjugglua
 	TESTS
@@ -112,4 +130,17 @@ add_boost_test(OsgNumericConversion
 	Vec3fToVec3dCompatibleSet
 	Vec3fToVec3dUsingSet
 	GetConversionVec3fToVec3d
+)
+
+add_boost_test(SetPropertyWithOsgType
+	SOURCES
+	SetPropertyWithOsgType.cpp
+	LAUNCHER
+	${GENERIC_LAUNCHER_COMMAND}
+	LIBRARIES
+	vrjugglua
+	TESTS
+	TestMatrixAssignment
+	TestPassConstByRef
+	TestPassConst
 )
