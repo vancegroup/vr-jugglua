@@ -296,9 +296,15 @@ namespace luabind {
 	/// with the osglua value converter.
 	template <typename T>
 	struct default_converter < T,
-			typename boost::enable_if< IsOSGValue<T> >::type
+			typename boost::enable_if<
+				IsOSGValue<
+					typename boost::remove_const<
+						typename boost::remove_reference<T>::type
+					>::type> >::type
 			>
-			: osglua_val_converter_base<T>
+			: osglua_val_converter_base<typename boost::remove_const<
+						typename boost::remove_reference<T>::type
+					>::type>
 		{};
 	namespace detail {
 
