@@ -159,8 +159,9 @@ namespace osgLua {
 			lua_pushstring(L, name);
 			lua_pushcclosure(L, staticMethodCall, 2);
 			return 1;
+		} catch (introspection::TypeNotDefinedException &) {
+			return luaL_error(L, "Type '%s' does not have a wrapper defined, so it is not accessible through osgLua.", base.c_str());
 		}
-
 	}
 
 	int Type::call(lua_State *L) {
