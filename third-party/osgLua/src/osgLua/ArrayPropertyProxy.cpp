@@ -194,5 +194,6 @@ namespace osgLua {
 		lua_setfield(L, -2, "insert");
 		Base::NonConstInstanceMethod::pushInstanceMethod<&ArrayPropertyProxy::remove>(L);
 		lua_setfield(L, -2, "remove");
+		lua_pop(L, 1); // pop the method registry metatable
 	}
 }
