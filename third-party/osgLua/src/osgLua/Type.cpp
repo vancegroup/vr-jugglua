@@ -161,6 +161,8 @@ namespace osgLua {
 			return 1;
 		} catch (introspection::TypeNotDefinedException &) {
 			return luaL_error(L, "Type '%s' does not have a wrapper defined, so it is not accessible through osgLua.", base.c_str());
+		} catch (introspection::Exception & e) {
+			return luaL_error(L, "osgLua introspection error:  %s", e.what().c_str());
 		}
 	}
 
