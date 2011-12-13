@@ -1,0 +1,15 @@
+VR JuggLua Binary Snapshot README
+=================================
+
+This is a binary snapshot of VR JuggLua that is fully ready-to-use. Important things to note:
+
+- All dependencies are bundled (VR Juggler, OpenSceneGraph, Lua, etc.) - you do not need to install anything extra, set any environment variables, or anything else! This is self-contained: feel free to put it on a USB drive or network drive and use it anywhere.
+
+- The primary interface for interacting with VR JuggLua is the *Scenegraph Navigation Testbed*, aka `NavTestbed`. This is located in the `bin` directory: just run that to access the interactive interface.
+
+- To save and edit scripts, a good (programmer's) text editor is recommended. Suggested editors include:
+    - Windows: [Notepad++](http://notepad-plus-plus.org/) - do NOT use Word, and Windows Notepad will probably not work.
+    - Linux: [Gedit](http://projects.gnome.org/gedit/) - available through your distribution and probably already installed.
+    - Mac OS X: You probably already have a preferred one, but Strawberry/Fraise/Smultron works if you don't already have a favorite. <https://github.com/cmarrin/Strawberry>
+
+- If you find any problems, or have suggestions, etc, please file them at the GitHub issues page:  <https://github.com/vance-group/vr-jugglua/issues> Please be sure to mention the version you're using and where you got it.

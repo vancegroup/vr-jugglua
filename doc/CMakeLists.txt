@@ -1,0 +1,14 @@
+if(WIN32)
+	set(BINARY_README_NAME BINARY_README.txt)
+else()
+	set(BINARY_README_NAME BINARY_README.mkd)
+endif()
+if(INSTALL_SNAPSHOT_README_TO_ROOT)
+	install(FILES BinarySnapshotReadme.mkd
+		DESTINATION .
+		RENAME ${BINARY_README_NAME})
+else()
+	install(FILES BinarySnapshotReadme.mkd
+		DESTINATION ${SHARE_DIR}
+		RENAME ${BINARY_README_NAME})
+endif()

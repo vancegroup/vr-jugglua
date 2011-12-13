@@ -38,6 +38,13 @@ option(BUILD_QT_GUI "Build Qt-based GUI apps." on)
 
 option(INSTALL_CXX_SDK "Should we install the headers and libraries needed for C++ development using VRJLua?" on)
 
+if(WIN32 OR APPLE)
+	set(SNAPSHOT_ROOT_README_DEFAULT on)
+else()
+	set(SNAPSHOT_ROOT_README_DEFAULT off)
+endif()
+option(INSTALL_SNAPSHOT_README_TO_ROOT "Should we install the binary snapshot readme to the root install directory?" ${SNAPSHOT_ROOT_README_DEFAULT})
+
 option(BUILD_WITHOUT_TERMINAL "Build GUI applications without the terminal when possible." on)
 
 option(BUILD_WITH_CPPINTROSPECTION "Build against cppintrospection instead of osgIntrospection." off)
@@ -227,6 +234,7 @@ add_subdirectory(vrjugglua)
 add_subdirectory(src)
 
 # Build documentation
+add_subdirectory(doc)
 if(BUILD_DOCS)
 	add_doxygen(Doxyfile)
 endif()
