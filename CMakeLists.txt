@@ -208,6 +208,15 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/vrjugglua/VRJLuaConfig.h.in"
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
 
+# For generating documentation in HTML
+if(WIN32)
+	list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/extra/discount-2.1.2")
+endif()
+find_package(Markdown)
+if(MARKDOWN_FOUND)
+	include(MarkdownTargets)
+endif()
+
 ###
 # Build the project
 ###

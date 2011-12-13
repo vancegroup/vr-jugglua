@@ -6,3 +6,16 @@ else()
 	install(FILES BINARY_README
 		DESTINATION ${SHARE_DIR})
 endif()
+
+if(MARKDOWN_FOUND)
+	add_markdown_target(markdown-binary-readme "${CMAKE_CURRENT_BINARY_DIR}" BINARY_README)
+	if(INSTALL_SNAPSHOT_README_TO_ROOT)
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/BINARY_README.html"
+			DESTINATION .
+			OPTIONAL)
+	else()
+		install(FILES "${CMAKE_CURRENT_BINARY_DIR}/BINARY_README.html"
+			DESTINATION ${SHARE_DIR}
+			OPTIONAL)
+	endif()
+endif()
