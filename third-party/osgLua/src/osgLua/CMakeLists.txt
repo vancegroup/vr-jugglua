@@ -31,6 +31,7 @@ set(OSGLUA_PRIVATE_API
 	lua_functions.h
 	LuaIncludeFull.h
 	LuaUserdata.h
+	LuaStackChecker.h
 	MathValueTags.h
 	osgLua.h
 	Type.h)
