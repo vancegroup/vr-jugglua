@@ -25,7 +25,13 @@ if(__add_markdown_target)
 endif()
 set(__add_markdown_target YES)
 
-include(FileCopyTargets)
+define_property(TARGET
+	PROPERTY
+	MARKDOWN_TARGET_OUTPUTS
+	BRIEF_DOCS
+	"Markdown target outputs"
+	FULL_DOCS
+	"Output files of a target created by add_markdown_target")
 
 function(add_markdown_target _target _dest)
 
@@ -74,9 +80,17 @@ function(add_markdown_target _target _dest)
 		ALL
 		SOURCES ${SOURCES}
 		DEPENDS ${ALLFILES})
-	set_property(TARGET ${_target} PROPERTY FILE_COPY_TARGET YES)
+	set_property(TARGET ${_target} PROPERTY MARKDOWN_TARGET_OUTPUTS "${ALLFILES}")
 endfunction()
 
-function(install_markdown_target)
-	install_file_copy_target(${ARGN})
+function(install_markdown_target _target)
+	get_target_property(_mtoutputs ${_target} MARKDOWN_TARGET_OUTPUTS)
+	if(NOT _mtoutputs)
+		message(WARNING
+			"install_markdown_target called on a target not created with add_markdown_target!")
+		return()
+	endif()
+
+	# Forward the call to install
+	install(FILES ${_mtoutputs} ${ARGN})
 endfunction()
