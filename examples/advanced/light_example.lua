@@ -16,53 +16,53 @@ worldStateSet = RelativeTo.World:getOrCreateStateSet()
 
 function createLight1()
 	-- create a light object
-	l1 = osg.Light()
+	light1 = osg.Light()
 	-- set light number (openGL and osg can have up to eight lights in  a scene #0-7)
-	l1:setLightNum(0)
+	light1:setLightNum(0)
 	--  create a lightsource object
-	ls1 = osg.LightSource()
+	lightsource1 = osg.LightSource()
 	-- turn the light source on
-	ls1:setLocalStateSetModes(osg.StateAttribute.Values.ON)
+	lightsource1:setLocalStateSetModes(osg.StateAttribute.Values.ON)
 	-- set light l1 to light source ls1
-	ls1:setLight(l1)
+	lightsource1:setLight(light1)
 	
 	--set light attributes
-	l1:setAmbient(osg.Vec4(0.8, 0.8, 0.8, 0.5))
-	l1:setDiffuse(osg.Vec4(0.8, 0.8, 0.8, 0.8))
-	l1:setSpecular(osg.Vec4(0.8, 0.8, 0.8, 0.8))
+	light1:setAmbient(osg.Vec4(0.8, 0.8, 0.8, 0.5))
+	light1:setDiffuse(osg.Vec4(0.8, 0.8, 0.8, 0.8))
+	light1:setSpecular(osg.Vec4(0.8, 0.8, 0.8, 0.8))
 		
 	-- turn the light on in the relativeto.world state set
-	worldStateSet:setAssociatedModes(l1, osg.StateAttribute.Values.ON)
+	worldStateSet:setAssociatedModes(light1, osg.StateAttribute.Values.ON)
 	--add lightsource to scene (room)
-	RelativeTo.Room:addChild(ls1)
+	RelativeTo.Room:addChild(lightsource1)
 	-- set position of light
-	l1:setPosition(osg.Vec4(0, 3, -5, 1.0))
+	light1:setPosition(osg.Vec4(0, 3, -5, 1.0))
 end
 
 function createLight2()
 	-- create a light object
-	l2 = osg.Light()
+	light2 = osg.Light()
 	-- set light number (openGL and osg can have up to eight lights in  a scene #0-7)
-	l2:setLightNum(1)
+	light2:setLightNum(1)
 	--  create a lightsource object
-	ls2 = osg.LightSource()
+	lightsource2 = osg.LightSource()
 	-- turn the light source on
-	ls2:setLocalStateSetModes(osg.StateAttribute.Values.ON)
-	-- set light l2 to lightsource ls2
-	ls2:setLight(l2)
+	lightsource2:setLocalStateSetModes(osg.StateAttribute.Values.ON)
+	-- set light light2 to lightsource lightsource2
+	lightsource2:setLight(light2)
 	--set light attributes
-	l2:setAmbient(osg.Vec4(.8, .8, 0.6, .50))
+	light2:setAmbient(osg.Vec4(.8, .8, 0.6, .50))
 	
 	-- turn the light on in the relativeto.world state set
-	worldStateSet:setAssociatedModes(l2, osg.StateAttribute.Values.ON)
+	worldStateSet:setAssociatedModes(light2, osg.StateAttribute.Values.ON)
 	
 	--add lightsource to scene (room)
-	RelativeTo.Room:addChild(ls2)
+	RelativeTo.Room:addChild(lightsource2)
 	-- set position of light	
-	l2:setPosition(osg.Vec4(1.5, 2, 2, 1.0))
+	light2:setPosition(osg.Vec4(1.5, 2, 2, 1.0))
 end
 
---calls to turn create lights functions (by extention creates them and turns them ON)
+--calls to turn create lights functions (by extension creates them and turns them ON)
 createLight1()
 createLight2()
 
