@@ -30,7 +30,7 @@ endif()
 # Define Simple Options
 option(BUILD_DOCS "Add a target to build documentation" on)
 option(BUILD_VERBOSE "Turn on lots of runtime output." off)
-option(BUILD_WITH_VRJ30 "Use VR Juggler 3.0 instead of 2.2" off)
+option(BUILD_WITH_VRJ30 "Use VR Juggler 3.0 instead of 2.2" on)
 if(NOT HIDE_FLTK)
 	option(BUILD_FLTK_GUI "Build FLTK-based GUI apps." off)
 endif()
