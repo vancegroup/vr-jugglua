@@ -21,6 +21,7 @@
 #define INCLUDED_ArrayPropertyProxy_h_GUID_188a9d92_bb03_4f24_897e_f6540f8688c9
 
 #define LUACPP_LUA_INCLUDE_FULL "LuaIncludeFull.h"
+#define ENABLE_LUA_USERDATA_STACKCHECKER
 
 // Internal Includes
 #include "LuaUserdata.h"
