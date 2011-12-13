@@ -2,7 +2,7 @@
 print("CTEST_FULL_OUTPUT")
 
 geom = osg.Geometry()
-require(help)
+require("help")
 help(geom)
 geom.UseDisplayList = false
 assert(not geom.UseDisplayList)
