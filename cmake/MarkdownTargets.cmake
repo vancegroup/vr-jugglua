@@ -71,6 +71,7 @@ function(add_markdown_target _target _dest)
 
 	# Custom target depending on all the file copy commands
 	add_custom_target(${_target}
+		ALL
 		SOURCES ${SOURCES}
 		DEPENDS ${ALLFILES})
 	set_property(TARGET ${_target} PROPERTY FILE_COPY_TARGET YES)
