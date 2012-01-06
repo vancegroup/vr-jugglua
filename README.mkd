@@ -1,0 +1,190 @@
+VR JuggLua
+==========
+
+Lua bindings and high-level interface for virtual experience creation, built on VR Juggler
+
+[VR JuggLua homepage on GitHub][home]
+
+Maintained by the [Vance Research Team][jmvance] at Iowa State
+University's Virtual Reality Applications Center. Original author: [Ryan
+Pavlik][rp], <rpavlik@iastate.edu> <abiryan@ryand.net>
+
+[home]:https://github.com/vance-group/vr-jugglua
+[jmvance]:http://www.vrac.iastate.edu/~jmvance/ "Judy M. Vance, Ph. D."
+[rp]:http://academic.cleardefinition.com/ "Ryan Pavlik"
+
+Community
+---------
+You can email our mailing list at <vrjugglua@librelist.com> or see the archives at <http://librelist.com/browser/vrjugglua/>
+
+Getting It
+----------
+
+Windows automated snapshot builds are created every time the main repository is pushed to.
+They can be downloaded here: <http://hci.iastate.edu/~rpavlik/downloads/vrjugglua/jenkins/>
+###Source code
+    git clone git://github.com/vance-group/vr-jugglua.git
+
+GitHub provides a lot of useful services for us at [project homepage][home].
+
+Dependencies:
+-------------
+
+- CMake 2.6 or newer (tested mainly with 2.8.3) - build system generator
+
+- Boost 1.35 or newer (tested mainly with 1.40 and 1.45)
+
+- VR Juggler 3.0.x, built against the same Boost above. (Can also use
+    VR Juggler 2.2.x (2.2.2 or newer recommended), but 3.0 is much nicer.)
+
+- OpenSceneGraph, including osgIntrospection/wrappers (2.8.x tested)
+
+    - Recommended to use the branch here: <https://github.com/rpavlik/osg/tree/new-wrappers>
+        which is available compiled for windows here: <https://github.com/rpavlik/osg-windows-binaries>
+
+ - For GUI console support, highly recommended, at least one of the following:
+
+    - Qt version 4.5 (?) or newer - best choice
+    - FLTK 1.1.10 (deprecated, and probably will be removed)
+
+LuaBind, osgLua, and Lua 5.1.4 are included in the source tree and integrated
+in to the build - you do not need to build these separately.
+
+Building
+--------
+Just run CMake, being sure to set a build directory that is different
+from your source directory. Tell it where to find any dependencies it
+can't locate. You may wish to configure any of the build options,
+including but not limited to `CMAKE_INSTALL_PREFIX` (where you want an
+installed snapshot to be placed). Then, build the generated
+project/makefiles in the binary directory.
+
+If you have any issues running, particularly on Windows, try building
+the "INSTALL" target and running it from the install location.
+
+Windows Notes
+-------------
+Visual Studio 2008 may produce a number of "Incremental Linker has
+stopped working" errors on clean builds. Usually, attempting the build
+again (without cleaning) will succeed, but this is a pain. A hotfix is
+available from Microsoft: <http://archive.msdn.microsoft.com/KB948127>
+After installing the hotfix, do a clean re-build.
+
+Acknowledgement
+---------------
+If you find this useful, we would appreciate hearing from you. If you
+use this for academic work, we would also appreciate a copy of the
+publication and a citation: this helps make a case for our work. You may
+contact the main developer, Ryan Pavlik (Iowa State University), by
+email at <rpavlik@iastate.edu> or <abiryan@ryand.net>.
+
+The relevant citation is:
+
+> Pavlik, Ryan A., & Vance, Judy M. (2011). VR JuggLua: A Framework for
+VR Applications Combining Lua, OpenSceneGraph, and VR Juggler.
+<i>Workshop on Software Engineering and Architectures for Realtime
+Interactive Systems (SEARIS) in IEEE Virtual Reality.</i> Singapore.
+
+Paper materials and copies of publications may be mailed to:
+
+> Ryan Pavlik<br/>
+Virtual Reality Applications Center<br/>
+1620 Howe Hall<br/>
+Ames, Iowa 50011-2274<br/>
+USA
+
+
+Licenses
+--------
+The full package is free and open-source software, under a variety of licenses.
+The following list of licenses is not a complete list at this time. All
+file location references are in the source tree.
+
+### VR JuggLua - BSL 1.0
+The VR JuggLua code itself (the files in `vrjugglua/` and most in
+`src/`) are subject to the following license:
+
+> Copyright Iowa State University 2010-2012.
+>
+> Distributed under the Boost Software License, Version 1.0.
+>
+> (See accompanying file `LICENSE_1_0.txt` or copy at
+> <http://www.boost.org/LICENSE_1_0.txt>)
+
+### Luabind - MIT License
+Luabind is bundled in `third-party/luabind/`, and is subject to the
+following license:
+
+> Copyright &copy; 2003-2011 Daniel Wallin and Arvid Norberg
+>
+> Copyright &copy; 2008-2011 Contributers
+>
+> Permission is hereby granted, free of charge, to any person obtaining a
+> copy of this software and associated documentation files (the "Software"),
+> to deal in the Software without restriction, including without limitation
+> the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> and/or sell copies of the Software, and to permit persons to whom the
+> Software is furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included
+> in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+> ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+> TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+> PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+> SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+> ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+> ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+> OR OTHER DEALINGS IN THE SOFTWARE.
+
+### osgLua - OpenSceneGraph Public License
+osgLua has been highly modified/improved and is bundled in `third-party/osgLua`,
+and is subject to the following license:
+
+> Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
+> Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
+>
+> This library is open source and may be redistributed and/or modified under
+> the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+> (at your option) any later version.  The full license is in LICENSE file
+> included with this distribution, and on the openscenegraph.org website.
+>
+> This library is distributed in the hope that it will be useful,
+> but WITHOUT ANY WARRANTY; without even the implied warranty of
+> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> OpenSceneGraph Public License for more details.
+
+### Lua 5.1 - MIT License
+Lua 5.1 is bundled in `third-party/lua-5.1.4`, and is subject to the
+following license:
+
+> Copyright &copy; 1994-2011 Lua.org, PUC-Rio.
+>
+> Permission is hereby granted, free of charge, to any person obtaining
+> a copy of this software and associated documentation files (the
+> "Software"), to deal in the Software without restriction,including
+> without limitation the rights to use, copy, modify, merge, publish,
+> distribute, sublicense, and/or sell copies of the Software, and to
+> permit persons to whom the Software is furnished to do so, subject to
+> the following conditions:
+>
+> The above copyright notice and this permission notice shall be included
+> in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+> OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+> MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+> IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+> CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+> TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+> SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Maintainer
+-----------
+Ryan Pavlik
+<rpavlik@iastate.edu> <abiryan@ryand.net>
+http://academic.cleardefinition.com/
+2009-2012 Iowa State University
+Virtual Reality Applications Center/Human-Computer Interaction Graduate Program
