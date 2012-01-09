@@ -214,7 +214,7 @@ if(WIN32)
 endif()
 find_package(Markdown)
 if(MARKDOWN_FOUND)
-	include(MarkdownTargets)
+	include(UseMarkdown)
 endif()
 
 ###
