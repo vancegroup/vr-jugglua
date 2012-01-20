@@ -73,6 +73,30 @@ function osgnav:latePreFrame()
 	end
 end
 
+function osgnav:setupDefaultLighting()
+	WorldStateSet = RelativeTo.World:getOrCreateStateSet()
+	--Light 0
+	light0 = osg.Light()
+	light0:setAmbient(osg.Vec4(0.8, 0.8, 0.8, 0.8))
+	lightsource0 = osg.LightSource()
+	lightsource0:setLight(light0)
+	lightsource0:setLocalStateSetModes(osg.StateAttribute.Values.ON)
+	WorldStateSet:setAssociatedModes(light0, osg.StateAttribute.Values.ON)
+	RelativeTo.Room:addChild(lightsource0)
+	light0:setPosition(osg.Vec4(0, 10, 0, 1.0))
+
+	--Light 1
+	light1 = osg.Light()
+	light1:setLightNum(1)
+	light1:setAmbient(osg.Vec4(.8, .8, 0.6, .50))
+	lightsource1 = osg.LightSource()
+	lightsource1:setLight(light1)
+	lightsource1:setLocalStateSetModes(osg.StateAttribute.Values.ON)
+	WorldStateSet:setAssociatedModes(light1, osg.StateAttribute.Values.ON)
+	RelativeTo.Room:addChild(lightsource1)
+	light1:setPosition(osg.Vec4(1.5, 2, 0, 1.0))
+end
+
 
 print("Setting up scenegraph")
 navtransform = osg.PositionAttitudeTransform()
@@ -86,6 +110,8 @@ osgnav.appProxy:setAppDelegate(osgnav)
 print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
 
+print("Setting up default Lighting. Override OpenGL Light #0 & #1")
+osgnav:setupDefaultLighting()
 
 
 
