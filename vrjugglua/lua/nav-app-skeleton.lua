@@ -74,11 +74,11 @@ function osgnav:latePreFrame()
 end
 
 function osgnav:setupDefaultLighting()
-	WorldStateSet = RelativeTo.World:getOrCreateStateSet()
+	local WorldStateSet = RelativeTo.World:getOrCreateStateSet()
 	--Light 0
-	light0 = osg.Light()
+	local light0 = osg.Light()
 	light0:setAmbient(osg.Vec4(0.8, 0.8, 0.8, 0.8))
-	lightsource0 = osg.LightSource()
+	local lightsource0 = osg.LightSource()
 	lightsource0:setLight(light0)
 	lightsource0:setLocalStateSetModes(osg.StateAttribute.Values.ON)
 	WorldStateSet:setAssociatedModes(light0, osg.StateAttribute.Values.ON)
@@ -86,15 +86,16 @@ function osgnav:setupDefaultLighting()
 	light0:setPosition(osg.Vec4(0, 10, 0, 1.0))
 
 	--Light 1
-	light1 = osg.Light()
+	local light1 = osg.Light()
 	light1:setLightNum(1)
 	light1:setAmbient(osg.Vec4(.8, .8, 0.6, .50))
-	lightsource1 = osg.LightSource()
+	local lightsource1 = osg.LightSource()
 	lightsource1:setLight(light1)
 	lightsource1:setLocalStateSetModes(osg.StateAttribute.Values.ON)
 	WorldStateSet:setAssociatedModes(light1, osg.StateAttribute.Values.ON)
 	RelativeTo.Room:addChild(lightsource1)
 	light1:setPosition(osg.Vec4(1.5, 2, 0, 1.0))
+
 end
 
 
