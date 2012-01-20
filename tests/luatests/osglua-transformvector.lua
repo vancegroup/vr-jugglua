@@ -18,15 +18,13 @@ function doTest(a)
 end
 
 doTest3(osg.Vec3)
---[[
 doTest3(osg.Vec3d)
 doTest3(osg.Vec3f)
-]]
+
 
 doTest4(osg.Vec4)
---[[
 doTest4(osg.Vec4d)
 doTest4(osg.Vec4f)
-]]
+
 
 print("Done!")
