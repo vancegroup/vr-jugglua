@@ -96,6 +96,11 @@ function osgnav:setupDefaultLighting()
 	RelativeTo.Room:addChild(lightsource1)
 	light1:setPosition(osg.Vec4(1.5, 2, 0, 1.0))
 
+	function osgnav:clearDefaultLighting()
+		RelativeTo.Room:removeChild(lightsource0)
+		RelativeTo.Room:removeChild(lightsource1)
+		WorldStateSet:setAssociatedModes(light1, osg.StateAttribute.Values.OFF)
+	end
 end
 
 
@@ -111,7 +116,7 @@ osgnav.appProxy:setAppDelegate(osgnav)
 print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
 
-print("Setting up default Lighting. Override OpenGL Light #0 & #1")
+print("Setting up default lighting (lights 0 and 1). Call osgnav:clearDefaultLighting() to remove light sources from graph and disable light #1.")
 osgnav:setupDefaultLighting()
 
 
