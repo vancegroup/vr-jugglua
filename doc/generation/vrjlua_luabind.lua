@@ -3,6 +3,7 @@ local document_vrjlua_luabind
 local warn = require "generation_warning"
 
 local construct_args = require "vrjlua_inputs.constructor_args"
+local function_docs = require "vrjlua_inputs.function_docs"
 
 local typehandlers
 
@@ -26,6 +27,14 @@ typehandlers = {
 			end
 		end
 		return ret
+	end;
+
+	["function"] = function(name, val)
+		if construct_args[name] == nil then
+			return warn(name, "No function documentation provided in function_docs!")
+		else
+			return function_docs[name]
+		end
 	end;
 
 	["luabind_class"] = function(name, val)
