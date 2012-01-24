@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-local orig_globals = require "default_lua_globals"
+local orig_globals = require "bootstrap.default_lua_globals"
 local luabind_globals = require "luabind_globals"
 local is_osg_wrapper = require "is_osg_wrapper"
 
