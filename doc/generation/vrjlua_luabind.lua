@@ -17,13 +17,15 @@ end
 
 typehandlers = {
 	["table"] = function(name, val)
+		local ret = {}
 		for k, v in pairs(val) do
 			if type(k) == "string" then
-				document_entity(("%s.%s"):format(name, k), v)
+				ret[k] = document_entity(("%s.%s"):format(name, k), v)
 			else
-				document_entity(("%s[%q]"):format(name, k), v)
+				ret[k] = document_entity(("%s[%q]"):format(name, k), v)
 			end
 		end
+		return ret
 	end;
 
 	["luabind_class"] = function(name, val)
