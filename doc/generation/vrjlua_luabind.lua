@@ -1,27 +1,27 @@
 local document_vrjlua_luabind
 
-local warn
-do
-	local warnNum = 0
-	warn = function(name, msg)
-		warnNum = warnNum + 1
-		io.stderr:write(("WARNING #%d: entity %q: %s\n"):format(warnNum, name, msg))
-	end
-end
+local warn = require "generation_warning"
 
-local construct_args = {
-	["gadget.DigitalInterface"] = function() return "VJButton0" end,
-}
+local construct_args = require "vrjlua_inputs.constructor_args"
 
 local typehandlers
+
+local document_entity = function(name, val, determinedtype)
+	local t = determinedtype
+	if not t then
+		print(("\nVRJLUA: Documenting %q"):format(name), type(val))
+		t = type(val)
+	end
+	return typehandlers[t](name, val)
+end
 
 typehandlers = {
 	["table"] = function(name, val)
 		for k, v in pairs(val) do
 			if type(k) == "string" then
-				document_vrjlua_luabind(("%s.%s"):format(name, k), v)
+				document_entity(("%s.%s"):format(name, k), v)
 			else
-				document_vrjlua_luabind(("%s[%q]"):format(name, k), v)
+				document_entity(("%s[%q]"):format(name, k), v)
 			end
 		end
 	end;
@@ -30,7 +30,8 @@ typehandlers = {
 		if construct_args[name] == nil then
 			return warn(name, "No constructor arguments provided!")
 		else
-			return typehandlers["luabind_instance"](name, val(construct_args[name]()))
+			local instance = val(construct_args[name]())
+			return document_entity(name, instance, "luabind_instance")
 		end
 	end;
 
@@ -47,18 +48,13 @@ typehandlers = {
 
 	["userdata"] = function(name, val)
 		if class_info(val).name == "userdata" then
-			return typehandlers["luabind_class"](name, val)
+			return document_entity(name, val, "luabind_class")
 		else
-			return typehandlers["luabind_instance"](name, val)
+			return document_entity(name, val, "luabind_instance")
 		end
 	end;
 }
 
-document_vrjlua_luabind = function(name, val)
-	print(("\nVRJLUA: Documenting %q"):format(name), type(val))
-	typehandlers[type(val)](name, val)
-end
-
 return {
-	["document_vrjlua_luabind"] = document_vrjlua_luabind
+	["document_entity"] = document_entity
 }

@@ -39,7 +39,7 @@ local handle_global = function(self, name)
 	elseif is_osg_wrapper(name) then
 		self[name] = create_osgwrapper_docs(name)
 	else
-		return function() vrjlua_luabind.document_vrjlua_luabind(name, _G[name]) end
+		return function() vrjlua_luabind.document_entity(name, _G[name]) end
 	end
 
 	return rawget(self, name)
