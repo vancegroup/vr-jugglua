@@ -9,32 +9,36 @@ end
 
 local osgLuaDocs = setmetatable({
 	["getTypes"] = {
-		['description'] = [[ ]], 
+		['description'] = [[Returns a table of all osgLua types, listed as their fully-qualified C++ name.]], 
 		['params'] = {}
 	},
 	["saveObjectFile"] = {
-		['description'] = [[ ]], 
+		['description'] = [[Pass an OSG object (node, etc) and a filename (likely ending in .osg).
+	Saves the given object to the named file]], 
 		['params'] = {"object", "filename"}
 	},
 	["createByName"] = {
-		['description'] = [[ ]], 
-		['params'] = {}
+		['description'] = [[Pass a string naming a type, and optionally parameters. Returns a new instance of the named type passing parameters to the constructor.
+	Usually can be ignored in favor of using the global tables directly to access constructors.]], 
+		['params'] = {"typename", "..."}
 	},
 	["loadObjectFile"] = {
-		['description'] = [[ ]], 
+		['description'] = [[Pass a filename. Returns OSG object (node, etc) loaded from the named file.]], 
 		['params'] = {"filename"}
 	},
 	["NodeCallback"] = {
-		['description'] = [[ ]], 
-		['params'] = {}
+		['description'] = [[Pass a function. Returns an osg.NodeCallback that calls the given function.]], 
+		['params'] = {"callback"}
 	},
 	["getTypeInfo"] = {
-		['description'] = [[ ]], 
-		['params'] = {}
+		['description'] = [[Pass a value or string. Returns a table with information about the given value's
+	type or the type specified by the given string.]], 
+		['params'] = {"valOrTypename"}
 	},
 	["loadWrapper"] = {
-		['description'] = [[ ]], 
-		['params'] = {}
+		['description'] = [[Pass a string indicating an OSG nodekit to load (e.g. "osg", "osgText").
+	Loads the wrapper for that functionality, creating a corresponding global table providing access to it.]], 
+		['params'] = {"nodekit"}
 	},
 }, {__index = function(_, tname) return handleNumberConstructor(tname) end })
 
