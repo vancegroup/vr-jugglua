@@ -1,4 +1,4 @@
-#!/usr/bin/env lua
+#!/usr/bin/env vrjlua
 
 local orig_globals = require "bootstrap.default_lua_globals"
 local luabind_globals = require "luabind_globals"
