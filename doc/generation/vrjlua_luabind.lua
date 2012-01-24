@@ -1,6 +1,6 @@
 local document_vrjlua_luabind
 
-local warn = require "generation_warning"
+local warn = require "docgen_utils.warning"
 
 local construct_args = require "vrjlua_inputs.constructor_args"
 local function_docs = require "vrjlua_inputs.function_docs"

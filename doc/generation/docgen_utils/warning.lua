@@ -4,7 +4,7 @@ local getSearchUrl = function(name)
 	return [[https://github.com/vance-group/vr-jugglua/issues/search?q=]] .. name
 end
 
-local createlink = require "createlink"
+local createlink = require "docgen_utils.createlink"
 
 local warnNum = 0
 local warn = function(name, msg)
