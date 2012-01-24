@@ -29,10 +29,19 @@ local create_osgwrapper_docs = function(name)
 	end
 end
 
+local create_skip_docs = function()
+	return function() return require "docgen_utils.skip_documenting_entity" end
+end
 
+local globals_to_skip_completely = {
+	["_G"] = true,
+	["class_info_data"] = true
+}
 
 local handle_global = function(self, name)
-	if orig_globals[name] then
+	if globals_to_skip_completely[name] then
+		self[name] = create_skip_docs()
+	elseif orig_globals[name] then
 		self[name] = create_lua_docs(name)
 	elseif luabind_globals[name] then
 		self[name] = create_luabind_globals_docs(name)
