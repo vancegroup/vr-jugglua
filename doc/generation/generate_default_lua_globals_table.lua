@@ -11,4 +11,4 @@ writer "return {"
 for k, v in pairs(_G) do
 	writer( ([[ [%q] = true, ]]):format(k))
 end
-writer ")"
+writer "}"
