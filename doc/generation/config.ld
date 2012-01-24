@@ -8,7 +8,6 @@ This file includes documentation for the Lua built-in libraries, as well as
 osgLua and the VR JuggLua modules themselves.
 ]]
 
-add_language_extension('cpp','c')
 file = {
 	"osgLua.luadoc",
 	"LDoc/ldoc/builtin/global.luadoc",
@@ -24,6 +23,13 @@ file = {
 	--"../../third-party/stdlib/modules",
 }
 
+examples = {
+	"../../examples",
+	exclude = {
+	"../../examples/advanced",
+	"../../examples/in-progress",
+	}
+}
 no_summary = true
 no_return_or_parms = true
 format = 'discount'
