@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 local writer = print
 if arg[1] then
-	local f = assert(io.open(f, 'w'))
+	local f = assert(io.open(arg[1], 'w'))
 	writer = function(s)
 		f:write(s, '\n')
 	end
