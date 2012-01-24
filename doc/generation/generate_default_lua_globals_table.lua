@@ -1,6 +1,14 @@
 #!/usr/bin/env lua
-print "return {"
-for k, v in pairs(_G) do
-	print( ([[ [%q] = true, ]]):format(k))
+local writer = print
+if arg[1] then
+	local f = assert(io.open(f, 'w'))
+	writer = function(s)
+		f:write(s, '\n')
+	end
 end
-print ")"
+
+writer "return {"
+for k, v in pairs(_G) do
+	writer( ([[ [%q] = true, ]]):format(k))
+end
+writer ")"
