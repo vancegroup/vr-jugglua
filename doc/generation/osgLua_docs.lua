@@ -51,76 +51,40 @@ Loads the wrapper for that functionality, creating a corresponding global table 
 })
 
 local warn = require "docgen_utils.warning"
+local fake_luadoc = require "docgen_utils.fake_luadoc"
+local o = fake_luadoc("osgLua")
 
-local f = assert(io.open('osgLua.luadoc', 'w'))
 
 
-local outputToFile = function(s)
-	if s ~= nil then
-		f:write(s, '\n')
-	else
-		f:write('\n')
-	end
-end
-
-local output = outputToFile --print
-
-local outputCommentLine = function(s)
-	output("-- " .. s:gsub('\n', '\n-- '))
-end
-
-local outputMethod = function(methodName)
-	if handled[methodName] then return end
-	handled[methodName] = true
-	local currDoc = osgLuaDocs[methodName]
-	output "---"
-	outputCommentLine(currDoc.description)
-	output(("function %s(%s) end"):format(methodName, table.concat(currDoc.params, ", ")))
-	output()
-end
-
-local outputSection = function(sectionName, desc)
-	output("--- " .. desc)
-	outputCommentLine("@section " .. sectionName)
-	output()
-end
-
-local outputModule = function(moduleName, desc)
-	output "---"
-	outputCommentLine(desc)
-	output(("module '%s'"):format(moduleName))
-	output()
-end
-
-outputModule("osgLua", [[
+o.moduleDesc [[
 This module uses the osgIntrospection library to provide nearly complete access to
 the C++ API of OpenSceneGraph.  In general, C++ OSG code can be converted with a few minor changes:
 
   * Namespace navigation and calls to static members are done using `.`, e.g. `osg.Group`
   * Member functions are called with `:`, e.g., `group:addChild(node)`
   * Some direct property access is available.
-]])
+]]
 
 
-outputSection("numberconstructors", "Explicit number type constructors")
+o.section("numberconstructors", "Explicit number type constructors")
 
 for methodName, _ in pairs(osgLua) do
 	if methodName:find("^GL") then
-		outputMethod(methodName)
+		o.method(methodName, osgLuaDocs[methodName])
 	end
 end
 
 
-outputSection("introspect", "Introspection functions")
+o.section("introspect", "Introspection functions")
 
 for _, methodName in ipairs{"getTypeInfo", "getTypes"} do
-	outputMethod(methodName)
+	o.method(methodName, osgLuaDocs[methodName])
 end
 
-outputSection("other", "Other")
+o.section("other", "Other")
 
 for methodName, _ in pairs(osgLua) do
-	outputMethod(methodName)
+	o.method(methodName, osgLuaDocs[methodName])
 end
 
 print "*** luadoc generation for osgLua completed successfully! ***"
