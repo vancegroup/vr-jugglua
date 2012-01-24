@@ -6,8 +6,6 @@ local is_osg_wrapper = require "is_osg_wrapper"
 
 local vrjlua_luabind = require "vrjlua_luabind"
 
-local do_nothing = function() return "" end
-
 local create_lua_docs = function(name)
 	local link = ("See lua documentation for %q"):format(name)
 	return function()
@@ -78,5 +76,5 @@ for k, v in pairs(_G) do
 	end
 	]]
 	local doc = global_handlers[k]()
-	print(k, type(v))
+	--print(k, type(v))
 end
