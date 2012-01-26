@@ -30,6 +30,11 @@ examples = {
 	"../../examples/in-progress",
 	}
 }
+readme = {
+	"../ComplexState.md",
+	"../Links.md",
+	"../../README.mkd"
+}
 no_summary = true
 no_return_or_parms = true
 format = 'discount'
