@@ -12,7 +12,9 @@ if(MARKDOWN_FOUND)
 		OPTIONAL)
 endif()
 
-if(NOT MARKDOWN_FOUND) # TODO - when else should we install the unprocessed binary readme?
+#install the markdown if we're on Unixy system (Linux probably)
+#or if the markdown is not found
+if(NOT MARKDOWN_FOUND OR (UNIX AND NOT APPLE))
 	install(FILES BINARY_README
 		DESTINATION "${SNAPSHOT_README_INSTALL_DIR}")
 endif()
