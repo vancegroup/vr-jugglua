@@ -14,7 +14,7 @@ endif()
 
 #install the markdown if we're on Unixy system (Linux probably)
 #or if the markdown is not found
-if(NOT MARKDOWN_FOUND OR (UNIX AND NOT APPLE))
+if((NOT MARKDOWN_FOUND) OR (UNIX AND (NOT APPLE)))
 	install(FILES BINARY_README
 		DESTINATION "${SNAPSHOT_README_INSTALL_DIR}")
 endif()
