@@ -33,7 +33,7 @@ will run.
 				local succeeded, results = coroutine.resume(co, Actions.appProxy:getTimeDelta())
 				if not succeeded then
 					print(string.format("A node action failed and will be stopped/removed. Error details: %s",
-						debug.traceback(co, result)))
+							debug.traceback(co, result)))
 				elseif coroutine.status(v) == 'dead' then
 					actionDead = true
 				end
@@ -66,7 +66,7 @@ Remove a frame action, stopping it from executing, presumably prior to
 its natural exit.
 ]] .. function (action)
 	local n
-	for i,v in ipairs(Actions._frameActions) do
+	for i, v in ipairs(Actions._frameActions) do
 		if v == action then
 			n = i
 		end
@@ -88,7 +88,7 @@ Returns the amount of time that it waited, in seconds.
 ]] .. function (num)
 	if type(num) == "number" then
 		local dt = 0
-		for i=1,num do
+		for i = 1, num do
 			dt = dt + coroutine.yield()
 		end
 		return dt
@@ -129,7 +129,7 @@ If that made no sense to you, you do not need to use this function.
 		local succeeded, result = coroutine.resume(v, Actions.appProxy:getTimeDelta())
 		if not succeeded then
 			print(("Frame action %s failed and will be stopped/removed."):format(
-				tostring(v)))
+					tostring(v)))
 			local tb = debug.traceback(v, result)
 			if type(tb) == "string" then
 				print(("Error details: %s"):format(tb))

@@ -29,12 +29,12 @@ function osgnav:initScene()
 	--print("Setting up scenegraph")
 	navtransform = osg.PositionAttitudeTransform()
 	navtransform:addChild(RelativeTo.World)
-	
+
 
 	--print("Attaching to app proxy's scene")
 	self.appProxy:getScene():addChild(navtransform)
 	self.appProxy:getScene():addChild(RelativeTo.Room)
-	
+
 	print("Scenegraph Navigation Testbed loaded!")
 	print("")
 	print("RelativeTo.World is your root-level group node for the world you can navigate.")

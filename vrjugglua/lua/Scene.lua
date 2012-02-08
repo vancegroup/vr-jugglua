@@ -112,7 +112,7 @@ function Light(...)
 		setLightType = "positional"
 	end
 	if arg.position == nil then
-		light:setPosition(osg.Vec4(0, 1, -1, fourthPosition))
+		light:setPosition(osg.Vec4(0, 1, - 1, fourthPosition))
 	else
 		if type(arg.position) == "table" then
 			if #(arg.position) == 4 then
@@ -125,14 +125,14 @@ function Light(...)
 			local osgvec = osg.Vec4(arg.position[1], arg.position[2], arg.position[3], arg.position[4])
 			print("Setting light position to " .. tostring(osgvec))
 			light:setPosition()
-			
+
 		else
 			--- Assume it's a vec4 - perhaps a bad assumption
 			print("WARNING: Assuming your position value is an osg.Vec4")
 			light:setPosition(arg.position)
 		end
 	end
-	
+
 	if arg.direction then
 		if type(arg.direction) == "table" then
 			arg.direction = osg.Vec3(arg.direction[1], arg.direction[2], arg.direction[3])
@@ -159,7 +159,7 @@ function AmbientIntensity(a)
 		node = a[1]
 	else
 		node = osg.Group()
-		for _,v in ipairs(a) do
+		for _, v in ipairs(a) do
 			node:addChild(v)
 		end
 	end
@@ -191,13 +191,13 @@ end
 function Transform(arg)
 	local t = osg.PositionAttitudeTransform()
 	if arg.position ~= nil then
-		if #arg.position ~=3 then
+		if #arg.position ~= 3 then
 			error("Cannot set position: position must have 3 elements!", 2)
 		else
 			t:setPosition(osg.Vec3d(
-				arg.position[1],
-				arg.position[2],
-				arg.position[3]))
+					arg.position[1],
+					arg.position[2],
+					arg.position[3]))
 		end
 	end
 

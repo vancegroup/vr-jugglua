@@ -28,15 +28,15 @@ local function moveDirectlyToState(state)
 	if (appDelegate.state ~= nil) and (appDelegate.state.leave ~= nil) then
 		appDelegate.state:leave()
 	end
-	
+
 	-- Actually change the state
 	appDelegate.state = state
-	
+
 	-- Run the enter callback, if it exists
 	if (appDelegate.state ~= nil) and (appDelegate.state.enter ~= nil) then
 		appDelegate.state:enter()
 	end
-	
+
 	-- A transition to "nil" state is a signal to stop.
 	if state == nil then
 		vrjKernel.stop()
@@ -45,8 +45,8 @@ end
 
 local function createStateTransition(state)
 	return function()
-			moveDirectlyToState(state)
-		end
+		moveDirectlyToState(state)
+	end
 end
 
 local function getScene()
@@ -86,9 +86,9 @@ StateMachine = {
 	getNodeTrackingPositionOnly = getNodeTrackingPositionOnly,
 	getNodeTrackingPose = getNodeTrackingPose,
 	runApp = runApp}
-	
-	
-appDelegate.appProxy =  vrjApp.OsgAppProxy()
+
+
+appDelegate.appProxy = vrjApp.OsgAppProxy()
 appDelegate.scripts = vrjSync.RunBuffer(appDelegate)
 appDelegate.appProxy:setAppDelegate(appDelegate)
 
