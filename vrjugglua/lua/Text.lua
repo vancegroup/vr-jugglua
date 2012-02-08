@@ -77,34 +77,34 @@ Pass a table containing one or more strings, and optionally
 some named parameters. It returns an OSG node (Geode) with
 the text strings formatted as lines.
 ]],
-optionalParameters = {
-	color = "An osg.Vec4 providing RGBA color, with each component in [0,1]: defaults to a light blue",
-	lineHeight = "Height of a line/character size: defaults to 0.45",
-	position = "Position of the upper-left of the text, in {x, y, z} format",
-	font = "A font object, such as that returned from Font()"
-}} .. function(arg, ...)
+	optionalParameters = {
+		color = "An osg.Vec4 providing RGBA color, with each component in [0,1]: defaults to a light blue",
+		lineHeight = "Height of a line/character size: defaults to 0.45",
+		position = "Position of the upper-left of the text, in {x, y, z} format",
+		font = "A font object, such as that returned from Font()"
+	}} .. function(arg, ...)
 	if type(arg) ~= "table" then
 		arg = {arg, ...}
 	end
 	if arg.font then
 		verifyFont(arg.font)
 	end
-	local color = arg.color or osg.Vec4(0.1,0.1,0.8,1.0)
-    local lineHeight = arg.lineHeight or 0.45
-    local pos = arg.position or {2.5, -1.5, -7.0}
-    local topLineY = pos[2]
-    local X = pos[1]
-    local Z = pos[3]
-    local geode = osg.Geode()
-    for i, v in ipairs(arg) do
-        local thisLine = osgText.Text()
-        thisLine:setFont(arg.font or defaultFont)
-        thisLine:setCharacterSize(lineHeight)
-        thisLine:setPosition(osg.Vec3(X,topLineY - i * lineHeight,Z))
-        thisLine:setText(v)
-        thisLine:setColor(color)
-        geode:addDrawable(thisLine)
-    end
+	local color = arg.color or osg.Vec4(0.1, 0.1, 0.8, 1.0)
+	local lineHeight = arg.lineHeight or 0.45
+	local pos = arg.position or {2.5, -1.5, -7.0}
+	local topLineY = pos[2]
+	local X = pos[1]
+	local Z = pos[3]
+	local geode = osg.Geode()
+	for i, v in ipairs(arg) do
+		local thisLine = osgText.Text()
+		thisLine:setFont(arg.font or defaultFont)
+		thisLine:setCharacterSize(lineHeight)
+		thisLine:setPosition(osg.Vec3(X, topLineY - i * lineHeight, Z))
+		thisLine:setText(v)
+		thisLine:setColor(color)
+		geode:addDrawable(thisLine)
+	end
 	return geode
 end
 

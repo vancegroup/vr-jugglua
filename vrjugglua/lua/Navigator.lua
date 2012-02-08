@@ -4,8 +4,8 @@ local function createEaseInOut(max_vel, seconds_to_max, seconds_to_stop)
 	local ease = {
 		max = max_vel,
 		vel = 0,
---		seconds_to_max = seconds_to_max,
-	--	seconds_to_stop = seconds_to_stop,
+		--		seconds_to_max = seconds_to_max,
+		--	seconds_to_stop = seconds_to_stop,
 		acceleration = max_vel / seconds_to_max,
 		deceleration = max_vel / seconds_to_stop }
 
