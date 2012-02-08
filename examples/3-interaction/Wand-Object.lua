@@ -8,16 +8,16 @@ require("Actions")
 device = gadget.PositionInterface("VJWand")
 
 Actions.addFrameAction(function()
-	local xform = osg.MatrixTransform()
-	m = Model("examples/models/cessna.osg")
-	xform:addChild(m)
+		local xform = osg.MatrixTransform()
+		m = Model("examples/models/cessna.osg")
+		xform:addChild(m)
 
-	RelativeTo.Room:addChild(xform)
+		RelativeTo.Room:addChild(xform)
 
-	-- Update the cursor position forever.
-	while true do
-		xform:setMatrix(device.matrix)
-		Actions.waitForRedraw()
-	end
-end)
+		-- Update the cursor position forever.
+		while true do
+			xform:setMatrix(device.matrix)
+			Actions.waitForRedraw()
+		end
+	end)
 

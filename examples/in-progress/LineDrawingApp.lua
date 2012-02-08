@@ -16,34 +16,34 @@ device = gadget.PositionInterface("VJWand")
 -- This frame action draws and updates our
 -- cursor at the device's location.
 Actions.addFrameAction(function()
-	local xform = osg.MatrixTransform()
-	xform:addChild(
-		TransparentGroup{
-			alpha = 0.7,
-			Sphere{
-				radius = pointRadius,
-				position = {0, 0, 0}
+		local xform = osg.MatrixTransform()
+		xform:addChild(
+			TransparentGroup{
+				alpha = 0.7,
+				Sphere{
+					radius = pointRadius,
+					position = {0, 0, 0}
+				}
 			}
-		}
-	)
+		)
 
-	RelativeTo.Room:addChild(xform)
+		RelativeTo.Room:addChild(xform)
 
-	-- Update the cursor position forever.
-	while true do
-		xform:setMatrix(device.matrix)
-		Actions.waitForRedraw()
-	end
-end)
+		-- Update the cursor position forever.
+		while true do
+			xform:setMatrix(device.matrix)
+			Actions.waitForRedraw()
+		end
+	end)
 
 -- Silly little function to cycle through R G B when called
 getColor = coroutine.wrap(function()
-	while true do
-		coroutine.yield(osg.Vec4(1, 0, 0, 1))
-		coroutine.yield(osg.Vec4(0, 1, 0, 1))
-		coroutine.yield(osg.Vec4(0, 0, 1, 1))
-	end
-end)
+		while true do
+			coroutine.yield(osg.Vec4(1, 0, 0, 1))
+			coroutine.yield(osg.Vec4(0, 1, 0, 1))
+			coroutine.yield(osg.Vec4(0, 0, 1, 1))
+		end
+	end)
 --[[
 do
 	local function addPointToLine(line, point, color)
@@ -83,27 +83,27 @@ end
 -- This action adds to the scenegraph when you
 -- press/hold a button to draw
 Actions.addFrameAction(function()
-	local drawBtn = gadget.DigitalInterface("VJButton1")
+		local drawBtn = gadget.DigitalInterface("VJButton1")
 
-	--local lines = {}
-	while true do
-		while not drawBtn.pressed do
-			Actions.waitForRedraw()
+		--local lines = {}
+		while true do
+			while not drawBtn.pressed do
+				Actions.waitForRedraw()
+			end
+
+			-- OK, starting a new line.
+			print("Starting a new line")
+			local line = Line()
+			local geode = osg.Geode()
+			line:addToGeode(geode)
+
+			--table.insert(lines, line)
+			--RelativeTo.World:addChild(line.node)
+			RelativeTo.World:addChild(geode)
+			while drawBtn.pressed do
+				line:addPoint(device.position - osgnav.position, osg.Vec4(1, 1, 1, 1)--[[ getColor()]])
+				Actions.waitForRedraw()
+			end
 		end
 
-		-- OK, starting a new line.
-		print("Starting a new line")
-		local line = Line()
-		local geode = osg.Geode()
-		line:addToGeode(geode)
-
-		--table.insert(lines, line)
-		--RelativeTo.World:addChild(line.node)
-		RelativeTo.World:addChild(geode)
-		while drawBtn.pressed do
-			line:addPoint(device.position - osgnav.position,osg.Vec4(1,1,1,1)--[[ getColor()]])
-			Actions.waitForRedraw()
-		end
-	end
-
-end)
+	end)

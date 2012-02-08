@@ -20,12 +20,12 @@ createSphere = help.docstring[[
 	)
 
 	Actions.addFrameAction(function()
-		local device = gadget.PositionInterface(deviceName or "VJHead")
-		while true do
-			xform:setMatrix(device.matrix)
-			print(device.position)
-			Actions.waitForRedraw()
-		end
+			local device = gadget.PositionInterface(deviceName or "VJHead")
+			while true do
+				xform:setMatrix(device.matrix)
+				print(device.position)
+				Actions.waitForRedraw()
+			end
 
-	end)
+		end)
 end

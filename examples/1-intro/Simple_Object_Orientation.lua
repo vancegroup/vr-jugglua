@@ -7,7 +7,7 @@ Then the "xform" transform object is added to the root node (RelativeTo.World)
 
 -- 1) Create a transform called "xform" and set its position to (x=0,y=0,z=0)
 xform = Transform{
-	position={0,0,0},
+	position = {0, 0, 0},
 	-- set the transform orientation to -90 on the x (first element of Axis values)
 	orientation = AngleAxis(Degrees(-90), Axis{1.0, 0.0, 0.0}),
 }
