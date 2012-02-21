@@ -83,11 +83,11 @@ namespace luacpputils {
 
 		private:
 
-			static const char * _getRegistryString() {
+			inline static const char * _getRegistryString() {
 				return typeid(Derived).name();
 			}
 
-			static void _pushMetatable(lua_State * L) {
+			inline static void _pushMetatable(lua_State * L) {
 				LUA_USERDATA_STACKCHECKER(checker, L, 1);
 				if (luaL_newmetatable(L, _getRegistryString())) {
 					LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\t" << "Registering garbage collection metamethod");
@@ -102,7 +102,7 @@ namespace luacpputils {
 				}
 			}
 
-			static void _pushIndexTable(lua_State * L) {
+			inline static void _pushIndexTable(lua_State * L) {
 				LUA_USERDATA_STACKCHECKER(checker, L, 1);
 				_pushMetatable(L);
 
