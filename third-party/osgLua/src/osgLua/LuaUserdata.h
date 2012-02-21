@@ -67,6 +67,11 @@ namespace luacpputils {
 				static const char ret[] = "__gc";
 				return ret;
 			}
+
+			template<typename T>
+			inline static const char * getRegistryString() {
+				return typeid(T).name();
+			}
 	};
 
 	/// Template class to derive from (using the CRTP) to allow pushing
@@ -84,7 +89,7 @@ namespace luacpputils {
 		private:
 
 			inline static const char * _getRegistryString() {
-				return typeid(Derived).name();
+				return getRegistryString<Derived>();
 			}
 
 			inline static void _pushMetatable(lua_State * L) {
