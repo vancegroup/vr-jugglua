@@ -74,10 +74,74 @@ namespace luacpputils {
 			}
 	};
 
+	namespace UserdataStoragePolicies {
+		struct StorePointerInUserdata {
+				template<typename T>
+				struct apply {
+					public:
+						inline static T * userdataToInstance(void * userdata) {
+							T* instance;
+							std::memcpy(&instance, userdata, sizeof(T*));
+							return instance;
+						}
+
+						inline static T * allocateMemoryForInstance(lua_State * L) {
+							LUA_USERDATA_STACKCHECKER(checker, L, 1);
+							T * p;
+							try {
+								p = static_cast<T*>(operator new(sizeof(T)));
+							} catch (...) {
+								return NULL;
+							}
+							void * ud = lua_newuserdata(L, sizeof(T*));
+							if (!ud) {
+								throw std::bad_alloc();
+							}
+							std::memcpy(ud, &p, sizeof(T*));
+							return p;
+						}
+
+						inline static int destroyInstance(lua_State * L) {
+							void * udPtr = luaL_checkudata(L, 1, LuaUserdataBase::getRegistryString<T>());
+							LUA_USERDATA_VERBOSE("Userdata " << userdataToInstance(udPtr) << ":\t" << "Deleting instance of type " << LuaUserdataBase::getRegistryString<T>());
+							delete userdataToInstance(udPtr);
+							return 0;
+						}
+				};
+		};
+
+		struct StoreInstanceInUserdata {
+				template<typename T>
+				struct apply {
+					public:
+						inline static T * userdataToInstance(void * userdata) {
+							return static_cast<T*>(userdata);
+						}
+
+						inline static T * allocateMemoryForInstance(lua_State * L) {
+							LUA_USERDATA_STACKCHECKER(checker, L, 1);
+							void * ud = lua_newuserdata(L, sizeof(T));
+							if (!ud) {
+								throw std::bad_alloc();
+							}
+							return static_cast<T*>(ud);
+						}
+
+						inline static int destroyInstance(lua_State * L) {
+							void * udPtr = luaL_checkudata(L, 1, LuaUserdataBase::getRegistryString<T>());
+							LUA_USERDATA_VERBOSE("Userdata " << udPtr << ":\t" << "Deleting instance of type " << LuaUserdataBase::getRegistryString<T>());
+							userdataToInstance(udPtr)->~T();
+							return 0;
+						}
+				};
+
+		};
+	} // end of namespace UserdataStoragePolicies
+
 	/// Template class to derive from (using the CRTP) to allow pushing
 	/// with a metatable. Intended for Lua-specific classes, not wrapping
 	/// other C++ classes.
-	template<typename Derived>
+	template<typename Derived, typename StoragePolicy = UserdataStoragePolicies::StorePointerInUserdata>
 	class LuaUserdata : private LuaUserdataBase {
 		public:
 			typedef int (Derived::*NonConstInstanceMethodPtrType)(lua_State *);
@@ -85,6 +149,8 @@ namespace luacpputils {
 			typedef Derived * PointerToDerivedType;
 			typedef Derived ** DerivedPtrPtr;
 			typedef Derived DerivedType;
+
+			typedef typename StoragePolicy::template apply<Derived> Storage;
 
 		private:
 
@@ -97,7 +163,7 @@ namespace luacpputils {
 				if (luaL_newmetatable(L, _getRegistryString())) {
 					LUA_USERDATA_VERBOSE("Userdata type " << _getRegistryString << ":\t" << "Registering garbage collection metamethod");
 					lua_pushvalue(L, -1);
-					lua_pushcfunction(L, &_gc);
+					lua_pushcfunction(L, &Storage::destroyInstance);
 					lua_setfield(L, -2, gcMetamethodName()); /// table is one below the top of the stack
 					lua_pop(L, 1); /// pop the metatable off the stack.
 					{
@@ -128,32 +194,10 @@ namespace luacpputils {
 				lua_remove(L, -2);
 			}
 
-			static int _gc(lua_State * L) {
-				void * instancePtr = luaL_checkudata(L, 1, _getRegistryString());
-				assert(instancePtr);
-
-				PointerToDerivedType instance;
-				std::memcpy(&instance, instancePtr, sizeof(PointerToDerivedType));
-
-				LUA_USERDATA_VERBOSE("Userdata " << instance << ":\t" << "Deleting instance of type " << _getRegistryString());
-				assert(instance);
-				/// explicitly delete before Lua deletes the pointer.
-				delete instance;
-				instance = NULL;
-				return 0;
-			}
-
-			static PointerToDerivedType _allocateInLua(lua_State * L, PointerToDerivedType instance) {
-				LUA_USERDATA_STACKCHECKER(checker, L, 1);
+			inline static void _setMetatable(lua_State * L) {
 				LUA_USERDATA_VERBOSE("Userdata " << instance << ":\t" << "Created instance of type " << _getRegistryString());
-				void * ud = lua_newuserdata(L, sizeof(PointerToDerivedType));
-				if (!ud) {
-					throw std::bad_alloc();
-				}
 				_pushMetatable(L);
 				lua_setmetatable(L, -2);
-				std::memcpy(ud, &instance, sizeof(PointerToDerivedType));
-				return instance;
 			}
 
 		protected:
@@ -167,12 +211,11 @@ namespace luacpputils {
 
 					template<PtrToMemberFuncType M>
 					static int _callInstanceMethod(lua_State * L) {
-						void * instancePtr = luaL_checkudata(L, 1, _getRegistryString());
-						if (!instancePtr) {
+						void * ud = luaL_checkudata(L, 1, _getRegistryString());
+						if (!ud) {
 							return luaL_error(L, "Trying to call an instance method of %s, but first argument is not an instance!", _getRegistryString());
 						}
-						PointerToDerivedType instance;
-						std::memcpy(&instance, instancePtr, sizeof(PointerToDerivedType));
+						PointerToDerivedType instance = Storage::userdataToInstance(ud);
 
 						LUA_USERDATA_VERBOSE("Userdata " << instance << ":\tMethod " << _getMethodDescription<M>() << "\t" << "Before instance method call with lua_gettop(L)==" << lua_gettop(L));
 						/// Leaving the instance on the stack in case the method wants access to it.
@@ -217,64 +260,64 @@ namespace luacpputils {
 
 			static PointerToDerivedType pushNewWithLuaParam(lua_State * L) {
 				LUA_USERDATA_STACKCHECKER(checker, L, 1);
-				PointerToDerivedType p;
+				PointerToDerivedType p = Storage::allocateMemoryForInstance(L);
 				try {
-					p = new DerivedType(L);
+					new(p) DerivedType(L);
 				} catch (...) {
 					return NULL;
 				}
-				_allocateInLua(L, p);
+				_setMetatable(L);
 				return p;
 			}
 
 			static PointerToDerivedType pushNew(lua_State * L) {
 				LUA_USERDATA_STACKCHECKER(checker, L, 1);
-				PointerToDerivedType p;
+				PointerToDerivedType p = Storage::allocateMemoryForInstance(L);
 				try {
-					p = new DerivedType();
+					new(p) DerivedType();
 				} catch (...) {
 					return NULL;
 				}
-				_allocateInLua(L, p);
+				_setMetatable(L);
 				return p;
 			}
 
 			template<typename T1>
 			static PointerToDerivedType pushNew(lua_State * L, T1 a1) {
 				LUA_USERDATA_STACKCHECKER(checker, L, 1);
-				PointerToDerivedType p;
+				PointerToDerivedType p = Storage::allocateMemoryForInstance(L);
 				try {
-					p = new DerivedType(a1);
+					new(p) DerivedType(a1);
 				} catch (...) {
 					return NULL;
 				}
-				_allocateInLua(L, p);
+				_setMetatable(L);
 				return p;
 			}
 
 			template<typename T1, typename T2>
 			static PointerToDerivedType pushNew(lua_State * L, T1 a1, T2 a2) {
 				LUA_USERDATA_STACKCHECKER(checker, L, 1);
-				PointerToDerivedType p;
+				PointerToDerivedType p = Storage::allocateMemoryForInstance(L);
 				try {
-					p = new DerivedType(a1, a2);
+					new(p) DerivedType(a1, a2);
 				} catch (...) {
 					return NULL;
 				}
-				_allocateInLua(L, p);
+				_setMetatable(L);
 				return p;
 			}
 
 			template<typename T1, typename T2, typename T3>
 			static PointerToDerivedType pushNew(lua_State * L, T1 a1, T2 a2, T3 a3) {
 				LUA_USERDATA_STACKCHECKER(checker, L, 1);
-				PointerToDerivedType p;
+				PointerToDerivedType p = Storage::allocateMemoryForInstance(L);
 				try {
-					p = new DerivedType(a1, a2, a3);
+					new(p) DerivedType(a1, a2, a3);
 				} catch (...) {
 					return NULL;
 				}
-				_allocateInLua(L, p);
+				_setMetatable(L);
 				return p;
 			}
 
