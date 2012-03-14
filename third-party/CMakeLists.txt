@@ -42,6 +42,7 @@ add_subdirectory(stdlib/modules)
 add_subdirectory(lua_modules)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/luarocks/CMakeLists.txt")
+	set(LUAROCKS_LUA_SUFFIX "")
 	add_subdirectory(luarocks)
 	include(luarocks/UseLuarocks.cmake)
 
