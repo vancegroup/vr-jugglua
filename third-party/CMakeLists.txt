@@ -41,7 +41,11 @@ add_subdirectory(stdlib/modules)
 
 add_subdirectory(lua_modules)
 
-add_subdirectory(luarocks)
-include(luarocks/UseLuarocks.cmake)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/luarocks/CMakeLists.txt")
+	add_subdirectory(luarocks)
+	include(luarocks/UseLuarocks.cmake)
 
-luarocks_install(luarocks-luafilesystem luafilesystem ${CMAKE_CURRENT_BINARY_DIR}/rockstree)
+	luarocks_install(luarocks-luafilesystem luafilesystem ${CMAKE_CURRENT_BINARY_DIR}/rockstree)
+else()
+	message(STATUS "NOTE: Skipping LuaRocks because the submodule is missing.  Try 'git submodule update --init --recursive'")
+endif()
