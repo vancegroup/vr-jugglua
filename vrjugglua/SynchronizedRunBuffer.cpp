@@ -19,7 +19,6 @@
 
 
 // Local includes
-#define NEED_RUNBUFFER_LUABIND_OBJECT
 #include "SynchronizedRunBuffer.h"
 #include "LuaConsole.h"
 
@@ -32,9 +31,9 @@
 
 namespace vrjLua {
 
-	SynchronizedRunBuffer::SynchronizedRunBuffer(luabind::object const& delegate) :
+	SynchronizedRunBuffer::SynchronizedRunBuffer(lua_State * state) :
 		_init(false) {
-		_state = delegate.interpreter();
+		_state = state;
 	}
 
 

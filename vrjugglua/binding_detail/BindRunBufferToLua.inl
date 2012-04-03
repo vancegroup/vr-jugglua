@@ -41,7 +41,7 @@ namespace vrjLua {
 #endif
 		module(state.get(), "vrjSync") [
 		    class_<SynchronizedRunBuffer, boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
-		    .def(constructor<luabind::object>())
+		    .def(constructor<lua_State *>())
 		    .def("init", &SynchronizedRunBuffer::init)
 		    .def("addFile", &SynchronizedRunBuffer::addFile)
 		    .def("addFile", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addFile)

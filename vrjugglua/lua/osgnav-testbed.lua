@@ -3,7 +3,7 @@ print("osgnav-testbed.lua starting up...")
 require("nav-app-skeleton")
 
 print("Setting up run buffer")
-runbuf = vrjSync.RunBuffer(nil)
+runbuf = vrjSync.RunBuffer()
 
 local function usage()
 	print(arg[0] .. " [files...] [options...]")

@@ -89,7 +89,7 @@ StateMachine = {
 
 
 appDelegate.appProxy = vrjApp.OsgAppProxy()
-appDelegate.scripts = vrjSync.RunBuffer(appDelegate)
+appDelegate.scripts = vrjSync.RunBuffer()
 appDelegate.appProxy:setAppDelegate(appDelegate)
 
 return StateMachine

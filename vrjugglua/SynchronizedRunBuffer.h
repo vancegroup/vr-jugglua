@@ -28,10 +28,6 @@
 // Library/third-party includes
 #include <plugins/ApplicationDataManager/UserData.h>
 
-#ifdef NEED_RUNBUFFER_LUABIND_OBJECT
-#include <luabind/object.hpp>
-#endif
-
 // Standard includes
 #include <vector>
 #include <string>
@@ -44,9 +40,7 @@ namespace vrjLua {
 			/// @name Constructors
 			/// They accept different arguments as ways to get to the Lua state.
 			/// @{
-#ifdef NEED_RUNBUFFER_LUABIND_OBJECT
-			SynchronizedRunBuffer(luabind::object const& delegate);
-#endif
+			SynchronizedRunBuffer(lua_State * state);
 			SynchronizedRunBuffer(LuaStatePtr const& state);
 			SynchronizedRunBuffer(LuaScript const& script);
 			/// @}
