@@ -9,7 +9,7 @@ Maintained by the [Vance Research Team][jmvance] at Iowa State
 University's Virtual Reality Applications Center. Original author: [Ryan
 Pavlik][rp], <rpavlik@iastate.edu> <abiryan@ryand.net>
 
-[home]:https://github.com/vance-group/vr-jugglua
+[home]:https://github.com/vancegroup/vr-jugglua
 [jmvance]:http://www.vrac.iastate.edu/~jmvance/ "Judy M. Vance, Ph. D."
 [rp]:http://academic.cleardefinition.com/ "Ryan Pavlik"
 
@@ -23,7 +23,7 @@ Getting It
 Windows automated snapshot builds are created every time the main repository is pushed to.
 They can be downloaded here: <http://hci.iastate.edu/~rpavlik/downloads/vrjugglua/jenkins/>
 ###Source code
-    git clone git://github.com/vance-group/vr-jugglua.git
+    git clone git://github.com/vancegroup/vr-jugglua.git
 
 GitHub provides a lot of useful services for us at [project homepage][home].
 
