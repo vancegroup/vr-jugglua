@@ -47,7 +47,7 @@ Dependencies:
     - Qt version 4.5 (?) or newer - best choice
     - FLTK 1.1.10 (deprecated, and probably will be removed)
 
-LuaBind, osgLua, and Lua 5.1.4 are included in the source tree and integrated
+LuaBind, osgLua, and Lua 5.1 are included in the source tree and integrated
 in to the build - you do not need to build these separately.
 
 Building
