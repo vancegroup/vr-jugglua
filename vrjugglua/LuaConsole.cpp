@@ -43,12 +43,6 @@ namespace vrjLua {
 		return s_console;
 	}
 
-	namespace detail {
-		LuaConsoleOutputProxy::~LuaConsoleOutputProxy() {
-			_console->appendToDisplay(_stream.str());
-		}
-	} // end of namespace detail
-
 	static void consolePrintFunction(std::string const& str) {
 		LuaConsole * ptr = LuaConsole::getConsole();
 		if (ptr) {
