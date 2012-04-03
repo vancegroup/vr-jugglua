@@ -141,8 +141,15 @@ namespace vrjLua {
 		_initialPath = fs::initial_path().string();
 		std::vector<std::string> startingPlaces;
 		startingPlaces.push_back(_initialPath);
+#if BOOST_FILESYSTEM_VERSION == 3
+		startingPlaces.push_back(fs::absolute(vrjlua_base).string());
+#else
 		startingPlaces.push_back(fs::complete(vrjlua_base).string());
-#ifdef BOOST_FILESYSTEM_NO_DEPRECATED
+#endif
+#if BOOST_FILESYSTEM_VERSION == 3
+		_exeDir = fs::absolute(arg0).remove_leaf().string();
+		startingPlaces.push_back(fs::absolute(arg0).remove_leaf().string());
+#elif defined(BOOST_FILESYSTEM_NO_DEPRECATED)
 		_exeDir = fs::complete(arg0).remove_filename().string();
 		startingPlaces.push_back(fs::complete(arg0).remove_filename().string());
 #else
@@ -194,7 +201,9 @@ namespace vrjLua {
 		std::string vprLibraryPath = findVPRDLL();
 		if (!vprLibraryPath.empty()) {
 			try {
-#ifdef BOOST_FILESYSTEM_NO_DEPRECATED
+#if BOOST_FILESYSTEM_VERSION == 3
+				return _findFilePath(fs::absolute(vprLibraryPath).remove_leaf().string(), jugglerTest.string());
+#elif defined(BOOST_FILESYSTEM_NO_DEPRECATED)
 				return _findFilePath(fs::complete(vprLibraryPath).remove_filename().string(), jugglerTest.string());
 #else
 				return _findFilePath(fs::complete(vprLibraryPath).remove_leaf().string(), jugglerTest.string());
