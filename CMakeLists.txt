@@ -141,6 +141,13 @@ endif()
 include(SearchProgramFilesForOpenSceneGraph)
 find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgUtil ${OSGINTROSPECTION_COMPONENT})
 
+if(APPLE)
+	# TODO: Make this workaround prettier or, better, fix the libgif issue
+	# Someone is using the old libgif in ImageIO.framework
+	# Therefore we need to add its path to the runtime library dirs
+	list(APPEND RUNTIME_LIBRARY_DIRS "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources")
+endif()
+
 get_directory_list(OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS ${OPENSCENEGRAPH_LIBRARIES})
 list(APPEND RUNTIME_LIBRARY_DIRS ${OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS})
 if(WIN32)
