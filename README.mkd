@@ -44,7 +44,7 @@ Dependencies:
 
  - For GUI console support, highly recommended, at least one of the following:
 
-    - Qt version 4.5 (?) or newer - best choice
+    - Qt version 4.5 (?) or newer - best choice (don't use 4.6.2 on linux <https://bugreports.qt-project.org/browse/QTBUG-8537>) 
     - FLTK 1.1.10 (deprecated, and probably will be removed)
 
 LuaBind, osgLua, and Lua 5.1 are included in the source tree and integrated
