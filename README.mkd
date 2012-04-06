@@ -157,7 +157,7 @@ and is subject to the following license:
 > OpenSceneGraph Public License for more details.
 
 ### Lua 5.1 - MIT License
-Lua 5.1 is bundled in `third-party/lua-5.1.4`, and is subject to the
+Lua 5.1 is bundled in `third-party/lua-5.1.x`, and is subject to the
 following license:
 
 > Copyright &copy; 1994-2011 Lua.org, PUC-Rio.
