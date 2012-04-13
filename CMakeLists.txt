@@ -209,6 +209,19 @@ if(BUILD_QT_GUI)
 	endif()
 endif()
 
+if(NOT (WIN32 OR APPLE))
+	find_library(READLINE_LIBRARY
+		NAMES
+		readline)
+	find_package(Curses)
+	if(READLINE_LIBRARY AND CURSES_FOUND)
+		set(LUA_USE_LINUX 1)
+	else()
+		set(LUA_USE_POSIX 1)
+		set(LUA_USE_DLOPEN 1)
+	endif()
+endif()
+
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/vrjugglua/VRJLuaConfig.h.in"
 	"${CMAKE_CURRENT_BINARY_DIR}/vrjugglua/VRJLuaConfig.h")
 

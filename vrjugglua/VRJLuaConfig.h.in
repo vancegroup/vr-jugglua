@@ -37,12 +37,14 @@
 #if defined(_WIN32)
 // Windows-specific defines
 
-#elif defined(__APPLE)
+#elif defined(__APPLE__)
 #define LUA_USE_MACOSX
 
 #else
 // Assume it's Linux
-#define LUA_USE_LINUX
+#cmakedefine LUA_USE_LINUX
+#cmakedefine LUA_USE_POSIX
+#cmakedefine LUA_USE_DLOPEN
 
 #endif
 

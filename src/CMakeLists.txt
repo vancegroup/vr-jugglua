@@ -23,19 +23,17 @@ include_directories(${VRJUGGLER_INCLUDE_DIRS}
 ###
 # Standard Lua interpreter with VRJ and OSG automatically loaded
 ###
+
 add_executable(vrjlua lua.c)
-target_link_libraries(vrjlua vrjugglua)
+target_link_libraries(vrjlua vrjugglua ${LUA_EXTRA_LIBS})
 if(BUILD_LUA_AS_CPP)
 	set_source_files_properties(lua.c PROPERTIES LANGUAGE CXX)
 endif()
-if(MSVC)
-    # Silence warning from Lua distribution's code
-    set_property(TARGET
-        vrjlua
-        PROPERTY
-        COMPILE_DEFINITIONS
-        _CRT_SECURE_NO_WARNINGS)
-endif()
+set_property(TARGET
+    vrjlua
+    PROPERTY
+    COMPILE_DEFINITIONS
+    ${LUA_EXTRA_DEFINES})
 set_property(TARGET
 	vrjlua
 	PROPERTY
