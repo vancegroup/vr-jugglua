@@ -42,9 +42,15 @@
 
 #else
 // Assume it's Linux
+#ifndef LUA_USE_LINUX
 #cmakedefine LUA_USE_LINUX
+#endif
+#ifndef LUA_USE_POSIX
 #cmakedefine LUA_USE_POSIX
+#endif
+#ifndef LUA_USE_DLOPEN
 #cmakedefine LUA_USE_DLOPEN
+#endif
 
 #endif
 
