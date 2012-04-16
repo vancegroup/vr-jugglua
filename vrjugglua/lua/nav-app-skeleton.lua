@@ -2,6 +2,7 @@ print("nav-app-skeleton starting up...")
 
 require("Navigator")
 require("Scene")
+require("Actions")
 
 RelativeTo = {
 	Room = osg.Group(),
@@ -56,8 +57,6 @@ function osgnav:initScene()
 end
 
 function osgnav:preFrame()
-	self.position = self.position - self.nav:getTranslation(self.appProxy:getTimeDelta(), self.position)
-	navtransform:setPosition(self.position)
 end
 
 function osgnav:latePreFrame()
@@ -87,6 +86,20 @@ print("Setting kernel application")
 osgnav.appProxy:setActiveApplication()
 
 
+do
+	local self = osgnav
+	self.standardNavAction = Actions.addFrameAction(
+		function(dt)
+			local dt = dt
+			while true do
+				self.position = self.position - self.nav:getTranslation(dt, self.position)
+				navtransform:setPosition(self.position)
+				dt = Actions.waitForRedraw()
+			end
+		end
+	)
+end
 
-
-
+osgnav.removeStandardNavigation = function()
+	Actions.removeFrameAction(osgnav.standardNavAction)
+end
