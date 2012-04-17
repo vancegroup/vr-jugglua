@@ -33,6 +33,7 @@
 
 #include <QMainWindow>
 #include <QApplication>
+#include <QUrl>
 
 // Standard includes
 #include <string>
@@ -96,6 +97,9 @@ namespace vrjLua {
 			void addTextToDisplay(QString const& message);
 			void disableGUIAction();
 			void consoleReady();
+
+			void loadJconf(QUrl url);
+			void runLuaFile(QUrl url);
 
 		protected:
 			void _shared_init();

@@ -208,6 +208,8 @@ namespace vrjLua {
 		connect(this, SIGNAL(disableGUISignal()), this, SLOT(disableGUIAction()));
 		connect(timer.get(), SIGNAL(timeout()), this, SLOT(checkRunningState()));
 		timer->start(POLLING_INTERVAL);
+		connect(_ui->plainTextEdit, SIGNAL(gotJconf(QUrl)), this, SLOT(loadJconf(QUrl)));
+		connect(_ui->plainTextEdit, SIGNAL(gotLuaFile(QUrl)), this, SLOT(runLuaFile(QUrl)));
 
 
 		boost::shared_ptr<QTimer> logTimer(new QTimer(this));
@@ -251,6 +253,15 @@ namespace vrjLua {
 
 	void QTConsole::consoleReady() {
 		_consoleIsReady();
+	}
+
+	void QTConsole::loadJconf(QUrl url) {
+		QString path = url.toLocalFile();
+		_ui->plainTextEdit->appendPlainText(QString("vrjKernel.loadConfigFile[[%1]]").arg(path));
+	}
+	void QTConsole::runLuaFile(QUrl url) {
+		QString path = url.toLocalFile();
+		_ui->plainTextEdit->appendPlainText(QString("dofile[[%1]]").arg(path));
 	}
 
 	void QTConsole::disableAction() {

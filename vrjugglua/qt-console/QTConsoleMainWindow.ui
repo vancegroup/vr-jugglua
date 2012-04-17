@@ -137,7 +137,7 @@
         <number>24</number>
        </property>
       </widget>
-      <widget class="QPlainTextEdit" name="plainTextEdit">
+      <widget class="vrjLua::QTCodeInput" name="plainTextEdit">
        <property name="font">
         <font>
          <family>Consolas</family>
@@ -241,6 +241,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>vrjLua::QTCodeInput</class>
+   <extends>QPlainTextEdit</extends>
+   <header location="global">vrjugglua/qt-console/QTCodeInput.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
