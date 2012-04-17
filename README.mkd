@@ -17,11 +17,16 @@ Community
 ---------
 You can email our mailing list at <vrjugglua@librelist.com> or see the archives at <http://librelist.com/browser/vrjugglua/>
 
-Getting It
-----------
+Windows Downloads
+-----------------
 
-Windows automated snapshot builds are created every time the main repository is pushed to.
-They can be downloaded here: <http://hci.iastate.edu/~rpavlik/downloads/vrjugglua/jenkins/>
+### <http://hci.iastate.edu/~rpavlik/downloads/vrjugglua/jenkins/>
+
+These are Windows automated snapshot builds, created every time the main repository is pushed to. Ready to unzip and use.
+
+Getting the Source
+------------------
+
 ###Source code
     git clone git://github.com/vancegroup/vr-jugglua.git
 
