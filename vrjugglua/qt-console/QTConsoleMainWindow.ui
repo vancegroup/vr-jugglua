@@ -177,6 +177,8 @@
     <addaction name="actionFileOpen"/>
     <addaction name="actionFileSave"/>
     <addaction name="separator"/>
+    <addaction name="actionLoadAddlJconf"/>
+    <addaction name="separator"/>
     <addaction name="actionFileExit"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -228,6 +230,14 @@
    </property>
    <property name="text">
     <string>Show debug log</string>
+   </property>
+  </action>
+  <action name="actionLoadAddlJconf">
+   <property name="text">
+    <string>Load additional JCONF...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
    </property>
   </action>
  </widget>

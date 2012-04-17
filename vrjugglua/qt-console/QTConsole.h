@@ -87,6 +87,7 @@ namespace vrjLua {
 
 			void on_actionFileOpen_triggered();
 			void on_actionFileSave_triggered();
+			void on_actionLoadAddlJconf_triggered();
 			void on_actionFileExit_triggered();
 			void on_buttonRun_clicked();
 

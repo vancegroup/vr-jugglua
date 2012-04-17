@@ -152,6 +152,18 @@ namespace vrjLua {
 
 	}
 
+
+	void QTConsole::on_actionLoadAddlJconf_triggered() {
+		QString fileName = QFileDialog::getOpenFileName(this,
+		                   tr("Open additional JCONF File..."),
+		                   QString(),
+		                   tr("VR Juggler JCONF Files (*.jconf);;All Files (*)"));
+
+		if (!fileName.isEmpty() && !fileName.isNull()) {
+			addString("vrjKernel.loadConfigFile[[" + fileName.toStdString() + "]]");
+		}
+	}
+
 	void QTConsole::on_actionFileExit_triggered() {
 		close();
 	}
