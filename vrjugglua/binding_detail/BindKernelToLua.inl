@@ -24,6 +24,7 @@
 #endif
 #include "BindKernelToLua.h"
 #include <vrjugglua/VRJLuaOutput.h>
+#include <vrjugglua/Reconfiguration.h>
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
@@ -246,6 +247,8 @@ namespace vrjLua {
 		    def("stop", &Kernel::stop),
 		    def("setApplication", &Kernel::setApplication),
 		    def("loadConfigFile", &Kernel::loadConfigFile),
+		    def("deconfigureElementByName", &deconfigureElementByName),
+		    def("deconfigureAll", &deconfigureAll),
 		    def("waitForKernelStop", &Kernel::waitForKernelStop),
 		    def("isRunning", &Kernel::isRunning),
 		    def("initAsClusterPrimaryNode", &KernelState::initAsClusterPrimaryNode),
