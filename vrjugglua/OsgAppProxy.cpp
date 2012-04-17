@@ -192,7 +192,10 @@ namespace vrjLua {
 		}
 
 		_delegationSuccessFlag = false;
-		vpr::Interval cur_time = vrj::Kernel::instance()->getUsers()[0]->getHeadUpdateTime();
+		vpr::Interval cur_time = _lastPreFrameTime;
+		if (vrj::Kernel::instance()->getUsers().size() > 0) {
+			cur_time = vrj::Kernel::instance()->getUsers()[0]->getHeadUpdateTime();
+		}
 		vpr::Interval diff_time(cur_time - _lastPreFrameTime);
 		if (_lastPreFrameTime.getBaseVal() >= cur_time.getBaseVal()) {
 			diff_time.secf(0.0f);
