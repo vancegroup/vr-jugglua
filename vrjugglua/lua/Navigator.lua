@@ -1,4 +1,4 @@
-maxspeed = 5
+maxspeed = 2.5
 
 local function createEaseInOut(max_vel, seconds_to_max, seconds_to_stop)
 	local ease = {
