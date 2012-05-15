@@ -6,7 +6,7 @@ require("Actions")
 
 RelativeTo = {
 	Room = osg.Group(),
-	World = osg.Group()
+	World = osg.MatrixTransform()
 }
 
 osgnav = {position = osg.Vec3d(0, 0, 0)}
