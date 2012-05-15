@@ -96,7 +96,7 @@ for _, argument in ipairs(arg) do
 
 	elseif argument:find("[.]lua$") then
 		-- OK, a lua file to add to the run buffer
-		runbuf:addFile(argument)
+		runbuf:addFile(argument, false)
 
 	else
 		-- We don't recognize it - let the user's script handle it.
