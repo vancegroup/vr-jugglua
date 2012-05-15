@@ -28,12 +28,10 @@ function osgnav:initScene()
 	Navigator.useWandTranslation(self.nav, wand, button)
 
 	--print("Setting up scenegraph")
-	navtransform = osg.PositionAttitudeTransform()
-	navtransform:addChild(RelativeTo.World)
+	self.appProxy:getScene():addChild(RelativeTo.World)
 
 
 	--print("Attaching to app proxy's scene")
-	self.appProxy:getScene():addChild(navtransform)
 	self.appProxy:getScene():addChild(RelativeTo.Room)
 
 	print("Scenegraph Navigation Testbed loaded!")
@@ -93,7 +91,7 @@ do
 			local dt = dt
 			while true do
 				self.position = self.position - self.nav:getTranslation(dt, self.position)
-				navtransform:setPosition(self.position)
+				RelativeTo.World:setMatrix(osg.Matrix.translate(self.position))
 				dt = Actions.waitForRedraw()
 			end
 		end
