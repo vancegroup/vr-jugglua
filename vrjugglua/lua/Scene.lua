@@ -32,7 +32,6 @@ local makeVectorConstructor = function(suffix)
 			-- They just passed a table
 			a = a[1]
 		end
-		return a
 		local typename = "Vec" .. tostring(#a) .. suffix
 		-- A proper type will be a table, not a function
 		if type(osg[typename]) == "table" then
@@ -44,7 +43,7 @@ local makeVectorConstructor = function(suffix)
 end
 
 -- Make Vec a nice function for creating right-sized vectors of doubles
-Vec = makeVectorConstructor "d"
+Vec = makeVectorConstructor("d")
 Axis = Vec -- Just a nicer name for more readable rotation specification
 Vec3 = function(...)
 	print("Using the function Vec3 is deprecated - just use Vec")
