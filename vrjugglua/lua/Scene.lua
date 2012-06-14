@@ -29,28 +29,22 @@ end
 
 Vec3 = Axis
 
-function Vec(x, y, z, w)
-	if w ~= nil then
-		return osg.Vec4d(x, y, z, w)
-	end
-
-	if z ~= nil then
-		return osg.Vec3d(x, y, z)
-	end
-
-	if y ~= nil then
-		return osg.Vec2d(x, y)
+function Vec(...)
+	local a = {...}
+	if #a == 1 and type(a[1]) == "table" then
+		-- They just passed a table
+		a = a[1]
 	end
 
 	-- OK, so they didn't pass the arguments one-by-one, but rather
 	-- as a list
 
-	if #x == 4 then
-		return osg.Vec4d(x[1], x[2], x[3], x[4])
-	elseif #x == 3 then
-		return osg.Vec3d(x[1], x[2], x[3])
-	elseif #x == 2 then
-		return osg.Vec2d(x[1], x[2])
+	if #a == 4 then
+		return osg.Vec4d(a[1], a[2], a[3], a[4])
+	elseif #a == 3 then
+		return osg.Vec3d(a[1], a[2], a[3])
+	elseif #a == 2 then
+		return osg.Vec2d(a[1], a[2])
 	end
 
 	-- Hmm, well, they didn't pass as a list either. Bail!
