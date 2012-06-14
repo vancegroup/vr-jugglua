@@ -23,32 +23,37 @@ ScaleFrom = {
 	m = 1.0
 }
 
-function Axis(coords)
-	return osg.Vec3d(coords[1], coords[2], coords[3])
+-- This function returns functions that create vectors automatically, using
+-- the suffix specified initially (like "d") and the number of arguments (3 to make Vec3d)
+local makeVectorConstructor = function(suffix)
+	return function(...)
+		local a = {...}
+		if #a == 1 and type(a[1]) == "table" then
+			-- They just passed a table
+			a = a[1]
+		end
+		return a
+		local typename = "Vec" .. tostring(#a) .. suffix
+		-- A proper type will be a table, not a function
+		if type(osg[typename]) == "table" then
+			return osg[typename](unpack(a))
+		else
+			error("Can't create a vector of type " .. typename .. " - no such type exists", 3)
+		end
+	end
 end
 
-Vec3 = Axis
+-- Make Vec a nice function for creating right-sized vectors of doubles
+Vec = makeVectorConstructor "d"
+Axis = Vec -- Just a nicer name for more readable rotation specification
+Vec3 = function(...)
+	print("Using the function Vec3 is deprecated - just use Vec")
+	return Vec(...)
+end
 
-function Vec(...)
-	local a = {...}
-	if #a == 1 and type(a[1]) == "table" then
-		-- They just passed a table
-		a = a[1]
-	end
-
-	-- OK, so they didn't pass the arguments one-by-one, but rather
-	-- as a list
-
-	if #a == 4 then
-		return osg.Vec4d(a[1], a[2], a[3], a[4])
-	elseif #a == 3 then
-		return osg.Vec3d(a[1], a[2], a[3])
-	elseif #a == 2 then
-		return osg.Vec2d(a[1], a[2])
-	end
-
-	-- Hmm, well, they didn't pass as a list either. Bail!
-	error("Must call Vec with 2, 3, or 4 elements!", 2)
+-- Make Vecd, Vecf, Vecb, ... for when you need to be more specific.
+for _, suffix in ipairs{"d", "f", "b", "s", "ub"} do
+	_G["Vec" .. suffix] = makeVectorConstructor(suffix)
 end
 
 function AngleAxis(angle, axis)
