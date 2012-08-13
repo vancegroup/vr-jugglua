@@ -21,6 +21,7 @@
 #include "loadWrapperLib.h"
 #include "CustomConverters.h"
 #include "LuaIncludeFull.h"
+#include "LuaStackChecker.h"
 
 #include <iostream>
 #include <cstring>
@@ -50,6 +51,27 @@ namespace osgLua {
 		}
 	} // end of namespace detail
 } // end of namespace osgLua
+
+namespace {
+	void pushNewlyLoadedPackage(lua_State * L, const char * name) {
+		luacpputils::StackChecker<> check(L);
+		lua_getglobal(L, "package");
+		lua_getfield(L, -1, "loaded");
+
+		// Push name string
+		lua_pushstring(L, name);
+
+		// Push value again
+		lua_pushvalue(L, -3);
+
+		// Set the value
+		lua_settable(L, -3);
+
+		// Pop off the package and loaded tables.
+		lua_pop(L, 2);
+	}
+
+}
 
 int unload_osgWrapper(lua_State *L) {
 	osglib **ptr = (osglib**) lua_touserdata(L, 1);
@@ -96,6 +118,7 @@ void osgLua::open(lua_State *L) {
 		REGISTER_EXPLICIT_NUMERIC_TYPE(GLdouble);
 #undef REGISTER_EXPLICIT_NUMERIC_TYPE
 
+		pushNewlyLoadedPackage(L, "osgLua"); // One copy to package.loaded
 		lua_setglobal(L, "osgLua");
 	}
 
@@ -200,6 +223,7 @@ bool osgLua::loadWrapper(lua_State *L, const char *name) {
 
 	// enable the namespace
 	osgLua::Type::push(L, name);
+	pushNewlyLoadedPackage(L, name); // One copy to package.loaded
 	lua_setglobal(L, name);
 
 	lua_settop(L, top);

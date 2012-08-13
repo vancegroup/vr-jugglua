@@ -17,10 +17,6 @@ end
 -- Let Lua know that vrjugglua is loaded
 package.loaded["vrjugglua"] = true
 
--- Let Lua know that osgLua and osg are loaded
-package.loaded["osgLua"] = osgLua
-package.loaded["osg"] = osg
-
 -- Add support for loading osg wrappers using require()
 local function osgLuaSearcherFunction(modname)
 	-- first see if it starts with osg - assume that's needed
