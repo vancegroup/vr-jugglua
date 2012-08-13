@@ -11,7 +11,7 @@ print( ("%s = %s or {}"):format(tablename, tablename) )
 
 -- Populate table
 local defs = 0
-for defname, val in contents:gfind("#define (GL_[%w_]+)%s*(0x%x%x%x%x)") do
+for defname, val in contents:gmatch("#define (GL_[%w_]+)%s*(0x%x%x%x%x)") do
 	print( ("%s.%s = %s"):format(tablename, defname, val) )
 	defs = defs + 1
 end
