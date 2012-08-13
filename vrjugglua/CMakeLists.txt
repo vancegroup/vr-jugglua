@@ -89,7 +89,7 @@ set_property(TARGET
 	"VRJLua main library")
 
 # Require the Lua files installed into the build tree
-add_dependencies(vrjugglua luaFiles)
+add_dependencies(vrjugglua luaFiles extract_gl_constants)
 
 if(INSTALL_CXX_SDK)
 	install(TARGETS vrjugglua
