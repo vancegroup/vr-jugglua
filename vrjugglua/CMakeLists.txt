@@ -24,6 +24,7 @@ include_directories(${VRJUGGLER_INCLUDE_DIRS}
 # Let the Lua files install themselves
 
 add_subdirectory(lua)
+add_subdirectory(constants)
 
 set(SOURCES
 	FindVPRDLL.cpp
