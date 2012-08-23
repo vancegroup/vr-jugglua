@@ -5,7 +5,7 @@ samples. This code *is* supported.
 
 This module implements file retrieval by the TFTP protocol.
 Its main use was to test the UDP code, but since someone
-found it usefull, I turned it into a module that is almost
+found it useful, I turned it into a module that is almost
 official (no uploads, yet).
 
     dict.lua                -- Dict client

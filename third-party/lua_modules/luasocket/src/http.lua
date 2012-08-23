@@ -40,7 +40,7 @@ local function receiveheaders(sock, headers)
     while line ~= "" do
         -- get field-name and value
         name, value = socket.skip(2, string.find(line, "^(.-):%s*(.*)"))
-        if not (name and value) then return nil, "malformed reponse headers" end
+        if not (name and value) then return nil, "malformed response headers" end
         name = string.lower(name)
         -- get next line (value might be folded)
         line, err  = sock:receive()
@@ -67,7 +67,7 @@ socket.sourcet["http-chunked"] = function(sock, headers)
         dirty = function() return sock:dirty() end
     }, {
         __call = function()
-            -- get chunk size, skip extention
+            -- get chunk size, skip extension
             local line, err = sock:receive()
             if err then return nil, err end
             local size = base.tonumber(string.gsub(line, ";.*", ""), 16)
