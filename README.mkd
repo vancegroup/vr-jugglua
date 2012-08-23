@@ -122,7 +122,7 @@ following license:
 
 > Copyright &copy; 2003-2011 Daniel Wallin and Arvid Norberg
 >
-> Copyright &copy; 2008-2011 Contributers
+> Copyright &copy; 2008-2011 Contributors
 >
 > Permission is hereby granted, free of charge, to any person obtaining a
 > copy of this software and associated documentation files (the "Software"),
