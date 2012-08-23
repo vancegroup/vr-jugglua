@@ -9,7 +9,7 @@ function verse.plugins.tls(stream)
 			stream:send(st.stanza("starttls", { xmlns = xmlns_tls }));
 			return true;
 		elseif not stream.conn.starttls and not stream.secure then
-			stream:warn("SSL libary (LuaSec) not loaded, so TLS not available");
+			stream:warn("SSL library (LuaSec) not loaded, so TLS not available");
 		elseif not stream.secure then
 			stream:debug("Server doesn't offer TLS :(");
 		end
