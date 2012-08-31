@@ -1,5 +1,11 @@
 require("help")
 
+local verifyInAction = function(fname)
+	if coroutine.running() == nil then
+		error("Can't call %s from your main code, only from a frame action!":format(fname), 3)
+	end
+end
+
 Actions = help.docstring{
 	[[
 Actions can be considered separate "mini-programs" that you can start
@@ -86,6 +92,7 @@ only waits once.
 
 Returns the amount of time that it waited, in seconds.
 ]] .. function (num)
+	verifyInAction("Actions.waitForRedraw")
 	if type(num) == "number" then
 		local dt = 0
 		for i = 1, num do
@@ -103,6 +110,7 @@ Just like Actions.waitForRedraw, it updates the display.
 
 Returns the exact amount of time that it waited, in seconds.
 ]] .. function (seconds)
+	verifyInAction("Actions.waitSeconds")
 	if not type(seconds) == "number" then
 		error("Action.waitSeconds requires that you pass a single number as a parameter.", 2)
 	end
