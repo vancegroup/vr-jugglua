@@ -2,7 +2,7 @@ require("help")
 
 local verifyInAction = function(fname)
 	if coroutine.running() == nil then
-		error("Can't call %s from your main code, only from a frame action!":format(fname), 3)
+		error(("Can't call %s from your main code, only from a frame action!"):format(fname), 3)
 	end
 end
 
