@@ -24,6 +24,8 @@ Windows Downloads
 
 These are Windows automated snapshot builds, created every time the main repository is pushed to. Ready to unzip and use.
 
+_Note_:  If you're in the ISU Virtual Reality Applications Center, these snapshots are automatically unzipped, ready to run, in in `X:\vr\apps\vrjugglua` aka `V:\apps\vrjugglua` We recommend using that continuously-updated build instead of using a locally-unzipped snapshot when possible.
+
 Getting the Source
 ------------------
 
