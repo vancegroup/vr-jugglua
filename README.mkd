@@ -26,6 +26,52 @@ These are Windows automated snapshot builds, created every time the main reposit
 
 _Note_:  If you're in the ISU Virtual Reality Applications Center, these snapshots are automatically unzipped, ready to run, in in `X:\vr\apps\vrjugglua` aka `V:\apps\vrjugglua` We recommend using that continuously-updated build instead of using a locally-unzipped snapshot when possible.
 
+Changes
+-------
+For the full change history, see the git repository.  This section is a high-level overview of useful, user-facing changes by date (newest changes at the top).
+
+### August 2012
+- *Added module*: `require "gldef"` will create a table `gldef` containing all the potentially-useful definitions (of constants/enumerations) extracted from `gl.h`. These are sometimes necessary for more advanced lighting code with OSG.
+
+- *Improved error catching*: Added detection for when you try to run `Actions.waitFor____` when you're not in a frame action, and throw a useful error instead of the cryptic one Lua would throw about yielding through C code or something like that.
+
+- *Added examples*: some basic lighting examples - thanks to Leif Berg!
+
+### June 2012
+- *Improved/added functions*: To easily construct OSG vectors of various sizes, just call `Vec(x, y, z)`. It automatically detects the number of parameters passed and finds the correct OSG type (so for instance, that call would create an `osg.Vec3d`).
+
+	- Note that if a `VecXd` (containing doubles) won't work for you, there are also matching functions `Vecf`, `Vecb`, `Vecs`, `Vecus` for creating `osg.VecXf`, `osg.VecXb`, `osg.VecXs`, and `osg.VecXus` objects respectively.
+
+- *Deprecated function*: `Vec3` is removed - just use `Vec`. Not sure anyone actually used `Vec3` to begin with, so this should be no big deal.
+
+### May 2012
+- *Improved structure*: `RelativeTo.World` is now a matrix transform node, whose matrix describes the location of the World with respect to the Room. This is part of the progress for improving navigation.
+
+- *Change to defaults*: The default navigation speed is halved, based on testing in METaL (one of our immersive VR facilities).
+
+- *Deprecated global variable*: There is no more `navtransform` global, due to above restructuring. Its use had been discouraged for quite some time, so this should be very low impact.
+
+### April 2012
+- *New interactive console feature*: You can now drag and drop `.lua` files in to the code entry area, and Lua code to execute that file will be automatically entered. Similarly, dragging in `.jconf` (VR Juggler configuration) files will enter code to load that additional configuration.  *Note*: You can drag in multiple files at once, or one after another; the entered code includes a newline so you can just drop files in one after another or in a bunch. This should save a lot of time and a lot of usage of the File menu.
+
+- *New interactive console feature*: Menu item to load an additional `.jconf` file. Not expecting much use of this, given the feature above, but it might be useful if you can't have two windows open side-by-side easily.
+
+- *New interactive console feature*: When typing in the code entry box, you can now press `Ctrl-Return` (`Command-Return` on the Mac) to run the code, instead of having to click Run.  Thanks to Juan Sebastian Casallas!
+
+- *Added example*: We now have an example for usage of `TransparentGroup`
+
+- *Improved structure (advanced)*: The stock navigation has now been moved into a frame action, so those interested in replacing it can call `osgnav.removeStandardNavigation` and then add their own frame action to move around.
+
+- *Build fix*: Builds and works on Mac OS X again - thanks to Juan Sebastian Casallas!
+
+- *Improved packaging*: Binary snapshots now contain a brief README file describing them (and their self-contained nature) and providing useful links.
+
+### February 2012
+- *Improved functionality*: The automatically-loaded `help` function now shows more detail about tables, and as a side effect correctly shows the methods of (Luabind-wrapped) VR JuggLua objects.
+
+### The Sands of Time
+If you're interested in even earlier changes, please see the git repository history. Contributions of nicely-written summaries for this file are gladly accepted :D
+
 Getting the Source
 ------------------
 
