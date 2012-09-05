@@ -117,23 +117,26 @@ endif()
 ###
 # Set up and provide installation commands (needed for packaging to work)
 ###
+if(INSTALL_LIBRARIES_BUNDLE)
+	include("BundleOSGPlugins")
 
-include("BundleOSGPlugins")
+	install_osg_plugins(OSG_PLUGINS)
 
-install_osg_plugins(OSG_PLUGINS)
-
-if(APPLE AND TARGET NavTestbed)
-	install_vrjuggler_data_files(./NavTestbed.app/Contents)
-	install_vrjuggler_plugins(./NavTestbed.app/Contents VRJUGGLER_INSTALLED_PLUGINS)
-	set(APP_LOCATION ".")
-else()
-	install_vrjuggler_data_files(.)
-	install_vrjuggler_plugins(. VRJUGGLER_INSTALLED_PLUGINS)
-	set(APP_LOCATION "bin")
+	if(APPLE AND TARGET NavTestbed)
+		install_vrjuggler_data_files(./NavTestbed.app/Contents)
+		install_vrjuggler_plugins(./NavTestbed.app/Contents VRJUGGLER_INSTALLED_PLUGINS)
+		set(APP_LOCATION ".")
+	else()
+		install_vrjuggler_data_files(.)
+		install_vrjuggler_plugins(. VRJUGGLER_INSTALLED_PLUGINS)
+		set(APP_LOCATION "bin")
+	endif()
 endif()
 
 if(TARGET NavTestbed)
-	fixup_vrjuggler_app_bundle("NavTestbed" "${APP_LOCATION}" "${RUNTIME_LIBRARIES};${VRJUGGLER_INSTALLED_PLUGINS};${OSG_PLUGINS}" "${RUNTIME_LIBRARY_DIRS}")
+	if(INSTALL_LIBRARIES_BUNDLE)
+		fixup_vrjuggler_app_bundle("NavTestbed" "${APP_LOCATION}" "${RUNTIME_LIBRARIES};${VRJUGGLER_INSTALLED_PLUGINS};${OSG_PLUGINS}" "${RUNTIME_LIBRARY_DIRS}")
+	endif()
 
 	create_target_launcher(NavTestbed
 		FORWARD_ARGS
