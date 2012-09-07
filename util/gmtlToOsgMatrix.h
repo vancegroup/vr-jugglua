@@ -3,6 +3,16 @@
 
 	@date	2010
 
+	This header is maintained as a part of 'util-headers' - you can always
+	find the latest version online at https://github.com/vancegroup/util-headers
+
+	This GUID can help identify the project: d1dbc94e-e863-49cf-bc08-ab4d9f486613
+
+	This copy of the header is from the revision that Git calls
+	efa78147fcc5e77a0c724a55bab3b05328ebb6b1
+
+	Commit date: "2012-09-07 15:24:13 -0500"
+
 	@author
 	Ryan Pavlik
 	<rpavlik@iastate.edu> and <abiryan@ryand.net>
@@ -37,11 +47,11 @@ namespace util {
 /// @{
 
 /// Given a GMTL matrix, produce an equivalent OSG matrix
-inline ::osg::Matrix toOsgMatrix(const gmtl::Matrix44f & r) {
-	::osg::Matrix temp;
-	temp.set(r.getData());
-	return temp;
-}
+	inline ::osg::Matrix toOsgMatrix(const gmtl::Matrix44f & r) {
+		::osg::Matrix temp;
+		temp.set(r.getData());
+		return temp;
+	}
 
 /// @}
 
