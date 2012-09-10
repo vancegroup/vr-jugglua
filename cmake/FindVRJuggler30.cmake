@@ -408,7 +408,7 @@ function(install_vrjuggler30_data_files prefix)
 	file(GLOB
 		_vj_config_files
 		"${base}/configFiles/*.jconf")
-	install(FILES "${base}/calibration.table" DESTINATION "${DEST}")
+	install(FILES "${VRJUGGLER30_ROOT_DIR}/vrjuggler-3.0/data/calibration.table" DESTINATION "${DEST}")
 endfunction()
 
 macro(_vrjuggler30_plugin_install _VAR)
