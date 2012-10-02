@@ -3,13 +3,12 @@ VR JuggLua
 
 Lua bindings and high-level interface for virtual experience creation, built on VR Juggler
 
-[VR JuggLua homepage on GitHub][home]
+VR JuggLua homepage on GitHub: <https://github.com/vancegroup/vr-jugglua>
 
 Maintained by the [Vance Research Team][jmvance] at Iowa State
 University's Virtual Reality Applications Center. Original author: [Ryan
 Pavlik][rp], <rpavlik@iastate.edu> <abiryan@ryand.net>
 
-[home]:https://github.com/vancegroup/vr-jugglua
 [jmvance]:http://www.vrac.iastate.edu/~jmvance/ "Judy M. Vance, Ph. D."
 [rp]:http://academic.cleardefinition.com/ "Ryan Pavlik"
 
@@ -32,6 +31,9 @@ _Note_:  If you're in the ISU Virtual Reality Applications Center, these snapsho
 Changes
 -------
 For the full change history, see the git repository.  This section is a high-level overview of useful, user-facing changes by date (newest changes at the top).
+
+### October 2012
+- *Community change*: We now use a Google Group for mailing list/forum purposes.
 
 ### August 2012
 - *Added module*: `require "gldef"` will create a table `gldef` containing all the potentially-useful definitions (of constants/enumerations) extracted from `gl.h`. These are sometimes necessary for more advanced lighting code with OSG.
