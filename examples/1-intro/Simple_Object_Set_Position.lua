@@ -19,6 +19,6 @@ RelativeTo.World:addChild(xform)
 
 -- 5) Move the xform object with the setPosition method, you can do this inside of your script, or in the VRJuggLua
 --interpreter 
-xform:setPosition(osg.Vec3d(1, 0, 0))
+xform:setPosition(Vec(1, 0, 0))
 -- Try setting the xform to different positions (other than 1,0,0)and see what happens
 -- What happens if you adjust the sphere's location, and then set the position of the xform?
