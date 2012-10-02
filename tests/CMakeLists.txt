@@ -89,6 +89,16 @@ add_test(NAME
 	"${EXAMPLE_DIR}/AppTemplate/main.lua"
 	"${CMAKE_CURRENT_SOURCE_DIR}/shutdown-after-5-frames.lua")
 
+add_test(NAME
+	examples_AppTemplate_directory
+	COMMAND
+	${GENERIC_LAUNCHER_COMMAND}
+	--debugger
+	$<TARGET_FILE:NavTestbed>
+	--stub
+	"${EXAMPLE_DIR}/AppTemplate/appdir.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/shutdown-after-5-frames.lua")
+
 ###
 # End Lua-only tests
 ###
