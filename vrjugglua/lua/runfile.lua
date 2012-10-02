@@ -13,7 +13,7 @@ if runfile == nil then
 
 		if isValidPath(fullPath) then
 			print(("Running %s - found at %s"):format(fn, fullPath))
-			dofile(fullPath)
+			return dofile(fullPath)
 		else
 			error(("Could not find %s in model search path to run!"):format(fn), 2)
 		end
