@@ -1,3 +1,10 @@
+-- Main file for application. It tells VR JuggLua where to look, then runs
+-- the code for the app.
+
+-- If you just want the "where to look" part, and want to work on the rest
+-- interactively, run appdir.lua instead of this until you have the code
+-- the way you like in this file (and possibly others).
+
 -- These lines tell VR JuggLua to look in this directory for models and scripts
 require "AddAppDirectory"
 AddAppDirectory()
