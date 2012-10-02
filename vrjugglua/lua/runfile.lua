@@ -1,17 +1,18 @@
 if runfile == nil then
-	local isValidPath = function(fn)
-		return (fn ~= nil) and (fn ~= "")
+	local isValidPath = function(fn, soughtFn)
+		return (fn ~= nil) and (fn ~= "") and (fn ~= soughtFn)
 	end
 	runfile = function(fn)
 		local fullPath
 		for _, try in ipairs{fn, fn .. ".lua"} do
-			if isValidPath(try) then
-				fullPath = try
+			local testPath = vrjLua.findInModelSearchPath(try)
+			if isValidPath(testPath, try) then
+				fullPath = testPath
 				break
 			end
 		end
 
-		if isValidPath(fullPath) then
+		if fullPath ~= nil then
 			print(("Running %s - found at %s"):format(fn, fullPath))
 			return dofile(fullPath)
 		else
