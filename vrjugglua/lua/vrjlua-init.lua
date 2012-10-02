@@ -2,6 +2,8 @@
 -- Enable help by default
 require("help")
 
+require("runfile")
+
 -- Override print function with threadsafe Juggler one
 do
 	local oldprint = print
