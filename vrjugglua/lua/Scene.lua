@@ -174,16 +174,20 @@ function AmbientIntensity(a)
 	return node
 end
 
-function Group(arg)
-	local t = osg.Group()
+local handleGroupChildren = function(node, arg)
 	-- Add nodes just tacked on the end of the list.
 	for _, v in ipairs(arg) do
 		if v ~= nil then
-			t:addChild(v)
+			node:addChild(v)
 		end
 	end
 
-	return t
+	return node
+end
+
+function Group(arg)
+	local t = osg.Group()
+	return handleGroupChildren(t, arg)
 end
 
 function Transform(arg)
@@ -210,19 +214,16 @@ function Transform(arg)
 		t:getOrCreateStateSet():setMode(GL_RESCALE_NORMAL, 1)
 	end
 
-	-- Deprecated: Add nodes in the "children" list
-	if arg.children ~= nil then
-		error("No longer need to pass children={}, just list the children directly.", 2)
+	return handleGroupChildren(t, arg)
+end
+
+function MatrixTransform(arg)
+	local t = osg.MatrixTransform()
+	if arg.matrix ~= nil then
+		t:setMatrix(arg.matrix)
 	end
 
-	-- Add nodes just tacked on the end of the list.
-	for _, v in ipairs(arg) do
-		if v ~= nil then
-			t:addChild(v)
-		end
-	end
-
-	return t
+	return handleGroupChildren(t, arg)
 end
 
 function Model(filename)
