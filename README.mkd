@@ -15,7 +15,10 @@ Pavlik][rp], <rpavlik@iastate.edu> <abiryan@ryand.net>
 
 Community
 ---------
-You can email our mailing list at <vrjugglua@librelist.com> or see the archives at <http://librelist.com/browser/vrjugglua/>
+We have a Google Group that you're encouraged to use.
+
+- Web access (to join, and optionally to post/read archives on the web): <https://groups.google.com/d/forum/vr-jugglua>
+- Email address to use once you've joined: vr-jugglua@googlegroups.com
 
 Windows Downloads
 -----------------
