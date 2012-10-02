@@ -39,6 +39,8 @@ For the full change history, see the git repository.  This section is a high-lev
 
 - *Added default module*: By default, the `runfile` module is now loaded creating the `runfile(filename)` function. The filename given will be searched for in the model search path, run if found, or an error reported if not found.  This should replace most (all?) usage of `dofile(vrjLua.findInModelSearchPath(...))`.
 
+- *Extended functionality*: At long last, there is a `MatrixTransform{}` constructor to match the `Transform{}` constructor that makes PositionAttitudeTransforms. You can pass an initial matrix similar to how you pass position to Transform: `MatrixTransform{matrix = yourmatrix}`
+
 ### August 2012
 - *Added module*: `require "gldef"` will create a table `gldef` containing all the potentially-useful definitions (of constants/enumerations) extracted from `gl.h`. These are sometimes necessary for more advanced lighting code with OSG.
 
