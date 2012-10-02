@@ -1,0 +1,12 @@
+#!/bin/sh
+
+CHECKSCRIPT=$(cd $(dirname $0) && pwd)/checkForOutdatedCode
+EXAMPLEDIR=$(cd $(dirname $0) && cd ../examples && pwd)
+
+${CHECKSCRIPT} -r \
+    ${EXAMPLEDIR}/1-intro/ \
+    ${EXAMPLEDIR}/2-input/ \
+    ${EXAMPLEDIR}/3-interaction/ \
+    ${EXAMPLEDIR}/4-finding-files/ \
+    ${EXAMPLEDIR}/AppTemplate/
+

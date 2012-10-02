@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ALLARGS=$@
+checkForRegex() {
+	re=$1
+	warning=$2
+	echo
+	grep -e "${re}" ${ALLARGS} && echo "\n--- Information about above warnings: ${warning}\n" || true
+}
+
+checkForRegex 'osg[.]Vec' "Use the simple Vec, Vecd, Vecf, etc. constructors instead - see changes for June 2012."
+
+checkForRegex 'vrjLua[.]appendToModelSearchPath[(]getScriptFilename[(][)][)]' "Use AddAppDirectory instead - see changes for October 2012."
+checkForRegex 'dofile[(]vrjLua[.]findInModelSearchPath' "Use runfile instead - see changes for October 2012."
