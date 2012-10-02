@@ -35,6 +35,8 @@ For the full change history, see the git repository.  This section is a high-lev
 ### October 2012
 - *Community change*: We now use a Google Group for mailing list/forum purposes.
 
+- *Added example/template*: The `AppTemplate` directory is intended to be copied and pasted and used as the start of your own application. It contains examples of how to make an app in a directory, with some sample features. Run it by dropping/opening `main.lua`. For interactive development, you can drop `appdir.lua` to set up the directory without running additional code. You'll want to edit the `.lua` files, put your models in there instead of the example, etc.
+
 - *Added module*: `require "AddAppDirectory"` will make a function `AddAppDirectory()` available that adds the current file's directory to the model search path.  This should replace usage of `vrjLua.appendToModelSearchPath(getScriptFilename())`.  It issues a warning if not run from a file - call `AddAppDirectory(true)` to make it an error instead.
 
 - *Added default module*: By default, the `runfile` module is now loaded creating the `runfile(filename)` function. The filename given will be searched for in the model search path, run if found, or an error reported if not found.  This should replace most (all?) usage of `dofile(vrjLua.findInModelSearchPath(...))`.
