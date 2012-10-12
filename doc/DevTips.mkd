@@ -1,0 +1,18 @@
+Debugging tips
+==============
+
+OpenSceneGraph and related bits have status messages controlled by the
+environment variable `OSGNOTIFYLEVEL`. Depending on its string value,
+messages below the given severity are ignored. The default value is
+`NOTICE`, so `INFO` and `DEBUG` are good ideas to try.
+
+Similarly, VR Juggler's debug output is controlled by
+`VPR_DEBUG_NFY_LEVEL`. This is a numerical value, with the default of 2
+- larger numbers mean more messages. Increase slowly - you can get to
+"unreasonable amounts of messages" quite quickly.
+
+
+OSG Wrappers
+------------
+
+- osgDB::appendPlatformSpecificLibraryFilePaths - <https://github.com/rpavlik/osg/blob/9299d6936cbe54b481dfb45e49ad79682e18d991/src/osgDB/FileUtils.cpp#L606>
