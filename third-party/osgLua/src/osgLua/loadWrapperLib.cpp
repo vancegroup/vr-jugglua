@@ -17,6 +17,7 @@
 #include "loadWrapperLib.h"
 
 #include <osgDB/DynamicLibrary>
+#include <osgDB/Registry>
 #include <osg/Version>
 
 #include <vector>
@@ -26,10 +27,7 @@
 #include <iostream>
 #endif
 
-static std::string getLibraryNamePrepend() {
-	static const std::string prepend = std::string("osgPlugins-") + std::string(osgGetVersion()) + std::string("/");
-	return prepend;
-}
+
 
 // borrowed from osgDB...
 static std::string createLibraryNameForWrapper(const std::string& ext) {
@@ -57,31 +55,74 @@ static std::string createLibraryNameForWrapper(const std::string& ext) {
 #endif
 }
 
+namespace {
+
+	static const char LIB[] = "lib";
+
+	class LibNamePossibilityList {
+		public:
+			typedef std::vector<std::string> NameListType;
+			typedef NameListType::iterator iterator;
+			typedef NameListType::const_iterator const_iterator;
+
+			const_iterator begin() const {
+				return _names.begin();
+			}
+
+			iterator begin() {
+				return _names.begin();
+			}
+
+			const_iterator end() const {
+				return _names.end();
+			}
+
+			iterator end() {
+				return _names.end();
+			}
+
+			void pushNameVariants(std::string const& basename) {
+				pushDirectoryVariants(basename);
+				if (basename.find(LIB) == 0) {
+					// Starts with lib already - try stripping it. Starting at sizeof(LIB)
+					// is one too far, due to null terminator.
+					pushDirectoryVariants(basename.substr(sizeof(LIB) - 1, std::string::npos));
+				} else {
+					pushDirectoryVariants(LIB + basename);
+				}
+			}
+
+
+		private:
+			static std::string getPluginDirectoryPrepend() {
+				static const std::string prepend = "osgPlugins-" + std::string(osgGetVersion()) + "/";
+				return prepend;
+			}
+			void pushDirectoryVariants(std::string const& filename) {
+				_names.push_back(filename);
+				_names.push_back(getPluginDirectoryPrepend() + filename);
+			}
+			NameListType _names;
+	};
+
+} // end of anonymous namespace
+
 osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname) {
-	/// get a base name
-	std::string basename = createLibraryNameForWrapper(libname);
+	/// We'll have a number of ideas
+	LibNamePossibilityList names;
 
-	/// try that name and that name with lib in front
-	std::vector<std::string> libnames;
-	libnames.push_back(basename);
-	libnames.push_back("lib" + basename);
+	/// First ask osgDB itself for its idea, and we'll stick lib in front of it as an extra measure.
+	names.pushNameVariants(osgDB::Registry::instance()->createLibraryNameForNodeKit("osgwrapper_" + libname));
 
-	/// grab the lib dir
-	std::string const libdir = getLibraryNamePrepend();
+	/// Now use our copy/paste code to guess a name
+	names.pushNameVariants(createLibraryNameForWrapper(libname));
 
-	/// for each existing idea, push another idea that has the lib dir prepended
-	unsigned int n = libnames.size();
-	for (unsigned int i = 0; i < n; ++i) {
-		libnames.push_back(libdir + libnames[i]);
-	}
-
-	/// Try all ideas until we succeed or run out of htem
-	n = libnames.size();
-	for (unsigned int i = 0; i < n; ++i) {
+	for (LibNamePossibilityList::const_iterator it = names.begin(), e = names.end(); it != e; ++it) {
+		/// @todo replace the inside of this loop with osgDB::Registry::instance()->loadLibrary()
 #ifdef OSGLUA_VERBOSE
-		std::cout << "Trying to load " << libnames[i] << std::endl;
+		std::cout << "Trying to load " << *it << std::endl;
 #endif
-		osgDB::DynamicLibrary * lib = osgDB::DynamicLibrary::loadLibrary(libnames[i]);
+		osgDB::DynamicLibrary * lib = osgDB::DynamicLibrary::loadLibrary(*it);
 		if (lib) {
 #ifdef OSGLUA_VERBOSE
 			std::cout << "Success!" << std::endl;
