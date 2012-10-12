@@ -120,6 +120,8 @@ void osgLua::open(lua_State *L) {
 
 		pushNewlyLoadedPackage(L, "osgLua"); // One copy to package.loaded
 		lua_setglobal(L, "osgLua");
+
+		outputLibraryPathListToOsgInfo();
 	}
 
 	lua_settop(L, top);

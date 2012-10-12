@@ -18,11 +18,13 @@
 
 #include <osgDB/DynamicLibrary>
 #include <osgDB/Registry>
+#include <osgDB/FileUtils>
 #include <osg/Version>
 #include <osg/Notify>
 
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 
 #ifdef OSGLUA_VERBOSE
 #include <iostream>
@@ -113,6 +115,17 @@ namespace {
 			NameListType _names;
 	};
 
+	struct OsgInfoPathListPrinter {
+		void operator()(std::string const& str) {
+			if (str.empty()) {
+				OSG_INFO << "[EmptyEntry!]";
+			} else {
+				OSG_INFO << str;
+			}
+			OSG_INFO << ";";
+		}
+	};
+
 } // end of anonymous namespace
 
 osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname) {
@@ -144,4 +157,14 @@ osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname) {
 	throw std::runtime_error("Could not load wrapper for " + libname);
 
 	return NULL;
+}
+
+
+void outputLibraryPathListToOsgInfo() {
+	if (osg::isNotifyEnabled(osg::INFO)) {
+		OSG_INFO << "[OSGLUA] osgLua loaded! Here is the library path list:";
+		osgDB::FilePathList & lpl = osgDB::getLibraryFilePathList();
+		std::for_each(lpl.begin(), lpl.end(), OsgInfoPathListPrinter());
+		OSG_INFO << std::endl;
+	}
 }
