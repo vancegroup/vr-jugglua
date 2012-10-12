@@ -32,7 +32,7 @@ static std::string getLibraryNamePrepend() {
 }
 
 // borrowed from osgDB...
-std::string createLibraryNameForWrapper(const std::string& ext) {
+static std::string createLibraryNameForWrapper(const std::string& ext) {
 
 #if defined(WIN32)
 	// !! recheck evolving Cygwin DLL extension naming protocols !! NHV
