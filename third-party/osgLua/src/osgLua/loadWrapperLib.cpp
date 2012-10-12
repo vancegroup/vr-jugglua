@@ -26,8 +26,9 @@
 #include <iostream>
 #endif
 
-std::string getLibraryNamePrepend() {
-	return std::string("osgPlugins-") + std::string(osgGetVersion()) + std::string("/");
+static std::string getLibraryNamePrepend() {
+	static const std::string prepend = std::string("osgPlugins-") + std::string(osgGetVersion()) + std::string("/");
+	return prepend;
 }
 
 // borrowed from osgDB...
