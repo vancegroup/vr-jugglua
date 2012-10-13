@@ -30,7 +30,13 @@
 #include <iostream>
 #endif
 
+#ifndef OSG_NOTIFY
+#define OSG_NOTIFY(level) if (osg::isNotifyEnabled(level)) osg::notify(level)
+#endif
 
+#ifndef OSG_INFO
+#define OSG_INFO OSG_NOTIFY(osg::INFO)
+#endif
 
 // borrowed from osgDB...
 static std::string createLibraryNameForWrapper(const std::string& ext) {
