@@ -26,16 +26,12 @@
 #include <stdexcept>
 #include <algorithm>
 
-#ifdef OSGLUA_VERBOSE
-#include <iostream>
-#endif
-
-#ifndef OSG_NOTIFY
-#define OSG_NOTIFY(level) if (osg::isNotifyEnabled(level)) osg::notify(level)
+#if !defined(OSG_NOTIFY) || (defined(OSG_NOTIFY) && OSG_NOTIFY == 1)
+#define OSGLUA_NOTIFY(level) if (osg::isNotifyEnabled(level)) osg::notify(level)
 #endif
 
 #ifndef OSG_INFO
-#define OSG_INFO OSG_NOTIFY(osg::INFO)
+#define OSG_INFO OSGLUA_NOTIFY(osg::INFO)
 #endif
 
 // borrowed from osgDB...
