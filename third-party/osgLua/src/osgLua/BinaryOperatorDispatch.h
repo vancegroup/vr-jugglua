@@ -127,15 +127,43 @@ namespace osgLua {
 			return f.pushIfSuccessful(L);
 		}
 
-		static bool attempt(lua_State * L) {
+		static int attempt(lua_State * L) {
+			bool success = false;
 			if (osgLuaValueUsableAs<T1>(L, 1)) {
-				return attemptKnowingOrder<SelfFirst>(L, getValue(L, 2).getType());
+				success = attemptKnowingOrder<SelfFirst>(L, getValue(L, 2).getType());
 			} else if (osgLuaValueUsableAs<T1>(L, 2)) {
-				return attemptKnowingOrder<SelfSecond>(L, getValue(L, 1).getType());
+				success =  attemptKnowingOrder<SelfSecond>(L, getValue(L, 1).getType());
 			}
-			return false;
+			return success ? 1 : 0;
 		}
 	};
+	template<template<typename, typename> class Op>
+	class BinaryOperationWrapper {
+			template<typename P1, typename P2>
+			struct apply : Op<P1, P2> {};
+	};
+
+	class RegisterOperation {
+		public:
+			RegisterOperation(lua_State * L, introspection::Type const& t) : _L(L), metatableType(t), found(false) {}
+
+			template<typename T>
+			void operator()(boost::mpl::identity<T> const&) {
+				if (!found && introspection::Reflection::getType(extended_typeid<T>()) == metatableType) {
+					lua_pushcfunction(L, &BinaryOperatorDispatch<T, osgTraits::Multiplication>::attempt);
+					lua_setfield(L, -2, "__mul");
+					found = true;
+				}
+			}
+		private:
+			lua_State * _L;
+			introspection::Type const& metatableType;
+			bool found;
+	};
+
+	inline void registerMathMetamethods(lua_State * L, introspection::Type const& t) {
+		boost::mpl::for_each<osgTraits::math_types, boost::mpl::identity<boost::mpl::_1> >(RegisterOperation(L, t));
+	}
 } // end of namespace osgLua
 
 #endif // INCLUDED_BinaryOperatorDispatch_h_GUID_6c86a34e_7070_4d10_aa19_5ae304064960

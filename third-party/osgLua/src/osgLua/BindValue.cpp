@@ -44,6 +44,10 @@
 #include <osg/Matrixd>
 #include <osg/Matrixf>
 
+#ifdef OSGLUA_HAVE_BOOST
+#include "BinaryOperatorDispatch.h"
+#endif
+
 namespace osgLua {
 	static const char OSGLUAVALUEMETATABLE[] = "__isOsgLuaValue";
 
@@ -102,6 +106,11 @@ namespace osgLua {
 			/// Bind mathematically-inclined values specially - only
 			/// one such binding will succeed for a type, obviously, so
 			/// exit the method immediately at that point.
+
+#ifdef OSGLUA_HAVE_BOOST
+			registerMathMetamethods(L, t);
+#endif
+
 #define BIND_VECTOR(TYPE) \
 			if (Vector::bind_metamethods<TYPE>(L, t)) { \
 		  		return; \

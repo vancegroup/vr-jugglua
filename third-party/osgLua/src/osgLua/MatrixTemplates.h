@@ -156,8 +156,10 @@ namespace osgLua {
 				    introspection::Reflection::getType(extended_typeid<T>());
 				if (valT == myType) {
 					detail::setMatrix(L);
+#ifndef OSGLUA_HAVE_BOOST
 					lua_pushcfunction(L, &Matrix::mul<T>);
 					lua_setfield(L, -2, "__mul");
+#endif
 					lua_pushcfunction(L, &Matrix::eq<T>);
 					lua_setfield(L, -2, "__eq");
 					lua_pushcfunction(L, &Matrix::lt<T>);

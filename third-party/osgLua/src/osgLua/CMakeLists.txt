@@ -55,7 +55,7 @@ if(BUILD_LUA_AS_CPP)
 endif()
 
 if(BOOST_FOUND)
-	add_definitions(-DOSGLUA_HAS_BOOST)
+	add_definitions(-DOSGLUA_HAVE_BOOST)
 	include_directories(${Boost_INCLUDE_DIR})
 endif()
 
