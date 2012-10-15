@@ -54,6 +54,11 @@ if(BUILD_LUA_AS_CPP)
 	add_definitions(-DOSGLUA_LUA_BUILT_AS_CPP)
 endif()
 
+if(BOOST_FOUND)
+	add_definitions(-DOSGLUA_HAS_BOOST)
+	include_directories(${Boost_INCLUDE_DIR})
+endif()
+
 if(BUILD_SHARED_OSGLUA)
 	add_library(osgLua SHARED ${OSGLUA_SRCS} ${OSGLUA_PRIVATE_API} ${OSGLUA_PUBLIC_API})
 	target_link_libraries(osgLua lua ${OPENSCENEGRAPH_LIBRARIES} lua)
