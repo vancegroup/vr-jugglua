@@ -25,7 +25,7 @@
 #include "Tags.h"
 
 // Library/third-party includes
-#include <boost/enable_if.hpp>
+#include <boost/utility/enable_if.hpp>
 #include <boost/type_traits/is_arithmetic.hpp>
 
 // Standard includes
@@ -33,6 +33,9 @@
 
 namespace osgTraits {
 	namespace detail {
+		template<typename T>
+		struct IsScalar : boost::is_arithmetic<T> {};
+
 		template<typename T, typename = void>
 		struct ComputeCategoryTag;
 
@@ -52,7 +55,7 @@ namespace osgTraits {
 		};
 
 		template<typename T>
-		struct ComputeCategoryTag<T, typename boost::enable_if<is_scalar<T> >::type> {
+		struct ComputeCategoryTag<T, typename boost::enable_if<IsScalar<T> >::type> {
 			typedef tags::Scalar type;
 		};
 
@@ -65,7 +68,7 @@ namespace osgTraits {
 		};
 
 		template<typename T>
-		struct ComputeIsMathTag<T, typename boost::enable_if<boost::is_arithmetic<T> >::type> {
+		struct ComputeIsMathTag<T, typename boost::enable_if<IsScalar<T> >::type> {
 			typedef tags::Scalar type;
 		};
 
