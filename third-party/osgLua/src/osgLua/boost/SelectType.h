@@ -26,6 +26,7 @@
 // Library/third-party includes
 #include <boost/mpl/find_if.hpp>
 #include <boost/mpl/eval_if.hpp>
+#include <boost/mpl/equal.hpp>
 
 // Standard includes
 // - none
@@ -33,19 +34,10 @@ namespace osgTraits {
 	template<typename Detail>
 	struct SelectType {
 
-		/*
-		typedef typename Detail::category_tag category;
-		typedef typename Detail::scalar_tag scalar;
-		typedef typename Detail::dimension_tag dimension;
-		typedef boost::mpl::and_<
-			boost::is_same<GetCategory<_1>, category>,
-			boost::is_same<GetDimension<_1>, dimension>,
-			boost::is_same<GetScalar<_1>, scalar> > */
-
-		typedef typename find_if<math_types, is_same<GetMathTypeDetail<_1>, Detail> >::type iter;
-		typedef typename boost::eval_if < boost::is_same<Detail::category_tag, tags::Scalar>,
-		        boost::mpl::identity<Detail::scalar_tag>,
-		        deref<iter> >::type type;
+		typedef typename boost::mpl::find_if<math_types, boost::mpl::equal<GetMathTypeDetail<boost::mpl::_1>, Detail> >::type iter;
+		typedef typename boost::mpl::eval_if < boost::mpl::equal<typename Detail::category_tag, tags::Scalar>,
+		        boost::mpl::identity<typename Detail::scalar_tag>,
+		        boost::mpl::deref<iter> >::type type;
 	};
 } // end of namespace osgTraits
 
