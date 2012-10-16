@@ -15,24 +15,16 @@
 */
 
 #include "loadWrapperLib.h"
+#include "Notify.h"
 
 #include <osgDB/DynamicLibrary>
 #include <osgDB/Registry>
 #include <osgDB/FileUtils>
 #include <osg/Version>
-#include <osg/Notify>
 
 #include <vector>
 #include <stdexcept>
 #include <algorithm>
-
-#if !defined(OSG_NOTIFY) || (defined(OSG_NOTIFY) && OSG_NOTIFY == 1)
-#define OSGLUA_NOTIFY(level) if (osg::isNotifyEnabled(level)) osg::notify(level)
-#endif
-
-#ifndef OSG_INFO
-#define OSG_INFO OSGLUA_NOTIFY(osg::INFO)
-#endif
 
 // borrowed from osgDB...
 static std::string createLibraryNameForWrapper(const std::string& ext) {
