@@ -33,12 +33,12 @@
 namespace osgTraits {
 
 	template<typename Op, typename T>
-	struct OperationBindFirst {
+	struct OperatorBindFirst {
 		typedef boost::mpl::bind<Op, T, boost::mpl::_1> type;
 	};
 
 	template<typename Op, typename T>
-	struct OperationBindSecond {
+	struct OperatorBindSecond {
 		typedef boost::mpl::bind<Op, boost::mpl::_1, T> type;
 	};
 
@@ -51,7 +51,7 @@ namespace osgTraits {
 	};
 
 	template<typename BoundOp>
-	struct GetAvailableOthers {
+	struct GetAvailableOtherArgTypes {
 		typedef typename boost::mpl::copy_if<osgTraits::math_types, IsBoundAvailable<BoundOp> >::type type;
 	};
 
@@ -61,7 +61,7 @@ namespace osgTraits {
 		typedef typename boost::mpl::copy_if<Possibilities, is_operation_available>::type type;
 	};
 
-	typedef boost::mpl::list<Multiplication> BinaryOperations;
+	typedef boost::mpl::list<Multiplication> BinaryOperators;
 
 } // end of namespace osgTraits
 #endif // INCLUDED_BinaryOperators_h_GUID_9d5a8223_67c4_4299_99ef_30fe8607bab4

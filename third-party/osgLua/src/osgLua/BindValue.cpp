@@ -19,6 +19,7 @@
 #include "VectorTemplates.h"
 #include "MatrixTemplates.h"
 #include "LuaIncludeFull.h"
+#include "Notify.h"
 
 #include <osgLua/introspection/Type>
 
@@ -45,7 +46,7 @@
 #include <osg/Matrixf>
 
 #ifdef OSGLUA_HAVE_BOOST
-#include "BinaryOperatorDispatch.h"
+#include "RegisterMathMetamethods.h"
 #endif
 
 namespace osgLua {
@@ -77,9 +78,7 @@ namespace osgLua {
 	void Value::_getOrCreateMetatable(lua_State *L, introspection::Type const& t) {
 		// create/get the metatable
 		if (luaL_newmetatable(L, t.getQualifiedName().c_str())) {
-#ifdef OSGLUA_VERBOSE
-			std::cout << "First time pushing " << t.getQualifiedName() << " to Lua - creating metatable!" << std::endl;
-#endif
+			OSG_INFO << "First time pushing " << t.getQualifiedName() << " to Lua - creating metatable!" << std::endl;
 
 			// tag this as an osgLua value
 			lua_pushcfunction(L, osgLuaTypeTag);

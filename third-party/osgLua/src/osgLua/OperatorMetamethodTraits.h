@@ -17,8 +17,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_OperatorBase_h_GUID_f6f3382a_be9f_4e4c_a166_43dc8bb15d40
-#define INCLUDED_OperatorBase_h_GUID_f6f3382a_be9f_4e4c_a166_43dc8bb15d40
+#ifndef INCLUDED_OperatorMetamethodTraits_h_GUID_f50476b4_fdfa_4906_af5a_217b87918f8f
+#define INCLUDED_OperatorMetamethodTraits_h_GUID_f50476b4_fdfa_4906_af5a_217b87918f8f
 
 // Internal Includes
 // - none
@@ -30,21 +30,20 @@
 // - none
 
 namespace osgTraits {
-	template<typename T1, typename T2>
-	struct BinaryOperatorBase {
-		typedef T1 first_argument_type;
-		typedef T2 second_argument_type;
+	struct Multiplication;
+}
+
+namespace osgLua {
+	template<typename Op>
+	struct MetamethodName;
+
+	template<>
+	struct MetamethodName<osgTraits::Multiplication> {
+		static const char * get() {
+			return "__mul";
+		}
 	};
 
-	template<typename T>
-	struct UnaryOperatorBase {
-		typedef T argument_type;
-	};
+} // end of namespace osgLua
 
-	struct BinaryOperatorClassBase {
-		typedef tags::BinaryOperator operator_tag;
-	};
-
-} // end of namespace osgTraits
-
-#endif // INCLUDED_OperatorBase_h_GUID_f6f3382a_be9f_4e4c_a166_43dc8bb15d40
+#endif // INCLUDED_OperatorMetamethodTraits_h_GUID_f50476b4_fdfa_4906_af5a_217b87918f8f
