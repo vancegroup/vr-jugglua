@@ -29,6 +29,7 @@
 #include "TypePredicates.h"
 
 // Library/third-party includes
+#include <boost/utility/enable_if.hpp>
 #include <boost/mpl/bool.hpp>
 
 // Standard includes
@@ -60,36 +61,36 @@ namespace osgTraits {
 
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				and_ <
+				typename and_ <
 				AreVectorAndMatrix<T1, T2>,
 				CanTransformVecMatrix<T1, T2>,
-				HaveCompatibleScalar<T1, T2> > >::type > {
+				HaveCompatibleScalar<T1, T2> >::type >::type > {
 			typedef VectorTimesMatrix type;
 		};
 
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				and_ <
+				typename and_ <
 				AreVectorAndMatrix<T2, T1>,
 				CanTransformVecMatrix<T2, T1>,
-				HaveCompatibleScalar<T2, T1> > >::type > {
+				HaveCompatibleScalar<T2, T1> >::type >::type > {
 			typedef MatrixTimesVector type;
 		};
 
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				and_ <
+				typename and_ <
 				is_vector<T1>,
 				is_scalar<T2>,
-				HaveCompatibleScalar<T1, T2> > >::type > {
+				HaveCompatibleScalar<T1, T2> >::type >::type > {
 			typedef VectorScalar type;
 		};
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				and_ <
+				typename and_ <
 				is_scalar<T1>,
 				is_vector<T2>,
-				HaveCompatibleScalar<T1, T2> > >::type > {
+				HaveCompatibleScalar<T1, T2> >::type >::type > {
 			typedef ScalarVector type;
 		};
 	}
@@ -99,6 +100,7 @@ namespace osgTraits {
 		struct Multiplication_impl {
 			template<typename T1, typename T2>
 			struct apply {
+				typedef boost::mpl::false_ available;
 				typedef void unavailable;
 			};
 		};
@@ -110,14 +112,15 @@ namespace osgTraits {
 
 		/// Same category and dimension: promote and multiply
 		template<>
-		struct Multiplication_impl <SameCategoryAndDimensionWithCompatibleScalar> {
+		struct Multiplication_impl <MultiplicationTags::SameCategoryAndDimensionWithCompatibleScalar> {
 
 			template<typename T1, typename T2>
 			struct apply {
-				typedef typename PromoteTypeWithScalar<T1, typename GetValueType<T2>::type>::type result_type;
+				typedef boost::mpl::true_ available;
+				typedef typename PromoteTypeWithScalar<T1, typename GetScalar<T2>::type>::type result_type;
 
 				template<typename A, typename B>
-				static result_type apply(A const& v1, B const& v2) {
+				static result_type performOperation(A const& v1, B const& v2) {
 					return result_type(v1) * result_type(v2);
 				}
 			};
@@ -125,13 +128,13 @@ namespace osgTraits {
 
 		/// Transform vector by matrix.
 		template<>
-		struct Multiplication_impl <VectorTimesMatrix> {
-
+		struct Multiplication_impl <MultiplicationTags::VectorTimesMatrix> {
+			typedef boost::mpl::true_ available;
 			template<typename V, typename M>
 			struct apply {
 				typedef V result_type;
 
-				static result_type apply(V const& v, M const& m) {
+				static result_type performOperation(V const& v, M const& m) {
 					return v * m;
 				}
 			};
@@ -139,13 +142,13 @@ namespace osgTraits {
 
 		/// Transform vector by matrix.
 		template<>
-		struct Multiplication_impl <MatrixTimesVector> {
-
+		struct Multiplication_impl <MultiplicationTags::MatrixTimesVector> {
+			typedef boost::mpl::true_ available;
 			template<typename M, typename V>
 			struct apply {
 				typedef V result_type;
 
-				static result_type apply(M const& m, V const& v) {
+				static result_type performOperation(M const& m, V const& v) {
 					return m * v;
 				}
 			};
@@ -153,14 +156,15 @@ namespace osgTraits {
 
 		/// Scale vector
 		template<>
-		struct Multiplication_impl <VectorScalar> {
+		struct Multiplication_impl <MultiplicationTags::VectorScalar> {
 
 			template<typename V, typename S>
 			struct apply {
+				typedef boost::mpl::true_ available;
 				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
 				typedef vec_type result_type;
 
-				static result_type apply(S const& s, V const& v) {
+				static result_type performOperation(S const& s, V const& v) {
 					return vec_type(v) * s;
 				}
 			};
@@ -168,14 +172,15 @@ namespace osgTraits {
 
 		/// Scale vector
 		template<>
-		struct Multiplication_impl <ScalarVector> {
+		struct Multiplication_impl <MultiplicationTags::ScalarVector> {
 
 			template<typename S, typename V>
 			struct apply {
+				typedef boost::mpl::true_ available;
 				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
 				typedef vec_type result_type;
 
-				static result_type apply(V const& v, S const& s) {
+				static result_type performOperation(V const& v, S const& s) {
 					return vec_type(v) * s;
 				}
 			};

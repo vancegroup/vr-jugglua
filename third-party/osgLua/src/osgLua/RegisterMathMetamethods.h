@@ -24,6 +24,7 @@
 #include "OperatorMetamethodTraits.h"
 #include "BinaryOperatorDispatch.h"
 #include "boost/BinaryOperators.h"
+#include "LuaIncludeFull.h"
 
 // Library/third-party includes
 // - none
@@ -49,7 +50,7 @@ namespace osgLua {
 		template<typename Operator>
 		struct apply {
 			static void doPush(lua_State * L) {
-				lua_pushcfunction(L, &attemptBinaryOperator<Operator, T>);
+				lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
 			}
 		};
 	};
@@ -57,12 +58,12 @@ namespace osgLua {
 	template<typename T>
 	class RegisterOperatorFunctor {
 		public:
-			RegisterOperatorFunctor(lua_State * L) : _L {}
+			RegisterOperatorFunctor(lua_State * L) : _L(L) {}
 
 			template<typename Operator>
 			void operator()(Operator const&) const {
-				PushOperator<T, Operator>::doPush(L);
-				lua_setfield(L, -2, MetamethodName<Operator>::get());
+				PushOperator<T, Operator>::doPush(_L);
+				lua_setfield(_L, -2, MetamethodName<Operator>::get());
 				OSG_INFO << "Registered " << MetamethodName<Operator>::get() << std::endl;
 			}
 		private:
@@ -75,7 +76,7 @@ namespace osgLua {
 			RegisterOperators(lua_State * L, introspection::Type const& t) : _L(L), metatableType(t), found(false) {}
 
 			template<typename T>
-			void operator()(boost::mpl::identity<T> const&) {
+			void operator()(T const&) {
 				OSG_INFO << "In RegisterOperators with " << typeid(T).name() << std::endl;
 				if (!found && introspection::Reflection::getType(extended_typeid<T>()) == metatableType) {
 					OSG_INFO << "Pushing metafunctions!" << std::endl;
@@ -90,7 +91,7 @@ namespace osgLua {
 	};
 
 	inline void registerMathMetamethods(lua_State * L, introspection::Type const& t) {
-		boost::mpl::for_each<osgTraits::math_types, boost::mpl::identity<boost::mpl::_1> >(RegisterOperators(L, t));
+		boost::mpl::for_each<osgTraits::math_types>(RegisterOperators(L, t));
 	}
 
 } // end of namespace osgLua

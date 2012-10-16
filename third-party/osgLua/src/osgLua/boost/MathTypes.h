@@ -25,6 +25,7 @@
 
 // Library/third-party includes
 #include <boost/mpl/joint_view.hpp>
+#include <boost/mpl/contains.hpp>
 #include <boost/mpl/list.hpp>
 
 // Standard includes
@@ -32,12 +33,13 @@
 
 
 namespace osgTraits {
-	typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>, quat_types> math_types;
+	typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>::type, quat_types>::type math_types;
+	//typedef boost::mpl::insert_range< boost::mpl::insert_range< matrix_types, vector_types>, quat_types> math_types;
 
 	template<typename T>
-	struct is_math_type : boost::contains<math_types, T>::type {};
+	struct is_math_type : boost::mpl::contains<math_types, T>::type {};
 
-	typedef boost::mpl::list<double, float> arithmetic_types;
+	typedef boost::mpl::list2<double, float> arithmetic_types;
 	typedef boost::mpl::joint_view<math_types, arithmetic_types> math_and_arithmetic_types;
 } // end of namespace osgTraits
 

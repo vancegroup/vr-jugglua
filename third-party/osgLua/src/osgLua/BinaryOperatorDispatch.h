@@ -21,14 +21,16 @@
 #define INCLUDED_BinaryOperatorDispatch_h_GUID_6c86a34e_7070_4d10_aa19_5ae304064960
 
 // Internal Includes
-#include "boost/Multiplication.hpp"
+#include "boost/BinaryOperators.h"
 
 // Library/third-party includes
-#include <boost/mpl/quote.hpp>
-#include <boost/mpl/bind.hpp>
-#include <boost/mpl/placeholders.hpp>
-#include <boost/mpl/pair.hpp>
 #include <boost/mpl/for_each.hpp>
+#include <boost/mpl/filter_view.hpp>
+
+#include <osgLua/introspection/ExtendedTypeInfo>
+#include <osgLua/introspection/Value>
+#include <osgLua/introspection/Type>
+#include <osgLua/introspection/variant_cast>
 
 #include <osg/Notify>
 
@@ -53,55 +55,60 @@ namespace osgLua {
 		return false;
 	}
 
+	struct BinaryOpData {
+		BinaryOpData(lua_State * L, introspection::Type const& otherType) : other(otherType), a1(getValue(L, -2)), a2(getValue(L, -1)), r(), success(false) {}
+		introspection::Type const& other;
+		introspection::Value a1;
+		introspection::Value a2;
+		introspection::Value r;
+		bool success;
+		int pushIfSuccessful(lua_State * L) const {
+			if (success) {
+				Value::push(L, r);
+				return 1;
+			}
+			return 0;
+		}
+
+
+	};
 	template<typename BoundOp>
 	class BinaryOperatorApplicationFunctor {
 		public:
-			BinaryOperatorApplicationFunctor(lua_State * L, introspection::Type const& otherType) : other(otherType), a1(getValue(L, -2)), a2(getValue(L, -1)), r(), success(false) {}
+			BinaryOperatorApplicationFunctor(BinaryOpData & data) : d(data) {}
 
 			template<typename T>
-			void operator()(boost::mpl::identity<T> const&) {
-				if (!success && typeUsableAs<T>(other)) {
-					typedef typename boost::mpl::apply<BoundOp, T>::type OpSpec;
+			void operator()(T const&) {
+				if (!d.success && typeUsableAs<T>(d.other)) {
+					typedef typename boost::mpl::apply_wrap1<BoundOp, T>::type OpSpec;
 					typedef typename OpSpec::first first;
 					typedef typename OpSpec::second second;
-					r = OpSpec::apply(introspection::variant_cast<first>(a1), introspection::variant_cast<second>(a2));
-					success = true;
+					d.r = OpSpec::performOperation(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
+					d.success = true;
 				}
 			}
 
-			int pushIfSuccessful(lua_State * L) const {
-				if (success) {
-					Value::push(L, r);
-					return 1;
-				}
-				return 0;
-			}
 
 		private:
-			introspection::Type const& other;
-			introspection::Value a1;
-			introspection::Value a2;
-			introspection::Value r;
-			bool success;
+			BinaryOpData & d;
 	};
 	namespace {
 		template<typename BoundOp>
 		int attemptBoundBinaryOperator(lua_State * L, introspection::Type const& otherType) {
-			typedef typename boost::mpl::apply<osgTraits::GetAvailableOtherArgTypes, BoundOp>::type OtherArgumentPossibilities;
-			typedef BinaryOperatorApplicationFunctor<BoundOp> FunctorType;
-			FunctorType f(L, otherType);
-			boost::mpl::for_each<OtherArgumentPossibilities, boost::mpl::identity<boost::mpl::_1>,  FunctorType &>(f);
-			return f.pushIfSuccessful(L);
+			typedef typename osgTraits::GetAvailableOtherArgTypes<BoundOp>::type OtherArgumentPossibilities;
+			BinaryOpData data(L, otherType);
+			boost::mpl::for_each<OtherArgumentPossibilities>(BinaryOperatorApplicationFunctor<BoundOp>(data));
+			return data.pushIfSuccessful(L);
 		}
 
 		template<typename Op, typename T1>
 		int attemptBinaryOperator(lua_State * L) {
 			if (osgLuaValueUsableAs<T1>(L, -2)) {
-				typedef typename boost::mpl::apply<osgTraits::OperatorBindFirst, Op, T1>::type BoundOp;
+				typedef typename osgTraits::OperatorBindFirst<Op, T1>::type BoundOp;
 				return attemptBoundBinaryOperator<BoundOp>(L, getValue(L, -1).getType());
-			} else if (osgLuaValueUsableAs<T1>(L, -1) {
-			typedef typename boost::mpl::apply<osgTraits::OperatorBindSecond, Op, T1>::type BoundOp;
-			return attemptBoundBinaryOperator<BoundOp>(L, getValue(L, -2).getType());
+			} else if (osgLuaValueUsableAs<T1>(L, -1)) {
+				typedef typename osgTraits::OperatorBindSecond<Op, T1>::type BoundOp;
+				return attemptBoundBinaryOperator<BoundOp>(L, getValue(L, -2).getType());
 			}
 			return 0;
 		}

@@ -54,7 +54,10 @@ if(BUILD_LUA_AS_CPP)
 	add_definitions(-DOSGLUA_LUA_BUILT_AS_CPP)
 endif()
 
-if(BOOST_FOUND)
+find_package(Boost)
+
+if(Boost_FOUND)
+	message(STATUS "Building osgLua with Boost-based enhanced math metamethods!")
 	add_definitions(-DOSGLUA_HAVE_BOOST)
 	include_directories(${Boost_INCLUDE_DIR})
 endif()

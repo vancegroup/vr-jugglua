@@ -36,7 +36,7 @@
 namespace osgTraits {
 	namespace BinaryPredicates {
 		template<typename T1, typename T2>
-		struct HaveCompatibleScalar : CompatibleScalar<typename GetValueType<T1>::type, typename GetValueType<T2>::type> {};
+		struct HaveCompatibleScalar : CompatibleScalar<typename GetScalar<T1>::type, typename GetScalar<T2>::type> {};
 
 		template<typename T1, typename T2>
 		struct HaveSameCategory : boost::mpl::equal<typename GetCategory<T1>::type, typename GetCategory<T2>::type>::type {};
@@ -66,7 +66,7 @@ namespace osgTraits {
 				is_matrix<T2>
 				>::type {};
 
-		template<typename T1, T2>
+		template<typename T1, typename T2>
 		struct HaveSameCategoryAndDimensionWithCompatibleScalar : boost::mpl::and_<HaveSameCategory<T1, T2>, HaveCompatibleScalar<T1, T2>, HaveSameDimension<T1, T2> >::type {};
 
 	} // end of namespace BinaryPredicates

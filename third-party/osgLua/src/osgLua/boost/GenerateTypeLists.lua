@@ -63,6 +63,7 @@ end
 
 printIncludes = function()
 	print(("#include <boost/mpl/%s.hpp>"):format(TypelistType))
+	--print "#include <boost/mpl/contains.hpp>"
 
 	for shortname, desc in pairs(description) do
 		for _, specificType in ipairs(MathTypes[shortname]) do

@@ -31,11 +31,11 @@
 
 namespace osgTraits {
 	template<typename T1, typename T2>
-	struct CompatibleScalar : boost::mpl::false_;
+	struct CompatibleScalar : boost::mpl::false_ {};
 
-	template<typename T1>
+	template<typename T>
 	struct CompatibleScalar<T, T> : boost::mpl::true_ {
-		typedef T1 scalar_type;
+		typedef T scalar_type;
 	};
 	template<>
 	struct CompatibleScalar<float, double> : boost::mpl::true_ {

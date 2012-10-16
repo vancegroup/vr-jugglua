@@ -37,8 +37,8 @@ namespace osgTraits {
 	template<typename T, typename Scalar>
 	struct PromoteTypeWithScalar {
 		typedef typename GetCategory<T>::type CategoryTag;
-		typedef typename CompatibleScalars<typename GetValueType<T>::type, Scalar>::scalar_type ScalarTag;
-		typedef typename GetDimension<T1>::type DimensionTag;
+		typedef typename CompatibleScalar<typename GetScalar<T>::type, Scalar>::scalar_type ScalarTag;
+		typedef typename GetDimension<T>::type DimensionTag;
 		typedef typename SelectType<MathTypeDetail<CategoryTag, ScalarTag, DimensionTag> >::type type;
 	};
 
