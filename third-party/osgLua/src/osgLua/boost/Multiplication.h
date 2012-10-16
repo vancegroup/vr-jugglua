@@ -25,6 +25,8 @@
 #include "CompatibleScalar.h"
 #include "SelectType.h"
 #include "PromoteTypeWithScalar.h"
+#include "OperatorBase.h"
+#include "TypePredicates.h"
 
 // Library/third-party includes
 #include <boost/mpl/bool.hpp>
@@ -34,114 +36,158 @@
 
 
 namespace osgTraits {
-	namespace detail {
+	namespace MultiplicationTags {
+		using namespace ::osgTraits::BinaryPredicates;
+		using boost::enable_if;
+		using boost::mpl::and_;
+
+		struct SameCategoryAndDimensionWithCompatibleScalar;
+		struct VectorTimesMatrix;
+		struct MatrixTimesVector;
+
+		struct VectorScalar;
+		struct ScalarVector;
+
 		template<typename T1, typename T2, typename = void>
-		struct MultiplicationImpl {
-			typedef void unavailable;
+		struct Compute {
+			typedef void type;
 		};
 
+		template<typename T1, typename T2>
+		struct Compute<T1, T2, typename enable_if<HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2> >::type > {
+			typedef SameCategoryAndDimensionWithCompatibleScalar type;
+		};
+
+		template<typename T1, typename T2>
+		struct Compute < T1, T2, typename enable_if <
+				and_ <
+				AreVectorAndMatrix<T1, T2>,
+				CanTransformVecMatrix<T1, T2>,
+				HaveCompatibleScalar<T1, T2> > >::type > {
+			typedef VectorTimesMatrix type;
+		};
+
+		template<typename T1, typename T2>
+		struct Compute < T1, T2, typename enable_if <
+				and_ <
+				AreVectorAndMatrix<T2, T1>,
+				CanTransformVecMatrix<T2, T1>,
+				HaveCompatibleScalar<T2, T1> > >::type > {
+			typedef MatrixTimesVector type;
+		};
+
+		template<typename T1, typename T2>
+		struct Compute < T1, T2, typename enable_if <
+				and_ <
+				is_vector<T1>,
+				is_scalar<T2>,
+				HaveCompatibleScalar<T1, T2> > >::type > {
+			typedef VectorScalar type;
+		};
+		template<typename T1, typename T2>
+		struct Compute < T1, T2, typename enable_if <
+				and_ <
+				is_scalar<T1>,
+				is_vector<T2>,
+				HaveCompatibleScalar<T1, T2> > >::type > {
+			typedef ScalarVector type;
+		};
+	}
+
+	namespace detail {
+		template<typename Tag>
+		struct Multiplication_impl {
+			template<typename T1, typename T2>
+			struct apply {
+				typedef void unavailable;
+			};
+		};
+
+		template<typename T1, typename T2>
+		struct Multiplication :
+				Multiplication_impl<typename MultiplicationTags::Compute<T1, T2>::type>::template apply<T1, T2>,
+		                    BinaryOperatorBase<T1, T2> {};
 
 		/// Same category and dimension: promote and multiply
-		template<typename T1, typename T2>
-		struct MultiplicationImpl < T1, T2,
-				typename boost::enable_if <
-				boost::mpl::and_ <
-				boost::is_same<typename GetCategory<T1>::type, typename GetCategory<T2>::type>,
-				TypesHaveCompatibleScalar<T1, T2>,
-				boost::is_same<typename GetDimension<T1>::type, typename GetDimension<T2>::type>
-				>
-				>::type > {
-			typedef typename PromoteTypeWithScalar<T1, typename GetValueType<T2>::type>::type result_type;
+		template<>
+		struct Multiplication_impl <SameCategoryAndDimensionWithCompatibleScalar> {
 
-			template<typename A, typename B>
-			static result_type apply(T1 const& v1, T2 const& v2) {
-				return result_type(v1) * result_type(v2);
-			}
+			template<typename T1, typename T2>
+			struct apply {
+				typedef typename PromoteTypeWithScalar<T1, typename GetValueType<T2>::type>::type result_type;
 
+				template<typename A, typename B>
+				static result_type apply(A const& v1, B const& v2) {
+					return result_type(v1) * result_type(v2);
+				}
+			};
 		};
 
 		/// Transform vector by matrix.
-		template<typename V, typename M>
-		struct MultiplicationImpl < V, M,
-				typename boost::enable_if <
-				boost::mpl::and_ <
-				boost::is_same<typename GetCategory<V>::type, tags::Vec>,
-				boost::is_same<typename GetCategory<M>::type, tags::Matrix>,
-				TypesHaveCompatibleScalar<V, M>
-				>
-				>::type > {
+		template<>
+		struct Multiplication_impl <VectorTimesMatrix> {
 
-			typedef V result_type;
+			template<typename V, typename M>
+			struct apply {
+				typedef V result_type;
 
-			template<typename T1, typename T2>
-			static result_type apply(T1 const& v, T2 const& m) {
-				return v * m;
-			}
+				static result_type apply(V const& v, M const& m) {
+					return v * m;
+				}
+			};
 		};
 
 		/// Transform vector by matrix.
-		template<typename M, typename V>
-		struct MultiplicationImpl < M, V,
-				typename boost::enable_if <
-				boost::mpl::and_ <
-				boost::is_same<typename GetCategory<M>::type, tags::Matrix>,
-				boost::is_same<typename GetCategory<V>::type, tags::Vec>,
-				TypesHaveCompatibleScalar<M, V>
-				>
-				>::type > {
+		template<>
+		struct Multiplication_impl <MatrixTimesVector> {
 
-			typedef V result_type;
+			template<typename M, typename V>
+			struct apply {
+				typedef V result_type;
 
-			template<typename T1, typename T2>
-			static result_type apply(T1 const& m, T2 const& v) {
-				return m * v;
-			}
+				static result_type apply(M const& m, V const& v) {
+					return m * v;
+				}
+			};
 		};
 
 		/// Scale vector
-		template<typename S, typename V>
-		struct MultiplicationImpl < S, V,
-				typename boost::enable_if <
-				boost::mpl::and_ <
-				boost::is_arithmetic<S, tags::Matrix>,
-				CompatibleScalars<S, typename GetScalar<V>::type>,
-				boost::is_same<typename GetCategory<V>::type, tags::Vec>
-				>
-				>::type > {
+		template<>
+		struct Multiplication_impl <VectorScalar> {
 
-			typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
-			typedef vec_type result_type;
+			template<typename V, typename S>
+			struct apply {
+				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
+				typedef vec_type result_type;
 
-			template<typename T1, typename T2>
-			static result_type apply(T1 const& s, T2 const& v) {
-				return vec_type(v) * s;
-			}
+				static result_type apply(S const& s, V const& v) {
+					return vec_type(v) * s;
+				}
+			};
 		};
 
 		/// Scale vector
-		template<typename V, typename S>
-		struct MultiplicationImpl < V, S,
-				typename boost::enable_if <
-				boost::mpl::and_ <
-				boost::is_arithmetic<S, tags::Matrix>,
-				CompatibleScalars<S, typename GetScalar<V>::type>,
-				boost::is_same<typename GetCategory<V>::type, tags::Vec>
-				>
-				>::type > {
+		template<>
+		struct Multiplication_impl <ScalarVector> {
 
-			typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
-			typedef vec_type result_type;
+			template<typename S, typename V>
+			struct apply {
+				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
+				typedef vec_type result_type;
 
-			template<typename T1, typename T2>
-			static result_type apply(T1 const& v, T2 const& s) {
-				return vec_type(v) * s;
-			}
+				static result_type apply(V const& v, S const& s) {
+					return vec_type(v) * s;
+				}
+			};
 		};
 	} // end of namespace detail
 
-
-	template<typename T1, typename T2>
-	struct Multiplication : detail::MultiplicationImpl<T1, T2> {};
+	struct Multiplication : BinaryOperatorClassBase {
+		template<typename T1, typename T2>
+		struct apply {
+			typedef detail::Multiplication<T1, T2> type;
+		};
+	};
 
 } // end of namespace osgTraits
 

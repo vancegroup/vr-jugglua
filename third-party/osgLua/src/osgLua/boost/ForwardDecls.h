@@ -17,8 +17,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
-#define INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#ifndef INCLUDED_ForwardDecls_h_GUID_20d0e25b_9f05_4e10_be52_d088ecd6398f
+#define INCLUDED_ForwardDecls_h_GUID_20d0e25b_9f05_4e10_be52_d088ecd6398f
 
 // Internal Includes
 // - none
@@ -28,27 +28,7 @@
 
 // Standard includes
 // - none
-
 namespace osgTraits {
-	namespace tags {
-		struct MathType {
-			typedef void is_math_type;
-		};
-		struct Vec : MathType {
-			typedef void is_vector;
-		};
-		struct Matrix : MathType {
-			typedef void is_matrix;
-		};
-		struct Quat : MathType {
-			typedef void is_quat;
-		};
-		struct Scalar {
-			typedef void is_scalar;
-		};
-		struct BinaryOperator;
-		struct UnaryOperator;
-	} // end of namespace tags
-} // end of namespace osgTraits
 
-#endif // INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+} // end of namespace osgTraits
+#endif // INCLUDED_ForwardDecls_h_GUID_20d0e25b_9f05_4e10_be52_d088ecd6398f

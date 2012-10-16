@@ -30,6 +30,8 @@
 #include <boost/mpl/pair.hpp>
 #include <boost/mpl/for_each.hpp>
 
+#include <osg/Notify>
+
 // Standard includes
 // - none
 
@@ -53,6 +55,74 @@ namespace osgLua {
 		}
 		return false;
 	}
+
+
+
+	typedef osgTraits::math_types other_argument_types;
+
+	template<template<typename, typename> class Op>
+	struct BinaryOperationWrapper {
+		public:
+			template<typename P1, typename P2>
+			struct applyOperation : Op<P1, P2> {};
+
+			template<typename T1>
+			struct Dispatch {
+				struct SelfFirst {
+					struct Availability {
+						template<typename T>
+						struct apply {
+							typedef osgTraits::is_operation_available<applyOperation<T1, T> > type;
+						};
+					};
+
+					struct TypePair {
+						template<typename T>
+						struct apply : boost::mpl::pair<T1, T> {};
+					};
+				};
+
+				struct SelfSecond {
+					struct Availability  {
+						template<typename T>
+						struct apply {
+							typedef osgTraits::is_operation_available<applyOperation<T, T1> > type;
+						};
+					};
+
+					struct TypePair {
+						template<typename T>
+						struct apply : boost::mpl::pair<T, T1> {};
+					};
+				};
+
+				template<typename OrderImpl>
+				static bool apply(lua_State * L, introspection::Type const& otherType) {
+					introspection::Value a1 = getValue(L, 1);
+					introspection::Value a2 = getValue(L, 2);
+					introspection::Value r;
+					typedef boost::mpl::copy_if<osgTraits::math_types, typename OrderImpl::Availability >::type OtherArgumentPossibilities;
+					typedef BinaryOperatorApplicationFunctor<typename OrderImpl::TypePair, Op> FunctorType;
+					FunctorType f(L, otherType);
+					boost::mpl::for_each<OtherArgumentPossibilities, boost::mpl::identity<boost::mpl::_1>,  FunctorType &>(f);
+					return f.pushIfSuccessful(L);
+				}
+
+				static int apply(lua_State * L) {
+					bool success = false;
+					if (osgLuaValueUsableAs<T1>(L, 1)) {
+						success = attemptKnowingOrder<SelfFirst>(L, getValue(L, 2).getType());
+					} else if (osgLuaValueUsableAs<T1>(L, 2)) {
+						success =  attemptKnowingOrder<SelfSecond>(L, getValue(L, 1).getType());
+					}
+					return success ? 1 : 0;
+				}
+
+			};
+
+	};
+
+	typedef boost::mpl::list < BinaryOperationWrapper<osgTraits::Multiplication>
 
 	template<typename TypePairOp, template<typename P1, typename P2> class Op>
 	class BinaryOperatorApplicationFunctor {
@@ -137,11 +207,7 @@ namespace osgLua {
 			return success ? 1 : 0;
 		}
 	};
-	template<template<typename, typename> class Op>
-	class BinaryOperationWrapper {
-			template<typename P1, typename P2>
-			struct apply : Op<P1, P2> {};
-	};
+
 
 	class RegisterOperation {
 		public:
@@ -149,7 +215,9 @@ namespace osgLua {
 
 			template<typename T>
 			void operator()(boost::mpl::identity<T> const&) {
+				OSG_INFO << "In Register Operation with " << typeid(T).name() << std::endl;
 				if (!found && introspection::Reflection::getType(extended_typeid<T>()) == metatableType) {
+					OSG_INFO << "Pushing metafunctions!" << std::endl;
 					lua_pushcfunction(L, &BinaryOperatorDispatch<T, osgTraits::Multiplication>::attempt);
 					lua_setfield(L, -2, "__mul");
 					found = true;

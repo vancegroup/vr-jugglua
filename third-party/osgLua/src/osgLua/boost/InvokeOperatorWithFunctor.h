@@ -17,11 +17,11 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
-#define INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#ifndef INCLUDED_InvokeOperatorWithFunctor_h_GUID_2463847e_dc59_48f4_822f_50644e90cf73
+#define INCLUDED_InvokeOperatorWithFunctor_h_GUID_2463847e_dc59_48f4_822f_50644e90cf73
 
 // Internal Includes
-// - none
+#include "Tags.h"
 
 // Library/third-party includes
 // - none
@@ -30,25 +30,19 @@
 // - none
 
 namespace osgTraits {
-	namespace tags {
-		struct MathType {
-			typedef void is_math_type;
-		};
-		struct Vec : MathType {
-			typedef void is_vector;
-		};
-		struct Matrix : MathType {
-			typedef void is_matrix;
-		};
-		struct Quat : MathType {
-			typedef void is_quat;
-		};
-		struct Scalar {
-			typedef void is_scalar;
-		};
-		struct BinaryOperator;
-		struct UnaryOperator;
-	} // end of namespace tags
+	template<typename Tag> struct InvokeOperator_impl;
+
+	template<typename WrappedOp>
+	struct InvokeOperator : InvokeOperator_impl<typename WrappedOp::operator_tag>::template apply<WrappedOp> {};
+
+
+	template<typename Tag>
+	struct InvokeOperator_impl {
+		template<typename WrappedOp>
+		struct apply;
+	};
+
+	template<typename F>
 } // end of namespace osgTraits
 
-#endif // INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#endif // INCLUDED_InvokeOperatorWithFunctor_h_GUID_2463847e_dc59_48f4_822f_50644e90cf73

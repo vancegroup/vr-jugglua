@@ -23,12 +23,9 @@
 // Internal Includes
 #include "MathTypes.h"
 #include "Tags.h"
-
+#include "TagMetafunctions.h"
 
 // Library/third-party includes
-#include <boost/enable_if.hpp>
-#include <boost/mpl/contains.hpp>
-#include <boost/mpl/int.hpp>
 #include <boost/mpl/or.hpp>
 #include <boost/type_traits/is_arithmetic.hpp>
 
@@ -38,67 +35,69 @@
 namespace osgTraits {
 
 	template<typename T>
-	struct is_math_type : boost::contains<math_types, T>::type {};
-	/*
-		template<typename T>
-		struct IsMathType : boost::mpl::or_<is_matrix<T>, is_vector<T>, is_quat<T> >::type {};
-	*/
-
-	template<typename T>
 	struct is_scalar : boost::is_arithmetic<T>::type {};
 
 	template<typename T>
 	struct is_math_or_scalar : boost::mpl::or_<is_math_type<T>, is_scalar<T> >::type {};
 
-	template<typename T, typename = void>
-	struct GetCategory;
-
 	template<typename T>
-	struct GetCategory<T, typename boost::enable_if<is_matrix<T> >::type> {
-		typedef tags::Matrix type;
+	struct GetCategory : detail::ComputeCategoryTag<T> {};
+
+	template<typename CategoryTag>
+	struct GetDimension_impl {
+		template<typename T>
+		struct apply;
 	};
 
 	template<typename T>
-	struct GetCategory<T, typename boost::enable_if<is_vector<T> >::type> {
-		typedef tags::Vec type;
+	struct GetDimension : GetDimension_impl<typename detail::ComputeCategoryTag<T>::type >::template apply<T> {};
+
+	template<>
+	struct GetDimension_impl<tags::Vec> {
+		template<typename T>
+		struct apply {
+			typedef boost::mpl::int_<T::num_components> type;
+		};
+	};
+
+	template<>
+	struct GetDimension_impl<tags::Matrix> {
+		template<typename T>
+		struct apply {
+			typedef boost::mpl::int_<4> type;
+		};
+	};
+
+	template<>
+	struct GetDimension_impl<tags::Scalar> {
+		template<typename T>
+		struct apply {
+			typedef boost::mpl::int_<1> type;
+		};
+	};
+
+	template<typename MathTag>
+	struct GetScalar_impl {
+		template<typename T>
+		struct apply;
 	};
 
 	template<typename T>
-	struct GetCategory<T, typename boost::enable_if<is_quat<T> >::type> {
-		typedef tags::Quat type;
+	struct GetScalar : GetScalar_impl<typename detail::ComputeIsMathTag<T>::type >::template apply<T> {};
+
+	template<>
+	struct GetScalar_impl<tags::MathType> {
+		template<typename T>
+		struct apply {
+			typedef typename T::value_type type;
+		};
 	};
-
-	template<typename T>
-	struct GetCategory<T, typename boost::enable_if<is_scalar<T> >::type> {
-		typedef tags::Scalar type;
-	};
-
-	template<typename T, typename = void>
-	struct GetDimension {
-		typedef void type;
-	};
-
-	template<typename T>
-	struct GetDimension<T, typename boost::enable_if<is_vector<T> >::type> {
-		typedef boost::mpl::int_<T::num_components> type;
-	};
-
-	template<typename T>
-	struct GetDimension<T, typename boost::enable_if<is_matrix<T> >::type> {
-		typedef boost::mpl::int_<4> type;
-	};
-
-	template<typename T, typename = void>
-	struct GetScalar;
-
-	template<typename T>
-	struct GetScalar<T, typename boost::enable_if<is_math_type<T> >::type> {
-		typedef typename T::value_type type;
-	};
-
-	template<typename T>
-	struct GetScalar<T, typename boost::enable_if<is_scalar<T> >::type> {
-		typedef typename T type;
+	template<>
+	struct GetScalar_impl<tags::Scalar> {
+		template<typename T>
+		struct apply {
+			typedef T type;
+		};
 	};
 
 	template<typename CategoryTag, typename ScalarTag, typename DimensionTag = void>

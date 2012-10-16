@@ -47,9 +47,6 @@ namespace osgTraits {
 		typedef double scalar_type;
 	};
 
-
-	template<typename T1, typename T2>
-	struct TypesHaveCompatibleScalar : CompatibleScalar<typename GetValueType<T1>::type, typename GetValueType<T2>::type> {};
-} // end of namespace osgTraits
+};
 
 #endif // INCLUDED_CompatibleScalar_h_GUID_d27674ff_6057_4136_9268_f854370bc94c
