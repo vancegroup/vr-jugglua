@@ -46,7 +46,7 @@ namespace osgTraits {
 	struct IsBoundAvailable {
 		template<typename T>
 		struct apply {
-			typedef osgTraits::is_operation_available< typename boost::mpl::apply<BoundOp, T>::type> type;
+			typedef osgTraits::is_operator_available< typename boost::mpl::apply<BoundOp, T>::type> type;
 		};
 	};
 
@@ -58,7 +58,7 @@ namespace osgTraits {
 	template<typename BoundOp>
 	struct GetAvailableOpSpecializations {
 		typedef typename boost::mpl::transform<math_and_arithmetic_types, BoundOp>::type Possibilities;
-		typedef typename boost::mpl::copy_if<Possibilities, is_operation_available>::type type;
+		typedef typename boost::mpl::copy_if<Possibilities, is_operator_available>::type type;
 	};
 
 	typedef boost::mpl::list<Multiplication> BinaryOperators;

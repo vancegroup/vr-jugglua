@@ -30,12 +30,11 @@
 // - none
 
 namespace osgTraits {
-	template<typename Operation, typename = void>
-	struct is_operation_available : boost::mpl::true_ {};
+	template<typename SpecOperator, typename = void>
+	struct is_operator_available : boost::mpl::true_ {};
 
-
-	template<typename Operation>
-	struct is_operation_available<Operation, typename Operation::unavailable> : boost::mpl::false_ {};
+	template<typename SpecOperator>
+	struct is_operator_available<SpecOperator, typename SpecOperator::unavailable> : boost::mpl::false_ {};
 } // end of namespace osgTraits
 
 #endif // INCLUDED_IsAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b
