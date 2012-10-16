@@ -48,9 +48,9 @@
 
 namespace osgTraits {
 
-	typedef boost::mpl::set<::osg::Matrixd, ::osg::Matrixf> matrix_types;
-	typedef boost::mpl::set<::osg::Vec2b, ::osg::Vec2d, ::osg::Vec2f, ::osg::Vec2s, ::osg::Vec3b, ::osg::Vec3d, ::osg::Vec3f, ::osg::Vec3s, ::osg::Vec4b, ::osg::Vec4d, ::osg::Vec4f, ::osg::Vec4s, ::osg::Vec4ub> vector_types;
-	typedef boost::mpl::set<::osg::Quat> quat_types;
+	typedef boost::mpl::set< ::osg::Matrixd, ::osg::Matrixf > matrix_types;
+	typedef boost::mpl::set< ::osg::Vec2b, ::osg::Vec2d, ::osg::Vec2f, ::osg::Vec2s, ::osg::Vec3b, ::osg::Vec3d, ::osg::Vec3f, ::osg::Vec3s, ::osg::Vec4b, ::osg::Vec4d, ::osg::Vec4f, ::osg::Vec4s, ::osg::Vec4ub > vector_types;
+	typedef boost::mpl::set< ::osg::Quat > quat_types;
 
 	template<typename T> struct is_matrix : boost::mpl::has_key<matrix_types, T>::type {};
 
