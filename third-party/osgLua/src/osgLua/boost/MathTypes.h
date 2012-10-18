@@ -33,12 +33,30 @@
 
 
 namespace osgTraits {
+	using boost::mpl::placeholders::_;
 	typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>::type, quat_types>::type math_types;
 	//typedef boost::mpl::insert_range< boost::mpl::insert_range< matrix_types, vector_types>, quat_types> math_types;
+	/*
+		typedef boost::mpl::or_<
+			boost::mpl::contains<matrix_types, _>,
+			boost::mpl::contains<vector_types, _>,
+			boost::mpl::contains<quat_types, _> > is_math_type;
+		*/
 
 	template<typename T>
-	struct is_math_type : boost::mpl::contains<math_types, T>::type {};
+	struct is_math_type : boost::mpl::or_ <
+			boost::mpl::has_key<matrix_types, T>,
+			boost::mpl::has_key<vector_types, T>,
+			boost::mpl::has_key<quat_types, T> > {
 
+	};
+	/*
+	template<typename T>
+	struct is_math_type : boost::mpl::or_<
+	boost::mpl::contains<matrix_types, T>,
+
+	::type {};
+	*/
 	typedef boost::mpl::list2<double, float> arithmetic_types;
 	typedef boost::mpl::joint_view<math_types, arithmetic_types> math_and_arithmetic_types;
 } // end of namespace osgTraits

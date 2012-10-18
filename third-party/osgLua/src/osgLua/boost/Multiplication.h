@@ -42,12 +42,12 @@ namespace osgTraits {
 		using boost::enable_if;
 		using boost::mpl::and_;
 
-		struct SameCategoryAndDimensionWithCompatibleScalar;
-		struct VectorTimesMatrix;
-		struct MatrixTimesVector;
+		struct SameCategoryAndDimensionWithCompatibleScalar {};
+		struct VectorTimesMatrix {};
+		struct MatrixTimesVector {};
 
-		struct VectorScalar;
-		struct ScalarVector;
+		struct VectorScalar {};
+		struct ScalarVector {};
 
 		template<typename T1, typename T2, typename = void>
 		struct Compute {
@@ -55,7 +55,7 @@ namespace osgTraits {
 		};
 
 		template<typename T1, typename T2>
-		struct Compute<T1, T2, typename enable_if<HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2> >::type > {
+		struct Compute<T1, T2, typename enable_if<typename HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2>::type >::type > {
 			typedef SameCategoryAndDimensionWithCompatibleScalar type;
 		};
 
@@ -129,9 +129,9 @@ namespace osgTraits {
 		/// Transform vector by matrix.
 		template<>
 		struct Multiplication_impl <MultiplicationTags::VectorTimesMatrix> {
-			typedef boost::mpl::true_ available;
 			template<typename V, typename M>
 			struct apply {
+				typedef boost::mpl::true_ available;
 				typedef V result_type;
 
 				static result_type performOperation(V const& v, M const& m) {
@@ -143,9 +143,9 @@ namespace osgTraits {
 		/// Transform vector by matrix.
 		template<>
 		struct Multiplication_impl <MultiplicationTags::MatrixTimesVector> {
-			typedef boost::mpl::true_ available;
 			template<typename M, typename V>
 			struct apply {
+				typedef boost::mpl::true_ available;
 				typedef V result_type;
 
 				static result_type performOperation(M const& m, V const& v) {

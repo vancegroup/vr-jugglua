@@ -24,9 +24,7 @@
 // - none
 
 // Library/third-party includes
-#include <boost/mpl/not.hpp>
-#include <boost/mpl/has_xxx.hpp>
-#include <boost/utility/enable_if.hpp>
+// - none
 
 // Standard includes
 // - none

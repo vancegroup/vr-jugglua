@@ -39,21 +39,21 @@ namespace osgTraits {
 		struct HaveCompatibleScalar : CompatibleScalar<typename GetScalar<T1>::type, typename GetScalar<T2>::type> {};
 
 		template<typename T1, typename T2>
-		struct HaveSameCategory : boost::mpl::equal<typename GetCategory<T1>::type, typename GetCategory<T2>::type>::type {};
+		struct HaveSameCategory : boost::is_same<typename GetCategory<T1>::type, typename GetCategory<T2>::type>::type {};
 
 		template<typename T1, typename T2>
-		struct HaveSameDimension : boost::mpl::equal<typename GetDimension<T1>::type, typename GetDimension<T2>::type>::type {};
+		struct HaveSameDimension : boost::is_same<typename GetDimension<T1>::type, typename GetDimension<T2>::type>::type {};
 
 		template<typename V, typename M>
 		struct CanTransformVecMatrix_impl {
 			typedef typename GetDimension<V>::type VecDim;
 			typedef typename GetDimension<M>::type MatDim;
 			typedef typename boost::mpl::and_ <
-			boost::mpl::or_
-			< boost::mpl::equal<VecDim, boost::mpl::int_<3> >
-			, boost::mpl::equal<VecDim, boost::mpl::int_<4> >
-			>
-			, boost::mpl::equal<MatDim, boost::mpl::int_<4> >
+			typename boost::mpl::or_
+			< boost::is_same<VecDim, boost::mpl::int_<3> >
+			, boost::is_same<VecDim, boost::mpl::int_<4> >
+			>::type
+			, typename boost::is_same<MatDim, boost::mpl::int_<4> >::type
 			>::type type;
 		};
 
@@ -62,12 +62,16 @@ namespace osgTraits {
 
 		template<typename T1, typename T2>
 		struct AreVectorAndMatrix : boost::mpl::and_ <
-				is_vector<T1>,
-				is_matrix<T2>
+				typename is_vector<T1>::type,
+				typename is_matrix<T2>::type
 				>::type {};
 
 		template<typename T1, typename T2>
-		struct HaveSameCategoryAndDimensionWithCompatibleScalar : boost::mpl::and_<HaveSameCategory<T1, T2>, HaveCompatibleScalar<T1, T2>, HaveSameDimension<T1, T2> >::type {};
+		struct HaveSameCategoryAndDimensionWithCompatibleScalar : boost::mpl::and_ <
+				typename HaveSameCategory<T1, T2>::type,
+				typename HaveCompatibleScalar<T1, T2>::type,
+				typename HaveSameDimension<T1, T2>::type
+				>::type {};
 
 	} // end of namespace BinaryPredicates
 	namespace UnaryPredicates {

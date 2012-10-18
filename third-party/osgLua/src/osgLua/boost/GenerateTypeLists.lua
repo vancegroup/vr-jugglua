@@ -64,6 +64,7 @@ end
 printIncludes = function()
 	print(("#include <boost/mpl/%s.hpp>"):format(TypelistType))
 	--print "#include <boost/mpl/contains.hpp>"
+	print "#include <boost/mpl/bool.hpp>"
 
 	for shortname, desc in pairs(description) do
 		for _, specificType in ipairs(MathTypes[shortname]) do
@@ -81,8 +82,12 @@ printTypelists = function()
 end
 
 printPredicateMetafunctions = function()
-	for _, desc in pairs(description) do
-		print( ("	template<typename T> struct is_%s : boost::mpl::%s<%s_types, T>::type {};\n"):format(desc, TypelistSearchPredicate, desc))
+	for shortname, desc in pairs(description) do
+		print( ("	template<typename T> struct is_%s : boost::mpl::false_ {};"):format(desc))
+		for _, typename in ipairs(map(MathTypes[shortname], makeTypenameQualifier(makeTypename[shortname]))) do
+			print( ("	template<> struct is_%s< %s > : boost::mpl::true_ {};"):format(desc, typename))
+		end
+		print("")
 	end
 end
 

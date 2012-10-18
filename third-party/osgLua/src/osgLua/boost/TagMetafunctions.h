@@ -36,6 +36,7 @@
 #include <boost/type_traits/is_arithmetic.hpp>
 #include <boost/mpl/filter_view.hpp>
 #include <boost/mpl/copy_if.hpp>
+#include <boost/mpl/switch.hpp>
 
 // Standard includes
 // - none
@@ -141,6 +142,7 @@ namespace osgTraits {
 		struct ComputeCategoryTag<T, typename boost::enable_if<IsScalar<T> >::type> {
 			typedef tags::Scalar type;
 		};
+		/*
 		template<typename T, typename = void>
 		struct ComputeIsMathTag;
 
@@ -153,6 +155,17 @@ namespace osgTraits {
 		struct ComputeIsMathTag<T, typename boost::enable_if<IsScalar<T> >::type> {
 			typedef tags::Scalar type;
 		};
+		*/
+		using boost::mpl::lambda;
+		using boost::mpl::placeholders::_;
+		using  boost::mpl::identity;
+		typedef boost::mpl::list <
+		boost::mpl::pair<is_math_type<_>, identity<tags::MathType> >,
+		      boost::mpl::pair<IsScalar<_>, identity<tags::Scalar> >
+		      > IsMathTagMap;
+
+		template<typename T>
+		struct ComputeIsMathTag : boost::mpl::switch_<IsMathTagMap, T> {};
 
 
 	} // end of namespace detail

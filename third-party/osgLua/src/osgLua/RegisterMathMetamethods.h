@@ -74,12 +74,16 @@ namespace osgLua {
 	class RegisterOperators {
 		public:
 			RegisterOperators(lua_State * L, introspection::Type const& t) : _L(L), metatableType(t), found(false) {}
-
+#define DUMP_TYPE_DETAIL(T) typeid(T).name()
 			template<typename T>
 			void operator()(T const&) {
-				OSG_INFO << "In RegisterOperators with " << typeid(T).name() << std::endl;
+				//OSG_INFO << "In RegisterOperators with " << typeid(T).name() << std::endl;
 				if (!found && introspection::Reflection::getType(extended_typeid<T>()) == metatableType) {
-					OSG_INFO << "Pushing metafunctions!" << std::endl;
+					OSG_INFO << "Pushing metafunctions for " << metatableType.getQualifiedName() << std::endl;
+					OSG_INFO << "GetCategory: " << DUMP_TYPE_DETAIL(osgTraits::GetCategory<T>) << ", " << DUMP_TYPE_DETAIL(typename osgTraits::GetCategory<T>::type) << std::endl;
+					OSG_INFO << "GetDimension: " << DUMP_TYPE_DETAIL(typename osgTraits::GetDimension<T>::type) << std::endl;
+
+					OSG_INFO << "GetScalar: " << DUMP_TYPE_DETAIL(typename osgTraits::GetScalar<T>::type) << std::endl;
 					boost::mpl::for_each<MathOperators>(RegisterOperatorFunctor<T>(_L));
 					found = true;
 				}

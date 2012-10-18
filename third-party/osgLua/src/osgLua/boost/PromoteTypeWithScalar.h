@@ -39,7 +39,7 @@ namespace osgTraits {
 		typedef typename GetCategory<T>::type CategoryTag;
 		typedef typename CompatibleScalar<typename GetScalar<T>::type, Scalar>::scalar_type ScalarTag;
 		typedef typename GetDimension<T>::type DimensionTag;
-		typedef typename SelectType<MathTypeDetail<CategoryTag, ScalarTag, DimensionTag> >::type type;
+		typedef typename SelectType< CategoryTag, ScalarTag, DimensionTag>::type type;
 	};
 
 } // end of namespace osgTraits

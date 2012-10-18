@@ -81,12 +81,13 @@ namespace osgLua {
 			void operator()(T const&) {
 				if (!d.success && typeUsableAs<T>(d.other)) {
 					typedef typename boost::mpl::apply_wrap1<BoundOp, T>::type OpSpec;
-					typedef typename OpSpec::first first;
-					typedef typename OpSpec::second second;
+					typedef typename osgTraits::first_argument_type<OpSpec>::type first;
+					typedef typename osgTraits::second_argument_type<OpSpec>::type second;
 					d.r = OpSpec::performOperation(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
 					d.success = true;
 				}
 			}
+
 
 
 		private:
@@ -95,9 +96,12 @@ namespace osgLua {
 	namespace {
 		template<typename BoundOp>
 		int attemptBoundBinaryOperator(lua_State * L, introspection::Type const& otherType) {
-			typedef typename osgTraits::GetAvailableOtherArgTypes<BoundOp>::type OtherArgumentPossibilities;
+			//typedef typename osgTraits::GetAvailableOtherArgTypes<BoundOp>::type OtherArgumentPossibilities;
+			//typedef osgTraits::math_types OtherArgumentPossibilities;
 			BinaryOpData data(L, otherType);
-			boost::mpl::for_each<OtherArgumentPossibilities>(BinaryOperatorApplicationFunctor<BoundOp>(data));
+			std::cout << "BoundOp " << typeid(BoundOp).name() << std::endl;
+			std::cout << "is_bound_operator_available for osg::Vec3d" << typeid(typename osgTraits::is_bound_operator_available<BoundOp, osg::Vec3d>::type).name()  << std::endl;
+			//boost::mpl::for_each<OtherArgumentPossibilities>(BinaryOperatorApplicationFunctor<BoundOp>(data));
 			return data.pushIfSuccessful(L);
 		}
 

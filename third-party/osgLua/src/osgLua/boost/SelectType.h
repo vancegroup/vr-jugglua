@@ -31,12 +31,23 @@
 // Standard includes
 // - none
 namespace osgTraits {
-	template<typename Detail>
+	using boost::mpl::lambda;
+	using boost::mpl::placeholders::_;
+	template<typename Detail, typename = void>
+	struct SelectTypeImpl {
+
+	};
+	template<typename Category, typename Scalar, typename Dimension>
 	struct SelectType {
 
-		typedef typename boost::mpl::find_if<math_types, boost::mpl::equal<GetMathTypeDetail<boost::mpl::_1>, Detail> >::type iter;
-		typedef typename boost::mpl::eval_if < boost::mpl::equal<typename Detail::category_tag, tags::Scalar>,
-		        boost::mpl::identity<typename Detail::scalar_tag>,
+		typedef typename boost::mpl::find_if < math_types,
+		        boost::mpl::and_ <
+		        boost::is_same< GetCategory<_>, Category>,
+		        boost::is_same< GetScalar<_>, Scalar>,
+		        boost::is_same< GetDimension<_>, Dimension>
+		        > >::type iter;
+		typedef typename boost::mpl::eval_if < boost::is_same<Category, tags::Scalar>,
+		        boost::mpl::identity<Scalar>,
 		        boost::mpl::deref<iter> >::type type;
 	};
 } // end of namespace osgTraits

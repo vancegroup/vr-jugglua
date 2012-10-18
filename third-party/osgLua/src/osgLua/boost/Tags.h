@@ -46,8 +46,8 @@ namespace osgTraits {
 		struct Scalar {
 			typedef void is_scalar;
 		};
-		struct BinaryOperator;
-		struct UnaryOperator;
+		struct BinaryOperator {};
+		struct UnaryOperator {};
 	} // end of namespace tags
 } // end of namespace osgTraits
 

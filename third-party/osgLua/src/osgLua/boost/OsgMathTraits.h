@@ -28,12 +28,14 @@
 // Library/third-party includes
 #include <boost/mpl/or.hpp>
 #include <boost/type_traits/is_arithmetic.hpp>
+#include <boost/mpl/has_xxx.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
-
+	BOOST_MPL_HAS_XXX_TRAIT_DEF(value_type);
+	BOOST_MPL_HAS_XXX_TRAIT_DEF(num_components);
 	template<typename T>
 	struct is_scalar : boost::is_arithmetic<T>::type {};
 
@@ -46,7 +48,9 @@ namespace osgTraits {
 	template<typename CategoryTag>
 	struct GetDimension_impl {
 		template<typename T>
-		struct apply;
+		struct apply {
+			typedef void type;
+		};
 	};
 
 	template<typename T>
@@ -76,22 +80,28 @@ namespace osgTraits {
 		};
 	};
 
-	template<typename MathTag>
+	template<typename CategoryTag>
 	struct GetScalar_impl {
-		template<typename T>
-		struct apply;
-	};
-
-	template<typename T>
-	struct GetScalar : GetScalar_impl<typename detail::ComputeIsMathTag<T>::type >::template apply<T> {};
-
-	template<>
-	struct GetScalar_impl<tags::MathType> {
 		template<typename T>
 		struct apply {
 			typedef typename T::value_type type;
 		};
 	};
+	template<typename T, typename = void>
+	struct GetScalarImpl {};
+	template<typename T>
+	//struct GetScalar : GetScalar_impl<typename detail::ComputeCategoryTag<T>::type >::template apply<T> {};
+	struct GetScalar : GetScalarImpl<T> {};
+
+	template<typename T>
+	struct GetScalarImpl<T, typename boost::enable_if<has_value_type<T> >::type> {
+		typedef typename T::value_type type;
+	};
+	template<typename T>
+	struct GetScalarImpl<T, typename boost::enable_if<is_scalar<T> >::type> {
+		typedef T type;
+	};
+
 	template<>
 	struct GetScalar_impl<tags::Scalar> {
 		template<typename T>

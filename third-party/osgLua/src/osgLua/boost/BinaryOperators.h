@@ -23,7 +23,7 @@
 // Internal Includes
 #include "Multiplication.h"
 #include "Tags.h"
-#include "IsAvailable.h"
+#include "IsOperatorAvailable.h"
 
 // Library/third-party includes
 #include <boost/mpl/lambda.hpp>
@@ -41,20 +41,21 @@
 // - none
 
 namespace osgTraits {
-
+	using boost::mpl::placeholders::_;
 	template<typename Op, typename T>
 	struct OperatorBindFirst {
 		//typedef typename boost::mpl::lambda< typename Op::template apply<T, boost::mpl::_1> >::type type;
-		typedef boost::mpl::bind2<Op, T, boost::mpl::_1> type;
+		typedef boost::mpl::bind2<Op, T, _> type;
 	};
 
 	template<typename Op, typename T>
 	struct OperatorBindSecond {
 //		typedef typename boost::mpl::lambda< typename Op::template apply<boost::mpl::_1, T> >::type type;
 
-		typedef boost::mpl::bind2<Op, boost::mpl::_1, T> type;
+		typedef boost::mpl::bind2<Op, _, T> type;
 	};
 
+	/*
 	template<typename BoundOp>
 	struct IsBoundAvailable {
 		struct result {
@@ -65,18 +66,29 @@ namespace osgTraits {
 		};
 		typedef result type;
 	};
+	template<typename BoundOp, typename T>
+	struct IsBoundOperatorAvailable {
+		typedef typename osgTraits::is_operator_available< typename boost::mpl::apply_wrap1<BoundOp, T>::type > type;
+	};*/
 
+	template<typename BoundOp, typename T>
+	struct is_bound_operator_available {
+		typedef typename boost::mpl::apply<BoundOp, T>::type SpecOp;
+		typedef typename is_operator_available<SpecOp>::type type;
+	};
 	template<typename BoundOp>
 	struct GetAvailableOtherArgTypes {
-		typedef typename boost::mpl::copy_if<osgTraits::math_types, typename IsBoundAvailable<BoundOp>::type, boost::mpl::back_inserter<boost::mpl::vector0<> > >::type type;
-
+		//typedef typename boost::mpl::copy_if<osgTraits::math_types, typename IsBoundAvailable<BoundOp>::type, boost::mpl::back_inserter<boost::mpl::vector0<> > >::type type;
+		typedef boost::mpl::filter_view<osgTraits::math_types, typename boost::mpl::lambda<is_bound_operator_available<BoundOp, _> >::type > type;
 	};
 
-	template<typename BoundOp>
-	struct GetAvailableOpSpecializations {
-		typedef typename boost::mpl::transform_view<math_and_arithmetic_types, BoundOp>::type Possibilities;
-		typedef typename boost::mpl::filter_view<Possibilities, is_operator_available<boost::mpl::_1> >::type type;
-	};
+	/*
+		template<typename BoundOp>
+		struct GetAvailableOpSpecializations {
+			typedef typename boost::mpl::transform_view<math_and_arithmetic_types, BoundOp>::type Possibilities;
+			typedef typename boost::mpl::filter_view<Possibilities, is_operator_available<boost::mpl::_1> >::type type;
+		};
+	*/
 
 	typedef boost::mpl::single_view<Multiplication> BinaryOperators;
 

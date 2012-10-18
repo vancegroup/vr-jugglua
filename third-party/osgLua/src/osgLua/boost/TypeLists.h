@@ -26,6 +26,7 @@
 // Library/third-party includes
 
 #include <boost/mpl/set.hpp>
+#include <boost/mpl/bool.hpp>
 #include <osg/Matrixd>
 #include <osg/Matrixf>
 #include <osg/Vec2b>
@@ -52,11 +53,27 @@ namespace osgTraits {
 	typedef boost::mpl::set< ::osg::Vec2b, ::osg::Vec2d, ::osg::Vec2f, ::osg::Vec2s, ::osg::Vec3b, ::osg::Vec3d, ::osg::Vec3f, ::osg::Vec3s, ::osg::Vec4b, ::osg::Vec4d, ::osg::Vec4f, ::osg::Vec4s, ::osg::Vec4ub > vector_types;
 	typedef boost::mpl::set< ::osg::Quat > quat_types;
 
-	template<typename T> struct is_matrix : boost::mpl::has_key<matrix_types, T>::type {};
+	template<typename T> struct is_matrix : boost::mpl::false_ {};
+	template<> struct is_matrix< ::osg::Matrixd > : boost::mpl::true_ {};
+	template<> struct is_matrix< ::osg::Matrixf > : boost::mpl::true_ {};
 
-	template<typename T> struct is_vector : boost::mpl::has_key<vector_types, T>::type {};
+	template<typename T> struct is_vector : boost::mpl::false_ {};
+	template<> struct is_vector< ::osg::Vec2b > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec2d > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec2f > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec2s > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec3b > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec3d > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec3f > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec3s > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec4b > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec4d > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec4f > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec4s > : boost::mpl::true_ {};
+	template<> struct is_vector< ::osg::Vec4ub > : boost::mpl::true_ {};
 
-	template<typename T> struct is_quat : boost::mpl::has_key<quat_types, T>::type {};
+	template<typename T> struct is_quat : boost::mpl::false_ {};
+	template<> struct is_quat< ::osg::Quat > : boost::mpl::true_ {};
 
 } // end of namespace osgTraits
 
