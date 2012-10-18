@@ -117,11 +117,11 @@ namespace osgTraits {
 			template<typename T1, typename T2>
 			struct apply {
 				typedef boost::mpl::true_ available;
-				typedef typename PromoteTypeWithScalar<T1, typename GetScalar<T2>::type>::type result_type;
+				typedef typename PromoteTypeWithScalar<T1, typename GetScalar<T2>::type>::type return_type;
 
 				template<typename A, typename B>
-				static result_type performOperation(A const& v1, B const& v2) {
-					return result_type(v1) * result_type(v2);
+				static return_type performOperation(A const& v1, B const& v2) {
+					return return_type(v1) * return_type(v2);
 				}
 			};
 		};
@@ -132,9 +132,9 @@ namespace osgTraits {
 			template<typename V, typename M>
 			struct apply {
 				typedef boost::mpl::true_ available;
-				typedef V result_type;
+				typedef V return_type;
 
-				static result_type performOperation(V const& v, M const& m) {
+				static return_type performOperation(V const& v, M const& m) {
 					return v * m;
 				}
 			};
@@ -146,9 +146,9 @@ namespace osgTraits {
 			template<typename M, typename V>
 			struct apply {
 				typedef boost::mpl::true_ available;
-				typedef V result_type;
+				typedef V return_type;
 
-				static result_type performOperation(M const& m, V const& v) {
+				static return_type performOperation(M const& m, V const& v) {
 					return m * v;
 				}
 			};
@@ -162,9 +162,9 @@ namespace osgTraits {
 			struct apply {
 				typedef boost::mpl::true_ available;
 				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
-				typedef vec_type result_type;
+				typedef vec_type return_type;
 
-				static result_type performOperation(S const& s, V const& v) {
+				static return_type performOperation(S const& s, V const& v) {
 					return vec_type(v) * s;
 				}
 			};
@@ -178,9 +178,9 @@ namespace osgTraits {
 			struct apply {
 				typedef boost::mpl::true_ available;
 				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
-				typedef vec_type result_type;
+				typedef vec_type return_type;
 
-				static result_type performOperation(V const& v, S const& s) {
+				static return_type performOperation(V const& v, S const& s) {
 					return vec_type(v) * s;
 				}
 			};

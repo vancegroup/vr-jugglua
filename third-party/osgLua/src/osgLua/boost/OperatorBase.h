@@ -46,6 +46,11 @@ namespace osgTraits {
 	};
 
 	template<typename T>
+	struct get_operator_tag {
+		typedef typename T::operator_tag type;
+	};
+
+	template<typename T>
 	struct first_argument_type {
 		typedef typename T::first_argument_type type;
 	};

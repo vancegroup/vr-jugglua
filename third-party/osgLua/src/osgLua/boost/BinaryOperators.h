@@ -44,14 +44,11 @@ namespace osgTraits {
 	using boost::mpl::placeholders::_;
 	template<typename Op, typename T>
 	struct OperatorBindFirst {
-		//typedef typename boost::mpl::lambda< typename Op::template apply<T, boost::mpl::_1> >::type type;
 		typedef boost::mpl::bind2<Op, T, _> type;
 	};
 
 	template<typename Op, typename T>
 	struct OperatorBindSecond {
-//		typedef typename boost::mpl::lambda< typename Op::template apply<boost::mpl::_1, T> >::type type;
-
 		typedef boost::mpl::bind2<Op, _, T> type;
 	};
 

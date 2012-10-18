@@ -22,6 +22,7 @@
 
 // Internal Includes
 #include "boost/BinaryOperators.h"
+#include "boost/InvokeOperator.h"
 
 // Library/third-party includes
 #include <boost/mpl/for_each.hpp>
@@ -83,7 +84,7 @@ namespace osgLua {
 					typedef typename boost::mpl::apply_wrap1<BoundOp, T>::type OpSpec;
 					typedef typename osgTraits::first_argument_type<OpSpec>::type first;
 					typedef typename osgTraits::second_argument_type<OpSpec>::type second;
-					d.r = OpSpec::performOperation(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
+					d.r = osgTraits::invokeOperator<OpSpec>(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
 					d.success = true;
 				}
 			}
@@ -96,7 +97,7 @@ namespace osgLua {
 	namespace {
 		template<typename BoundOp>
 		int attemptBoundBinaryOperator(lua_State * L, introspection::Type const& otherType) {
-			//typedef typename osgTraits::GetAvailableOtherArgTypes<BoundOp>::type OtherArgumentPossibilities;
+			typedef typename osgTraits::GetAvailableOtherArgTypes<BoundOp>::type OtherArgumentPossibilities;
 			//typedef osgTraits::math_types OtherArgumentPossibilities;
 			BinaryOpData data(L, otherType);
 			std::cout << "BoundOp " << typeid(BoundOp).name() << std::endl;

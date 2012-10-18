@@ -30,19 +30,6 @@
 // - none
 
 namespace osgTraits {
-	/*
-	BOOST_MPL_HAS_XXX_TRAIT_DEF(unavailable);
-
-	template<typename SpecOperator>
-	struct is_operator_available : boost::mpl::not_<typename has_unavailable<SpecOperator>::type>  {};
-
-	template<typename SpecOperator, typename = void>
-	struct is_operator_available<SpecOperator, bo>
-
-	template<typename SpecOperator>
-	struct is_operator_available<SpecOperator, typename SpecOperator::unavailable> : boost::mpl::false_ {};
-	*/
-
 	template<typename SpecOperator>
 	struct is_operator_available : SpecOperator::available {};
 } // end of namespace osgTraits
