@@ -23,7 +23,7 @@
 // Internal Includes
 #include "OsgMathTraits.h"
 #include "SelectType.h"
-#include "CompatibleScalar.h"
+#include "GetCompatibleScalar.h"
 
 // Library/third-party includes
 // - none
@@ -34,12 +34,12 @@
 
 namespace osgTraits {
 
-	template<typename T, typename Scalar>
+	template<typename T, typename ScalarType>
 	struct PromoteTypeWithScalar {
-		typedef typename GetCategory<T>::type CategoryTag;
-		typedef typename CompatibleScalar<typename GetScalar<T>::type, Scalar>::scalar_type ScalarTag;
-		typedef typename GetDimension<T>::type DimensionTag;
-		typedef typename SelectType< CategoryTag, ScalarTag, DimensionTag>::type type;
+		typedef typename GetCategory<T>::type Category;
+		typedef typename GetCompatibleScalar<typename GetScalar<T>::type, ScalarType>::scalar_type Scalar;
+		typedef typename GetDimension<T>::type Dimension;
+		typedef typename SelectType< Category, Scalar, Dimension>::type type;
 	};
 
 } // end of namespace osgTraits

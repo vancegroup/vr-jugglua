@@ -17,8 +17,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_CompatibleScalar_h_GUID_d27674ff_6057_4136_9268_f854370bc94c
-#define INCLUDED_CompatibleScalar_h_GUID_d27674ff_6057_4136_9268_f854370bc94c
+#ifndef INCLUDED_GetCompatibleScalar_h_GUID_d27674ff_6057_4136_9268_f854370bc94c
+#define INCLUDED_GetCompatibleScalar_h_GUID_d27674ff_6057_4136_9268_f854370bc94c
 
 // Internal Includes
 // - none
@@ -31,27 +31,23 @@
 
 namespace osgTraits {
 	template<typename T1, typename T2>
-	struct CompatibleScalar {
-		typedef boost::mpl::false_ type;
-	};
+	struct GetCompatibleScalar {};
 
 	template<typename T>
-	struct CompatibleScalar<T, T> {
-		typedef boost::mpl::true_ type;
-		typedef T scalar_type;
-	};
-	template<>
-	struct CompatibleScalar<float, double> {
-		typedef boost::mpl::true_ type;
-		typedef double scalar_type;
+	struct GetCompatibleScalar<T, T> {
+		typedef T type;
 	};
 
 	template<>
-	struct CompatibleScalar<double, float> {
-		typedef boost::mpl::true_ type;
-		typedef double scalar_type;
+	struct GetCompatibleScalar<float, double> {
+		typedef double type;
+	};
+
+	template<>
+	struct GetCompatibleScalar<double, float> {
+		typedef double type;
 	};
 
 };
 
-#endif // INCLUDED_CompatibleScalar_h_GUID_d27674ff_6057_4136_9268_f854370bc94c
+#endif // INCLUDED_GetCompatibleScalar_h_GUID_d27674ff_6057_4136_9268_f854370bc94c

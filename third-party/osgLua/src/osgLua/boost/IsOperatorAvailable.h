@@ -17,8 +17,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_IsAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b
-#define INCLUDED_IsAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b
+#ifndef INCLUDED_IsOperatorAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b
+#define INCLUDED_IsOperatorAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b
 
 // Internal Includes
 // - none
@@ -47,4 +47,4 @@ namespace osgTraits {
 	struct is_operator_available : SpecOperator::available {};
 } // end of namespace osgTraits
 
-#endif // INCLUDED_IsAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b
+#endif // INCLUDED_IsOperatorAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b

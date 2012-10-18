@@ -22,7 +22,7 @@
 
 // Internal Includes
 #include "OsgMathTraits.h"
-#include "CompatibleScalar.h"
+#include "GetCompatibleScalar.h"
 
 // Library/third-party includes
 #include <boost/mpl/equal.hpp>
@@ -35,8 +35,15 @@
 
 namespace osgTraits {
 	namespace BinaryPredicates {
+		template<typename T1, typename T2, typename = void>
+		struct HaveCompatibleScalar {
+			typedef boost::mpl::false_ type;
+		};
+
 		template<typename T1, typename T2>
-		struct HaveCompatibleScalar : CompatibleScalar<typename GetScalar<T1>::type, typename GetScalar<T2>::type> {};
+		struct HaveCompatibleScalar<T1, T2, typename GetCompatibleScalar<T1, T2>::type > {
+			typedef boost::mpl::true_ type;
+		};
 
 		template<typename T1, typename T2>
 		struct HaveSameCategory : boost::is_same<typename GetCategory<T1>::type, typename GetCategory<T2>::type>::type {};
@@ -68,9 +75,9 @@ namespace osgTraits {
 
 		template<typename T1, typename T2>
 		struct HaveSameCategoryAndDimensionWithCompatibleScalar : boost::mpl::and_ <
-				typename HaveSameCategory<T1, T2>::type,
-				typename HaveCompatibleScalar<T1, T2>::type,
-				typename HaveSameDimension<T1, T2>::type
+				HaveSameCategory<T1, T2>,
+				HaveCompatibleScalar<T1, T2>,
+				HaveSameDimension<T1, T2>
 				>::type {};
 
 	} // end of namespace BinaryPredicates

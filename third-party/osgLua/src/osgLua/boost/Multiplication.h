@@ -22,7 +22,6 @@
 
 // Internal Includes
 #include "OsgMathTraits.h"
-#include "CompatibleScalar.h"
 #include "SelectType.h"
 #include "PromoteTypeWithScalar.h"
 #include "OperatorBase.h"
@@ -31,6 +30,7 @@
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/mpl/and.hpp>
 
 // Standard includes
 // - none
