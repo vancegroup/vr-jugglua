@@ -23,7 +23,9 @@
 // Internal Includes
 #include "MathTypes.h"
 #include "Tags.h"
-#include "TagMetafunctions.h"
+//#include "TagMetafunctions.h"
+#include "ComputeCategoryTag.h"
+
 
 // Library/third-party includes
 #include <boost/mpl/or.hpp>
@@ -34,12 +36,6 @@
 // - none
 
 namespace osgTraits {
-	template<typename T>
-	struct is_scalar : boost::is_arithmetic<T>::type {};
-
-	template<typename T>
-	struct is_math_or_scalar : boost::mpl::or_<is_math_type<T>, is_scalar<T> >::type {};
-
 	template<typename T>
 	struct GetCategory : detail::ComputeCategoryTag<T> {};
 
