@@ -19,7 +19,7 @@
 #pragma once
 #ifndef INCLUDED_OsgMathTraits_h_GUID_6c3ba294_4496_423b_9e5c_598e2ca2040a
 #define INCLUDED_OsgMathTraits_h_GUID_6c3ba294_4496_423b_9e5c_598e2ca2040a
-
+#if 0
 // Internal Includes
 #include "MathTypes.h"
 #include "Tags.h"
@@ -119,4 +119,5 @@ namespace osgTraits {
 	};
 
 } // end of namespace osgTraits
+#endif
 #endif // INCLUDED_OsgMathTraits_h_GUID_6c3ba294_4496_423b_9e5c_598e2ca2040a

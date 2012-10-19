@@ -21,7 +21,9 @@
 #define INCLUDED_TypePredicates_h_GUID_746880c7_3f70_40c4_99e6_0717ac100770
 
 // Internal Includes
-#include "OsgMathTraits.h"
+#include "GetCategory.h"
+#include "GetScalar.h"
+#include "GetDimension.h"
 #include "GetCompatibleScalar.h"
 
 // Library/third-party includes

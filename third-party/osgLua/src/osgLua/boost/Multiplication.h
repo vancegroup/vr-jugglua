@@ -21,11 +21,9 @@
 #define INCLUDED_Multiplication_h_GUID_d7c2cc4f_5b7d_4891_bc1d_6b3a21a9b3c9
 
 // Internal Includes
-#include "OsgMathTraits.h"
-#include "SelectType.h"
+#include "TypePredicates.h"
 #include "PromoteTypeWithScalar.h"
 #include "OperatorBase.h"
-#include "TypePredicates.h"
 
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
