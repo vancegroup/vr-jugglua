@@ -25,7 +25,6 @@
 
 // Library/third-party includes
 #include <boost/mpl/joint_view.hpp>
-#include <boost/mpl/contains.hpp>
 #include <boost/mpl/list.hpp>
 #include <boost/mpl/copy.hpp>
 #include <boost/mpl/front_inserter.hpp>
@@ -37,8 +36,11 @@
 
 
 namespace osgTraits {
-	typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>::type, quat_types>::type math_joint_types;
-	typedef boost::mpl::copy<math_joint_types, boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_types;
+	namespace detail {
+		typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>::type, quat_types>::type math_joint_types;
+	} // end of namespace detail
+
+	typedef boost::mpl::copy<detail::math_joint_types, boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_types;
 
 	template<typename T>
 	struct is_math_type : boost::mpl::or_ <
@@ -52,6 +54,7 @@ namespace osgTraits {
 	typedef boost::mpl::copy < boost::mpl::joint_view<math_types, arithmetic_types>,
 	        boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_and_arithmetic_types;
 
+	/// @todo this is inconsistent
 	template<typename T>
 	struct is_scalar : boost::is_arithmetic<T>::type {};
 
