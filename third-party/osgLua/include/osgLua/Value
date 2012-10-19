@@ -22,7 +22,9 @@
 #include <osgLua/introspection/Value>
 #include <osgLua/introspection/Type>
 
-namespace osg { class Referenced; }
+namespace osg {
+	class Referenced;
+}
 #include <osg/ref_ptr>
 
 namespace osgLua {

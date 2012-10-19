@@ -52,9 +52,9 @@ namespace osgLua {
 
 			void execute();
 			void execute(P);
-			void execute(P,P);
-			void execute(P,P,P);
-			void execute(P,P,P,P);
+			void execute(P, P);
+			void execute(P, P, P);
+			void execute(P, P, P, P);
 
 		private:
 			void init(lua_State *L);
@@ -79,14 +79,14 @@ namespace osgLua {
 namespace osgLua {
 
 	class OSGLUA_API NodeCallback :
-			public osg::NodeCallback,
-				public Callback {
+		public osg::NodeCallback,
+		public Callback {
 		public:
-			NodeCallback(Script *s, const char *name) : Callback(s,name) {}
+			NodeCallback(Script *s, const char *name) : Callback(s, name) {}
 			NodeCallback(lua_State *L) : Callback(L) {}
 
 			void operator()(osg::Node *node, osg::NodeVisitor *nv) {
-				execute(node,nv);
+				execute(node, nv);
 			}
 			// A function to create a NodeCallback from lua
 			static int createFromLua(lua_State *L);
