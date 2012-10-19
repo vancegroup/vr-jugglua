@@ -17,28 +17,27 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_MathTypes_h_GUID_c6ddc37d_59b8_498c_b575_dad4b726de51
-#define INCLUDED_MathTypes_h_GUID_c6ddc37d_59b8_498c_b575_dad4b726de51
+#ifndef INCLUDED_MathAndArithmeticTypes_h_GUID_2b0da401_d520_469a_abb3_e52f3c1e41aa
+#define INCLUDED_MathAndArithmeticTypes_h_GUID_2b0da401_d520_469a_abb3_e52f3c1e41aa
 
 // Internal Includes
-#include "TypeLists.h"
+#include "MathTypes.h"
+#include "ArithmeticTypes.h"
 
 // Library/third-party includes
-#include <boost/mpl/joint_view.hpp>
-#include <boost/mpl/list.hpp>
 #include <boost/mpl/copy.hpp>
+#include <boost/mpl/joint_view.hpp>
 #include <boost/mpl/front_inserter.hpp>
+#include <boost/mpl/list.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
-	namespace detail {
-		typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>::type, quat_types>::type math_joint_types;
-	} // end of namespace detail
 
-	typedef boost::mpl::copy<detail::math_joint_types, boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_types;
+	typedef boost::mpl::copy < boost::mpl::joint_view<math_types, arithmetic_types>,
+	        boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_and_arithmetic_types;
 
 } // end of namespace osgTraits
 
-#endif // INCLUDED_MathTypes_h_GUID_c6ddc37d_59b8_498c_b575_dad4b726de51
+#endif // INCLUDED_MathAndArithmeticTypes_h_GUID_2b0da401_d520_469a_abb3_e52f3c1e41aa

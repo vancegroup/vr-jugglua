@@ -17,41 +17,21 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
-#define INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#ifndef INCLUDED_ArithmeticTypes_h_GUID_ddc568fc_99ac_4121_a909_f1831bbd9371
+#define INCLUDED_ArithmeticTypes_h_GUID_ddc568fc_99ac_4121_a909_f1831bbd9371
 
 // Internal Includes
 // - none
 
 // Library/third-party includes
-// - none
+#include <boost/mpl/list/list10.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
-	namespace tags {
-		struct Vec {
-			typedef Vec type;
-		};
-		struct Matrix {
-			typedef Matrix type;
-		};
-		struct Quat {
-			typedef Quat type;
-		};
-		struct Scalar {
-			typedef Scalar type;
-		};
-
-		struct MathType {
-			typedef MathType type;
-		};
-		/*
-		struct BinaryOperator {};
-		struct UnaryOperator {};
-		*/
-	} // end of namespace tags
+	/// @todo this list is incomplete
+	typedef boost::mpl::list2<double, float> arithmetic_types;
 } // end of namespace osgTraits
 
-#endif // INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#endif // INCLUDED_ArithmeticTypes_h_GUID_ddc568fc_99ac_4121_a909_f1831bbd9371

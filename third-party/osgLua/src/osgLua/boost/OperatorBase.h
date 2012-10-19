@@ -102,17 +102,6 @@ namespace osgTraits {
 	template<typename T, int index>
 	struct get_operator_argument_c : get_operator_argument<T, boost::mpl::int_<index> > {};
 
-	/*
-	template<typename T>
-	struct first_argument_type {
-		typedef typename T::first_argument_type type;
-	};
-
-	template<typename T>
-	struct second_argument_type {
-		typedef typename T::second_argument_type type;
-	};
-	*/
 } // end of namespace osgTraits
 
 #endif // INCLUDED_OperatorBase_h_GUID_f6f3382a_be9f_4e4c_a166_43dc8bb15d40

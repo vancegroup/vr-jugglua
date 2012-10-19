@@ -22,6 +22,7 @@
 
 // Internal Includes
 #include "MathTypes.h"
+#include "IsScalar.h"
 #include "Tags.h"
 
 // Library/third-party includes

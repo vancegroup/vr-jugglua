@@ -17,41 +17,24 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
-#define INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#ifndef INCLUDED_IsMathOrScalar_h_GUID_7c97973c_b48c_44a7_bb14_c72c33d80e6f
+#define INCLUDED_IsMathOrScalar_h_GUID_7c97973c_b48c_44a7_bb14_c72c33d80e6f
 
 // Internal Includes
-// - none
+#include "MathTypes.h"
+#include "IsScalar.h"
 
 // Library/third-party includes
-// - none
+#include <boost/mpl/or.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
-	namespace tags {
-		struct Vec {
-			typedef Vec type;
-		};
-		struct Matrix {
-			typedef Matrix type;
-		};
-		struct Quat {
-			typedef Quat type;
-		};
-		struct Scalar {
-			typedef Scalar type;
-		};
 
-		struct MathType {
-			typedef MathType type;
-		};
-		/*
-		struct BinaryOperator {};
-		struct UnaryOperator {};
-		*/
-	} // end of namespace tags
+	template<typename T>
+	struct is_math_or_scalar : boost::mpl::or_<is_math_type<T>, is_scalar<T> >::type {};
+
 } // end of namespace osgTraits
 
-#endif // INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#endif // INCLUDED_IsMathOrScalar_h_GUID_7c97973c_b48c_44a7_bb14_c72c33d80e6f

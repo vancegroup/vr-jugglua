@@ -21,7 +21,7 @@
 #define INCLUDED_GetScalar_h_GUID_369a7190_525e_4eaa_ae0b_0743be34526a
 
 // Internal Includes
-#include "MathTypes.h"
+#include "IsScalar.h"
 
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>

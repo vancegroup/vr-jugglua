@@ -17,41 +17,22 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
-#define INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#ifndef INCLUDED_IsScalar_h_GUID_f39c9421_6a16_4a5e_805f_e5b2c9cbd2d2
+#define INCLUDED_IsScalar_h_GUID_f39c9421_6a16_4a5e_805f_e5b2c9cbd2d2
 
 // Internal Includes
 // - none
 
 // Library/third-party includes
-// - none
+#include <boost/type_traits/is_arithmetic.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
-	namespace tags {
-		struct Vec {
-			typedef Vec type;
-		};
-		struct Matrix {
-			typedef Matrix type;
-		};
-		struct Quat {
-			typedef Quat type;
-		};
-		struct Scalar {
-			typedef Scalar type;
-		};
+	/// @todo this is inconsistent with ArithmeticTypes.h
+	template<typename T>
+	struct is_scalar : boost::is_arithmetic<T>::type {};
 
-		struct MathType {
-			typedef MathType type;
-		};
-		/*
-		struct BinaryOperator {};
-		struct UnaryOperator {};
-		*/
-	} // end of namespace tags
 } // end of namespace osgTraits
-
-#endif // INCLUDED_Tags_h_GUID_594c4167_70eb_4377_9401_c5d8d30dae0e
+#endif // INCLUDED_IsScalar_h_GUID_f39c9421_6a16_4a5e_805f_e5b2c9cbd2d2

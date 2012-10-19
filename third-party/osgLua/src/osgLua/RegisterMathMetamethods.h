@@ -24,6 +24,7 @@
 #include "OperatorMetamethodTraits.h"
 #include "BinaryOperatorDispatch.h"
 #include "boost/BinaryOperators.h"
+#include "boost/MathAndArithmeticTypes.h"
 #include "LuaIncludeFull.h"
 
 // Library/third-party includes
