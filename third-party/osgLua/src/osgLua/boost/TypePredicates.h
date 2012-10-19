@@ -27,6 +27,7 @@
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits/is_same.hpp>
+#include <boost/type_traits/is_floating_point.hpp>
 #include <boost/mpl/equal.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/or.hpp>
@@ -92,7 +93,8 @@ namespace osgTraits {
 
 	} // end of namespace BinaryPredicates
 	namespace UnaryPredicates {
-
+		template<typename T>
+		struct HasFloatingPointScalar : boost::is_floating_point<typename GetScalar<T>::type> {};
 	} // end of namespace UnaryPredicates
 } // end of namespace osgTraits
 #endif // INCLUDED_TypePredicates_h_GUID_746880c7_3f70_40c4_99e6_0717ac100770
