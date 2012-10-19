@@ -35,6 +35,26 @@
 namespace osgLua {
 	typedef osgTraits::BinaryOperators MathOperators;
 
+	template<typename Operator, typename T1, typename T2>
+	inline void printInfo(std::string const& n1, std::string const& n2) {
+		std::cout << n1 << " and " << n2 << ":" << std::endl;
+		std::cout << "	HaveCompatibleScalar: " << osgTraits::BinaryPredicates::HaveCompatibleScalar<T1, T2>::type::value << std::endl;
+		std::cout << "	HaveSameCategory: " << osgTraits::BinaryPredicates::HaveSameCategory<T1, T2>::type::value << std::endl;
+		std::cout << "	HaveSameDimension: " << osgTraits::BinaryPredicates::HaveSameDimension<T1, T2>::type::value << std::endl;
+		std::cout << "	CanTransformVecMatrix: " << osgTraits::BinaryPredicates::CanTransformVecMatrix<T1, T2>::type::value << std::endl;
+		std::cout << "	AreVectorAndMatrix: " << osgTraits::BinaryPredicates::AreVectorAndMatrix<T1, T2>::type::value << std::endl;
+		std::cout << "	HaveSameCategoryAndDimensionWithCompatibleScalar: " << osgTraits::BinaryPredicates::HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2>::type::value << std::endl;
+		typedef typename boost::mpl::apply<Operator, T1, T2>::type SpecOp;
+		typedef typename osgTraits::is_operator_available<SpecOp>::type IsAvail;
+		std::cout << "	is_operator_available: " << IsAvail::value << std::endl;
+	}
+	template<typename T1, typename Operator>
+	struct PrintExistenceFunctor {
+		template<typename T2>
+		void operator()(T2 const&) {
+			printInfo<Operator, T1, T2>(introspection::Reflection::getType(extended_typeid<T1>()).getName(), introspection::Reflection::getType(extended_typeid<T2>()).getName());
+		}
+	};
 
 	template<typename T, typename OperatorTag>
 	struct PushOperator_impl {
@@ -50,7 +70,8 @@ namespace osgLua {
 		template<typename Operator>
 		struct apply {
 			static void doPush(lua_State * L) {
-				lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
+				//lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
+				boost::mpl::for_each<osgTraits::math_and_arithmetic_types>(PrintExistenceFunctor<T, Operator>());
 			}
 		};
 	};
