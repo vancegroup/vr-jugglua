@@ -60,7 +60,7 @@ namespace osgTraits {
 	template<typename BoundOp>
 	struct GetAvailableOtherArgTypes {
 		//typedef typename boost::mpl::copy_if<osgTraits::math_types, typename IsBoundAvailable<BoundOp>::type, boost::mpl::back_inserter<boost::mpl::vector0<> > >::type type;
-		typedef boost::mpl::filter_view<osgTraits::math_types, typename boost::mpl::lambda<is_bound_operator_available<BoundOp, _> >::type > type;
+		typedef boost::mpl::filter_view<osgTraits::math_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
 	};
 
 	/*
