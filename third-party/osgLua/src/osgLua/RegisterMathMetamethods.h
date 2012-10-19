@@ -53,6 +53,8 @@ namespace osgLua {
 		std::cout << "	MultiplicationTag: " << typeid(typename osgTraits::MultiplicationTags::Compute<T1, T2>::type).name() << std::endl;
 		std::cout << "	SpecOp: " << typeid(SpecOp).name() << std::endl;
 		std::cout << "	is_operator_available: " << IsAvail::value << std::endl;
+		std::cout << "	first_argument_type: " << getTypeName<typename osgTraits::first_argument_type<SpecOp>::type>() << std::endl;
+		std::cout << "	second_argument_type: " << getTypeName<typename osgTraits::second_argument_type<SpecOp>::type>() << std::endl;
 	}
 
 	template<typename T>

@@ -89,8 +89,6 @@ namespace osgLua {
 				}
 			}
 
-
-
 		private:
 			BinaryOpData & d;
 	};
