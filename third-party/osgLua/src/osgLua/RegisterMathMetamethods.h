@@ -27,6 +27,7 @@
 #include "boost/MathAndArithmeticTypes.h"
 #include "LuaIncludeFull.h"
 #include "PrintInfoFunctor.h"
+#include "StatefulTypeVisitFunctor.h"
 
 // Library/third-party includes
 // - none

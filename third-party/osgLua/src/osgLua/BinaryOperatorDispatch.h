@@ -24,9 +24,13 @@
 #include "boost/BinaryOperators.h"
 #include "boost/InvokeOperator.h"
 
+#include "UsableAs.h"
+#include "StatefulTypeVisitFunctor.h"
+
 // Library/third-party includes
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/filter_view.hpp>
+#include <boost/type_traits/add_reference.hpp>
 
 #include <osgLua/introspection/ExtendedTypeInfo>
 #include <osgLua/introspection/Value>
@@ -40,21 +44,6 @@
 
 namespace osgLua {
 
-	template<typename T>
-	inline bool typeUsableAs(const introspection::Type& t) {
-		static const introspection::Type& myType =
-		    introspection::Reflection::getType(extended_typeid<T>());
-		return t == myType || t.isSubclassOf(myType);
-	}
-
-	template<typename T>
-	inline bool osgLuaValueUsableAs(lua_State * L, int i) {
-		Value * a = Value::get(L, i);
-		if (a) {
-			return typeUsableAs<T>(a->get().getType());
-		}
-		return false;
-	}
 
 	struct BinaryOpData {
 		BinaryOpData(lua_State * L, introspection::Type const& otherType) : other(otherType), a1(getValue(L, -2)), a2(getValue(L, -1)), r(), success(false) {}
@@ -73,6 +62,9 @@ namespace osgLua {
 
 
 	};
+
+
+
 	template<typename BoundOp>
 	class BinaryOperatorApplicationFunctor {
 		public:
@@ -84,7 +76,7 @@ namespace osgLua {
 					typedef typename boost::mpl::apply_wrap1<BoundOp, T>::type OpSpec;
 					typedef typename osgTraits::get_operator_argument_c<OpSpec, 0>::type first;
 					typedef typename osgTraits::get_operator_argument_c<OpSpec, 1>::type second;
-					d.r = osgTraits::invokeOperator<OpSpec>(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
+					//d.r = osgTraits::invokeOperator<OpSpec>(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
 					d.success = true;
 				}
 			}
@@ -93,25 +85,58 @@ namespace osgLua {
 			BinaryOpData & d;
 	};
 	namespace {
+		/*
 		template<typename BoundOp>
 		int attemptBoundBinaryOperator(lua_State * L, introspection::Type const& otherType) {
 			typedef typename osgTraits::GetAvailableOtherArgTypes<BoundOp>::type OtherArgumentPossibilities;
 			//typedef osgTraits::math_types OtherArgumentPossibilities;
 			BinaryOpData data(L, otherType);
 			std::cout << "BoundOp " << typeid(BoundOp).name() << std::endl;
-			std::cout << "is_bound_operator_available for osg::Vec3d" << typeid(typename osgTraits::is_bound_operator_available<BoundOp, osg::Vec3d>::type).name()  << std::endl;
+			//std::cout << "is_bound_operator_available for osg::Vec3d" << typeid(typename osgTraits::is_bound_operator_available<BoundOp, osg::Vec3d>::type).name()  << std::endl;
 			//boost::mpl::for_each<OtherArgumentPossibilities>(BinaryOperatorApplicationFunctor<BoundOp>(data));
+			//boost::mpl::for_each<OtherArgumentPossibilities, visit_binary_op_application<BoundOp, boost::mpl::_1> >(util::visitorState(data));
 			return data.pushIfSuccessful(L);
 		}
+		*/
+
+		template<typename BoundOp>
+		struct AttemptBoundBinaryOperator {
+			template<typename T>
+			struct visit_binary_op_application {
+				static void visit(BinaryOpData & d) {
+					if (!d.success && typeUsableAs<T>(d.other)) {
+						typedef typename boost::mpl::apply<BoundOp, T>::type OpSpec;
+						typedef typename osgTraits::get_operator_argument_c<OpSpec, 0>::type first;
+						typedef typename osgTraits::get_operator_argument_c<OpSpec, 1>::type second;
+						d.r = osgTraits::invokeOperator<OpSpec>(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
+						d.success = true;
+					}
+				}
+			};
+
+			typedef typename osgTraits::GetAvailableOtherArgTypes<BoundOp>::type OtherArgumentPossibilities;
+			static int attempt(lua_State * L, introspection::Type const& otherType) {
+
+				//typedef osgTraits::math_types OtherArgumentPossibilities;
+				BinaryOpData data(L, otherType);
+				std::cout << "BoundOp " << typeid(BoundOp).name() << std::endl;
+				//std::cout << "is_bound_operator_available for osg::Vec3d" << typeid(typename osgTraits::is_bound_operator_available<BoundOp, osg::Vec3d>::type).name()  << std::endl;
+				//boost::mpl::for_each<OtherArgumentPossibilities>(BinaryOperatorApplicationFunctor<BoundOp>(data));
+				boost::mpl::for_each<OtherArgumentPossibilities, visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
+				return data.pushIfSuccessful(L);
+			}
+		};
 
 		template<typename Op, typename T1>
 		int attemptBinaryOperator(lua_State * L) {
 			if (osgLuaValueUsableAs<T1>(L, -2)) {
 				typedef typename osgTraits::OperatorBindFirst<Op, T1>::type BoundOp;
-				return attemptBoundBinaryOperator<BoundOp>(L, getValue(L, -1).getType());
+				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
+				return AttemptStruct::attempt(L, getValue(L, -1).getType());
 			} else if (osgLuaValueUsableAs<T1>(L, -1)) {
 				typedef typename osgTraits::OperatorBindSecond<Op, T1>::type BoundOp;
-				return attemptBoundBinaryOperator<BoundOp>(L, getValue(L, -2).getType());
+				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
+				return AttemptStruct::attempt(L, getValue(L, -2).getType());
 			}
 			return 0;
 		}
