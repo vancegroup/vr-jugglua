@@ -50,6 +50,7 @@ namespace osgLua {
 		std::cout << "	HaveSameCategoryAndDimensionWithCompatibleScalar: " << osgTraits::BinaryPredicates::HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2>::type::value << std::endl;
 		typedef typename boost::mpl::apply<Operator, T1, T2>::type SpecOp;
 		typedef typename osgTraits::is_operator_available<SpecOp>::type IsAvail;
+		std::cout << "	MultiplicationTag: " << typeid(typename osgTraits::MultiplicationTags::Compute<T1, T2>::type).name() << std::endl;
 		std::cout << "	is_operator_available: " << IsAvail::value << std::endl;
 	}
 
