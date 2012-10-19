@@ -35,15 +35,14 @@
 
 namespace osgTraits {
 	namespace BinaryPredicates {
+		BOOST_MPL_HAS_XXX_TRAIT_DEF(type);
 		template<typename T1, typename T2, typename = void>
 		struct HaveCompatibleScalar {
 			typedef boost::mpl::false_ type;
 		};
 
 		template<typename T1, typename T2>
-		struct HaveCompatibleScalar<T1, T2, typename GetCompatibleScalar<T1, T2>::type > {
-			typedef boost::mpl::true_ type;
-		};
+		struct HaveCompatibleScalar<T1, T2, typename boost::enable_if<has_type<GetCompatibleScalar<typename GetScalar<T1>::type, typename GetScalar<T2>::type> > >::type > : boost::mpl::true_ {};
 
 		template<typename T1, typename T2>
 		struct HaveSameCategory : boost::is_same<typename GetCategory<T1>::type, typename GetCategory<T2>::type>::type {};
