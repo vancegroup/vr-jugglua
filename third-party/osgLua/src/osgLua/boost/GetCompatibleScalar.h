@@ -21,7 +21,7 @@
 #define INCLUDED_GetCompatibleScalar_h_GUID_d27674ff_6057_4136_9268_f854370bc94c
 
 // Internal Includes
-// - none
+#include "GetScalar.h"
 
 // Library/third-party includes
 #include <boost/mpl/bool.hpp>
@@ -30,23 +30,28 @@
 // - none
 
 namespace osgTraits {
+	namespace detail {
+		template<typename T1, typename T2>
+		struct GetCompatibleScalarImpl {};
+		template<typename T>
+		struct GetCompatibleScalarImpl<T, T> {
+			typedef T type;
+		};
+
+		template<>
+		struct GetCompatibleScalarImpl<float, double> {
+			typedef double type;
+		};
+
+		template<>
+		struct GetCompatibleScalarImpl<double, float> {
+			typedef double type;
+		};
+	}
 	template<typename T1, typename T2>
-	struct GetCompatibleScalar {};
+	struct GetCompatibleScalar : detail::GetCompatibleScalarImpl<typename GetScalar<T1>::type, typename GetScalar<T2>::type> {};
 
-	template<typename T>
-	struct GetCompatibleScalar<T, T> {
-		typedef T type;
-	};
 
-	template<>
-	struct GetCompatibleScalar<float, double> {
-		typedef double type;
-	};
-
-	template<>
-	struct GetCompatibleScalar<double, float> {
-		typedef double type;
-	};
 
 };
 
