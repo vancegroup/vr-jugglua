@@ -30,6 +30,7 @@
 //#include <boost/type_traits/has_multiplies.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/and.hpp>
+#include <boost/mpl/or.hpp>
 
 // Standard includes
 // - none
@@ -42,8 +43,9 @@ namespace osgTraits {
 		using namespace ::osgTraits::BinaryPredicates;
 		using boost::enable_if;
 		using boost::mpl::and_;
+		using boost::mpl::or_;
 
-		struct MatrixCompose;
+		struct TransformCompose;
 		struct VectorDotProduct;
 		struct VectorTimesMatrix;
 		struct MatrixTimesVector;
@@ -59,11 +61,11 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
-				is_matrix<T1>,
-				is_matrix<T2>,
+				HaveSameCategory<T1, T2>,
+				or_<is_matrix<T1>, is_quat<T1> >,
 				HaveSameDimension<T1, T2>,
 				HaveCompatibleScalar<T1, T2> > >::type > {
-			typedef MatrixCompose type;
+			typedef TransformCompose type;
 		};
 
 		template<typename T1, typename T2>
@@ -151,7 +153,7 @@ namespace osgTraits {
 
 		/// Same category and dimension: promote and multiply
 		template<>
-		struct Multiplication_impl <MultiplicationTags::MatrixCompose> {
+		struct Multiplication_impl <MultiplicationTags::TransformCompose> {
 
 			template<typename T1, typename T2>
 			struct apply {
