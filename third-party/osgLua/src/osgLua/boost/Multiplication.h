@@ -27,6 +27,7 @@
 
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
+//#include <boost/type_traits/has_multiplies.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/and.hpp>
 
@@ -42,7 +43,8 @@ namespace osgTraits {
 		using boost::enable_if;
 		using boost::mpl::and_;
 
-		struct SameCategoryAndDimensionWithCompatibleScalar;
+		struct MatrixCompose;
+		struct VectorDotProduct;
 		struct VectorTimesMatrix;
 		struct MatrixTimesVector;
 
@@ -55,8 +57,28 @@ namespace osgTraits {
 		};
 
 		template<typename T1, typename T2>
-		struct Compute<T1, T2, typename enable_if< HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2> >::type > {
-			typedef SameCategoryAndDimensionWithCompatibleScalar type;
+		struct Compute < T1, T2, typename enable_if <
+				and_ <
+				is_matrix<T1>,
+				is_matrix<T2>,
+				HaveSameDimension<T1, T2>,
+				HaveCompatibleScalar<T1, T2> > >::type > {
+			typedef MatrixCompose type;
+		};
+
+		template<typename T1, typename T2>
+		struct Compute < T1, T2, typename enable_if <
+				and_ <
+				and_ <
+				is_vector<T1>,
+				is_vector<T2>,
+				HaveSameDimension<T1, T2>
+				> ,
+				//boost::has_multiplies<T1, T2>, // some dot products aren't provided.
+				UnaryPredicates::HasFloatingPointScalar<T1>,
+				UnaryPredicates::HasFloatingPointScalar<T2>,
+				HaveCompatibleScalar<T1, T2> > >::type > {
+			typedef VectorDotProduct type;
 		};
 
 		template<typename T1, typename T2>
@@ -97,11 +119,7 @@ namespace osgTraits {
 
 	namespace detail {
 		template<typename Tag>
-		struct Multiplication_impl {
-			template<typename T1, typename T2>
-			struct apply {
-			};
-		};
+		struct Multiplication_impl;
 
 		template<typename T1, typename T2>
 		struct MultiplicationSpecialization :
@@ -109,10 +127,31 @@ namespace osgTraits {
 		                    BinarySpecializedOperator<Multiplication, T1, T2> {
 		                        typedef MultiplicationSpecialization<T1, T2> type;
 		                    };
+		template<typename Tag>
+		struct Multiplication_impl {
+			template<typename T1, typename T2>
+			struct apply {
+			};
+		};
+
+		/// Two vectors: dot product
+		template<>
+		struct Multiplication_impl <MultiplicationTags::VectorDotProduct> {
+
+			template<typename T1, typename T2>
+			struct apply {
+				typedef typename GetCompatibleScalar<T1, T2>::type return_type;
+
+				template<typename A, typename B>
+				static return_type performOperation(A const& v1, B const& v2) {
+					return v1 * v2;
+				}
+			};
+		};
 
 		/// Same category and dimension: promote and multiply
 		template<>
-		struct Multiplication_impl <MultiplicationTags::SameCategoryAndDimensionWithCompatibleScalar> {
+		struct Multiplication_impl <MultiplicationTags::MatrixCompose> {
 
 			template<typename T1, typename T2>
 			struct apply {
