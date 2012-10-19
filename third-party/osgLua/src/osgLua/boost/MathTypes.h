@@ -38,13 +38,6 @@ namespace osgTraits {
 	using boost::mpl::placeholders::_;
 	typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>::type, quat_types>::type math_joint_types;
 	typedef boost::mpl::copy<math_joint_types, boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_types;
-	//typedef boost::mpl::insert_range< boost::mpl::insert_range< matrix_types, vector_types>, quat_types> math_types;
-	/*
-		typedef boost::mpl::or_<
-			boost::mpl::contains<matrix_types, _>,
-			boost::mpl::contains<vector_types, _>,
-			boost::mpl::contains<quat_types, _> > is_math_type;
-		*/
 
 	template<typename T>
 	struct is_math_type : boost::mpl::or_ <
@@ -53,15 +46,10 @@ namespace osgTraits {
 			is_quat<T> > {
 
 	};
-	/*
-	template<typename T>
-	struct is_math_type : boost::mpl::or_<
-	boost::mpl::contains<matrix_types, T>,
 
-	::type {};
-	*/
 	typedef boost::mpl::list2<double, float> arithmetic_types;
-	typedef boost::mpl::joint_view<math_types, arithmetic_types> math_and_arithmetic_types;
+	typedef boost::mpl::copy < boost::mpl::joint_view<math_types, arithmetic_types>,
+	        boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_and_arithmetic_types;
 } // end of namespace osgTraits
 
 #endif // INCLUDED_MathTypes_h_GUID_c6ddc37d_59b8_498c_b575_dad4b726de51
