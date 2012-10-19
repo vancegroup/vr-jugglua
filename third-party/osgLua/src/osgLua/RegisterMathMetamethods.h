@@ -35,9 +35,13 @@
 namespace osgLua {
 	typedef osgTraits::BinaryOperators MathOperators;
 
+	template<typename T>
+	inline std::string const& getTypeName() {
+		return introspection::Reflection::getType(extended_typeid<T>()).getName();
+	}
 	template<typename Operator, typename T1, typename T2>
-	inline void printInfo(std::string const& n1, std::string const& n2) {
-		std::cout << n1 << " and " << n2 << ":" << std::endl;
+	inline void printBinaryInfo() {
+		std::cout << std::endl << getTypeName<T1>() << " and " << getTypeName<T2>() << ":" << std::endl;
 		std::cout << "	HaveCompatibleScalar: " << osgTraits::BinaryPredicates::HaveCompatibleScalar<T1, T2>::type::value << std::endl;
 		std::cout << "	HaveSameCategory: " << osgTraits::BinaryPredicates::HaveSameCategory<T1, T2>::type::value << std::endl;
 		std::cout << "	HaveSameDimension: " << osgTraits::BinaryPredicates::HaveSameDimension<T1, T2>::type::value << std::endl;
@@ -48,11 +52,21 @@ namespace osgLua {
 		typedef typename osgTraits::is_operator_available<SpecOp>::type IsAvail;
 		std::cout << "	is_operator_available: " << IsAvail::value << std::endl;
 	}
+
+	template<typename T>
+	inline void printInfo() {
+		std::cout << std::endl << getTypeName<T>() << ":" << std::endl;
+		std::cout << "	GetScalar: " << getTypeName<typename osgTraits::GetScalar<T>::type>() << std::endl;
+		std::cout << "	GetDimension: " << osgTraits::GetDimension<T>::type::value << std::endl;
+		std::cout << "	GetCategory: " << typeid(typename osgTraits::GetCategory<T>::type).name() << std::endl;
+
+	}
 	template<typename T1, typename Operator>
 	struct PrintExistenceFunctor {
 		template<typename T2>
 		void operator()(T2 const&) {
-			printInfo<Operator, T1, T2>(introspection::Reflection::getType(extended_typeid<T1>()).getName(), introspection::Reflection::getType(extended_typeid<T2>()).getName());
+			printInfo<T2>();
+			printBinaryInfo<Operator, T1, T2>();
 		}
 	};
 
