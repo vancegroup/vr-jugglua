@@ -25,10 +25,13 @@
 #include "GetCompatibleScalar.h"
 
 // Library/third-party includes
+#include <boost/utility/enable_if.hpp>
 #include <boost/mpl/equal.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/or.hpp>
 #include <boost/mpl/and.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/mpl/has_xxx.hpp>
 
 // Standard includes
 // - none

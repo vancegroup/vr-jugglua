@@ -25,14 +25,17 @@
 
 // Library/third-party includes
 #include <boost/mpl/bool.hpp>
+#include <boost/mpl/has_xxx.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
-	BOOST_MPL_HAS_XXX_TRAIT_DEF(return_type);
+	namespace detail {
+		BOOST_MPL_HAS_XXX_TRAIT_DEF(return_type);
+	} // end of namespace detail
 	template<typename SpecOperator>
-	struct is_operator_available : has_return_type<SpecOperator> {};
+	struct is_operator_available : detail::has_return_type<SpecOperator> {};
 } // end of namespace osgTraits
 
 #endif // INCLUDED_IsOperatorAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b

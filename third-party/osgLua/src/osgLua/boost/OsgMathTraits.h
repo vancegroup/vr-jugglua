@@ -34,8 +34,6 @@
 // - none
 
 namespace osgTraits {
-	BOOST_MPL_HAS_XXX_TRAIT_DEF(value_type);
-	BOOST_MPL_HAS_XXX_TRAIT_DEF(num_components);
 	template<typename T>
 	struct is_scalar : boost::is_arithmetic<T>::type {};
 
@@ -45,81 +43,75 @@ namespace osgTraits {
 	template<typename T>
 	struct GetCategory : detail::ComputeCategoryTag<T> {};
 
-	template<typename CategoryTag>
-	struct GetDimension_impl {
-		template<typename T>
-		struct apply {
-			typedef void type;
+	namespace detail {
+		template<typename CategoryTag>
+		struct GetDimension_impl {
+			template<typename T>
+			struct apply {
+				typedef void type;
+			};
 		};
-	};
+		template<>
+		struct GetDimension_impl<tags::Vec> {
+			template<typename T>
+			struct apply {
+				typedef boost::mpl::int_<T::num_components> type;
+			};
+		};
+
+		template<>
+		struct GetDimension_impl<tags::Matrix> {
+			template<typename T>
+			struct apply {
+				typedef boost::mpl::int_<4> type;
+			};
+		};
+
+		template<>
+		struct GetDimension_impl<tags::Quat> {
+			template<typename T>
+			struct apply {
+				typedef boost::mpl::int_<4> type;
+			};
+		};
+
+		template<>
+		struct GetDimension_impl<tags::Scalar> {
+			template<typename T>
+			struct apply {
+				typedef boost::mpl::int_<1> type;
+			};
+		};
+
+	} // end of namespace detail
 
 	template<typename T>
-	struct GetDimension : GetDimension_impl<typename detail::ComputeCategoryTag<T>::type >::template apply<T> {};
+	struct GetDimension : detail::GetDimension_impl<typename detail::ComputeCategoryTag<T>::type >::template apply<T> {};
 
-	template<>
-	struct GetDimension_impl<tags::Vec> {
-		template<typename T>
-		struct apply {
-			typedef boost::mpl::int_<T::num_components> type;
-		};
-	};
+	namespace detail {
+		BOOST_MPL_HAS_XXX_TRAIT_DEF(value_type);
 
-	template<>
-	struct GetDimension_impl<tags::Matrix> {
-		template<typename T>
-		struct apply {
-			typedef boost::mpl::int_<4> type;
-		};
-	};
+		template<typename T, typename = void>
+		struct GetScalarImpl {};
 
-	template<>
-	struct GetDimension_impl<tags::Quat> {
 		template<typename T>
-		struct apply {
-			typedef boost::mpl::int_<3> type;
-		};
-	};
-
-	template<>
-	struct GetDimension_impl<tags::Scalar> {
-		template<typename T>
-		struct apply {
-			typedef boost::mpl::int_<1> type;
-		};
-	};
-
-	template<typename CategoryTag>
-	struct GetScalar_impl {
-		template<typename T>
-		struct apply {
+		struct GetScalarImpl<T, typename boost::enable_if<has_value_type<T> >::type> {
 			typedef typename T::value_type type;
 		};
-	};
-	template<typename T, typename = void>
-	struct GetScalarImpl {};
-	template<typename T>
-	//struct GetScalar : GetScalar_impl<typename detail::ComputeCategoryTag<T>::type >::template apply<T> {};
-	struct GetScalar : GetScalarImpl<T> {};
 
-	template<typename T>
-	struct GetScalarImpl<T, typename boost::enable_if<has_value_type<T> >::type> {
-		typedef typename T::value_type type;
-	};
-	template<typename T>
-	struct GetScalarImpl<T, typename boost::enable_if<is_scalar<T> >::type> {
-		typedef T type;
-	};
-
-	template<>
-	struct GetScalar_impl<tags::Scalar> {
 		template<typename T>
-		struct apply {
+		struct GetScalarImpl<T, typename boost::enable_if<is_scalar<T> >::type> {
 			typedef T type;
 		};
-	};
+
+	} // end of namespace detail
+
+	template<typename T>
+	struct GetScalar : detail::GetScalarImpl<T> {};
 
 	template<typename CategoryTag, typename ScalarTag, typename DimensionTag = void>
 	struct MathTypeDetail {
+		typedef MathTypeDetail<CategoryTag, ScalarTag, DimensionTag> type;
 		typedef CategoryTag category_tag;
 		typedef ScalarTag scalar_tag;
 		typedef DimensionTag dimension_tag;

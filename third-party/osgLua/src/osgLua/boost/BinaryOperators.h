@@ -52,22 +52,6 @@ namespace osgTraits {
 		typedef boost::mpl::bind2<Op, _, T> type;
 	};
 
-	/*
-	template<typename BoundOp>
-	struct IsBoundAvailable {
-		struct result {
-			template<typename T>
-			struct apply {
-				typedef osgTraits::is_operator_available< typename boost::mpl::apply<BoundOp, T>::type> type;
-			};
-		};
-		typedef result type;
-	};
-	template<typename BoundOp, typename T>
-	struct IsBoundOperatorAvailable {
-		typedef typename osgTraits::is_operator_available< typename boost::mpl::apply_wrap1<BoundOp, T>::type > type;
-	};*/
-
 	template<typename BoundOp, typename T>
 	struct is_bound_operator_available {
 		typedef typename boost::mpl::apply<BoundOp, T>::type SpecOp;

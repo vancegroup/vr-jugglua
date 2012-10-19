@@ -24,7 +24,7 @@
 #include "OperatorBase.h"
 
 // Library/third-party includes
-// - none
+#include <boost/mpl/apply.hpp>
 
 // Standard includes
 // - none
