@@ -33,15 +33,14 @@ namespace util {
 	template<typename StateClass>
 	class StatefulTypeVisitFunctor {
 		public:
-			typedef typename boost::add_reference<StateClass>::type StateRef;
-			StatefulTypeVisitFunctor(StateRef & d) : data(d) {}
+			StatefulTypeVisitFunctor(StateClass &  d) : data(d) {}
 
 			template<class Visitor>
 			void operator()(Visitor const&) {
 				Visitor::visit(data);
 			}
 		private:
-			StateRef & data;
+			StateClass &  data;
 	};
 
 	template<typename StateClass>
