@@ -21,22 +21,24 @@
 #define INCLUDED_SelectType_h_GUID_342a844d_6562_4afc_a182_ec0f821fdf40
 
 // Internal Includes
-#include "OsgMathTraits.h"
+#include "MathTypes.h"
+#include "GetCategory.h"
+#include "GetScalar.h"
+#include "GetDimension.h"
 
 // Library/third-party includes
 #include <boost/mpl/find_if.hpp>
 #include <boost/mpl/eval_if.hpp>
-#include <boost/mpl/equal.hpp>
+#include <boost/mpl/and.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/mpl/identity.hpp>
+#include <boost/mpl/deref.hpp>
 
 // Standard includes
 // - none
 namespace osgTraits {
-	using boost::mpl::lambda;
 	using boost::mpl::placeholders::_;
-	template<typename Detail, typename = void>
-	struct SelectTypeImpl {
 
-	};
 	template<typename Category, typename Scalar, typename Dimension>
 	struct SelectType {
 
@@ -46,6 +48,7 @@ namespace osgTraits {
 		        boost::is_same< GetScalar<_>, Scalar>,
 		        boost::is_same< GetDimension<_>, Dimension>
 		        > >::type iter;
+
 		typedef typename boost::mpl::eval_if < boost::is_same<Category, tags::Scalar>,
 		        boost::mpl::identity<Scalar>,
 		        boost::mpl::deref<iter> >::type type;

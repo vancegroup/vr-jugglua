@@ -21,12 +21,62 @@
 #define INCLUDED_GetDimension_h_GUID_af8b122d_2445_43da_82c3_22da8a160310
 
 // Internal Includes
-// - none
+#include "ComputeCategoryTag.h"
+#include "Tags.h"
 
 // Library/third-party includes
-// - none
+#include <boost/mpl/int.hpp>
 
 // Standard includes
 // - none
+
+
+namespace osgTraits {
+	namespace detail {
+		template<typename CategoryTag>
+		struct GetDimension_impl {
+			template<typename T>
+			struct apply {
+				typedef void type;
+			};
+		};
+		template<>
+		struct GetDimension_impl<tags::Vec> {
+			template<typename T>
+			struct apply {
+				typedef boost::mpl::int_<T::num_components> type;
+			};
+		};
+
+		template<>
+		struct GetDimension_impl<tags::Matrix> {
+			template<typename T>
+			struct apply {
+				typedef boost::mpl::int_<4> type;
+			};
+		};
+
+		template<>
+		struct GetDimension_impl<tags::Quat> {
+			template<typename T>
+			struct apply {
+				typedef boost::mpl::int_<4> type;
+			};
+		};
+
+		template<>
+		struct GetDimension_impl<tags::Scalar> {
+			template<typename T>
+			struct apply {
+				typedef boost::mpl::int_<1> type;
+			};
+		};
+
+	} // end of namespace detail
+
+	template<typename T>
+	struct GetDimension : detail::GetDimension_impl<typename detail::ComputeCategoryTag<T>::type >::template apply<T> {};
+
+} // end of namespace osgTraits
 
 #endif // INCLUDED_GetDimension_h_GUID_af8b122d_2445_43da_82c3_22da8a160310

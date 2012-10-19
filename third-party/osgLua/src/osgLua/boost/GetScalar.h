@@ -21,12 +21,38 @@
 #define INCLUDED_GetScalar_h_GUID_369a7190_525e_4eaa_ae0b_0743be34526a
 
 // Internal Includes
-// - none
+#include "MathTypes.h"
 
 // Library/third-party includes
-// - none
+#include <boost/utility/enable_if.hpp>
+#include <boost/mpl/has_xxx.hpp>
 
 // Standard includes
 // - none
+
+namespace osgTraits {
+	namespace detail {
+		BOOST_MPL_HAS_XXX_TRAIT_DEF(value_type);
+
+		template<typename T, typename = void>
+		struct GetScalarImpl {};
+
+		template<typename T>
+		struct GetScalarImpl<T, typename boost::enable_if<has_value_type<T> >::type> {
+			typedef typename T::value_type type;
+		};
+
+		template<typename T>
+		struct GetScalarImpl<T, typename boost::enable_if<is_scalar<T> >::type> {
+			typedef T type;
+		};
+
+	} // end of namespace detail
+
+	template<typename T>
+	struct GetScalar : detail::GetScalarImpl<T> {};
+
+
+} // end of namespace osgTraits
 
 #endif // INCLUDED_GetScalar_h_GUID_369a7190_525e_4eaa_ae0b_0743be34526a
