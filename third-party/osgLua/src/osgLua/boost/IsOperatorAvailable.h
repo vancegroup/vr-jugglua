@@ -24,14 +24,21 @@
 // - none
 
 // Library/third-party includes
-// - none
+#include <boost/mpl/bool.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
+	/*
 	template<typename SpecOperator>
 	struct is_operator_available : SpecOperator::available {};
+	*/
+	template<typename SpecOperator, typename = void>
+	struct is_operator_available : boost::mpl::false_ {};
+
+	template<typename SpecOperator>
+	struct is_operator_available<SpecOperator, typename SpecOperator::return_type> : boost::mpl::true_ {};
 } // end of namespace osgTraits
 
 #endif // INCLUDED_IsOperatorAvailable_h_GUID_ea6e8ae3_7a30_4c88_b99e_5f12b40ee59b

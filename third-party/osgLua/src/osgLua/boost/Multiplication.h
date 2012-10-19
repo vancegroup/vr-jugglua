@@ -189,7 +189,7 @@ namespace osgTraits {
 
 	struct Multiplication : BinaryOperatorClassBase {
 		template<typename T1, typename T2>
-		struct apply {
+		struct apply : detail::Multiplication<T1, T2> {
 			typedef detail::Multiplication<T1, T2> type;
 		};
 	};

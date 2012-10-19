@@ -56,12 +56,12 @@ namespace osgTraits {
 			typedef typename GetDimension<V>::type VecDim;
 			typedef typename GetDimension<M>::type MatDim;
 			typedef typename boost::mpl::and_ <
-			typename boost::mpl::or_
+			boost::mpl::or_
 			< boost::is_same<VecDim, boost::mpl::int_<3> >
 			, boost::is_same<VecDim, boost::mpl::int_<4> >
-			>::type
-			, typename boost::is_same<MatDim, boost::mpl::int_<4> >::type
-			>::type type;
+			>
+			, boost::is_same<MatDim, boost::mpl::int_<4> >
+			> type;
 		};
 
 		template<typename V, typename M>
