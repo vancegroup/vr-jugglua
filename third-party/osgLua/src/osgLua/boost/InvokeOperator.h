@@ -36,9 +36,18 @@ namespace osgTraits {
 		typedef typename SpecOp::return_type type;
 	};
 
-	template<typename Op, typename A1, typename A2>
+	template<typename Op, typename A1 = void, typename A2 = void, typename = typename is_unspecialized_operator<Op>::type >
 	struct InvokeBinaryOperator {
 		typedef typename boost::mpl::apply<Op, A1, A2>::type SpecOp;
+		typedef typename get_operator_return_type<SpecOp>::type return_type;
+		static return_type invoke(A1 const& a1, A2 const& a2) {
+			return SpecOp::performOperation(a1, a2);
+		}
+	};
+
+	template<typename Op, typename A1, typename A2>
+	struct InvokeBinaryOperator<Op, A1, A2, boost::mpl::false_> {
+		typedef Op SpecOp;
 		typedef typename get_operator_return_type<SpecOp>::type return_type;
 		static return_type invoke(A1 const& a1, A2 const& a2) {
 			return SpecOp::performOperation(a1, a2);
