@@ -33,26 +33,23 @@ namespace osgTraits {
 	namespace tags {
 		struct MathType {
 			typedef MathType type;
-			typedef void is_math_type;
 		};
 		struct Vec : MathType {
 			typedef Vec type;
-			typedef void is_vector;
 		};
 		struct Matrix : MathType {
 			typedef Matrix type;
-			typedef void is_matrix;
 		};
 		struct Quat : MathType {
 			typedef Quat type;
-			typedef void is_quat;
 		};
 		struct Scalar {
 			typedef Scalar type;
-			typedef void is_scalar;
 		};
+		/*
 		struct BinaryOperator {};
 		struct UnaryOperator {};
+		*/
 	} // end of namespace tags
 } // end of namespace osgTraits
 

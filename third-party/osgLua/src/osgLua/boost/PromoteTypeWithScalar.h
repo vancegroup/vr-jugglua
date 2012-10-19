@@ -21,9 +21,7 @@
 #define INCLUDED_PromoteTypeWithScalar_h_GUID_0b6b2500_1f6a_4a70_b11a_74eb92b91885
 
 // Internal Includes
-#include "GetCategory.h"
-#include "GetDimension.h"
-#include "GetScalar.h"
+#include "OsgMathTraits.h"
 #include "GetCompatibleScalar.h"
 #include "SelectType.h"
 

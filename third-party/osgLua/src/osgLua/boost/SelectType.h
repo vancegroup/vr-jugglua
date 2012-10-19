@@ -22,9 +22,7 @@
 
 // Internal Includes
 #include "MathTypes.h"
-#include "GetCategory.h"
-#include "GetScalar.h"
-#include "GetDimension.h"
+#include "OsgMathTraits.h"
 
 // Library/third-party includes
 #include <boost/mpl/find_if.hpp>

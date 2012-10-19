@@ -19,105 +19,16 @@
 #pragma once
 #ifndef INCLUDED_OsgMathTraits_h_GUID_6c3ba294_4496_423b_9e5c_598e2ca2040a
 #define INCLUDED_OsgMathTraits_h_GUID_6c3ba294_4496_423b_9e5c_598e2ca2040a
-#if 0
-// Internal Includes
-#include "MathTypes.h"
-#include "Tags.h"
-//#include "TagMetafunctions.h"
-#include "ComputeCategoryTag.h"
 
+// Internal Includes
+#include "GetCategory.h"
+#include "GetDimension.h"
+#include "GetScalar.h"
 
 // Library/third-party includes
-#include <boost/mpl/or.hpp>
-#include <boost/type_traits/is_arithmetic.hpp>
-#include <boost/mpl/has_xxx.hpp>
+// - none
 
 // Standard includes
 // - none
 
-namespace osgTraits {
-	template<typename T>
-	struct GetCategory : detail::ComputeCategoryTag<T> {};
-
-	namespace detail {
-		template<typename CategoryTag>
-		struct GetDimension_impl {
-			template<typename T>
-			struct apply {
-				typedef void type;
-			};
-		};
-		template<>
-		struct GetDimension_impl<tags::Vec> {
-			template<typename T>
-			struct apply {
-				typedef boost::mpl::int_<T::num_components> type;
-			};
-		};
-
-		template<>
-		struct GetDimension_impl<tags::Matrix> {
-			template<typename T>
-			struct apply {
-				typedef boost::mpl::int_<4> type;
-			};
-		};
-
-		template<>
-		struct GetDimension_impl<tags::Quat> {
-			template<typename T>
-			struct apply {
-				typedef boost::mpl::int_<4> type;
-			};
-		};
-
-		template<>
-		struct GetDimension_impl<tags::Scalar> {
-			template<typename T>
-			struct apply {
-				typedef boost::mpl::int_<1> type;
-			};
-		};
-
-	} // end of namespace detail
-
-	template<typename T>
-	struct GetDimension : detail::GetDimension_impl<typename detail::ComputeCategoryTag<T>::type >::template apply<T> {};
-
-	namespace detail {
-		BOOST_MPL_HAS_XXX_TRAIT_DEF(value_type);
-
-		template<typename T, typename = void>
-		struct GetScalarImpl {};
-
-		template<typename T>
-		struct GetScalarImpl<T, typename boost::enable_if<has_value_type<T> >::type> {
-			typedef typename T::value_type type;
-		};
-
-		template<typename T>
-		struct GetScalarImpl<T, typename boost::enable_if<is_scalar<T> >::type> {
-			typedef T type;
-		};
-
-	} // end of namespace detail
-
-	template<typename T>
-	struct GetScalar : detail::GetScalarImpl<T> {};
-
-	template<typename CategoryTag, typename ScalarTag, typename DimensionTag = void>
-	struct MathTypeDetail {
-		typedef MathTypeDetail<CategoryTag, ScalarTag, DimensionTag> type;
-		typedef CategoryTag category_tag;
-		typedef ScalarTag scalar_tag;
-		typedef DimensionTag dimension_tag;
-	};
-
-	template<typename T>
-	struct GetMathTypeDetail {
-		typedef MathTypeDetail<typename GetCategory<T>::type, typename GetScalar<T>::type, typename GetDimension<T>::type> type;
-	};
-
-} // end of namespace osgTraits
-#endif
 #endif // INCLUDED_OsgMathTraits_h_GUID_6c3ba294_4496_423b_9e5c_598e2ca2040a
