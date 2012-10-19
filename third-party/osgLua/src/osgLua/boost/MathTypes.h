@@ -27,6 +27,8 @@
 #include <boost/mpl/joint_view.hpp>
 #include <boost/mpl/contains.hpp>
 #include <boost/mpl/list.hpp>
+#include <boost/mpl/copy.hpp>
+#include <boost/mpl/front_inserter.hpp>
 
 // Standard includes
 // - none
@@ -34,7 +36,8 @@
 
 namespace osgTraits {
 	using boost::mpl::placeholders::_;
-	typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>::type, quat_types>::type math_types;
+	typedef boost::mpl::joint_view< boost::mpl::joint_view<matrix_types, vector_types>::type, quat_types>::type math_joint_types;
+	typedef boost::mpl::copy<math_joint_types, boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_types;
 	//typedef boost::mpl::insert_range< boost::mpl::insert_range< matrix_types, vector_types>, quat_types> math_types;
 	/*
 		typedef boost::mpl::or_<
@@ -45,9 +48,9 @@ namespace osgTraits {
 
 	template<typename T>
 	struct is_math_type : boost::mpl::or_ <
-			boost::mpl::has_key<matrix_types, T>,
-			boost::mpl::has_key<vector_types, T>,
-			boost::mpl::has_key<quat_types, T> > {
+			is_matrix<T>,
+			is_vector<T>,
+			is_quat<T> > {
 
 	};
 	/*
