@@ -83,7 +83,9 @@ end
 
 printPredicateMetafunctions = function()
 	for shortname, desc in pairs(description) do
-		print( ("	template<typename T> struct is_%s : boost::mpl::%s<%s_types, T> {};"):format(desc, TypelistSearchPredicate, desc))
+		print( ("	template<typename T> struct is_%s : boost::mpl::%s<%s_types, T> {"):format(desc, TypelistSearchPredicate, desc))
+		print( ("		typedef is_%s<T> type;"):format(desc))
+		print( ("	};"))
 		print("")
 	end
 end
