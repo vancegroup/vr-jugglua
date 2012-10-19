@@ -42,12 +42,12 @@ namespace osgTraits {
 		using boost::enable_if;
 		using boost::mpl::and_;
 
-		struct SameCategoryAndDimensionWithCompatibleScalar {};
-		struct VectorTimesMatrix {};
-		struct MatrixTimesVector {};
+		struct SameCategoryAndDimensionWithCompatibleScalar;
+		struct VectorTimesMatrix;
+		struct MatrixTimesVector;
 
-		struct VectorScalar {};
-		struct ScalarVector {};
+		struct VectorScalar;
+		struct ScalarVector;
 
 		template<typename T1, typename T2, typename = void>
 		struct Compute {
@@ -100,8 +100,6 @@ namespace osgTraits {
 		struct Multiplication_impl {
 			template<typename T1, typename T2>
 			struct apply {
-				typedef boost::mpl::false_ available;
-				typedef void unavailable;
 			};
 		};
 
@@ -118,7 +116,6 @@ namespace osgTraits {
 
 			template<typename T1, typename T2>
 			struct apply {
-				typedef boost::mpl::true_ available;
 				typedef typename PromoteTypeWithScalar<T1, typename GetScalar<T2>::type>::type return_type;
 
 				template<typename A, typename B>
@@ -133,7 +130,6 @@ namespace osgTraits {
 		struct Multiplication_impl <MultiplicationTags::VectorTimesMatrix> {
 			template<typename V, typename M>
 			struct apply {
-				typedef boost::mpl::true_ available;
 				typedef V return_type;
 
 				static return_type performOperation(V const& v, M const& m) {
@@ -147,7 +143,6 @@ namespace osgTraits {
 		struct Multiplication_impl <MultiplicationTags::MatrixTimesVector> {
 			template<typename M, typename V>
 			struct apply {
-				typedef boost::mpl::true_ available;
 				typedef V return_type;
 
 				static return_type performOperation(M const& m, V const& v) {
@@ -162,7 +157,6 @@ namespace osgTraits {
 
 			template<typename V, typename S>
 			struct apply {
-				typedef boost::mpl::true_ available;
 				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
 				typedef vec_type return_type;
 
@@ -178,7 +172,6 @@ namespace osgTraits {
 
 			template<typename S, typename V>
 			struct apply {
-				typedef boost::mpl::true_ available;
 				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
 				typedef vec_type return_type;
 
