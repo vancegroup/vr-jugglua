@@ -28,6 +28,7 @@
 
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
+#include <boost/type_traits/is_same.hpp>
 #include <boost/mpl/equal.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/or.hpp>
@@ -40,14 +41,19 @@
 
 namespace osgTraits {
 	namespace BinaryPredicates {
-		BOOST_MPL_HAS_XXX_TRAIT_DEF(type);
+		namespace detail {
+			BOOST_MPL_HAS_XXX_TRAIT_DEF(type);
+		} // end of namepsace detail
+
 		template<typename T1, typename T2, typename = void>
 		struct HaveCompatibleScalar {
 			typedef boost::mpl::false_ type;
 		};
 
 		template<typename T1, typename T2>
-		struct HaveCompatibleScalar<T1, T2, typename boost::enable_if<has_type<GetCompatibleScalar<typename GetScalar<T1>::type, typename GetScalar<T2>::type> > >::type > : boost::mpl::true_ {};
+		struct HaveCompatibleScalar < T1, T2,
+				typename boost::enable_if<detail::has_type<GetCompatibleScalar<typename GetScalar<T1>::type, typename GetScalar<T2>::type> > >::type >
+				: boost::mpl::true_ {};
 
 		template<typename T1, typename T2>
 		struct HaveSameCategory : boost::is_same<typename GetCategory<T1>::type, typename GetCategory<T2>::type>::type {};
@@ -55,21 +61,23 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct HaveSameDimension : boost::is_same<typename GetDimension<T1>::type, typename GetDimension<T2>::type>::type {};
 
-		template<typename V, typename M>
-		struct CanTransformVecMatrix_impl {
-			typedef typename GetDimension<V>::type VecDim;
-			typedef typename GetDimension<M>::type MatDim;
-			typedef typename boost::mpl::and_ <
-			boost::mpl::or_
-			< boost::is_same<VecDim, boost::mpl::int_<3> >
-			, boost::is_same<VecDim, boost::mpl::int_<4> >
-			>
-			, boost::is_same<MatDim, boost::mpl::int_<4> >
-			> type;
-		};
+		namespace detail {
+			template<typename V, typename M>
+			struct CanTransformVecMatrix_impl {
+				typedef typename GetDimension<V>::type VecDim;
+				typedef typename GetDimension<M>::type MatDim;
+				typedef typename boost::mpl::and_ <
+				boost::mpl::or_
+				< boost::is_same<VecDim, boost::mpl::int_<3> >
+				, boost::is_same<VecDim, boost::mpl::int_<4> >
+				>
+				, boost::is_same<MatDim, boost::mpl::int_<4> >
+				> type;
+			};
+		} // end of namepsace detail
 
 		template<typename V, typename M>
-		struct CanTransformVecMatrix : CanTransformVecMatrix_impl<V, M>::type {};
+		struct CanTransformVecMatrix : detail::CanTransformVecMatrix_impl<V, M>::type {};
 
 		template<typename T1, typename T2>
 		struct AreVectorAndMatrix : boost::mpl::and_ <
