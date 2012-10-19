@@ -24,13 +24,15 @@
 // - none
 
 // Library/third-party includes
-#include <boost/type_traits/is_base_and_derived.hpp>
-#include <boost/mpl/or.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/vector/vector10.hpp>
-#include <boost/mpl/less.hpp>
-#include <boost/mpl/at.hpp>
+#include <boost/mpl/assert.hpp>
+#include <boost/mpl/equal.hpp>
 #include <boost/mpl/size.hpp>
+#include <boost/mpl/or.hpp>
+#include <boost/type_traits/is_base_and_derived.hpp>
+#include <boost/mpl/at.hpp>
+#include <boost/mpl/less.hpp>
 
 // Standard includes
 // - none
@@ -48,7 +50,7 @@ namespace osgTraits {
 	template<typename Operator, typename T>
 	struct UnarySpecializedOperator : detail::UnarySpecializedOperatorBase {
 		typedef Operator unspecialized_operator_type;
-		typedef typename Operator::operator_arity operator_arity;
+		typedef boost::mpl::int_<1> operator_arity;
 		typedef boost::mpl::vector1<T> argument_types;
 
 		BOOST_MPL_ASSERT((boost::mpl::equal<typename Operator::operator_arity, operator_arity>));
@@ -100,6 +102,7 @@ namespace osgTraits {
 	template<typename T, int index>
 	struct get_operator_argument_c : get_operator_argument<T, boost::mpl::int_<index> > {};
 
+	/*
 	template<typename T>
 	struct first_argument_type {
 		typedef typename T::first_argument_type type;
@@ -109,6 +112,7 @@ namespace osgTraits {
 	struct second_argument_type {
 		typedef typename T::second_argument_type type;
 	};
+	*/
 } // end of namespace osgTraits
 
 #endif // INCLUDED_OperatorBase_h_GUID_f6f3382a_be9f_4e4c_a166_43dc8bb15d40
