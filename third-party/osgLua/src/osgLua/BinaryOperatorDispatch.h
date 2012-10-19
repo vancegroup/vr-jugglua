@@ -82,8 +82,8 @@ namespace osgLua {
 			void operator()(T const&) {
 				if (!d.success && typeUsableAs<T>(d.other)) {
 					typedef typename boost::mpl::apply_wrap1<BoundOp, T>::type OpSpec;
-					typedef typename osgTraits::first_argument_type<OpSpec>::type first;
-					typedef typename osgTraits::second_argument_type<OpSpec>::type second;
+					typedef typename osgTraits::get_operator_argument_c<OpSpec, 0>::type first;
+					typedef typename osgTraits::get_operator_argument_c<OpSpec, 1>::type second;
 					d.r = osgTraits::invokeOperator<OpSpec>(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
 					d.success = true;
 				}
