@@ -86,8 +86,8 @@ namespace osgLua {
 		template<typename Operator>
 		struct apply {
 			static void doPush(lua_State * L) {
-				//lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
 				boost::mpl::for_each<osgTraits::math_and_arithmetic_types>(PrintExistenceFunctor<T, Operator>());
+				lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
 			}
 		};
 	};
