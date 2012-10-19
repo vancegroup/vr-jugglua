@@ -37,6 +37,8 @@
 
 
 namespace osgTraits {
+	struct Multiplication;
+
 	namespace MultiplicationTags {
 		using namespace ::osgTraits::BinaryPredicates;
 		using boost::enable_if;
@@ -106,10 +108,10 @@ namespace osgTraits {
 		};
 
 		template<typename T1, typename T2>
-		struct Multiplication :
+		struct MultiplicationSpecialization :
 				Multiplication_impl<typename MultiplicationTags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		                    BinaryOperatorBase<T1, T2> {
-		                        typedef Multiplication<T1, T2> type;
+		                    BinarySpecializedOperator<Multiplication, T1, T2> {
+		                        typedef MultiplicationSpecialization<T1, T2> type;
 		                    };
 
 		/// Same category and dimension: promote and multiply
@@ -189,10 +191,10 @@ namespace osgTraits {
 		};
 	} // end of namespace detail
 
-	struct Multiplication : BinaryOperatorClassBase {
+	struct Multiplication : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::Multiplication<T1, T2> {
-			typedef detail::Multiplication<T1, T2> type;
+		struct apply : detail::MultiplicationSpecialization<T1, T2> {
+			typedef detail::MultiplicationSpecialization<T1, T2> type;
 		};
 	};
 

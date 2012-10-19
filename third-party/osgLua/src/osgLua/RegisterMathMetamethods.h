@@ -53,8 +53,8 @@ namespace osgLua {
 		std::cout << "	MultiplicationTag: " << typeid(typename osgTraits::MultiplicationTags::Compute<T1, T2>::type).name() << std::endl;
 		std::cout << "	SpecOp: " << typeid(SpecOp).name() << std::endl;
 		std::cout << "	is_operator_available: " << IsAvail::value << std::endl;
-		std::cout << "	first_argument_type: " << getTypeName<typename osgTraits::first_argument_type<SpecOp>::type>() << std::endl;
-		std::cout << "	second_argument_type: " << getTypeName<typename osgTraits::second_argument_type<SpecOp>::type>() << std::endl;
+		std::cout << "	get_operator_argument_c<T, 0>: " << getTypeName<typename osgTraits::get_operator_argument_c<SpecOp, 0>::type>() << std::endl;
+		std::cout << "	get_operator_argument_c<T, 1>: " << getTypeName<typename osgTraits::get_operator_argument_c<SpecOp, 1>::type>() << std::endl;
 	}
 
 	template<typename T>
@@ -81,10 +81,10 @@ namespace osgLua {
 	};
 
 	template<typename T, typename Operator>
-	struct PushOperator : PushOperator_impl<T, typename Operator::operator_tag>::template apply<Operator> {};
+	struct PushOperator : PushOperator_impl<T, typename osgTraits::get_operator_arity<Operator>::type>::template apply<Operator> {};
 
 	template<typename T>
-	struct PushOperator_impl<T, osgTraits::tags::BinaryOperator> {
+	struct PushOperator_impl<T, boost::mpl::int_<2> > {
 		template<typename Operator>
 		struct apply {
 			static void doPush(lua_State * L) {
