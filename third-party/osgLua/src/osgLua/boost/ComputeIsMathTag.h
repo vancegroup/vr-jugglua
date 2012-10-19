@@ -19,7 +19,7 @@
 #pragma once
 #ifndef INCLUDED_ComputeIsMathTag_h_GUID_89b3de3f_8def_48db_8c9f_01f86fe65a21
 #define INCLUDED_ComputeIsMathTag_h_GUID_89b3de3f_8def_48db_8c9f_01f86fe65a21
-
+#if 0
 // Internal Includes
 #include "MathTypes.h"
 #include "Tags.h"
@@ -27,7 +27,7 @@
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
 #include <boost/mpl/list.hpp>
-#include <boost/mpl/identity.hpp>
+#include <boost/mpl/placeholders.hpp>
 #include <boost/mpl/switch.hpp>
 
 // Standard includes
@@ -37,7 +37,6 @@
 namespace osgTraits {
 	namespace detail {
 		using boost::mpl::placeholders::_;
-		using  boost::mpl::identity;
 		typedef boost::mpl::list
 		< boost::mpl::pair<is_math_type<_>, tags::MathType >
 		, boost::mpl::pair<is_scalar<_>, tags::Scalar >
@@ -48,5 +47,5 @@ namespace osgTraits {
 	} // end of namespace detail
 } // end of namespace osgTraits
 
-
+#endif
 #endif // INCLUDED_ComputeIsMathTag_h_GUID_89b3de3f_8def_48db_8c9f_01f86fe65a21
