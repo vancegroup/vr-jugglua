@@ -73,6 +73,14 @@ namespace osgTraits {
 	};
 
 	template<>
+	struct GetDimension_impl<tags::Quat> {
+		template<typename T>
+		struct apply {
+			typedef boost::mpl::int_<3> type;
+		};
+	};
+
+	template<>
 	struct GetDimension_impl<tags::Scalar> {
 		template<typename T>
 		struct apply {
