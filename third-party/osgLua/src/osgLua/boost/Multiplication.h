@@ -55,42 +55,42 @@ namespace osgTraits {
 		};
 
 		template<typename T1, typename T2>
-		struct Compute<T1, T2, typename enable_if<typename HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2>::type >::type > {
+		struct Compute<T1, T2, typename enable_if< HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2> >::type > {
 			typedef SameCategoryAndDimensionWithCompatibleScalar type;
 		};
 
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				typename and_ <
+				and_ <
 				AreVectorAndMatrix<T1, T2>,
 				CanTransformVecMatrix<T1, T2>,
-				HaveCompatibleScalar<T1, T2> >::type >::type > {
+				HaveCompatibleScalar<T1, T2> > >::type > {
 			typedef VectorTimesMatrix type;
 		};
 
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				typename and_ <
+				and_ <
 				AreVectorAndMatrix<T2, T1>,
 				CanTransformVecMatrix<T2, T1>,
-				HaveCompatibleScalar<T2, T1> >::type >::type > {
+				HaveCompatibleScalar<T2, T1> > >::type > {
 			typedef MatrixTimesVector type;
 		};
 
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				typename and_ <
+				and_ <
 				is_vector<T1>,
 				is_scalar<T2>,
-				HaveCompatibleScalar<T1, T2> >::type >::type > {
+				HaveCompatibleScalar<T1, T2> > >::type > {
 			typedef VectorScalar type;
 		};
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				typename and_ <
+				and_ <
 				is_scalar<T1>,
 				is_vector<T2>,
-				HaveCompatibleScalar<T1, T2> >::type >::type > {
+				HaveCompatibleScalar<T1, T2> > >::type > {
 			typedef ScalarVector type;
 		};
 	}
@@ -108,7 +108,9 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Multiplication :
 				Multiplication_impl<typename MultiplicationTags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		                    BinaryOperatorBase<T1, T2> {};
+		                    BinaryOperatorBase<T1, T2> {
+		                        typedef Multiplication<T1, T2> type;
+		                    };
 
 		/// Same category and dimension: promote and multiply
 		template<>
