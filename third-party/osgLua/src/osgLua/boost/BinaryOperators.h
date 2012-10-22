@@ -49,16 +49,14 @@ namespace osgTraits {
 	typedef math_types other_argument_types;
 	typedef boost::mpl::list7<Addition, Subtraction, Multiplication, Pow, Division, Equality, LessThan> BinaryOperators;
 
-	using boost::mpl::placeholders::_;
-
 	template<typename Op, typename T>
 	struct operator_bind_first {
-		typedef boost::mpl::bind2<Op, T, _> type;
+		typedef boost::mpl::bind2<Op, T, boost::mpl::_> type;
 	};
 
 	template<typename Op, typename T>
 	struct operator_bind_second {
-		typedef boost::mpl::bind2<Op, _, T> type;
+		typedef boost::mpl::bind2<Op, boost::mpl::_, T> type;
 	};
 
 	template<typename BoundOp, typename T>
@@ -70,7 +68,7 @@ namespace osgTraits {
 
 	template<typename BoundOp>
 	struct get_valid_other_arg_types {
-		typedef boost::mpl::filter_view<other_argument_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
+		typedef boost::mpl::filter_view<other_argument_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, boost::mpl::_> > type;
 	};
 
 	template<typename BoundOp>

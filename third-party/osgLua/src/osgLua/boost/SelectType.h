@@ -35,22 +35,26 @@
 // Standard includes
 // - none
 namespace osgTraits {
-	using boost::mpl::placeholders::_;
+	namespace detail {
+		using boost::mpl::placeholders::_;
 
-	template<typename Category, typename Scalar, typename Dimension>
-	struct select_type {
+		template<typename Category, typename Scalar, typename Dimension>
+		struct select_type {
 
-		typedef typename boost::mpl::find_if < math_types,
-		        boost::mpl::and_ <
-		        boost::is_same< get_category<_>, Category>,
-		        boost::is_same< get_scalar<_>, Scalar>,
-		        boost::is_same< get_dimension<_>, Dimension>
-		        > >::type iter;
+			typedef typename boost::mpl::find_if < math_types,
+			        boost::mpl::and_ <
+			        boost::is_same< get_category<_>, Category>,
+			        boost::is_same< get_scalar<_>, Scalar>,
+			        boost::is_same< get_dimension<_>, Dimension>
+			        > >::type iter;
 
-		typedef typename boost::mpl::eval_if < boost::is_same<Category, tags::Scalar>,
-		        boost::mpl::identity<Scalar>,
-		        boost::mpl::deref<iter> >::type type;
-	};
+			typedef typename boost::mpl::eval_if < boost::is_same<Category, tags::Scalar>,
+			        boost::mpl::identity<Scalar>,
+			        boost::mpl::deref<iter> >::type type;
+		};
+	} // end of namespace detail
+
+	using detail::select_type;
 } // end of namespace osgTraits
 
 #endif // INCLUDED_SelectType_h_GUID_342a844d_6562_4afc_a182_ec0f821fdf40
