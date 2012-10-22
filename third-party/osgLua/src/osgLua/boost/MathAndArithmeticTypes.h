@@ -23,20 +23,18 @@
 // Internal Includes
 #include "MathTypes.h"
 #include "ArithmeticTypes.h"
+#include "CopyToFlatSequence.h"
 
 // Library/third-party includes
-#include <boost/mpl/copy.hpp>
 #include <boost/mpl/joint_view.hpp>
 #include <boost/mpl/front_inserter.hpp>
-#include <boost/mpl/list.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
 
-	typedef boost::mpl::copy < boost::mpl::joint_view<math_types, arithmetic_types>,
-	        boost::mpl::front_inserter<boost::mpl::list0<> > >::type math_and_arithmetic_types;
+	typedef detail::copy_to_flat_sequence < boost::mpl::joint_view<math_types, arithmetic_types> >::type math_and_arithmetic_types;
 
 } // end of namespace osgTraits
 

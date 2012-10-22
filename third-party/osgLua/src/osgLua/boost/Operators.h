@@ -22,7 +22,9 @@
 
 // Internal Includes
 #include "OperatorBase.h"
+#include "UnaryOperators.h"
 #include "BinaryOperators.h"
+#include "CopyToFlatSequence.h"
 
 // Library/third-party includes
 #include <boost/mpl/bool.hpp>
@@ -31,8 +33,6 @@
 #include <boost/mpl/lambda.hpp>
 #include <boost/mpl/copy.hpp>
 #include <boost/mpl/joint_view.hpp>
-#include <boost/mpl/front_inserter.hpp>
-#include <boost/mpl/list.hpp>
 
 // Standard includes
 // - none
@@ -45,8 +45,7 @@ namespace osgTraits {
 } // end of namespace osgTraits
 
 namespace osgTraits {
-	typedef boost::mpl::copy < boost::mpl::joint_view<BinaryOperators, UnaryOperators>,
-	        boost::mpl::front_inserter<boost::mpl::list0<> > >::type MathOperators;
+	typedef detail::copy_to_flat_sequence < boost::mpl::joint_view<BinaryOperators, UnaryOperators> >::type MathOperators;
 
 	namespace detail {
 		template<typename OperatorArity>

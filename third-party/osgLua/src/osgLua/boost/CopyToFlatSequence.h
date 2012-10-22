@@ -17,28 +17,30 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_MathTypes_h_GUID_c6ddc37d_59b8_498c_b575_dad4b726de51
-#define INCLUDED_MathTypes_h_GUID_c6ddc37d_59b8_498c_b575_dad4b726de51
+#ifndef INCLUDED_CopyToFlatSequence_h_GUID_5a903eb1_ca6d_422f_bf19_e36ad42de6a2
+#define INCLUDED_CopyToFlatSequence_h_GUID_5a903eb1_ca6d_422f_bf19_e36ad42de6a2
 
 // Internal Includes
-#include "TypeLists.h"
-#include "CopyToFlatSequence.h"
+// - none
 
 // Library/third-party includes
-#include <boost/mpl/joint_view.hpp>
+#include <boost/mpl/copy.hpp>
+#include <boost/mpl/front_inserter.hpp>
+#include <boost/mpl/list.hpp>
 
 // Standard includes
 // - none
 
+
 namespace osgTraits {
+
 	namespace detail {
-		using boost::mpl::joint_view;
+		typedef boost::mpl::front_inserter<boost::mpl::list0<> > SequenceInserter;
 
-		typedef copy_to_flat_sequence<joint_view< joint_view<matrix_types, vector_types>, quat_types> >::type math_types;
+		template<typename Sequence>
+		struct copy_to_flat_sequence : boost::mpl::copy<Sequence, SequenceInserter> {};
 	} // end of namespace detail
-
-	using detail::math_types;
 
 } // end of namespace osgTraits
 
-#endif // INCLUDED_MathTypes_h_GUID_c6ddc37d_59b8_498c_b575_dad4b726de51
+#endif // INCLUDED_CopyToFlatSequence_h_GUID_5a903eb1_ca6d_422f_bf19_e36ad42de6a2
