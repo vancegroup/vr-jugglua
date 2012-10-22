@@ -27,6 +27,8 @@
 #include "UsableAs.h"
 #include "StatefulTypeVisitFunctor.h"
 
+#include "LuaIncludeFull.h"
+
 // Library/third-party includes
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/filter_view.hpp>
@@ -76,10 +78,14 @@ namespace osgLua {
 		};
 
 		typedef typename osgTraits::get_valid_other_arg_types<BoundOp>::type OtherArgumentPossibilities;
-		static int attempt(lua_State * L, introspection::Type const& otherType) {
+		static int attempt(const char * verb, lua_State * L, introspection::Type const& otherType) {
 			BinaryOpData data(L, otherType);
 			boost::mpl::for_each<OtherArgumentPossibilities, visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
-			return data.pushIfSuccessful(L);
+			int ret = data.pushIfSuccessful(L);
+			if (ret == 0) {
+				return luaL_error(L, "[%s:%d] Could not %s instances of %s, %s", __FILE__, __LINE__, verb, data.a1.getType().getQualifiedName().c_str(), data.a2.getType().getQualifiedName().c_str());
+			}
+			return ret;
 		}
 	};
 
@@ -90,13 +96,13 @@ namespace osgLua {
 				typedef typename osgTraits::operator_bind_first<Op, T1>::type BoundOp;
 				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 
-				return AttemptStruct::attempt(L, getValue(L, -1).getType());
+				return AttemptStruct::attempt(osgTraits::OperatorVerb<Op>::get(), L, getValue(L, -1).getType());
 
 			} else if (osgLuaValueUsableAs<T1>(L, -1)) {
 				typedef typename osgTraits::operator_bind_second<Op, T1>::type BoundOp;
 				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 
-				return AttemptStruct::attempt(L, getValue(L, -2).getType());
+				return AttemptStruct::attempt(osgTraits::OperatorVerb<Op>::get(), L, getValue(L, -2).getType());
 			}
 			return 0;
 		}

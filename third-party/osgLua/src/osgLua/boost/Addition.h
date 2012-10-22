@@ -38,6 +38,13 @@
 namespace osgTraits {
 	struct Addition;
 
+	template<>
+	struct OperatorVerb<Addition> {
+		static const char * get() {
+			return "add";
+		}
+	};
+
 	namespace Addition_Tags {
 		using boost::enable_if;
 		using boost::mpl::and_;

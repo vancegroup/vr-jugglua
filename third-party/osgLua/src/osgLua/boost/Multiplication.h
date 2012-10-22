@@ -39,6 +39,13 @@
 namespace osgTraits {
 	struct Multiplication;
 
+	template<>
+	struct OperatorVerb<Multiplication> {
+		static const char * get() {
+			return "multiply (or compute dot product)";
+		}
+	};
+
 	namespace MultiplicationTags {
 		using namespace ::osgTraits::BinaryPredicates;
 		using boost::enable_if;

@@ -39,6 +39,14 @@
 namespace osgTraits {
 	struct Pow;
 
+	template<>
+	struct OperatorVerb<Pow> {
+		/// @todo if something else uses this: ^ we need a different solution
+		static const char * get() {
+			return "cross-product";
+		}
+	};
+
 	namespace Pow_Tags {
 		using boost::enable_if;
 		using boost::mpl::and_;

@@ -63,6 +63,9 @@ namespace osgTraits {
 		BOOST_MPL_ASSERT((boost::mpl::equal<typename boost::mpl::size<argument_types>::type, operator_arity>));
 	};
 
+	template<typename Operator>
+	struct OperatorVerb {};
+
 	struct UnaryOperatorBase {
 		typedef boost::mpl::int_<1> operator_arity;
 	};

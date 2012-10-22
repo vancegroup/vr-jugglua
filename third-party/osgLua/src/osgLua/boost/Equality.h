@@ -35,6 +35,13 @@
 namespace osgTraits {
 	struct Equality;
 
+	template<>
+	struct OperatorVerb<Equality> {
+		static const char * get() {
+			return "compare for equality";
+		}
+	};
+
 	namespace Equality_Tags {
 		using boost::enable_if;
 		using boost::mpl::and_;

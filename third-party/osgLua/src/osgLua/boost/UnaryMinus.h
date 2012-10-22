@@ -36,6 +36,13 @@
 namespace osgTraits {
 	struct UnaryMinus;
 
+	template<>
+	struct OperatorVerb<UnaryMinus> {
+		static const char * get() {
+			return "negate";
+		}
+	};
+
 	namespace UnaryMinus_Tags {
 		using boost::enable_if;
 		using boost::mpl::or_;

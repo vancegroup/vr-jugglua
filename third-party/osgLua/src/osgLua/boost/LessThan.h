@@ -36,6 +36,13 @@
 namespace osgTraits {
 	struct LessThan;
 
+	template<>
+	struct OperatorVerb<LessThan> {
+		static const char * get() {
+			return "compare for less-than";
+		}
+	};
+
 	namespace LessThan_Tags {
 		using boost::enable_if;
 		using boost::mpl::and_;

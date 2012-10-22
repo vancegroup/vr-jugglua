@@ -36,6 +36,13 @@
 namespace osgTraits {
 	struct Subtraction;
 
+	template<>
+	struct OperatorVerb<Subtraction> {
+		static const char * get() {
+			return "subtract";
+		}
+	};
+
 	namespace Subtraction_Tags {
 		using boost::enable_if;
 		using boost::mpl::or_;

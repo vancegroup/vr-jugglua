@@ -35,6 +35,13 @@
 namespace osgTraits {
 	struct Division;
 
+	template<>
+	struct OperatorVerb<Division> {
+		static const char * get() {
+			return "divide";
+		}
+	};
+
 	namespace Division_Tags {
 		using boost::enable_if;
 		using boost::mpl::and_;
