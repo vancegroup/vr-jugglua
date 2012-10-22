@@ -42,7 +42,7 @@ namespace osgTraits {
 	template<>
 	struct OperatorVerb<Multiplication> {
 		static const char * get() {
-			return "multiply (or compute dot product)";
+			return "multiply/dot";
 		}
 	};
 
