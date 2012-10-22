@@ -30,12 +30,38 @@
 // - none
 
 namespace osgTraits {
+	struct UnaryMinus;
+	struct Addition;
+	struct Subtraction;
 	struct Multiplication;
+	struct CrossProduct;
+	struct Division;
 }
 
 namespace osgLua {
 	template<typename Op>
 	struct MetamethodName;
+
+	template<>
+	struct MetamethodName<osgTraits::UnaryMinus> {
+		static const char * get() {
+			return "__unm";
+		}
+	};
+
+	template<>
+	struct MetamethodName<osgTraits::Addition> {
+		static const char * get() {
+			return "__add";
+		}
+	};
+
+	template<>
+	struct MetamethodName<osgTraits::Subtraction> {
+		static const char * get() {
+			return "__sub";
+		}
+	};
 
 	template<>
 	struct MetamethodName<osgTraits::Multiplication> {
@@ -44,6 +70,19 @@ namespace osgLua {
 		}
 	};
 
+	template<>
+	struct MetamethodName<osgTraits::CrossProduct> {
+		static const char * get() {
+			return "__pow";
+		}
+	};
+
+	template<>
+	struct MetamethodName<osgTraits::Division> {
+		static const char * get() {
+			return "__div";
+		}
+	};
 } // end of namespace osgLua
 
 #endif // INCLUDED_OperatorMetamethodTraits_h_GUID_f50476b4_fdfa_4906_af5a_217b87918f8f
