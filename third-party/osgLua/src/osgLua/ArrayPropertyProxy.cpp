@@ -21,11 +21,14 @@
 #include "ArrayPropertyProxy.h"
 #include "LuaIncludeFull.h"
 #include <osgLua/Value>
+#include <osgLua/introspection/Exceptions>
+#include <osgLua/introspection/PropertyInfo>
 
 // Library/third-party includes
 // - none
 
 // Standard includes
+#include <assert.h>                     // for assert
 #include <typeinfo>
 
 namespace osgLua {

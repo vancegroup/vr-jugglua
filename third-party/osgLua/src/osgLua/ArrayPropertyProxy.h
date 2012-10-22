@@ -28,12 +28,15 @@
 
 // Library/third-party includes
 #include <osgLua/LuaInclude>
-#include <osgLua/introspection/PropertyInfo>
+#include <osgLua/Value>
 #include <osgLua/introspection/Value>
 
 // Standard includes
 #include <string>
 
+namespace osgIntrospection {
+	class PropertyInfo;
+}
 namespace osgLua {
 	class Value;
 	class ArrayPropertyProxy : public ::luacpputils::LuaUserdata<ArrayPropertyProxy> {
