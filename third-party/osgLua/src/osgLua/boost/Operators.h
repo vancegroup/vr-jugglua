@@ -29,13 +29,24 @@
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/or.hpp>
 #include <boost/mpl/lambda.hpp>
+#include <boost/mpl/copy.hpp>
+#include <boost/mpl/joint_view.hpp>
+#include <boost/mpl/front_inserter.hpp>
+#include <boost/mpl/list.hpp>
 
 // Standard includes
 // - none
 
+// Standard includes
+// - none
 
 namespace osgTraits {
-	typedef BinaryOperators MathOperators;
+
+} // end of namespace osgTraits
+
+namespace osgTraits {
+	typedef boost::mpl::copy < boost::mpl::joint_view<BinaryOperators, UnaryOperators>,
+	        boost::mpl::front_inserter<boost::mpl::list0<> > >::type MathOperators;
 
 	namespace detail {
 		template<typename OperatorArity>

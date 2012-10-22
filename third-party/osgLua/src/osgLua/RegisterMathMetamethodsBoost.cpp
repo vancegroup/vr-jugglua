@@ -23,6 +23,7 @@
 #include "RegisterMathMetamethods.h"
 #include "boost/Operators.h"
 #include "boost/MathAndArithmeticTypes.h"
+#include "UnaryOperatorDispatch.h"
 #include "BinaryOperatorDispatch.h"
 #include "OperatorMetamethodTraits.h"
 #include "PrintInfoFunctor.h"
@@ -49,7 +50,8 @@ namespace osgLua {
 	template<typename T, typename Operator>
 	inline typename boost::enable_if<boost::mpl::equal_to<typename osgTraits::get_operator_arity<Operator>::type, boost::mpl::int_<1> > >::type
 	pushAndSetOperator(lua_State * L, boost::mpl::true_ const&) {
-		OSG_INFO << "Unary operators not yet implemented: " << MetamethodName<Operator>::get() << std::endl;
+		lua_pushcfunction(L, &(attemptUnaryOperator<Operator, T>));
+		lua_setfield(L, -2, MetamethodName<Operator>::get());
 	}
 
 	template<typename T, typename Operator>
