@@ -33,12 +33,56 @@
 #include <boost/mpl/or.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/mpl/equal_to.hpp>
 #include <boost/mpl/has_xxx.hpp>
+#include <boost/mpl/lambda.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
+	namespace UnaryPredicates {
+		using boost::is_same;
+		using boost::mpl::equal_to;
+		using boost::mpl::int_;
+		using boost::mpl::and_;
+		using boost::mpl::or_;
+		using boost::mpl::_;
+		using boost::mpl::apply;
+
+
+		template<typename T>
+		struct HasFloatingPointScalar : boost::is_floating_point<typename GetScalar<T>::type> {};
+
+
+
+		template<typename T>
+		struct HasDimension3 : equal_to<typename GetDimension<T>::type, int_<3> > {};
+		template<typename T>
+		struct HasDimension4 : equal_to<typename GetDimension<T>::type, int_<4> > {};
+
+		/*
+				namespace detail {
+					template<typename T, int Dimension>
+					struct HasDimensionImpl {
+						typedef typename GetDimension<T>::type TypeDimension;
+						typedef typename boost::mpl::apply<equal_to<_, _>, TypeDimension, int_<Dimension> >::type type;
+					};
+				}
+				template<typename T, int Dimension>
+				struct HasDimension {
+					typedef typename boost::mpl::apply<typename detail::HasDimensionImpl<T, Dimension>::type>::type type;
+				};
+		*/
+		template<typename V>
+		struct IsTransformableVector : and_ <
+				is_vector<V>,
+				or_
+				< HasDimension3<V>
+				, HasDimension4<V>
+				> >::type {};
+
+	} // end of namespace UnaryPredicates
 	namespace BinaryPredicates {
 		namespace detail {
 			BOOST_MPL_HAS_XXX_TRAIT_DEF(type);
@@ -92,9 +136,5 @@ namespace osgTraits {
 				>::type {};
 
 	} // end of namespace BinaryPredicates
-	namespace UnaryPredicates {
-		template<typename T>
-		struct HasFloatingPointScalar : boost::is_floating_point<typename GetScalar<T>::type> {};
-	} // end of namespace UnaryPredicates
 } // end of namespace osgTraits
 #endif // INCLUDED_TypePredicates_h_GUID_746880c7_3f70_40c4_99e6_0717ac100770
