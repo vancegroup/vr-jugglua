@@ -77,7 +77,7 @@ namespace osgLua {
 		template<typename Operator>
 		struct visit_operator {
 			static void visit(RegistrationData const& d) {
-				pushAndSetOperator<T, Operator>(d.L, typename osgTraits::IsOperatorApplicable<Operator, T>::type());
+				pushAndSetOperator<T, Operator>(d.L, typename osgTraits::is_operator_applicable<Operator, T>::type());
 			}
 		};
 

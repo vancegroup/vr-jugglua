@@ -41,12 +41,12 @@ namespace osgLua {
 	template<typename Operator, typename T1, typename T2>
 	inline void printBinaryInfo() {
 		std::cout << std::endl << getTypeName<T1>() << " and " << getTypeName<T2>() << ":" << std::endl;
-		std::cout << "	HaveCompatibleScalar: " << osgTraits::BinaryPredicates::HaveCompatibleScalar<T1, T2>::type::value << std::endl;
-		std::cout << "	HaveSameCategory: " << osgTraits::BinaryPredicates::HaveSameCategory<T1, T2>::type::value << std::endl;
-		std::cout << "	HaveSameDimension: " << osgTraits::BinaryPredicates::HaveSameDimension<T1, T2>::type::value << std::endl;
-		std::cout << "	CanTransformVecMatrix: " << osgTraits::BinaryPredicates::CanTransformVecMatrix<T1, T2>::type::value << std::endl;
-		std::cout << "	AreVectorAndMatrix: " << osgTraits::BinaryPredicates::AreVectorAndMatrix<T1, T2>::type::value << std::endl;
-		std::cout << "	HaveSameCategoryAndDimensionWithCompatibleScalar: " << osgTraits::BinaryPredicates::HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2>::type::value << std::endl;
+		std::cout << "	have_compatible_scalar: " << osgTraits::BinaryPredicates::have_compatible_scalar<T1, T2>::type::value << std::endl;
+		std::cout << "	have_same_category: " << osgTraits::BinaryPredicates::have_same_category<T1, T2>::type::value << std::endl;
+		std::cout << "	have_same_dimension: " << osgTraits::BinaryPredicates::have_same_dimension<T1, T2>::type::value << std::endl;
+		std::cout << "	can_transform_vec_matrix: " << osgTraits::BinaryPredicates::can_transform_vec_matrix<T1, T2>::type::value << std::endl;
+		std::cout << "	are_vec_and_matrix: " << osgTraits::BinaryPredicates::are_vec_and_matrix<T1, T2>::type::value << std::endl;
+		std::cout << "	have_same_cat_and_dim_with_compat_scalar: " << osgTraits::BinaryPredicates::have_same_cat_and_dim_with_compat_scalar<T1, T2>::type::value << std::endl;
 		typedef typename boost::mpl::apply<Operator, T1, T2>::type SpecOp;
 		typedef typename osgTraits::is_operator_available<SpecOp>::type IsAvail;
 		std::cout << "	MultiplicationTag: " << getIdentityTypeName<typename osgTraits::MultiplicationTags::Compute<T1, T2>::type>() << std::endl;
@@ -59,9 +59,9 @@ namespace osgLua {
 	template<typename T>
 	inline void printInfo() {
 		std::cout << std::endl << getTypeName<T>() << ":" << std::endl;
-		std::cout << "	GetScalar: " << getTypeName<typename osgTraits::GetScalar<T>::type>() << std::endl;
-		std::cout << "	GetDimension: " << osgTraits::GetDimension<T>::type::value << std::endl;
-		std::cout << "	GetCategory: " << typeid(typename osgTraits::GetCategory<T>::type).name() << std::endl;
+		std::cout << "	get_scalar: " << getTypeName<typename osgTraits::get_scalar<T>::type>() << std::endl;
+		std::cout << "	get_dimension: " << osgTraits::get_dimension<T>::type::value << std::endl;
+		std::cout << "	get_category: " << typeid(typename osgTraits::get_category<T>::type).name() << std::endl;
 
 	}
 	template<typename T1, typename Operator>

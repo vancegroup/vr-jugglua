@@ -35,22 +35,22 @@ namespace osgTraits {
 		BOOST_MPL_HAS_XXX_TRAIT_DEF(value_type);
 
 		template<typename T, typename = void>
-		struct GetScalarImpl {};
+		struct get_scalar_impl {};
 
 		template<typename T>
-		struct GetScalarImpl<T, typename boost::enable_if<has_value_type<T> >::type> {
+		struct get_scalar_impl<T, typename boost::enable_if<has_value_type<T> >::type> {
 			typedef typename T::value_type type;
 		};
 
 		template<typename T>
-		struct GetScalarImpl<T, typename boost::enable_if<is_scalar<T> >::type> {
+		struct get_scalar_impl<T, typename boost::enable_if<is_scalar<T> >::type> {
 			typedef T type;
 		};
 
 	} // end of namespace detail
 
 	template<typename T>
-	struct GetScalar : detail::GetScalarImpl<T> {};
+	struct get_scalar : detail::get_scalar_impl<T> {};
 
 
 } // end of namespace osgTraits

@@ -38,13 +38,13 @@ namespace osgTraits {
 	using boost::mpl::placeholders::_;
 
 	template<typename Category, typename Scalar, typename Dimension>
-	struct SelectType {
+	struct select_type {
 
 		typedef typename boost::mpl::find_if < math_types,
 		        boost::mpl::and_ <
-		        boost::is_same< GetCategory<_>, Category>,
-		        boost::is_same< GetScalar<_>, Scalar>,
-		        boost::is_same< GetDimension<_>, Dimension>
+		        boost::is_same< get_category<_>, Category>,
+		        boost::is_same< get_scalar<_>, Scalar>,
+		        boost::is_same< get_dimension<_>, Dimension>
 		        > >::type iter;
 
 		typedef typename boost::mpl::eval_if < boost::is_same<Category, tags::Scalar>,

@@ -35,27 +35,27 @@
 namespace osgTraits {
 	namespace detail {
 		template<typename T, typename = void>
-		struct ComputeCategoryTag {
+		struct compute_category_tag {
 			typedef void type;
 		};
 
 		template<typename T>
-		struct ComputeCategoryTag<T, typename boost::enable_if<is_matrix<T> >::type> {
+		struct compute_category_tag<T, typename boost::enable_if<is_matrix<T> >::type> {
 			typedef tags::Matrix type;
 		};
 
 		template<typename T>
-		struct ComputeCategoryTag<T, typename boost::enable_if<is_vector<T> >::type> {
+		struct compute_category_tag<T, typename boost::enable_if<is_vector<T> >::type> {
 			typedef tags::Vec type;
 		};
 
 		template<typename T>
-		struct ComputeCategoryTag<T, typename boost::enable_if<is_quat<T> >::type> {
+		struct compute_category_tag<T, typename boost::enable_if<is_quat<T> >::type> {
 			typedef tags::Quat type;
 		};
 
 		template<typename T>
-		struct ComputeCategoryTag<T, typename boost::enable_if<is_scalar<T> >::type> {
+		struct compute_category_tag<T, typename boost::enable_if<is_scalar<T> >::type> {
 			typedef tags::Scalar type;
 		};
 

@@ -32,25 +32,25 @@
 namespace osgTraits {
 	namespace detail {
 		template<typename T1, typename T2>
-		struct GetCompatibleScalarImpl {};
+		struct get_compatible_scalarImpl {};
 
 		template<typename T>
-		struct GetCompatibleScalarImpl<T, T> {
+		struct get_compatible_scalarImpl<T, T> {
 			typedef T type;
 		};
 
 		template<>
-		struct GetCompatibleScalarImpl<float, double> {
+		struct get_compatible_scalarImpl<float, double> {
 			typedef double type;
 		};
 
 		template<>
-		struct GetCompatibleScalarImpl<double, float> {
+		struct get_compatible_scalarImpl<double, float> {
 			typedef double type;
 		};
 	}
 	template<typename T1, typename T2>
-	struct GetCompatibleScalar : detail::GetCompatibleScalarImpl<typename GetScalar<T1>::type, typename GetScalar<T2>::type> {};
+	struct get_compatible_scalar : detail::get_compatible_scalarImpl<typename get_scalar<T1>::type, typename get_scalar<T2>::type> {};
 
 
 

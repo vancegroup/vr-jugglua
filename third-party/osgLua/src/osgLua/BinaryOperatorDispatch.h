@@ -75,7 +75,7 @@ namespace osgLua {
 			}
 		};
 
-		typedef typename osgTraits::GetAvailableOtherArgTypes<BoundOp>::type OtherArgumentPossibilities;
+		typedef typename osgTraits::get_valid_other_arg_types<BoundOp>::type OtherArgumentPossibilities;
 		static int attempt(lua_State * L, introspection::Type const& otherType) {
 			BinaryOpData data(L, otherType);
 			boost::mpl::for_each<OtherArgumentPossibilities, visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
@@ -87,13 +87,13 @@ namespace osgLua {
 		template<typename Op, typename T1>
 		int attemptBinaryOperator(lua_State * L) {
 			if (osgLuaValueUsableAs<T1>(L, -2)) {
-				typedef typename osgTraits::OperatorBindFirst<Op, T1>::type BoundOp;
+				typedef typename osgTraits::operator_bind_first<Op, T1>::type BoundOp;
 				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 
 				return AttemptStruct::attempt(L, getValue(L, -1).getType());
 
 			} else if (osgLuaValueUsableAs<T1>(L, -1)) {
-				typedef typename osgTraits::OperatorBindSecond<Op, T1>::type BoundOp;
+				typedef typename osgTraits::operator_bind_second<Op, T1>::type BoundOp;
 				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 
 				return AttemptStruct::attempt(L, getValue(L, -2).getType());

@@ -31,7 +31,7 @@
 
 namespace osgTraits {
 	template<typename T>
-	struct GetCategory : detail::ComputeCategoryTag<T> {};
+	struct get_category : detail::compute_category_tag<T> {};
 } // end of namespace osgTraits
 
 #endif // INCLUDED_GetCategory_h_GUID_2f6649dc_49c4_4f91_963f_3bf0ba08a911

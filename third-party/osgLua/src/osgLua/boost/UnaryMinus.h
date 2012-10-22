@@ -22,7 +22,6 @@
 
 // Internal Includes
 #include "TypePredicates.h"
-#include "PromoteTypeWithScalar.h"
 #include "OperatorBase.h"
 
 // Library/third-party includes
@@ -55,7 +54,7 @@ namespace osgTraits {
 				or_ <
 				is_vector<T>,
 				is_quat<T> > ,
-				HasFloatingPointScalar<T> > >::type > {
+				has_floating_point_scalar<T> > >::type > {
 			typedef SimpleUnaryMinus type;
 		};
 

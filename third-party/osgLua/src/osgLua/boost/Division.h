@@ -49,7 +49,7 @@ namespace osgTraits {
 
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
-				AreCompatibleQuats<T1, T2> >::type > {
+				are_compatible_quats<T1, T2> >::type > {
 			typedef QuatDivision type;
 		};
 

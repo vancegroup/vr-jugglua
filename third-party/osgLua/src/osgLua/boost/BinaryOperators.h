@@ -52,12 +52,12 @@ namespace osgTraits {
 	using boost::mpl::placeholders::_;
 
 	template<typename Op, typename T>
-	struct OperatorBindFirst {
+	struct operator_bind_first {
 		typedef boost::mpl::bind2<Op, T, _> type;
 	};
 
 	template<typename Op, typename T>
-	struct OperatorBindSecond {
+	struct operator_bind_second {
 		typedef boost::mpl::bind2<Op, _, T> type;
 	};
 
@@ -69,17 +69,12 @@ namespace osgTraits {
 
 
 	template<typename BoundOp>
-	struct GetAvailableOtherArgTypes {
+	struct get_valid_other_arg_types {
 		typedef boost::mpl::filter_view<other_argument_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
 	};
 
 	template<typename BoundOp>
-	struct BoundOpNumberOfOverloads : boost::mpl::size<typename GetAvailableOtherArgTypes<BoundOp>::type > {};
-
-	template<typename BoundOp>
-	struct BoundOpHasOverloads : boost::mpl::not_<boost::mpl::empty<typename GetAvailableOtherArgTypes<BoundOp>::type > > {};
-
-
+	struct bound_op_has_overloads : boost::mpl::not_<boost::mpl::empty<typename get_valid_other_arg_types<BoundOp>::type > > {};
 
 } // end of namespace osgTraits
 #endif // INCLUDED_BinaryOperators_h_GUID_9d5a8223_67c4_4299_99ef_30fe8607bab4

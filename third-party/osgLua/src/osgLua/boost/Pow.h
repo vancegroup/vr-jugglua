@@ -54,13 +54,13 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
-				HasDimension<T1, 3>,
-				HasDimension<T2, 3>,
+				has_dimension<T1, 3>,
+				has_dimension<T2, 3>,
 				is_vector<T1>,
 				is_vector<T2>,
 				and_ <
-				HasFloatingPointScalar<T1>,
-				HasFloatingPointScalar<T2> > > >::type > {
+				has_floating_point_scalar<T1>,
+				has_floating_point_scalar<T2> > > >::type > {
 			typedef VectorCrossProduct type;
 		};
 
@@ -90,7 +90,7 @@ namespace osgTraits {
 
 			template<typename T1, typename T2>
 			struct apply {
-				typedef typename PromoteTypeWithScalar<T1, typename GetScalar<T2>::type>::type return_type;
+				typedef typename promote_type_with_scalar<T1, typename get_scalar<T2>::type>::type return_type;
 
 				template<typename A, typename B>
 				static return_type performOperation(A const& v1, B const& v2) {

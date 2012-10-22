@@ -34,14 +34,14 @@
 namespace osgTraits {
 	namespace detail {
 		template<typename CategoryTag>
-		struct GetDimension_impl {
+		struct get_dimension_impl {
 			template<typename T>
 			struct apply {
 				typedef boost::mpl::int_<0> type;
 			};
 		};
 		template<>
-		struct GetDimension_impl<tags::Vec> {
+		struct get_dimension_impl<tags::Vec> {
 			template<typename T>
 			struct apply {
 				typedef boost::mpl::int_<T::num_components> type;
@@ -49,7 +49,7 @@ namespace osgTraits {
 		};
 
 		template<>
-		struct GetDimension_impl<tags::Matrix> {
+		struct get_dimension_impl<tags::Matrix> {
 			template<typename T>
 			struct apply {
 				typedef boost::mpl::int_<4> type;
@@ -57,7 +57,7 @@ namespace osgTraits {
 		};
 
 		template<>
-		struct GetDimension_impl<tags::Quat> {
+		struct get_dimension_impl<tags::Quat> {
 			template<typename T>
 			struct apply {
 				typedef boost::mpl::int_<4> type;
@@ -65,7 +65,7 @@ namespace osgTraits {
 		};
 
 		template<>
-		struct GetDimension_impl<tags::Scalar> {
+		struct get_dimension_impl<tags::Scalar> {
 			template<typename T>
 			struct apply {
 				typedef boost::mpl::int_<1> type;
@@ -75,7 +75,7 @@ namespace osgTraits {
 	} // end of namespace detail
 
 	template<typename T>
-	struct GetDimension : detail::GetDimension_impl<typename detail::ComputeCategoryTag<T>::type >::template apply<T> {};
+	struct get_dimension : detail::get_dimension_impl<typename detail::compute_category_tag<T>::type >::template apply<T> {};
 
 } // end of namespace osgTraits
 

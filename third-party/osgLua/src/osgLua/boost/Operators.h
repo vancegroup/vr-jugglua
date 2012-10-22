@@ -49,15 +49,15 @@ namespace osgTraits {
 		using boost::mpl::protect;
 
 		template<typename OperatorArity>
-		struct IsOperatorApplicable_impl {
+		struct is_operator_applicable_impl {
 			template<typename Operator, typename T>
 			struct apply;
 		};
 		template<typename Operator, typename T>
-		struct IsOperatorApplicable : IsOperatorApplicable_impl<typename apply<quote1<get_operator_arity>, Operator>::type>::template apply<Operator, T> {};
+		struct is_operator_applicable : is_operator_applicable_impl<typename apply<quote1<get_operator_arity>, Operator>::type>::template apply<Operator, T> {};
 
 		template<>
-		struct IsOperatorApplicable_impl<int_<1> > {
+		struct is_operator_applicable_impl<int_<1> > {
 			template<typename Operator, typename T>
 			struct apply {
 				typedef typename is_operator_available<typename boost::mpl::apply<Operator, T>::type>::type type;
@@ -65,15 +65,15 @@ namespace osgTraits {
 		};
 
 		template<>
-		struct IsOperatorApplicable_impl<int_<2> > {
+		struct is_operator_applicable_impl<int_<2> > {
 			template<typename Operator, typename T>
 			struct apply : or_ <
-					BoundOpHasOverloads<protect<typename OperatorBindFirst<Operator, T>::type> >,
-					BoundOpHasOverloads<protect<typename OperatorBindSecond<Operator, T>::type > > >  {};
+					bound_op_has_overloads<protect<typename operator_bind_first<Operator, T>::type> >,
+					bound_op_has_overloads<protect<typename operator_bind_second<Operator, T>::type > > >  {};
 		};
 	} // end of namespace detail
 
-	using detail::IsOperatorApplicable;
+	using detail::is_operator_applicable;
 
 } // end of namespace osgTraits
 

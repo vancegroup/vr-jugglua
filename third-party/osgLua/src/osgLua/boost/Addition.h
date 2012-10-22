@@ -53,8 +53,8 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				or_ <
-				AreCompatibleVectors<T1, T2>,
-				AreCompatibleQuats<T1, T2> > >::type > {
+				are_compatible_vectors<T1, T2>,
+				are_compatible_quats<T1, T2> > >::type > {
 			typedef Componentwise type;
 		};
 
@@ -84,7 +84,7 @@ namespace osgTraits {
 
 			template<typename T1, typename T2>
 			struct apply {
-				typedef typename PromoteTypeWithScalar<T1, typename GetScalar<T2>::type>::type return_type;
+				typedef typename promote_type_with_scalar<T1, typename get_scalar<T2>::type>::type return_type;
 
 				template<typename A, typename B>
 				static return_type performOperation(A const& v1, B const& v2) {

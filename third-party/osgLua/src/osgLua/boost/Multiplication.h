@@ -61,10 +61,10 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
-				HaveSameCategory<T1, T2>,
+				have_same_category<T1, T2>,
 				or_<is_matrix<T1>, is_quat<T1> >,
-				HaveSameDimension<T1, T2>,
-				HaveCompatibleScalar<T1, T2> > >::type > {
+				have_same_dimension<T1, T2>,
+				have_compatible_scalar<T1, T2> > >::type > {
 			typedef TransformCompose type;
 		};
 
@@ -74,21 +74,20 @@ namespace osgTraits {
 				and_ <
 				is_vector<T1>,
 				is_vector<T2>,
-				HaveSameDimension<T1, T2>
+				have_same_dimension<T1, T2>
 				> ,
-				//boost::has_multiplies<T1, T2>, // some dot products aren't provided.
-				UnaryPredicates::HasFloatingPointScalar<T1>,
-				UnaryPredicates::HasFloatingPointScalar<T2>,
-				HaveCompatibleScalar<T1, T2> > >::type > {
+				has_floating_point_scalar<T1>,
+				has_floating_point_scalar<T2>,
+				have_compatible_scalar<T1, T2> > >::type > {
 			typedef VectorDotProduct type;
 		};
 
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
-				AreVectorAndMatrix<T1, T2>,
-				CanTransformVecMatrix<T1, T2>,
-				HaveCompatibleScalar<T1, T2> > >::type > {
+				are_vec_and_matrix<T1, T2>,
+				can_transform_vec_matrix<T1, T2>,
+				have_compatible_scalar<T1, T2> > >::type > {
 			typedef VectorTimesMatrix type;
 		};
 
@@ -97,8 +96,8 @@ namespace osgTraits {
 				and_ <
 				is_matrix<T1>,
 				is_vector<T2>,
-				CanTransformVecMatrix<T2, T1>,
-				HaveCompatibleScalar<T2, T1> > >::type > {
+				can_transform_vec_matrix<T2, T1>,
+				have_compatible_scalar<T2, T1> > >::type > {
 			typedef TransformTimesVector type;
 		};
 
@@ -107,8 +106,8 @@ namespace osgTraits {
 				and_ <
 				is_quat<T1>,
 				is_vector<T2>,
-				boost::is_same<GetDimension<T1>, boost::mpl::int_<3> >,
-				HaveCompatibleScalar<T2, T1> > >::type > {
+				has_dimension<T1, 3>,
+				have_compatible_scalar<T2, T1> > >::type > {
 			typedef TransformTimesVector type;
 		};
 
@@ -117,7 +116,7 @@ namespace osgTraits {
 				and_ <
 				is_vector<T1>,
 				is_scalar<T2>,
-				HaveCompatibleScalar<T1, T2> > >::type > {
+				have_compatible_scalar<T1, T2> > >::type > {
 			typedef VectorScalar type;
 		};
 		template<typename T1, typename T2>
@@ -125,7 +124,7 @@ namespace osgTraits {
 				and_ <
 				is_scalar<T1>,
 				is_vector<T2>,
-				HaveCompatibleScalar<T1, T2> > >::type > {
+				have_compatible_scalar<T1, T2> > >::type > {
 			typedef ScalarVector type;
 		};
 	}
@@ -153,7 +152,7 @@ namespace osgTraits {
 
 			template<typename T1, typename T2>
 			struct apply {
-				typedef typename GetCompatibleScalar<T1, T2>::type return_type;
+				typedef typename get_compatible_scalar<T1, T2>::type return_type;
 
 				template<typename A, typename B>
 				static return_type performOperation(A const& v1, B const& v2) {
@@ -168,7 +167,7 @@ namespace osgTraits {
 
 			template<typename T1, typename T2>
 			struct apply {
-				typedef typename PromoteTypeWithScalar<T1, typename GetScalar<T2>::type>::type return_type;
+				typedef typename promote_type_with_scalar<T1, typename get_scalar<T2>::type>::type return_type;
 
 				template<typename A, typename B>
 				static return_type performOperation(A const& v1, B const& v2) {
@@ -209,7 +208,7 @@ namespace osgTraits {
 
 			template<typename V, typename S>
 			struct apply {
-				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
+				typedef typename promote_type_with_scalar<V, S>::type vec_type;
 				typedef vec_type return_type;
 
 				static return_type performOperation(S const& s, V const& v) {
@@ -224,7 +223,7 @@ namespace osgTraits {
 
 			template<typename S, typename V>
 			struct apply {
-				typedef typename PromoteTypeWithScalar<V, S>::type vec_type;
+				typedef typename promote_type_with_scalar<V, S>::type vec_type;
 				typedef vec_type return_type;
 
 				static return_type performOperation(V const& v, S const& s) {

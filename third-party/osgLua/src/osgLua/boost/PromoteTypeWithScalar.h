@@ -35,11 +35,11 @@
 namespace osgTraits {
 
 	template<typename T, typename ScalarType>
-	struct PromoteTypeWithScalar {
-		typedef typename GetCategory<T>::type Category;
-		typedef typename GetCompatibleScalar<typename GetScalar<T>::type, ScalarType>::type Scalar;
-		typedef typename GetDimension<T>::type Dimension;
-		typedef typename SelectType< Category, Scalar, Dimension>::type type;
+	struct promote_type_with_scalar {
+		typedef typename get_category<T>::type Category;
+		typedef typename get_compatible_scalar<typename get_scalar<T>::type, ScalarType>::type Scalar;
+		typedef typename get_dimension<T>::type Dimension;
+		typedef typename select_type< Category, Scalar, Dimension>::type type;
 	};
 
 } // end of namespace osgTraits
