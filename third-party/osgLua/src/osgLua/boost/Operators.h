@@ -74,10 +74,10 @@ namespace osgTraits {
 		};
 		*/
 	}
-	
+
 	using detail::IsOperatorApplicable;
-	
-	
+
+
 
 } // end of namespace osgTraits
 

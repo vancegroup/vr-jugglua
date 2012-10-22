@@ -89,7 +89,6 @@ namespace osgTraits {
 
 	template<typename T>
 	struct get_operator_arity {
-		//BOOST_MPL_ASSERT((is_operator<T>));
 		typedef typename T::operator_arity type;
 	};
 

@@ -47,12 +47,18 @@ namespace osgLua {
 		static const char * get() {
 			return "__unm";
 		}
+		static const char * getSymbol() {
+			return "-";
+		}
 	};
 
 	template<>
 	struct MetamethodName<osgTraits::Addition> {
 		static const char * get() {
 			return "__add";
+		}
+		static const char * getSymbol() {
+			return "+";
 		}
 	};
 
@@ -61,12 +67,18 @@ namespace osgLua {
 		static const char * get() {
 			return "__sub";
 		}
+		static const char * getSymbol() {
+			return "-";
+		}
 	};
 
 	template<>
 	struct MetamethodName<osgTraits::Multiplication> {
 		static const char * get() {
 			return "__mul";
+		}
+		static const char * getSymbol() {
+			return "*";
 		}
 	};
 
@@ -75,12 +87,18 @@ namespace osgLua {
 		static const char * get() {
 			return "__pow";
 		}
+		static const char * getSymbol() {
+			return "^";
+		}
 	};
 
 	template<>
 	struct MetamethodName<osgTraits::Division> {
 		static const char * get() {
 			return "__div";
+		}
+		static const char * getSymbol() {
+			return "/";
 		}
 	};
 } // end of namespace osgLua

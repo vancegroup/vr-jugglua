@@ -15,6 +15,8 @@ set(OSGLUA_SRCS
 	osgLua.cpp
 	loadWrapperLib.cpp
 	loadWrapperLib.h
+	RegisterMathMetamethodsBoost.cpp
+	RegisterMathMetamethodsManual.cpp
 	saveObjectFile.cpp
 	Script.cpp
 	Type.cpp
@@ -34,6 +36,7 @@ set(OSGLUA_PRIVATE_API
 	LuaStackChecker.h
 	MathValueTags.h
 	osgLua.h
+	RegisterMathMetamethods.h
 	Type.h)
 
 set(HEADER_DIR ../../include/osgLua)

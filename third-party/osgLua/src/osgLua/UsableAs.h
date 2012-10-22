@@ -21,7 +21,7 @@
 #define INCLUDED_UsableAs_h_GUID_f17dbcc1_8413_44f5_9b69_f91bc137bbaa
 
 // Internal Includes
-// - none
+#include <osgLua/Value>
 
 // Library/third-party includes
 #include <osgLua/introspection/ExtendedTypeInfo>

@@ -46,6 +46,7 @@
 
 namespace osgTraits {
 	using boost::mpl::placeholders::_;
+
 	template<typename Op, typename T>
 	struct OperatorBindFirst {
 		typedef boost::mpl::bind2<Op, T, _> type;
@@ -64,7 +65,6 @@ namespace osgTraits {
 
 	template<typename BoundOp>
 	struct GetAvailableOtherArgTypes {
-		//typedef typename boost::mpl::copy_if<osgTraits::math_types, typename IsBoundAvailable<BoundOp>::type, boost::mpl::back_inserter<boost::mpl::vector0<> > >::type type;
 		typedef boost::mpl::filter_view<osgTraits::math_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
 	};
 

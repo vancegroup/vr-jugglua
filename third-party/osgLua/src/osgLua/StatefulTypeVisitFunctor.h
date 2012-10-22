@@ -45,7 +45,7 @@ namespace util {
 
 	template<typename StateClass>
 	StatefulTypeVisitFunctor<StateClass> visitorState(StateClass & data) {
-		return	StatefulTypeVisitFunctor<StateClass>(data);
+		return StatefulTypeVisitFunctor<StateClass>(data);
 	}
 } // end of namespace util
 #endif // INCLUDED_StatefulTypeVisitFunctor_h_GUID_f0081382_2f43_4f21_8a0a_e7dc8e5ac052

@@ -131,16 +131,8 @@ namespace osgLua {
 				lua_setfield(L, -2, "__sub");
 				lua_pushcfunction(L, &Vector::unm<T>);
 				lua_setfield(L, -2, "__unm");
-#ifndef OSGLUA_HAVE_BOOST
 				lua_pushcfunction(L, &Vector::mul<T>);
 				lua_setfield(L, -2, "__mul");
-#endif
-				lua_pushcfunction(L, &value_metamethods::eq);
-				lua_setfield(L, -2, "__eq");
-				lua_pushcfunction(L, &value_metamethods::lt);
-				lua_setfield(L, -2, "__lt");
-				lua_pushcfunction(L, &value_metamethods::le);
-				lua_setfield(L, -2, "__le");
 				return true;
 			}
 			return false;
