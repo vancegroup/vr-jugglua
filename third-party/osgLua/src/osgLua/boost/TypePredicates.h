@@ -83,7 +83,23 @@ namespace osgTraits {
 				> >::type {};
 
 	} // end of namespace UnaryPredicates
+
+
+	//using UnaryPredicates::HasDimension;
+	using UnaryPredicates::HasDimension3;
+	using UnaryPredicates::HasDimension4;
+	using UnaryPredicates::IsTransformableVector;
+	using UnaryPredicates::HasFloatingPointScalar;
+
 	namespace BinaryPredicates {
+		using boost::enable_if;
+		using boost::is_same;
+		using boost::mpl::equal_to;
+		using boost::mpl::true_;
+		using boost::mpl::false_;
+		using boost::mpl::and_;
+		using boost::mpl::or_;
+
 		namespace detail {
 			BOOST_MPL_HAS_XXX_TRAIT_DEF(type);
 		} // end of namepsace detail
@@ -95,8 +111,8 @@ namespace osgTraits {
 
 		template<typename T1, typename T2>
 		struct HaveCompatibleScalar < T1, T2,
-				typename boost::enable_if<detail::has_type<GetCompatibleScalar<typename GetScalar<T1>::type, typename GetScalar<T2>::type> > >::type >
-				: boost::mpl::true_ {};
+				typename enable_if<detail::has_type<GetCompatibleScalar<typename GetScalar<T1>::type, typename GetScalar<T2>::type> > >::type >
+				: true_ {};
 
 		template<typename T1, typename T2>
 		struct HaveSameCategory : boost::is_same<typename GetCategory<T1>::type, typename GetCategory<T2>::type>::type {};
@@ -123,18 +139,28 @@ namespace osgTraits {
 		struct CanTransformVecMatrix : detail::CanTransformVecMatrix_impl<V, M>::type {};
 
 		template<typename T1, typename T2>
-		struct AreVectorAndMatrix : boost::mpl::and_ <
-				typename is_vector<T1>::type,
-				typename is_matrix<T2>::type
+		struct AreVectorAndMatrix : and_ <
+				is_vector<T1>,
+				is_matrix<T2>
 				>::type {};
 
 		template<typename T1, typename T2>
-		struct HaveSameCategoryAndDimensionWithCompatibleScalar : boost::mpl::and_ <
+		struct HaveSameCategoryAndDimensionWithCompatibleScalar : and_ <
 				HaveSameCategory<T1, T2>,
 				HaveCompatibleScalar<T1, T2>,
 				HaveSameDimension<T1, T2>
 				>::type {};
 
 	} // end of namespace BinaryPredicates
+
+
+	using BinaryPredicates::HaveCompatibleScalar;
+	using BinaryPredicates::HaveSameCategory;
+	using BinaryPredicates::HaveSameDimension;
+	using BinaryPredicates::CanTransformVecMatrix;
+	using BinaryPredicates::AreVectorAndMatrix;
+	using BinaryPredicates::AreCompatibleVectors;
+	using BinaryPredicates::AreCompatibleQuats;
+
 } // end of namespace osgTraits
 #endif // INCLUDED_TypePredicates_h_GUID_746880c7_3f70_40c4_99e6_0717ac100770
