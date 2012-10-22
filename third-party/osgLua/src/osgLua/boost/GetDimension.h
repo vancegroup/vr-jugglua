@@ -37,7 +37,7 @@ namespace osgTraits {
 		struct GetDimension_impl {
 			template<typename T>
 			struct apply {
-				typedef void type;
+				typedef boost::mpl::int_<0> type;
 			};
 		};
 		template<>

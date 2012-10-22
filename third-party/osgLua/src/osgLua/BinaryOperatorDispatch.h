@@ -44,7 +44,6 @@
 
 namespace osgLua {
 
-
 	struct BinaryOpData {
 		BinaryOpData(lua_State * L, introspection::Type const& otherType) : other(otherType), a1(getValue(L, -2)), a2(getValue(L, -1)), r(), success(false) {}
 		introspection::Type const& other;
@@ -62,8 +61,6 @@ namespace osgLua {
 
 
 	};
-
-
 
 	template<typename BoundOp>
 	class BinaryOperatorApplicationFunctor {

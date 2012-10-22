@@ -39,7 +39,7 @@
 #include <boost/mpl/filter_view.hpp>
 #include <boost/mpl/copy_if.hpp>
 #include <boost/mpl/back_inserter.hpp>
-#include <boost/mpl/single_view.hpp>
+#include <boost/mpl/empty.hpp>
 
 // Standard includes
 // - none
@@ -61,11 +61,20 @@ namespace osgTraits {
 		typedef typename boost::mpl::apply<BoundOp, T>::type SpecOp;
 		typedef typename is_operator_available<SpecOp>::type type;
 	};
+
 	template<typename BoundOp>
 	struct GetAvailableOtherArgTypes {
 		//typedef typename boost::mpl::copy_if<osgTraits::math_types, typename IsBoundAvailable<BoundOp>::type, boost::mpl::back_inserter<boost::mpl::vector0<> > >::type type;
 		typedef boost::mpl::filter_view<osgTraits::math_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
 	};
+
+
+	template<typename BoundOp>
+	struct BoundOpNumberOfOverloads : boost::mpl::size<typename GetAvailableOtherArgTypes<BoundOp>::type > {};
+
+
+	template<typename BoundOp>
+	struct BoundOpHasOverloads : boost::mpl::not_<boost::mpl::empty<typename GetAvailableOtherArgTypes<BoundOp>::type > > {};
 
 	typedef boost::mpl::list5<Addition, Subtraction, Multiplication, CrossProduct, Division> BinaryOperators;
 

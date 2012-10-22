@@ -48,6 +48,8 @@ namespace osgTraits {
 		using boost::mpl::and_;
 		using boost::mpl::or_;
 		using boost::mpl::_;
+		using boost::mpl::_1;
+		using boost::mpl::_2;
 		using boost::mpl::apply;
 
 
@@ -55,11 +57,20 @@ namespace osgTraits {
 		struct HasFloatingPointScalar : boost::is_floating_point<typename GetScalar<T>::type> {};
 
 
+		typedef boost::mpl::lambda<equal_to<GetDimension<_1>, _2 > >::type HasDimensionLambda;
+		template<typename T>
+		struct HasDimension3 : apply<HasDimensionLambda, T, int_<3> >::type {};
 
 		template<typename T>
-		struct HasDimension3 : equal_to<typename GetDimension<T>::type, int_<3> > {};
+		struct HasDimension4 : apply<HasDimensionLambda, T, int_<4> >::type {};
+
+		template<typename T, int Dim>
+		struct HasDimension : apply<HasDimensionLambda, T, int_<Dim> >::type {};
+
+		/*
 		template<typename T>
-		struct HasDimension4 : equal_to<typename GetDimension<T>::type, int_<4> > {};
+		struct HasDimension4 : equal_to<typename apply<GetDimension<_>, T>::type, int_<4> > {};
+		*/
 
 		/*
 				namespace detail {
@@ -85,7 +96,7 @@ namespace osgTraits {
 	} // end of namespace UnaryPredicates
 
 
-	//using UnaryPredicates::HasDimension;
+	using UnaryPredicates::HasDimension;
 	using UnaryPredicates::HasDimension3;
 	using UnaryPredicates::HasDimension4;
 	using UnaryPredicates::IsTransformableVector;
