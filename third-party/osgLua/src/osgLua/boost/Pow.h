@@ -37,9 +37,9 @@
 
 
 namespace osgTraits {
-	struct CrossProduct;
+	struct Pow;
 
-	namespace CrossProduct_Tags {
+	namespace Pow_Tags {
 		using boost::enable_if;
 		using boost::mpl::and_;
 		using boost::mpl::or_;
@@ -54,8 +54,8 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
-				HasDimension3<T1>,
-				HasDimension3<T2>,
+				HasDimension<T1, 3>,
+				HasDimension<T2, 3>,
 				is_vector<T1>,
 				is_vector<T2>,
 				and_ <
@@ -68,25 +68,25 @@ namespace osgTraits {
 
 	namespace detail {
 		template<typename Tag>
-		struct CrossProduct_impl;
+		struct Pow_impl;
 
 		template<typename T1, typename T2>
-		struct CrossProduct_Specialization :
-				CrossProduct_impl<typename CrossProduct_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		                  BinarySpecializedOperator<CrossProduct, T1, T2> {
-		                      typedef CrossProduct_Specialization<T1, T2> type;
-		                  };
+		struct Pow_Specialization :
+				Pow_impl<typename Pow_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
+		         BinarySpecializedOperator<Pow, T1, T2> {
+		             typedef Pow_Specialization<T1, T2> type;
+		         };
 
 		template<typename Tag>
-		struct CrossProduct_impl {
+		struct Pow_impl {
 			template<typename T1, typename T2>
 			struct apply {
 			};
 		};
 
-		/// Two vectors: subtraction.
+		/// Two vectors: cross product.
 		template<>
-		struct CrossProduct_impl <CrossProduct_Tags::VectorCrossProduct> {
+		struct Pow_impl <Pow_Tags::VectorCrossProduct> {
 
 			template<typename T1, typename T2>
 			struct apply {
@@ -100,10 +100,10 @@ namespace osgTraits {
 		};
 	} // end of namespace detail
 
-	struct CrossProduct : BinaryOperatorBase {
+	struct Pow : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::CrossProduct_Specialization<T1, T2> {
-			typedef detail::CrossProduct_Specialization<T1, T2> type;
+		struct apply : detail::Pow_Specialization<T1, T2> {
+			typedef detail::Pow_Specialization<T1, T2> type;
 		};
 	};
 

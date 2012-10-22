@@ -28,27 +28,12 @@
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
 
-#include <boost/mpl/quote.hpp>
-#include <boost/mpl/list.hpp>
-#include <boost/mpl/identity.hpp>
-#include <boost/mpl/switch.hpp>
 
 // Standard includes
 // - none
 
-#undef USE_SWITCH_INSTEAD_OF_SFINAE
 namespace osgTraits {
 	namespace detail {
-#ifdef USE_SWITCH_INSTEAD_OF_SFINAE
-		typedef boost::mpl::list
-		< boost::mpl::pair<boost::mpl::quote1<is_matrix>, tags::Matrix>
-		, boost::mpl::pair<boost::mpl::quote1<is_vector>, tags::Vec>
-		, boost::mpl::pair<boost::mpl::quote1<is_quat>, tags::Quat>
-		, boost::mpl::pair<boost::mpl::quote1<is_scalar>, tags::Scalar> > CategoryTagMap;
-
-		template<typename T>
-		struct ComputeCategoryTag : boost::mpl::switch_<CategoryTagMap, T> {};
-#else
 		template<typename T, typename = void>
 		struct ComputeCategoryTag {
 			typedef void type;
@@ -73,7 +58,6 @@ namespace osgTraits {
 		struct ComputeCategoryTag<T, typename boost::enable_if<is_scalar<T> >::type> {
 			typedef tags::Scalar type;
 		};
-#endif
 
 	} // end of namespace detail
 } // end of namespace osgTraits

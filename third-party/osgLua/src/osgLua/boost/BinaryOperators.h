@@ -21,32 +21,34 @@
 #define INCLUDED_BinaryOperators_h_GUID_9d5a8223_67c4_4299_99ef_30fe8607bab4
 
 // Internal Includes
+#include "MathAndArithmeticTypes.h"
+#include "IsOperatorAvailable.h"
+
 #include "Addition.h"
 #include "Subtraction.h"
 #include "Multiplication.h"
-#include "CrossProduct.h"
+#include "Pow.h"
 #include "Division.h"
 #include "Equality.h"
 #include "LessThan.h"
-#include "Tags.h"
-#include "IsOperatorAvailable.h"
 
 // Library/third-party includes
-#include <boost/mpl/lambda.hpp>
 #include <boost/mpl/bind.hpp>
-#include <boost/mpl/transform_view.hpp>
+#include <boost/mpl/size.hpp>
 #include <boost/mpl/list.hpp>
-#include <boost/mpl/vector.hpp>
+#include <boost/mpl/not.hpp>
 #include <boost/mpl/apply.hpp>
 #include <boost/mpl/filter_view.hpp>
-#include <boost/mpl/copy_if.hpp>
-#include <boost/mpl/back_inserter.hpp>
+#include <boost/mpl/protect.hpp>
 #include <boost/mpl/empty.hpp>
 
 // Standard includes
 // - none
 
 namespace osgTraits {
+	typedef math_types other_argument_types;
+	typedef boost::mpl::list7<Addition, Subtraction, Multiplication, Pow, Division, Equality, LessThan> BinaryOperators;
+
 	using boost::mpl::placeholders::_;
 
 	template<typename Op, typename T>
@@ -65,20 +67,19 @@ namespace osgTraits {
 		typedef typename is_operator_available<SpecOp>::type type;
 	};
 
+
 	template<typename BoundOp>
 	struct GetAvailableOtherArgTypes {
-		typedef boost::mpl::filter_view<osgTraits::math_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
+		typedef boost::mpl::filter_view<other_argument_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
 	};
-
 
 	template<typename BoundOp>
 	struct BoundOpNumberOfOverloads : boost::mpl::size<typename GetAvailableOtherArgTypes<BoundOp>::type > {};
 
-
 	template<typename BoundOp>
 	struct BoundOpHasOverloads : boost::mpl::not_<boost::mpl::empty<typename GetAvailableOtherArgTypes<BoundOp>::type > > {};
 
-	typedef boost::mpl::list7<Addition, Subtraction, Multiplication, CrossProduct, Division, Equality, LessThan> BinaryOperators;
+
 
 } // end of namespace osgTraits
 #endif // INCLUDED_BinaryOperators_h_GUID_9d5a8223_67c4_4299_99ef_30fe8607bab4

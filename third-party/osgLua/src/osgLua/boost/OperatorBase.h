@@ -39,12 +39,8 @@
 
 namespace osgTraits {
 	namespace detail {
-		struct UnarySpecializedOperatorBase {
-			//typedef tags::UnaryOperator specialized_operator_tag;
-		};
-		struct BinarySpecializedOperatorBase {
-			//typedef tags::BinaryOperator specialized_operator_tag;
-		};
+		struct UnarySpecializedOperatorBase {};
+		struct BinarySpecializedOperatorBase {};
 	} // end of namespace detail
 
 	template<typename Operator, typename T>

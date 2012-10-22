@@ -22,7 +22,6 @@
 
 // Internal Includes
 #include "TypePredicates.h"
-#include "PromoteTypeWithScalar.h"
 #include "OperatorBase.h"
 
 // Library/third-party includes
@@ -37,7 +36,6 @@ namespace osgTraits {
 	struct Division;
 
 	namespace Division_Tags {
-		using namespace ::osgTraits::BinaryPredicates;
 		using boost::enable_if;
 		using boost::mpl::and_;
 

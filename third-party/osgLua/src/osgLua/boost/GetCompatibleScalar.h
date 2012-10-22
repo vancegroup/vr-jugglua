@@ -33,6 +33,7 @@ namespace osgTraits {
 	namespace detail {
 		template<typename T1, typename T2>
 		struct GetCompatibleScalarImpl {};
+
 		template<typename T>
 		struct GetCompatibleScalarImpl<T, T> {
 			typedef T type;

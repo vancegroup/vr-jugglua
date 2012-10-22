@@ -56,49 +56,24 @@ namespace osgTraits {
 		template<typename T>
 		struct HasFloatingPointScalar : boost::is_floating_point<typename GetScalar<T>::type> {};
 
-
 		typedef boost::mpl::lambda<equal_to<GetDimension<_1>, _2 > >::type HasDimensionLambda;
-		template<typename T>
-		struct HasDimension3 : apply<HasDimensionLambda, T, int_<3> >::type {};
-
-		template<typename T>
-		struct HasDimension4 : apply<HasDimensionLambda, T, int_<4> >::type {};
 
 		template<typename T, int Dim>
 		struct HasDimension : apply<HasDimensionLambda, T, int_<Dim> >::type {};
 
-		/*
-		template<typename T>
-		struct HasDimension4 : equal_to<typename apply<GetDimension<_>, T>::type, int_<4> > {};
-		*/
 
-		/*
-				namespace detail {
-					template<typename T, int Dimension>
-					struct HasDimensionImpl {
-						typedef typename GetDimension<T>::type TypeDimension;
-						typedef typename boost::mpl::apply<equal_to<_, _>, TypeDimension, int_<Dimension> >::type type;
-					};
-				}
-				template<typename T, int Dimension>
-				struct HasDimension {
-					typedef typename boost::mpl::apply<typename detail::HasDimensionImpl<T, Dimension>::type>::type type;
-				};
-		*/
 		template<typename V>
 		struct IsTransformableVector : and_ <
 				is_vector<V>,
 				or_
-				< HasDimension3<V>
-				, HasDimension4<V>
+				< HasDimension<V, 3>
+				, HasDimension<V, 4>
 				> >::type {};
 
 	} // end of namespace UnaryPredicates
 
 
 	using UnaryPredicates::HasDimension;
-	using UnaryPredicates::HasDimension3;
-	using UnaryPredicates::HasDimension4;
 	using UnaryPredicates::IsTransformableVector;
 	using UnaryPredicates::HasFloatingPointScalar;
 
@@ -113,7 +88,7 @@ namespace osgTraits {
 
 		namespace detail {
 			BOOST_MPL_HAS_XXX_TRAIT_DEF(type);
-		} // end of namepsace detail
+		} // end of namespace detail
 
 		template<typename T1, typename T2, typename = void>
 		struct HaveCompatibleScalar {
@@ -138,10 +113,10 @@ namespace osgTraits {
 				typedef typename GetDimension<M>::type MatDim;
 				typedef typename boost::mpl::and_ <
 				boost::mpl::or_
-				< boost::is_same<VecDim, boost::mpl::int_<3> >
-				, boost::is_same<VecDim, boost::mpl::int_<4> >
+				< HasDimension<V, 3>
+				, HasDimension<V, 4>
 				>
-				, boost::is_same<MatDim, boost::mpl::int_<4> >
+				, HasDimension<M, 4>
 				> type;
 			};
 		} // end of namepsace detail

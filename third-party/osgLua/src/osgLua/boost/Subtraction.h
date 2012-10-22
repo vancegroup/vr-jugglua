@@ -37,7 +37,6 @@ namespace osgTraits {
 	struct Subtraction;
 
 	namespace Subtraction_Tags {
-		using namespace ::osgTraits::BinaryPredicates;
 		using boost::enable_if;
 		using boost::mpl::or_;
 

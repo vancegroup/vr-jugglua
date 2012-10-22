@@ -47,10 +47,6 @@ namespace osgTraits {
 		struct MathType {
 			typedef MathType type;
 		};
-		/*
-		struct BinaryOperator {};
-		struct UnaryOperator {};
-		*/
 	} // end of namespace tags
 } // end of namespace osgTraits
 

@@ -39,7 +39,6 @@ namespace osgTraits {
 	struct Addition;
 
 	namespace Addition_Tags {
-		using namespace ::osgTraits::BinaryPredicates;
 		using boost::enable_if;
 		using boost::mpl::and_;
 		using boost::mpl::or_;

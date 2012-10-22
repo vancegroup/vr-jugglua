@@ -85,7 +85,7 @@ namespace osgLua {
 	};
 
 	template<>
-	struct MetamethodName<osgTraits::CrossProduct> {
+	struct MetamethodName<osgTraits::Pow> {
 		static const char * get() {
 			return "__pow";
 		}
