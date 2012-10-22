@@ -21,7 +21,11 @@
 #define INCLUDED_BinaryOperators_h_GUID_9d5a8223_67c4_4299_99ef_30fe8607bab4
 
 // Internal Includes
+#include "Addition.h"
+#include "Subtraction.h"
 #include "Multiplication.h"
+#include "CrossProduct.h"
+#include "Division.h"
 #include "Tags.h"
 #include "IsOperatorAvailable.h"
 
@@ -63,15 +67,7 @@ namespace osgTraits {
 		typedef boost::mpl::filter_view<osgTraits::math_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
 	};
 
-	/*
-		template<typename BoundOp>
-		struct GetAvailableOpSpecializations {
-			typedef typename boost::mpl::transform_view<math_and_arithmetic_types, BoundOp>::type Possibilities;
-			typedef typename boost::mpl::filter_view<Possibilities, is_operator_available<boost::mpl::_1> >::type type;
-		};
-	*/
-
-	typedef boost::mpl::single_view<Multiplication> BinaryOperators;
+	typedef boost::mpl::list5<Addition, Subtraction, Multiplication, CrossProduct, Division> BinaryOperators;
 
 } // end of namespace osgTraits
 #endif // INCLUDED_BinaryOperators_h_GUID_9d5a8223_67c4_4299_99ef_30fe8607bab4

@@ -48,7 +48,7 @@ namespace osgTraits {
 		struct TransformCompose;
 		struct VectorDotProduct;
 		struct VectorTimesMatrix;
-		struct MatrixTimesVector;
+		struct TransformTimesVector;
 
 		struct VectorScalar;
 		struct ScalarVector;
@@ -95,10 +95,21 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
-				AreVectorAndMatrix<T2, T1>,
+				is_matrix<T1>,
+				is_vector<T2>,
 				CanTransformVecMatrix<T2, T1>,
 				HaveCompatibleScalar<T2, T1> > >::type > {
-			typedef MatrixTimesVector type;
+			typedef TransformTimesVector type;
+		};
+
+		template<typename T1, typename T2>
+		struct Compute < T1, T2, typename enable_if <
+				and_ <
+				is_quat<T1>,
+				is_vector<T2>,
+				boost::is_same<GetDimension<T1>, boost::mpl::int_<3> >,
+				HaveCompatibleScalar<T2, T1> > >::type > {
+			typedef TransformTimesVector type;
 		};
 
 		template<typename T1, typename T2>
@@ -181,7 +192,7 @@ namespace osgTraits {
 
 		/// Transform vector by matrix.
 		template<>
-		struct Multiplication_impl <MultiplicationTags::MatrixTimesVector> {
+		struct Multiplication_impl <MultiplicationTags::TransformTimesVector> {
 			template<typename M, typename V>
 			struct apply {
 				typedef V return_type;
