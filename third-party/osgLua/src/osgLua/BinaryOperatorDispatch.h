@@ -47,7 +47,12 @@
 namespace osgLua {
 
 	struct BinaryOpData {
-		BinaryOpData(lua_State * L, introspection::Type const& otherType) : other(otherType), a1(getValue(L, -2)), a2(getValue(L, -1)), r(), success(false) {}
+		BinaryOpData(lua_State * L, int otherStackIdx)
+			: other(getValue(L, otherStackIdx).getType())
+			, a1(getValue(L, -2))
+			, a2(getValue(L, -1))
+			, r()
+			, success(false) {}
 		introspection::Type const& other;
 		introspection::Value a1;
 		introspection::Value a2;
@@ -78,33 +83,33 @@ namespace osgLua {
 		};
 
 		typedef typename osgTraits::get_valid_other_arg_types<BoundOp>::type OtherArgumentPossibilities;
-		static int attempt(const char * verb, lua_State * L, introspection::Type const& otherType) {
-			BinaryOpData data(L, otherType);
+		static int attempt(lua_State * L, int otherStackIdx) {
+			BinaryOpData data(L, otherStackIdx);
 			boost::mpl::for_each<OtherArgumentPossibilities, visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
-			int ret = data.pushIfSuccessful(L);
-			if (ret == 0) {
-				return luaL_error(L, "[%s:%d] Could not %s instances of %s, %s", __FILE__, __LINE__, verb, data.a1.getType().getQualifiedName().c_str(), data.a2.getType().getQualifiedName().c_str());
-			}
-			return ret;
+			return data.pushIfSuccessful(L);
 		}
 	};
 
 	namespace {
 		template<typename Op, typename T1>
 		int attemptBinaryOperator(lua_State * L) {
+			int ret = 0;
 			if (osgLuaValueUsableAs<T1>(L, -2)) {
 				typedef typename osgTraits::operator_bind_first<Op, T1>::type BoundOp;
 				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 
-				return AttemptStruct::attempt(osgTraits::OperatorVerb<Op>::get(), L, getValue(L, -1).getType());
-
+				ret = AttemptStruct::attempt(L, -1);
 			} else if (osgLuaValueUsableAs<T1>(L, -1)) {
 				typedef typename osgTraits::operator_bind_second<Op, T1>::type BoundOp;
 				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 
-				return AttemptStruct::attempt(osgTraits::OperatorVerb<Op>::get(), L, getValue(L, -2).getType());
+				ret = AttemptStruct::attempt(L, -2);
 			}
-			return 0;
+			if (ret == 0) {
+				return luaL_error(L, "[%s:%d] Could not %s instances of %s, %s", __FILE__, __LINE__,
+				                  osgTraits::OperatorVerb<Op>::get(), getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+			}
+			return ret;
 		}
 	} // end of anonymous namespace
 
