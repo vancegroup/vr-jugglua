@@ -42,16 +42,16 @@ namespace osgTraits {
 
 		struct SimpleUnaryMinus;
 
-		template<typename T1, typename = void>
+		template<typename T, typename = void>
 		struct Compute {
 			typedef void type;
 		};
 
-		template<typename T1>
-		struct Compute < T1, typename enable_if <
+		template<typename T>
+		struct Compute < T, typename enable_if <
 				or_ <
-				AreCompatibleVectors<T1, T2>,
-				AreCompatibleQuats<T1, T2> > >::type > {
+				is_vector<T>,
+				is_quat<T> > >::type > {
 			typedef SimpleUnaryMinus type;
 		};
 
@@ -61,16 +61,16 @@ namespace osgTraits {
 		template<typename Tag>
 		struct UnaryMinus_impl;
 
-		template<typename T1>
+		template<typename T>
 		struct UnaryMinus_Specialization :
-				UnaryMinus_impl<typename UnaryMinus_Tags::Compute<T1>::type>::template apply<T1>,
-		                UnarySpecializedOperator<UnaryMinus, T1> {
-		                    typedef UnaryMinus_Specialization<T1> type;
+				UnaryMinus_impl<typename UnaryMinus_Tags::Compute<T>::type>::template apply<T>,
+		                UnarySpecializedOperator<UnaryMinus, T> {
+		                    typedef UnaryMinus_Specialization<T> type;
 		                };
 
 		template<typename Tag>
 		struct UnaryMinus_impl {
-			template<typename T1>
+			template<typename T>
 			struct apply {
 			};
 		};
@@ -82,7 +82,7 @@ namespace osgTraits {
 			struct apply {
 				typedef T return_type;
 
-				static return_type performOperation(T1 const& a) {
+				static return_type performOperation(T const& a) {
 					return -a;
 				}
 			};
@@ -90,9 +90,9 @@ namespace osgTraits {
 	} // end of namespace detail
 
 	struct UnaryMinus : UnaryOperatorBase {
-		template<typename T1>
-		struct apply : detail::UnaryMinus_Specialization<T1> {
-			typedef detail::UnaryMinus_Specialization<T1> type;
+		template<typename T>
+		struct apply : detail::UnaryMinus_Specialization<T> {
+			typedef detail::UnaryMinus_Specialization<T> type;
 		};
 	};
 
