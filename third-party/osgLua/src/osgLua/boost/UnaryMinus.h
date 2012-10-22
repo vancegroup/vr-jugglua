@@ -28,6 +28,7 @@
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
 #include <boost/mpl/or.hpp>
+#include <boost/mpl/and.hpp>
 
 // Standard includes
 // - none
@@ -39,6 +40,7 @@ namespace osgTraits {
 	namespace UnaryMinus_Tags {
 		using boost::enable_if;
 		using boost::mpl::or_;
+		using boost::mpl::and_;
 
 		struct SimpleUnaryMinus;
 
@@ -49,9 +51,11 @@ namespace osgTraits {
 
 		template<typename T>
 		struct Compute < T, typename enable_if <
+				and_ <
 				or_ <
 				is_vector<T>,
-				is_quat<T> > >::type > {
+				is_quat<T> > ,
+				HasFloatingPointScalar<T> > >::type > {
 			typedef SimpleUnaryMinus type;
 		};
 

@@ -25,6 +25,7 @@
 #include "UnaryOperators.h"
 #include "BinaryOperators.h"
 #include "CopyToFlatSequence.h"
+#include "IsOperatorAvailable.h"
 
 // Library/third-party includes
 #include <boost/mpl/joint_view.hpp>
@@ -62,7 +63,7 @@ namespace osgTraits {
 		struct IsOperatorApplicable_impl<int_<1> > {
 			template<typename Operator, typename T>
 			struct apply {
-				typedef boost::mpl::false_ type;
+				typedef typename is_operator_available<typename boost::mpl::apply<Operator, T>::type>::type type;
 			};
 		};
 
