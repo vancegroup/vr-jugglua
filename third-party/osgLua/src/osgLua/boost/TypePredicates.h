@@ -106,30 +106,6 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct have_same_dimension : boost::is_same<typename get_dimension<T1>::type, typename get_dimension<T2>::type>::type {};
 
-		namespace detail {
-			template<typename V, typename M>
-			struct can_transform_vec_matrix_impl {
-				typedef typename get_dimension<V>::type VecDim;
-				typedef typename get_dimension<M>::type MatDim;
-				typedef typename boost::mpl::and_ <
-				boost::mpl::or_
-				< has_dimension<V, 3>
-				, has_dimension<V, 4>
-				>
-				, has_dimension<M, 4>
-				> type;
-			};
-		} // end of namespace detail
-
-		template<typename V, typename M>
-		struct can_transform_vec_matrix : detail::can_transform_vec_matrix_impl<V, M>::type {};
-
-		template<typename T1, typename T2>
-		struct are_vec_and_matrix : and_ <
-				is_vector<T1>,
-				is_matrix<T2>
-				>::type {};
-
 		template<typename T1, typename T2>
 		struct have_same_cat_and_dim_with_compat_scalar : and_ <
 				have_same_category<T1, T2>,
@@ -157,8 +133,6 @@ namespace osgTraits {
 	using BinaryPredicates::have_compatible_scalar;
 	using BinaryPredicates::have_same_category;
 	using BinaryPredicates::have_same_dimension;
-	using BinaryPredicates::can_transform_vec_matrix;
-	using BinaryPredicates::are_vec_and_matrix;
 	using BinaryPredicates::are_compatible_vectors;
 	using BinaryPredicates::are_compatible_quats;
 	using BinaryPredicates::are_compatible_matrices;

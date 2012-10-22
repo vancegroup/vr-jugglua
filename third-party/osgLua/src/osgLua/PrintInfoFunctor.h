@@ -44,8 +44,6 @@ namespace osgLua {
 		std::cout << "	have_compatible_scalar: " << osgTraits::BinaryPredicates::have_compatible_scalar<T1, T2>::type::value << std::endl;
 		std::cout << "	have_same_category: " << osgTraits::BinaryPredicates::have_same_category<T1, T2>::type::value << std::endl;
 		std::cout << "	have_same_dimension: " << osgTraits::BinaryPredicates::have_same_dimension<T1, T2>::type::value << std::endl;
-		std::cout << "	can_transform_vec_matrix: " << osgTraits::BinaryPredicates::can_transform_vec_matrix<T1, T2>::type::value << std::endl;
-		std::cout << "	are_vec_and_matrix: " << osgTraits::BinaryPredicates::are_vec_and_matrix<T1, T2>::type::value << std::endl;
 		std::cout << "	have_same_cat_and_dim_with_compat_scalar: " << osgTraits::BinaryPredicates::have_same_cat_and_dim_with_compat_scalar<T1, T2>::type::value << std::endl;
 		typedef typename boost::mpl::apply<Operator, T1, T2>::type SpecOp;
 		typedef typename osgTraits::is_operator_available<SpecOp>::type IsAvail;
