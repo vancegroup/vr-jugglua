@@ -38,11 +38,16 @@
 // - none
 
 namespace osgLua {
+	template<typename T, typename Operator>
+	inline void reportRegistration(bool applicable) {
+		OSG_INFO << (applicable ? "Registering " : "Skipping ") << getTypeName<T>() << " metamethod " << MetamethodName<Operator>::get() << " (" << MetamethodName<Operator>::getSymbol() << ")" << std::endl;
+	}
 
 	template<typename T, typename Operator>
 	inline typename boost::enable_if<boost::mpl::equal_to<typename osgTraits::get_operator_arity<Operator>::type, boost::mpl::int_<2> > >::type
 	pushAndSetOperator(lua_State * L, boost::mpl::true_ const&) {
-		boost::mpl::for_each<osgTraits::math_and_arithmetic_types>(PrintInfoFunctor<T, Operator>());
+		reportRegistration<T, Operator>(true);
+		//boost::mpl::for_each<osgTraits::math_and_arithmetic_types>(PrintInfoFunctor<T, Operator>());
 		lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
 		lua_setfield(L, -2, MetamethodName<Operator>::get());
 	}
@@ -50,13 +55,14 @@ namespace osgLua {
 	template<typename T, typename Operator>
 	inline typename boost::enable_if<boost::mpl::equal_to<typename osgTraits::get_operator_arity<Operator>::type, boost::mpl::int_<1> > >::type
 	pushAndSetOperator(lua_State * L, boost::mpl::true_ const&) {
+		reportRegistration<T, Operator>(true);
 		lua_pushcfunction(L, &(attemptUnaryOperator<Operator, T>));
 		lua_setfield(L, -2, MetamethodName<Operator>::get());
 	}
 
 	template<typename T, typename Operator>
 	inline void pushAndSetOperator(lua_State *, boost::mpl::false_ const&) {
-		OSG_INFO << "Skipped " << MetamethodName<Operator>::get() << " since it's not applicable." << std::endl;
+		reportRegistration<T, Operator>(false);
 	}
 
 	struct RegistrationData {
@@ -73,15 +79,12 @@ namespace osgLua {
 		struct visit_operator {
 			//typedef typename boost::mpl::apply<boost::mpl::quote2<osgTraits::IsOperatorApplicable>, Operator, T>::type IsApplicable;
 			static void visit(RegistrationData const& d) {
-				OSG_INFO << "Registering " << MetamethodName<Operator>::get() << std::endl;
 				pushAndSetOperator<T, Operator>(d.L, typename osgTraits::IsOperatorApplicable<Operator, T>::type());
 			}
 		};
 
 		static void visit(RegistrationData & d) {
-			//OSG_INFO << "In RegisterOperators with " << typeid(T).name() << std::endl;
 			if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
-				OSG_INFO << "Pushing metafunctions for " << d.metatableType.getQualifiedName() << std::endl;
 				d.foundOurType = true;
 				d.comparability.eq = true;
 				d.comparability.lt = true;
@@ -89,7 +92,6 @@ namespace osgLua {
 
 				boost::mpl::for_each<osgTraits::MathOperators, visit_operator<boost::mpl::_1> >(util::visitorState(d));
 			}
-
 		}
 	};
 
