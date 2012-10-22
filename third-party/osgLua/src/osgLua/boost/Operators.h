@@ -27,43 +27,39 @@
 #include "CopyToFlatSequence.h"
 
 // Library/third-party includes
+#include <boost/mpl/joint_view.hpp>
+#include <boost/mpl/apply.hpp>
+#include <boost/mpl/quote.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/or.hpp>
-#include <boost/mpl/lambda.hpp>
-#include <boost/mpl/copy.hpp>
-#include <boost/mpl/joint_view.hpp>
 
 // Standard includes
 // - none
 
 // Standard includes
 // - none
-
-namespace osgTraits {
-
-} // end of namespace osgTraits
 
 namespace osgTraits {
 	typedef detail::copy_to_flat_sequence < boost::mpl::joint_view<BinaryOperators, UnaryOperators> >::type MathOperators;
 
 	namespace detail {
+		using boost::mpl::apply;
+		using boost::mpl::quote1;
+		using boost::mpl::int_;
+		using boost::mpl::or_;
+		using boost::mpl::protect;
+
 		template<typename OperatorArity>
 		struct IsOperatorApplicable_impl {
 			template<typename Operator, typename T>
 			struct apply;
 		};
-		using boost::mpl::lambda;
-		using boost::mpl::_;
-		using boost::mpl::_1;
-		using boost::mpl::_2;
-		using boost::mpl::or_;
-		using boost::mpl::apply;
 		template<typename Operator, typename T>
-		struct IsOperatorApplicable : IsOperatorApplicable_impl<typename apply<boost::mpl::quote1<get_operator_arity>, Operator>::type>::template apply<Operator, T> {};
+		struct IsOperatorApplicable : IsOperatorApplicable_impl<typename apply<quote1<get_operator_arity>, Operator>::type>::template apply<Operator, T> {};
 
 		template<>
-		struct IsOperatorApplicable_impl<boost::mpl::int_<1> > {
+		struct IsOperatorApplicable_impl<int_<1> > {
 			template<typename Operator, typename T>
 			struct apply {
 				typedef boost::mpl::false_ type;
@@ -71,23 +67,15 @@ namespace osgTraits {
 		};
 
 		template<>
-		struct IsOperatorApplicable_impl<boost::mpl::int_<2> > {
+		struct IsOperatorApplicable_impl<int_<2> > {
 			template<typename Operator, typename T>
-			struct apply : boost::mpl::or_ <
-					BoundOpHasOverloads<boost::mpl::protect<typename OperatorBindFirst<Operator, T>::type> >,
-					BoundOpHasOverloads<boost::mpl::protect<typename OperatorBindSecond<Operator, T>::type > > >  {};
+			struct apply : or_ <
+					BoundOpHasOverloads<protect<typename OperatorBindFirst<Operator, T>::type> >,
+					BoundOpHasOverloads<protect<typename OperatorBindSecond<Operator, T>::type > > >  {};
 		};
-		/*
-		template<typename T>
-		struct get_applicable_operators {
-			typedef boost::mpl::filter_view<MathOperators, is_bound_operator_available<boost::mpl::protect<BoundOp>, _> > type;
-		};
-		*/
-	}
+	} // end of namespace detail
 
 	using detail::IsOperatorApplicable;
-
-
 
 } // end of namespace osgTraits
 
