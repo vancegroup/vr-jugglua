@@ -85,8 +85,9 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
-				are_vec_and_matrix<T1, T2>,
-				can_transform_vec_matrix<T1, T2>,
+				is_transformable_vector<T1>,
+				is_matrix<T2>,
+				has_dimension<T2, 4>,
 				have_compatible_scalar<T1, T2> > >::type > {
 			typedef VectorTimesMatrix type;
 		};
@@ -94,10 +95,10 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
+				is_transformable_vector<T2>,
 				is_matrix<T1>,
-				is_vector<T2>,
-				can_transform_vec_matrix<T2, T1>,
-				have_compatible_scalar<T2, T1> > >::type > {
+				has_dimension<T1, 4>,
+				have_compatible_scalar<T1, T2> > >::type > {
 			typedef TransformTimesVector type;
 		};
 
@@ -106,8 +107,8 @@ namespace osgTraits {
 				and_ <
 				is_quat<T1>,
 				is_vector<T2>,
-				has_dimension<T1, 3>,
-				have_compatible_scalar<T2, T1> > >::type > {
+				has_dimension<T2, 3>,
+				have_compatible_scalar<T1, T2> > >::type > {
 			typedef TransformTimesVector type;
 		};
 
@@ -169,8 +170,7 @@ namespace osgTraits {
 			struct apply {
 				typedef typename promote_type_with_scalar<T1, typename get_scalar<T2>::type>::type return_type;
 
-				template<typename A, typename B>
-				static return_type performOperation(A const& v1, B const& v2) {
+				static return_type performOperation(T1 const& v1, T2 const& v2) {
 					return return_type(v1) * return_type(v2);
 				}
 			};
@@ -211,7 +211,7 @@ namespace osgTraits {
 				typedef typename promote_type_with_scalar<V, S>::type vec_type;
 				typedef vec_type return_type;
 
-				static return_type performOperation(S const& s, V const& v) {
+				static return_type performOperation(V const& v, S const& s) {
 					return vec_type(v) * s;
 				}
 			};
@@ -226,7 +226,7 @@ namespace osgTraits {
 				typedef typename promote_type_with_scalar<V, S>::type vec_type;
 				typedef vec_type return_type;
 
-				static return_type performOperation(V const& v, S const& s) {
+				static return_type performOperation(S const& s, V const& v) {
 					return vec_type(v) * s;
 				}
 			};
