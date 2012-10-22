@@ -151,6 +151,20 @@ namespace osgTraits {
 				HaveSameDimension<T1, T2>
 				>::type {};
 
+		template<typename T1, typename T2>
+		struct AreCompatibleVectors : and_ <
+				is_vector<T1>,
+				HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2> >::type {};
+
+		template<typename T1, typename T2>
+		struct AreCompatibleQuats : and_ <
+				is_quat<T1>,
+				HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2> >::type {};
+
+		template<typename T1, typename T2>
+		struct AreCompatibleMatrices : and_ <
+				is_matrix<T1>,
+				HaveSameCategoryAndDimensionWithCompatibleScalar<T1, T2> >::type {};
 	} // end of namespace BinaryPredicates
 
 
