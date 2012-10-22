@@ -27,7 +27,6 @@
 
 // Library/third-party includes
 #include <boost/utility/enable_if.hpp>
-//#include <boost/type_traits/has_multiplies.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/or.hpp>
