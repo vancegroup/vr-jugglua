@@ -77,10 +77,19 @@ namespace osgLua {
 			}
 			lua_setfield(L, -2, "__tostring");
 
-			/// Bind mathematically-inclined values specially
-			Comparability c = registerMathMetamethods(L, t);
+			/// Push these coomparison methods. For matrices, we will overwrite
+			/// these when registering the math metamethods
+			lua_pushcfunction(L, &value_metamethods::eq);
+			lua_setfield(L, -2, "__eq");
 
-			registerValueComparisons(L, c);
+			lua_pushcfunction(L, &value_metamethods::lt);
+			lua_setfield(L, -2, "__lt");
+
+			lua_pushcfunction(L, &value_metamethods::le);
+			lua_setfield(L, -2, "__le");
+
+			/// Bind mathematically-inclined values specially
+			registerMathMetamethods(L, t);
 		}
 	}
 

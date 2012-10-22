@@ -53,15 +53,11 @@
 // - none
 
 namespace osgLua {
-	Comparability registerMathMetamethods(lua_State * L, introspection::Type const& t) {
+	bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
 		/// Bind mathematically-inclined values specially - only
 		/// one such binding will succeed for a type, obviously, so
 		/// exit the method immediately at that point.
 
-		Comparability vecComp;
-		vecComp.eq = true;
-		vecComp.lt = true;
-		vecComp.le = true;
 #define BIND_VECTOR(TYPE) \
 		if (Vector::bind_metamethods<TYPE>(L, t)) { \
 	  		return true; \
@@ -87,12 +83,9 @@ namespace osgLua {
 #undef BIND_VECTOR
 
 
-		Comparability matComp;
-		vecComp.eq = true;
-		vecComp.lt = true;
 #define BIND_MATRIX(TYPE) \
 		if (Matrix::bind_metamethods<TYPE>(L, t)) { \
-	  		return matComp; \
+	  		return true; \
 	  	}
 
 		BIND_MATRIX(osg::Matrixd)
@@ -101,7 +94,7 @@ namespace osgLua {
 
 #undef BIND_MATRIX
 
-		return Comparability();
+		return false;
 	}
 
 } // end of namespace osgLua

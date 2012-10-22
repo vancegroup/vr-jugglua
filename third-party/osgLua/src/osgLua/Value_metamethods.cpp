@@ -96,18 +96,4 @@ namespace osgLua {
 
 	} // end of value_metamethods namespace
 
-	void registerValueComparisons(lua_State * L, Comparability const& c) {
-		if (c.eq) {
-			lua_pushcfunction(L, &value_metamethods::eq);
-			lua_setfield(L, -2, "__eq");
-		}
-		if (c.lt) {
-			lua_pushcfunction(L, &value_metamethods::lt);
-			lua_setfield(L, -2, "__lt");
-		}
-		if (c.le) {
-			lua_pushcfunction(L, &value_metamethods::le);
-			lua_setfield(L, -2, "__le");
-		}
-	};
 } // end of osgLua namespace

@@ -158,12 +158,11 @@ namespace osgLua {
 					detail::setMatrix(L);
 					lua_pushcfunction(L, &Matrix::mul<T>);
 					lua_setfield(L, -2, "__mul");
-					/*
+					/// Overwrite the generic comparison functions
 					lua_pushcfunction(L, &Matrix::eq<T>);
 					lua_setfield(L, -2, "__eq");
 					lua_pushcfunction(L, &Matrix::lt<T>);
 					lua_setfield(L, -2, "__lt");
-					*/
 					return true;
 				}
 			} catch (introspection::Exception & e) {

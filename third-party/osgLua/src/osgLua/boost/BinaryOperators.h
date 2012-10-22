@@ -26,6 +26,8 @@
 #include "Multiplication.h"
 #include "CrossProduct.h"
 #include "Division.h"
+#include "Equality.h"
+#include "LessThan.h"
 #include "Tags.h"
 #include "IsOperatorAvailable.h"
 
@@ -76,7 +78,7 @@ namespace osgTraits {
 	template<typename BoundOp>
 	struct BoundOpHasOverloads : boost::mpl::not_<boost::mpl::empty<typename GetAvailableOtherArgTypes<BoundOp>::type > > {};
 
-	typedef boost::mpl::list5<Addition, Subtraction, Multiplication, CrossProduct, Division> BinaryOperators;
+	typedef boost::mpl::list7<Addition, Subtraction, Multiplication, CrossProduct, Division, Equality, LessThan> BinaryOperators;
 
 } // end of namespace osgTraits
 #endif // INCLUDED_BinaryOperators_h_GUID_9d5a8223_67c4_4299_99ef_30fe8607bab4

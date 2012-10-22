@@ -31,12 +31,6 @@ namespace osgLua {
 		int le(lua_State *L);
 	}
 
-	struct Comparability {
-		bool eq;
-		bool lt;
-		bool le;
-	};
-	void registerValueComparisons(lua_State * L, Comparability const& c);
 } // end of osgLua namespace
 
 #endif

@@ -21,7 +21,6 @@
 #define INCLUDED_RegisterMathMetamethods_h_GUID_2338d460_fd97_40ce_bff4_068da65d08bd
 
 // Internal Includes
-#include "Value_metamethods.h"
 #include <osgLua/LuaInclude>
 #include <osgLua/introspection/Type>
 
@@ -33,9 +32,9 @@
 
 namespace osgLua {
 	/// @brief Pass a Lua state with a new metatable on top, and an
-	/// introspection::Type to register any math methods and return info
-	/// on comparability.
-	Comparability registerMathMetamethods(lua_State * L, introspection::Type const& t);
+	/// introspection::Type to register any math methods and return true
+	/// if this is a math type.
+	bool registerMathMetamethods(lua_State * L, introspection::Type const& t);
 
 } // end of namespace osgLua
 

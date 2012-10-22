@@ -70,14 +70,12 @@ namespace osgLua {
 		lua_State * L;
 		introspection::Type const& metatableType;
 		bool foundOurType;
-		Comparability comparability;
 	};
 
 	template<typename T>
 	struct visit_types {
 		template<typename Operator>
 		struct visit_operator {
-			//typedef typename boost::mpl::apply<boost::mpl::quote2<osgTraits::IsOperatorApplicable>, Operator, T>::type IsApplicable;
 			static void visit(RegistrationData const& d) {
 				pushAndSetOperator<T, Operator>(d.L, typename osgTraits::IsOperatorApplicable<Operator, T>::type());
 			}
@@ -86,19 +84,15 @@ namespace osgLua {
 		static void visit(RegistrationData & d) {
 			if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
 				d.foundOurType = true;
-				d.comparability.eq = true;
-				d.comparability.lt = true;
-				d.comparability.le = typename osgTraits::is_vector<T>::type();
-
 				boost::mpl::for_each<osgTraits::MathOperators, visit_operator<boost::mpl::_1> >(util::visitorState(d));
 			}
 		}
 	};
 
-	Comparability registerMathMetamethods(lua_State * L, introspection::Type const& t) {
+	bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
 		RegistrationData data(L, t);
 		boost::mpl::for_each<osgTraits::math_types, visit_types<boost::mpl::_1> >(util::visitorState(data));
-		return data.comparability;
+		return data.foundOurType;
 	}
 
 } // end of namespace osgLua

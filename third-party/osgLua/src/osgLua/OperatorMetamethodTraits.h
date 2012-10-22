@@ -36,6 +36,8 @@ namespace osgTraits {
 	struct Multiplication;
 	struct CrossProduct;
 	struct Division;
+	struct Equality;
+	struct LessThan;
 }
 
 namespace osgLua {
@@ -99,6 +101,26 @@ namespace osgLua {
 		}
 		static const char * getSymbol() {
 			return "/";
+		}
+	};
+
+	template<>
+	struct MetamethodName<osgTraits::Equality> {
+		static const char * get() {
+			return "__eq";
+		}
+		static const char * getSymbol() {
+			return "==";
+		}
+	};
+
+	template<>
+	struct MetamethodName<osgTraits::LessThan> {
+		static const char * get() {
+			return "__lt";
+		}
+		static const char * getSymbol() {
+			return "<";
 		}
 	};
 } // end of namespace osgLua
