@@ -94,6 +94,10 @@ namespace osgLua {
 		template<typename Op, typename T1>
 		int attemptBinaryOperator(lua_State * L) {
 			int ret = 0;
+			if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+				return luaL_error(L, "[%s:%d] Could not %s: %s operand is nil", __FILE__, __LINE__,
+				                  osgTraits::OperatorVerb<Op>::get(), (lua_isnil(L, -2) ? "first" : "second" ) );
+			}
 			if (osgLuaValueUsableAs<T1>(L, -2)) {
 				typedef typename osgTraits::operator_bind_first<Op, T1>::type BoundOp;
 				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
