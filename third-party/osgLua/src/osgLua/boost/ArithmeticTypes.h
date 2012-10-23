@@ -31,7 +31,7 @@
 
 namespace osgTraits {
 	/// @todo this list is incomplete
-	typedef boost::mpl::list2<double, float> arithmetic_types;
+	typedef boost::mpl::list7<double, float, long int, int, short, signed char, unsigned char> arithmetic_types;
 } // end of namespace osgTraits
 
 #endif // INCLUDED_ArithmeticTypes_h_GUID_ddc568fc_99ac_4121_a909_f1831bbd9371

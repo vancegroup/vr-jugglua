@@ -122,16 +122,14 @@ namespace osgTraits {
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
 				is_vector<T1>,
-				is_scalar<T2>,
-				have_compatible_scalar<T1, T2> > >::type > {
+				is_scalar<T2> > >::type > {
 			typedef VectorScalar type;
 		};
 		template<typename T1, typename T2>
 		struct Compute < T1, T2, typename enable_if <
 				and_ <
 				is_scalar<T1>,
-				is_vector<T2>,
-				have_compatible_scalar<T1, T2> > >::type > {
+				is_vector<T2> > >::type > {
 			typedef ScalarVector type;
 		};
 	}
