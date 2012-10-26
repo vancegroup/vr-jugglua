@@ -37,9 +37,9 @@ namespace osgTraits {
 	template<typename T, typename ScalarType>
 	struct promote_type_with_scalar {
 		typedef typename get_category<T>::type Category;
-		typedef typename boost::mpl::eval_if<typename have_compatible_scalar<T, ScalarType>::type,
-			get_compatible_scalar<typename get_scalar<T>::type, ScalarType>,
-			get_scalar<T> >::type Scalar;
+		typedef typename boost::mpl::eval_if < typename have_compatible_scalar<T, ScalarType>::type,
+		        get_compatible_scalar<typename get_scalar<T>::type, ScalarType>,
+		        get_scalar<T> >::type Scalar;
 		typedef typename get_dimension<T>::type Dimension;
 		typedef typename select_type< Category, Scalar, Dimension>::type type;
 	};
