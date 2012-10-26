@@ -77,9 +77,7 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Division_Specialization :
 				Division_impl<typename Division_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		              BinarySpecializedOperator<Division, T1, T2> {
-		                  typedef Division_Specialization<T1, T2> type;
-		              };
+		              BinarySpecializedOperator<Division, T1, T2> {};
 
 		template<typename Tag>
 		struct Division_impl {
