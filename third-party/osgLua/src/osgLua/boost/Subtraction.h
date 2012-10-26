@@ -71,9 +71,7 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Subtraction_Specialization :
 				Subtraction_impl<typename Subtraction_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		                 BinarySpecializedOperator<Subtraction, T1, T2> {
-		                     typedef Subtraction_Specialization<T1, T2> type;
-		                 };
+		                 BinarySpecializedOperator<Subtraction, T1, T2> {};
 
 		template<typename Tag>
 		struct Subtraction_impl {
@@ -99,7 +97,7 @@ namespace osgTraits {
 
 	struct Subtraction : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::Subtraction_Specialization<T1, T2> {
+		struct apply {
 			typedef detail::Subtraction_Specialization<T1, T2> type;
 		};
 	};

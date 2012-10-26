@@ -74,9 +74,7 @@ namespace osgTraits {
 		template<typename T>
 		struct UnaryMinus_Specialization :
 				UnaryMinus_impl<typename UnaryMinus_Tags::Compute<T>::type>::template apply<T>,
-		                UnarySpecializedOperator<UnaryMinus, T> {
-		                    typedef UnaryMinus_Specialization<T> type;
-		                };
+		                UnarySpecializedOperator<UnaryMinus, T> {};
 
 		template<typename Tag>
 		struct UnaryMinus_impl {
@@ -101,7 +99,7 @@ namespace osgTraits {
 
 	struct UnaryMinus : UnaryOperatorBase {
 		template<typename T>
-		struct apply : detail::UnaryMinus_Specialization<T> {
+		struct apply {
 			typedef detail::UnaryMinus_Specialization<T> type;
 		};
 	};

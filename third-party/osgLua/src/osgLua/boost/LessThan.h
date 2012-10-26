@@ -71,9 +71,7 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct LessThan_Specialization :
 				LessThan_impl<typename LessThan_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		              BinarySpecializedOperator<LessThan, T1, T2> {
-		                  typedef LessThan_Specialization<T1, T2> type;
-		              };
+		              BinarySpecializedOperator<LessThan, T1, T2> {};
 
 		template<typename Tag>
 		struct LessThan_impl {
@@ -97,7 +95,7 @@ namespace osgTraits {
 
 	struct LessThan : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::LessThan_Specialization<T1, T2> {
+		struct apply {
 			typedef detail::LessThan_Specialization<T1, T2> type;
 		};
 	};

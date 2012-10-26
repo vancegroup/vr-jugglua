@@ -81,9 +81,7 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Pow_Specialization :
 				Pow_impl<typename Pow_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		         BinarySpecializedOperator<Pow, T1, T2> {
-		             typedef Pow_Specialization<T1, T2> type;
-		         };
+		         BinarySpecializedOperator<Pow, T1, T2> {};
 
 		template<typename Tag>
 		struct Pow_impl {
@@ -110,7 +108,7 @@ namespace osgTraits {
 
 	struct Pow : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::Pow_Specialization<T1, T2> {
+		struct apply {
 			typedef detail::Pow_Specialization<T1, T2> type;
 		};
 	};

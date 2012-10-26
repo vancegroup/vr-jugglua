@@ -70,9 +70,7 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Equality_Specialization :
 				Equality_impl<typename Equality_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		              BinarySpecializedOperator<Equality, T1, T2> {
-		                  typedef Equality_Specialization<T1, T2> type;
-		              };
+		              BinarySpecializedOperator<Equality, T1, T2> {};
 
 		template<typename Tag>
 		struct Equality_impl {
@@ -96,7 +94,7 @@ namespace osgTraits {
 
 	struct Equality : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::Equality_Specialization<T1, T2> {
+		struct apply {
 			typedef detail::Equality_Specialization<T1, T2> type;
 		};
 	};

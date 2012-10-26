@@ -74,9 +74,7 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct Addition_Specialization :
 				Addition_impl<typename Addition_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		              BinarySpecializedOperator<Addition, T1, T2> {
-		                  typedef Addition_Specialization<T1, T2> type;
-		              };
+		              BinarySpecializedOperator<Addition, T1, T2> {};
 
 		template<typename Tag>
 		struct Addition_impl {
@@ -103,7 +101,7 @@ namespace osgTraits {
 
 	struct Addition : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::Addition_Specialization<T1, T2> {
+		struct apply {
 			typedef detail::Addition_Specialization<T1, T2> type;
 		};
 	};

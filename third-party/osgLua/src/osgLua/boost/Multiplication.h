@@ -141,9 +141,7 @@ namespace osgTraits {
 		template<typename T1, typename T2>
 		struct MultiplicationSpecialization :
 				Multiplication_impl<typename MultiplicationTags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		                    BinarySpecializedOperator<Multiplication, T1, T2> {
-		                        typedef MultiplicationSpecialization<T1, T2> type;
-		                    };
+		                    BinarySpecializedOperator<Multiplication, T1, T2> {};
 		template<typename Tag>
 		struct Multiplication_impl {
 			template<typename T1, typename T2>
@@ -239,7 +237,7 @@ namespace osgTraits {
 
 	struct Multiplication : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::MultiplicationSpecialization<T1, T2> {
+		struct apply {
 			typedef detail::MultiplicationSpecialization<T1, T2> type;
 		};
 	};
