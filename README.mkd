@@ -45,6 +45,8 @@ For the full change history, see the git repository.  This section is a high-lev
 
 - *Improved functionality*: We now extract even more OpenGL defines into `gldef`, in particular including the blend function defines.
 
+- *Improved functionality*: The `Vec` functions now can make copies of OSG vectors - pass an OSG vector, table, or just numbers in, and you'll be sure to get a vector out.
+
 ### August 2012
 - *Added module*: `require "gldef"` will create a table `gldef` containing all the potentially-useful definitions (of constants/enumerations) extracted from `gl.h`. These are sometimes necessary for more advanced lighting code with OSG.
 
