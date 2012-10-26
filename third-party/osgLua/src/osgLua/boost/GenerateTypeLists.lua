@@ -76,7 +76,7 @@ end
 printTypelists = function()
 	for shortname, desc in pairs(description) do
 		local typelist = table.concat(map(MathTypes[shortname], makeTypenameQualifier(makeTypename[shortname])), ", ")
-		print( ("	typedef boost::mpl::%s< %s > %s_types;"):format(TypelistType, typelist, desc) )
+		print( ("	struct %s_types : boost::mpl::%s< %s > {};"):format(desc, TypelistType, typelist) )
 	end
 	print("")
 end
