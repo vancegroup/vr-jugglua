@@ -231,13 +231,11 @@ end
 function Transform(arg)
 	local t = osg.PositionAttitudeTransform()
 	if arg.position ~= nil then
-		if #arg.position ~= 3 then
+		local pos = Vecd(arg.position)
+		if #vecToTable(pos) ~= 3 then
 			error("Cannot set position: position must have 3 elements!", 2)
 		else
-			t:setPosition(osg.Vec3d(
-					arg.position[1],
-					arg.position[2],
-					arg.position[3]))
+			t:setPosition(pos)
 		end
 	end
 
