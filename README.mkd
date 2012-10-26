@@ -47,6 +47,8 @@ For the full change history, see the git repository.  This section is a high-lev
 
 - *Improved functionality*: The `Vec` functions now can make copies of OSG vectors - pass an OSG vector, table, or just numbers in, and you'll be sure to get a vector out.
 
+- *Extended functionality*: There's now a `Switch{}` constructor which behaves like `Group{}` except: a) it creates `osg.Switch` nodes, and b) you can optionally define the initial state (on or off) of children by passing them like `Switch{ [myNode] = true, [myOtherNode] = false}`. (Of course, just passing them in as you would with the other group nodes works fine too.)
+
 ### August 2012
 - *Added module*: `require "gldef"` will create a table `gldef` containing all the potentially-useful definitions (of constants/enumerations) extracted from `gl.h`. These are sometimes necessary for more advanced lighting code with OSG.
 

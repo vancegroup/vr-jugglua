@@ -262,6 +262,20 @@ function MatrixTransform(arg)
 	return handleGroupChildren(t, arg)
 end
 
+
+function Switch(arg)
+	local t = osg.Switch()
+
+	--- If you pass something as [somenode] = true, it will be added with that enabled state (true or false)
+	for k, v in pairs(arg) do
+		if type(k) == "userdata" and type(v) == "boolean" then
+			t:addChild(k, v)
+		end
+	end
+
+	return handleGroupChildren(t, arg)
+end
+
 function Model(filename)
 	local m = osgLua.loadObjectFile(filename)
 	local c = osgLua.getTypeInfo(m)
