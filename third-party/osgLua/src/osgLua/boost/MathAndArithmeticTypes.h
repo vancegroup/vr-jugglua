@@ -34,7 +34,7 @@
 
 namespace osgTraits {
 
-	typedef detail::copy_to_flat_sequence < boost::mpl::joint_view<math_types, arithmetic_types> >::type math_and_arithmetic_types;
+	struct math_and_arithmetic_types : detail::copy_to_flat_sequence < boost::mpl::joint_view<math_types, arithmetic_types> >::type {};
 
 } // end of namespace osgTraits
 

@@ -39,7 +39,7 @@
 // - none
 
 namespace osgTraits {
-	typedef detail::copy_to_flat_sequence < boost::mpl::joint_view<BinaryOperators, UnaryOperators> >::type MathOperators;
+	struct MathOperators : detail::copy_to_flat_sequence < boost::mpl::joint_view<BinaryOperators, UnaryOperators> >::type {};
 
 	namespace detail {
 		using boost::mpl::apply;

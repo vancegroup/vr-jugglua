@@ -34,7 +34,7 @@ namespace osgTraits {
 	namespace detail {
 		using boost::mpl::joint_view;
 
-		typedef copy_to_flat_sequence<joint_view< joint_view<matrix_types, vector_types>, quat_types> >::type math_types;
+		struct math_types : copy_to_flat_sequence<joint_view< joint_view<matrix_types, vector_types>, quat_types> >::type {};
 	} // end of namespace detail
 
 	using detail::math_types;
