@@ -23,6 +23,37 @@ ScaleFrom = {
 	m = 1.0
 }
 
+local isOsgVec = function(a)
+	if type(a) == "userdata" then
+		local typeinfo = osgLua.getTypeInfo(a)
+		if type(typeinfo) == "table" and typeinfo.name ~= nil then
+			local dimension = typeinfo.name:gsub("^osg::Vec(.).*", "%1")
+			local success, dim = pcall(tonumber, dimension)
+			if not success then return false end
+			local suffix = typeinfo.name:gsub("^osg::Vec.(.*)", "%1")
+			return true, dim, suffix
+		end
+	end
+	return false
+end
+
+local coeffNames = {
+	[2] = {"x", "y"};
+	[3] = {"x", "y", "z"};
+	[4] = {"x", "y", "z", "w"};
+}
+local vecToTable = function(vec)
+	local isVec, dim, suffix = isOsgVec(vec)
+	if not isVec then
+		error("Can't turn something that's not an OSG Vector from an OSG Vector into a Table!")
+	end
+	local ret = {}
+	for _, memberName in ipairs(coeffNames[dim]) do
+		table.insert(ret, vec[memberName](vec)) -- accessing member function
+	end
+	return ret
+end
+
 -- This function returns functions that create vectors automatically, using
 -- the suffix specified initially (like "d") and the number of arguments (3 to make Vec3d)
 local makeVectorConstructor = function(suffix)
@@ -32,7 +63,14 @@ local makeVectorConstructor = function(suffix)
 			-- They just passed a table
 			a = a[1]
 		end
-		local typename = "Vec" .. tostring(#a) .. suffix
+		if #a == 1 then
+			if (isOsgVec(a[1])) then
+				print("It's an OSG vec")
+				a = vecToTable(a[1])
+			end
+		end
+		local dim = #a
+		local typename = ("Vec%d%s"):format(dim, suffix)
 		-- A proper type will be a table, not a function
 		if type(osg[typename]) == "table" then
 			return osg[typename](unpack(a))
