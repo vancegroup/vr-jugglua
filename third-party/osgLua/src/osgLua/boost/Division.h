@@ -115,7 +115,7 @@ namespace osgTraits {
 
 	struct Division : BinaryOperatorBase {
 		template<typename T1, typename T2>
-		struct apply : detail::Division_Specialization<T1, T2> {
+		struct apply {
 			typedef detail::Division_Specialization<T1, T2> type;
 		};
 	};
