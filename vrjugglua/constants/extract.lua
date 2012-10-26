@@ -2,8 +2,8 @@
 tablename = arg[2] or "osgLua"
 
 local f = io.open(arg[1] or "gl.h", "rb")
--- Grab everything between the " * Constants" and " * Miscellaneous" comment lines
-contents = f:read("*all"):gsub("^.- %* Constants(.-) %* Miscellaneous.*", "%1")
+-- Grab everything between the " * Constants" and "/* GL_ARB_multitexture" comment lines
+contents = f:read("*all"):gsub("^.- %* Constants(.-) /%* GL_ARB_multitexture.*", "%1")
 f:close()
 
 -- Create table in case it doesn't exists
