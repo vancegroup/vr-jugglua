@@ -31,22 +31,12 @@
 
 namespace osgTraits {
 	namespace tags {
-		struct Vec {
-			typedef Vec type;
-		};
-		struct Matrix {
-			typedef Matrix type;
-		};
-		struct Quat {
-			typedef Quat type;
-		};
-		struct Scalar {
-			typedef Scalar type;
-		};
+		struct Vec;
+		struct Matrix;
+		struct Quat;
+		struct Scalar;
 
-		struct MathType {
-			typedef MathType type;
-		};
+		struct MathType;
 	} // end of namespace tags
 } // end of namespace osgTraits
 
