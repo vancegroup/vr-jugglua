@@ -310,3 +310,7 @@ function Geode(arg)
 	end
 	return g
 end
+
+function clippy()
+	RelativeTo.Room:addChild(Transform{position={1,1,0},Model("assets/models/clippy.ive")})
+end
