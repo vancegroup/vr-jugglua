@@ -46,8 +46,8 @@ namespace osgLua {
 		}
 
 		template<class Mat, class Vec>
-		Vec xformVec(introspection::Value const& theVec, introspection::Value const& theMat) {
-			return introspection::variant_cast<Vec>(theVec) * introspection::variant_cast<Mat>(theMat);
+		Vec xformVec(introspection::Value const& theMat, introspection::Value const& theVec) {
+			return introspection::variant_cast<Mat>(theMat) * introspection::variant_cast<Vec>(theVec);
 		}
 
 	} // end of namespace detail
@@ -62,7 +62,7 @@ namespace osgLua {
 			    introspection::Reflection::getType(extended_typeid<Vec>());
 			static const introspection::Type& matType =
 			    introspection::Reflection::getType(extended_typeid<Mat>());
-			if (typeA == vecType && typeB == matType) {
+			if (typeA == matType && typeB == vecType) {
 				introspection::Value ret = detail::xformVec<Mat, Vec>(a->get(), b->get());
 				Value::push(L, ret);
 				return true;
@@ -86,7 +86,7 @@ namespace osgLua {
 				Value::push(L, ret);
 				return 1;
 			}
-			if (typeB == myType) {
+			if (typeA == myType) {
 				/// transform vector by matrix
 				if (xform<T, osg::Vec3f>(L, a, b)) {
 					return 1;

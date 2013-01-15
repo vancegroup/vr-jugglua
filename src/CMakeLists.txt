@@ -23,19 +23,17 @@ include_directories(${VRJUGGLER_INCLUDE_DIRS}
 ###
 # Standard Lua interpreter with VRJ and OSG automatically loaded
 ###
+
 add_executable(vrjlua lua.c)
-target_link_libraries(vrjlua vrjugglua)
+target_link_libraries(vrjlua vrjugglua ${LUA_EXTRA_LIBS})
 if(BUILD_LUA_AS_CPP)
 	set_source_files_properties(lua.c PROPERTIES LANGUAGE CXX)
 endif()
-if(MSVC)
-    # Silence warning from Lua distribution's code
-    set_property(TARGET
-        vrjlua
-        PROPERTY
-        COMPILE_DEFINITIONS
-        _CRT_SECURE_NO_WARNINGS)
-endif()
+set_property(TARGET
+    vrjlua
+    PROPERTY
+    COMPILE_DEFINITIONS
+    ${LUA_EXTRA_DEFINES})
 set_property(TARGET
 	vrjlua
 	PROPERTY
@@ -119,23 +117,26 @@ endif()
 ###
 # Set up and provide installation commands (needed for packaging to work)
 ###
+if(INSTALL_LIBRARIES_BUNDLE)
+	include("BundleOSGPlugins")
 
-include("BundleOSGPlugins")
+	install_osg_plugins(OSG_PLUGINS)
 
-install_osg_plugins(OSG_PLUGINS)
-
-if(APPLE AND TARGET NavTestbed)
-	install_vrjuggler_data_files(./NavTestbed.app/Contents)
-	install_vrjuggler_plugins(./NavTestbed.app/Contents VRJUGGLER_INSTALLED_PLUGINS)
-	set(APP_LOCATION ".")
-else()
-	install_vrjuggler_data_files(.)
-	install_vrjuggler_plugins(. VRJUGGLER_INSTALLED_PLUGINS)
-	set(APP_LOCATION "bin")
+	if(APPLE AND TARGET NavTestbed)
+		install_vrjuggler_data_files(./NavTestbed.app/Contents)
+		install_vrjuggler_plugins(./NavTestbed.app/Contents VRJUGGLER_INSTALLED_PLUGINS)
+		set(APP_LOCATION ".")
+	else()
+		install_vrjuggler_data_files(.)
+		install_vrjuggler_plugins(. VRJUGGLER_INSTALLED_PLUGINS)
+		set(APP_LOCATION "bin")
+	endif()
 endif()
 
 if(TARGET NavTestbed)
-	fixup_vrjuggler_app_bundle("NavTestbed" "${APP_LOCATION}" "${RUNTIME_LIBRARIES};${VRJUGGLER_INSTALLED_PLUGINS};${OSG_PLUGINS}" "${RUNTIME_LIBRARY_DIRS}")
+	if(INSTALL_LIBRARIES_BUNDLE)
+		fixup_vrjuggler_app_bundle("NavTestbed" "${APP_LOCATION}" "${RUNTIME_LIBRARIES};${VRJUGGLER_INSTALLED_PLUGINS};${OSG_PLUGINS}" "${RUNTIME_LIBRARY_DIRS}")
+	endif()
 
 	create_target_launcher(NavTestbed
 		FORWARD_ARGS

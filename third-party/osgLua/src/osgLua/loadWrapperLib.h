@@ -25,4 +25,6 @@ namespace osgDB {
 
 osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname);
 
+void outputLibraryPathListToOsgInfo();
+
 #endif

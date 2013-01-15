@@ -2,6 +2,7 @@ include(LuaTargets)
 
 set(LUA_FILES
 	Actions.lua
+	AddAppDirectory.lua
 	DebugAxes.lua
 	getScriptFilename.lua
 	nav-app-skeleton.lua
@@ -9,6 +10,7 @@ set(LUA_FILES
 	Navigator.lua
 	osgnav-testbed.lua
 	osgTools.lua
+	runfile.lua
 	Scene.lua
 	sleep.lua
 	StateMachine.lua

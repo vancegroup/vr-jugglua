@@ -1,0 +1,7 @@
+# NOTE about advanced examples 
+
+This is not one of those cases where "advanced" means "better". Here, 
+"advanced" means "older" and not making use of the newer, improved 
+interfaces. If you aren't planning on seriously poking around in VR 
+JuggLua's innards, I'd suggest ignoring this folder completely. 
+

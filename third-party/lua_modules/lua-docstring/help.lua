@@ -127,6 +127,12 @@ function help.formatHelp(h)
 					for _, val in ipairs(v) do
 						str = str .. "\n\t" .. tostring(val)
 					end
+					local n = #v
+					for k, val in pairs(v) do
+						if type(k) ~= "number" or k < 1 or k > n then
+							str = str .. ("\n\t%s = "):format(k) .. tostring(val)
+						end
+					end
 					str = str .. "\n}\n"
 				else
 					str = str .. string.format("\n%s = %s", k, tostring(v))

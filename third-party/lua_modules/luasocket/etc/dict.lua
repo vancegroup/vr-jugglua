@@ -66,10 +66,10 @@ function metat.__index:define(database, word)
     return defs
 end
 
-function metat.__index:match(database, strat, word)
+function metat.__index:match(database, start, word)
     database = database or "!"
-    strat = strat or "."
-  	socket.try(self.tp:command("MATCH",  database .." ".. strat .." ".. word))
+    start = start or "."
+  	socket.try(self.tp:command("MATCH",  database .." ".. start .." ".. word))
     self:check(152)
 	local mat = {}
 	local line = socket.try(self.tp:receive())
@@ -117,7 +117,7 @@ local function parse(u)
     socket.try(t.word, "need at least <word> in URL")
     arg = string.gsub(arg, "^:([^:]*)", function(f) t.database = there(f) end)
     if cmd == "m" then
-        arg = string.gsub(arg, "^:([^:]*)", function(f) t.strat = there(f) end)
+        arg = string.gsub(arg, "^:([^:]*)", function(f) t.start = there(f) end)
     end
     string.gsub(arg, ":([^:]*)$", function(f) t.n = base.tonumber(f) end)
     return t
@@ -133,7 +133,7 @@ local function tget(gett)
         if gett.n then return def[gett.n]
         else return def end
     elseif gett.command == "m" then
-        local mat = con:match(gett.database, gett.strat, gett.word)
+        local mat = con:match(gett.database, gett.start, gett.word)
         con:quit()
         con:close()
         return mat

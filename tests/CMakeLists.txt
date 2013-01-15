@@ -42,6 +42,7 @@ set(LUA_TEST_SCRIPTS
 	osglua-matrixmath
 	osglua-missingmethod
 	osglua-props
+	osglua-transformvector
 	osglua-usedisplaylistprop
 	osglua-vec3array
 	osglua-vectormath)
@@ -62,6 +63,7 @@ file(GLOB_RECURSE EXAMPLES
 	RELATIVE "${EXAMPLE_DIR}"
 	"${EXAMPLE_DIR}/*.lua")
 foreach(EXAMPLE ${EXAMPLES})
+	# Only test those in the numbered example directories
 	if("${EXAMPLE}" MATCHES "^[0-9]+-")
 		string(REGEX REPLACE "[.\\/]" "_" script "${EXAMPLE}")
 		add_test(NAME
@@ -76,6 +78,26 @@ foreach(EXAMPLE ${EXAMPLES})
 	endif()
 endforeach()
 
+# Test the app template
+add_test(NAME
+	examples_AppTemplate
+	COMMAND
+	${GENERIC_LAUNCHER_COMMAND}
+	--debugger
+	$<TARGET_FILE:NavTestbed>
+	--stub
+	"${EXAMPLE_DIR}/AppTemplate/main.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/shutdown-after-5-frames.lua")
+
+add_test(NAME
+	examples_AppTemplate_directory
+	COMMAND
+	${GENERIC_LAUNCHER_COMMAND}
+	--debugger
+	$<TARGET_FILE:NavTestbed>
+	--stub
+	"${EXAMPLE_DIR}/AppTemplate/appdir.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/shutdown-after-5-frames.lua")
 
 ###
 # End Lua-only tests

@@ -85,7 +85,7 @@ namespace luacpputils {
 			/** @brief Constructor taking a Lua state, filename, line number,
 				and an optional expected difference (defaulting to 0).
 
-				This is designed to be used in conjuction with the built-in
+				This is designed to be used in conjunction with the built-in
 				preprocessor macros __FILE__ and __LINE__: e.g.,
 				StackChecker<> check(L, __FILE__, __LINE__);
 			*/

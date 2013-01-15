@@ -14,7 +14,7 @@ do
 	end
 end
 
-for i=2,#arg do
+for i = 2, #arg do
 	vrjKernel.loadConfigFile(arg[i])
 end
 

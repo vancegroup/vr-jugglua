@@ -6,7 +6,7 @@ DrawableShapes = {
 		end
 		local sphere = osg.Sphere(pos, a.radius or 1.0)
 		local drbl = osg.ShapeDrawable(sphere)
-		local color = osg.Vec4(0,0,0,0)
+		local color = osg.Vec4(0, 0, 0, 0)
 		if a.color then
 			color:set(unpack(a.color))
 		end
@@ -21,7 +21,7 @@ DrawableShapes = {
 			pos:set(unpack(a.position))
 		end
 		local drbl = osg.ShapeDrawable(osg.Cylinder(pos, a.radius or 1.0, a.height or 1.0))
-		local color = osg.Vec4(0,0,0,0)
+		local color = osg.Vec4(0, 0, 0, 0)
 		if a.color then
 			color:set(unpack(a.color))
 		end
@@ -36,7 +36,7 @@ DrawableShapes = {
 			pos:set(unpack(a.position))
 		end
 		local drbl = osg.ShapeDrawable(osg.Box(pos, a.width or 1.0))
-		local color = osg.Vec4(0,0,0,0)
+		local color = osg.Vec4(0, 0, 0, 0)
 		if a.color then
 			color:set(unpack(a.color))
 		end
@@ -50,8 +50,8 @@ DrawableShapes = {
 		if a.position then
 			pos:set(unpack(a.position))
 		end
-		local drbl = osg.ShapeDrawable(osg.Box(pos, a.width or 1.0,a.height or 1.0,a.depth or 1.0))
-		local color = osg.Vec4(0,0,0,0)
+		local drbl = osg.ShapeDrawable(osg.Box(pos, a.width or 1.0, a.height or 1.0, a.depth or 1.0))
+		local color = osg.Vec4(0, 0, 0, 0)
 		if a.color then
 			color:set(unpack(a.color))
 		end
@@ -65,8 +65,8 @@ DrawableShapes = {
 		if a.position then
 			pos:set(unpack(a.position))
 		end
-		local drbl = osg.ShapeDrawable(osg.Capsule(pos, a.radius or 1.0,a.height or 1.0))
-		local color = osg.Vec4(0,0,0,0)
+		local drbl = osg.ShapeDrawable(osg.Capsule(pos, a.radius or 1.0, a.height or 1.0))
+		local color = osg.Vec4(0, 0, 0, 0)
 		if a.color then
 			color:set(unpack(a.color))
 		end
@@ -80,8 +80,8 @@ DrawableShapes = {
 		if a.position then
 			pos:set(unpack(a.position))
 		end
-		local drbl = osg.ShapeDrawable(osg.Cone(pos, a.radius or 1.0,a.height or 1.0))
-		local color = osg.Vec4(0,0,0,0)
+		local drbl = osg.ShapeDrawable(osg.Cone(pos, a.radius or 1.0, a.height or 1.0))
+		local color = osg.Vec4(0, 0, 0, 0)
 		if a.color then
 			color:set(unpack(a.color))
 		end

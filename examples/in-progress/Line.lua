@@ -29,6 +29,6 @@ do
 		return line
 	end
 
-	
+
 	Line = setmetatable({}, {__call = createLine} )
 end

@@ -7,7 +7,7 @@ app = {}
 function app:initScene()
 	print("Setting up position interface")
 	self.head = gadget.PositionInterface("VJHead")
-	
+
 	self.wand = gadget.PositionInterface("VJWand")
 
 	print("Attaching to app proxy's scene")

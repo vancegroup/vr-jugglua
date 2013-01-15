@@ -1,0 +1,6 @@
+## Adding Lua Reference Docs to Google Chrome Search
+
+1. Right click on your address bar ("Omnibar") and choose Edit Search Engines. ![Screenshot showing Edit Search Engines](images/chrome_right_click_address_bar.png)
+2. Scroll to the bottom where there is a place to enter new engines, and enter "Lua Reference" as the name, `lua` as the keyword, and `http://pgl.yoyo.org/luai/i/%s` as the address. ![Screenshot showing the new Lua Reference search](images/chrome_adding_luai.png)
+
+Now you can type "lua _topic_" in the address bar and it will automatically search Luai for the answer. Unfortunately, custom search engines don't currently sync with Google Chrome Sync, so you will have to add this for each computer you use.

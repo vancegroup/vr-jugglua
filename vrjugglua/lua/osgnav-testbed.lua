@@ -61,7 +61,7 @@ local optionFlags = {
 	};
 	["--cluster-primary"] = {
 		help = "Indicates that this computer is in a cluster serving as " ..
-			"the primary node.";
+		"the primary node.";
 		action = primary;
 	};
 	["--vrjmaster"] = {
@@ -70,8 +70,8 @@ local optionFlags = {
 	};
 	["--cluster-secondary"] = {
 		help = "This computer is in a cluster serving as a secondary node. " ..
-			"It ignores configuration commands, instead receiving its " ..
-			"configuration from the primary node.";
+		"It ignores configuration commands, instead receiving its " ..
+		"configuration from the primary node.";
 		action = secondary;
 	};
 	["--vrjslave"] = {
@@ -96,7 +96,7 @@ for _, argument in ipairs(arg) do
 
 	elseif argument:find("[.]lua$") then
 		-- OK, a lua file to add to the run buffer
-		runbuf:addFile(argument)
+		runbuf:addFile(argument, false)
 
 	else
 		-- We don't recognize it - let the user's script handle it.

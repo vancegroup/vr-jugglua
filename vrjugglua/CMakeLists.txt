@@ -24,6 +24,7 @@ include_directories(${VRJUGGLER_INCLUDE_DIRS}
 # Let the Lua files install themselves
 
 add_subdirectory(lua)
+add_subdirectory(constants)
 
 set(SOURCES
 	FindVPRDLL.cpp
@@ -36,6 +37,7 @@ set(SOURCES
 	LuaScript.cpp
 	LuaPath.cpp
 	OsgAppProxy.cpp
+	Reconfiguration.cpp
 	SynchronizedRunBuffer.cpp
 	VRJLua_C_Interface.cpp
 	VRJLuaConfig.h.in)
@@ -53,6 +55,7 @@ set(API
 	LuaRunBuffer.h
 	LuaScript.h
 	OsgAppProxy.h
+	Reconfiguration.h
 	SynchronizedRunBuffer.h
 	VRJLua_C_Interface.h
 	VRJLuaOutput.h)
@@ -86,7 +89,7 @@ set_property(TARGET
 	"VRJLua main library")
 
 # Require the Lua files installed into the build tree
-add_dependencies(vrjugglua luaFiles)
+add_dependencies(vrjugglua luaFiles extract_gl_constants)
 
 if(INSTALL_CXX_SDK)
 	install(TARGETS vrjugglua

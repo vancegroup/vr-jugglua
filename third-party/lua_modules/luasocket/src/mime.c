@@ -337,7 +337,7 @@ static int mime_global_unb64(lua_State *L)
 * encoded lines must be no longer than 76 not counting CRLF
 * soft line-break are =CRLF
 * To encode one byte, we need to see the next two. 
-* Worst case is when we see a space, and wonder if a CRLF is comming
+* Worst case is when we see a space, and wonder if a CRLF is coming
 \*-------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------*\
 * Split quoted-printable characters into classes

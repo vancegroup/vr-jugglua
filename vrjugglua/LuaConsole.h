@@ -33,49 +33,7 @@
 
 namespace vrjLua {
 	class SynchronizedRunBuffer;
-	class LuaConsole;
 
-	namespace detail {
-		class LuaConsoleInitialOutputProxy;
-		class LuaConsoleOutputProxy {
-			public:
-				template<typename T>
-				std::ostream & operator<<(T const& val) {
-					_stream << val;
-					return _stream;
-				}
-
-				~LuaConsoleOutputProxy();
-			private:
-				friend class LuaConsoleInitialOutputProxy;
-				template<typename T>
-				LuaConsoleOutputProxy(LuaConsole * console, T const& val)
-					: _console(console)
-				{
-					_stream << val;
-				}
-
-				LuaConsole * _console;
-				std::ostringstream _stream;
-		};
-
-		class LuaConsoleInitialOutputProxy {
-			public:
-				template<typename T>
-				std::ostream & operator<<(T const& val) {
-					return LuaConsoleOutputProxy(_console, val);
-				}
-
-
-			private:
-				friend class ::vrjLua::LuaConsole;
-				LuaConsoleInitialOutputProxy(LuaConsole * console)
-					: _console(console)
-					{}
-				LuaConsole * _console;
-
-		};
-	} // end of namespace detail
 	class LuaConsole {
 		public:
 			LuaConsole();
@@ -88,17 +46,6 @@ namespace vrjLua {
 
 			void captureStdOut();
 			void captureStdErr();
-
-			/** @brief This function is used for a "cout"-style way of
-				putting text in the console.
-
-				Use like this:
-				console->appendToDisplay() << "This is some text " << 5;
-			*/
-			detail::LuaConsoleInitialOutputProxy appendToDisplay() {
-				return detail::LuaConsoleInitialOutputProxy(this);
-			}
-
 
 			/// @name Implementation interface
 			/// @{

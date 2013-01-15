@@ -17,21 +17,25 @@
 #include "loadWrapperLib.h"
 
 #include <osgDB/DynamicLibrary>
+#include <osgDB/Registry>
+#include <osgDB/FileUtils>
 #include <osg/Version>
+#include <osg/Notify>
 
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 
-#ifdef OSGLUA_VERBOSE
-#include <iostream>
+#if !defined(OSG_NOTIFY) || (defined(OSG_NOTIFY) && OSG_NOTIFY == 1)
+#define OSGLUA_NOTIFY(level) if (osg::isNotifyEnabled(level)) osg::notify(level)
 #endif
 
-std::string getLibraryNamePrepend() {
-	return std::string("osgPlugins-") + std::string(osgGetVersion()) + std::string("/");
-}
+#ifndef OSG_INFO
+#define OSG_INFO OSGLUA_NOTIFY(osg::INFO)
+#endif
 
 // borrowed from osgDB...
-std::string createLibraryNameForWrapper(const std::string& ext) {
+static std::string createLibraryNameForWrapper(const std::string& ext) {
 
 #if defined(WIN32)
 	// !! recheck evolving Cygwin DLL extension naming protocols !! NHV
@@ -56,35 +60,98 @@ std::string createLibraryNameForWrapper(const std::string& ext) {
 #endif
 }
 
+namespace {
+
+	static const char LIB[] = "lib";
+
+	class LibNamePossibilityList {
+		public:
+			typedef std::vector<std::string> NameListType;
+			typedef NameListType::iterator iterator;
+			typedef NameListType::const_iterator const_iterator;
+
+			const_iterator begin() const {
+				return _names.begin();
+			}
+
+			iterator begin() {
+				return _names.begin();
+			}
+
+			const_iterator end() const {
+				return _names.end();
+			}
+
+			iterator end() {
+				return _names.end();
+			}
+
+			void pushNameVariants(std::string const& basename) {
+				OSG_INFO << "Given library basename " << basename << std::endl;
+				pushDirectoryVariants(basename);
+				if (basename.find(LIB) == 0) {
+					// Starts with lib already - try stripping it. Starting at sizeof(LIB)
+					// is one too far, due to null terminator.
+					const std::string noLib = basename.substr(sizeof(LIB) - 1, std::string::npos);
+					OSG_INFO << "Varying basename by stripping " << LIB << ": " << noLib << std::endl;
+					pushDirectoryVariants(noLib);
+				} else {
+					OSG_INFO << "Varying basename by adding a prefix: " << LIB << basename << std::endl;
+					pushDirectoryVariants(LIB + basename);
+				}
+			}
+
+
+		private:
+			static std::string getPluginDirectoryPrepend() {
+				static const std::string prepend = "osgPlugins-" + std::string(osgGetVersion()) + "/";
+				return prepend;
+			}
+
+			void pushDirectoryVariants(std::string const& filename) {
+				_names.push_back(filename);
+				const std::string withDir = getPluginDirectoryPrepend() + filename;
+				OSG_INFO << "Adding directory variant " << withDir << std::endl;
+				_names.push_back(withDir);
+			}
+			NameListType _names;
+	};
+
+	struct OsgInfoPathListPrinter {
+		void operator()(std::string const& str) {
+			if (str.empty()) {
+				OSG_INFO << "[EmptyEntry!]";
+			} else {
+				OSG_INFO << str;
+			}
+			OSG_INFO << ";";
+		}
+	};
+
+} // end of anonymous namespace
+
 osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname) {
-	/// get a base name
-	std::string basename = createLibraryNameForWrapper(libname);
+	/// We'll have a number of ideas
+	LibNamePossibilityList names;
 
-	/// try that name and that name with lib in front
-	std::vector<std::string> libnames;
-	libnames.push_back(basename);
-	libnames.push_back("lib" + basename);
+	/// First ask osgDB itself for its idea, and we'll stick lib in front of it as an extra measure.
+	OSG_INFO << std::endl << "Asking osgDB::Registry what it would call the wrapper library for " << libname << std::endl;
+	names.pushNameVariants(osgDB::Registry::instance()->createLibraryNameForNodeKit("osgwrapper_" + libname));
 
-	/// grab the lib dir
-	std::string const libdir = getLibraryNamePrepend();
+	/// Now use our copy/paste code to guess a name
+	OSG_INFO << std::endl << "Using our own code to compute a (possibly redundant) guess." << std::endl;
+	names.pushNameVariants(createLibraryNameForWrapper(libname));
 
-	/// for each existing idea, push another idea that has the lib dir prepended
-	unsigned int n = libnames.size();
-	for (unsigned int i = 0; i < n; ++i) {
-		libnames.push_back(libdir + libnames[i]);
-	}
+	for (LibNamePossibilityList::const_iterator it = names.begin(), e = names.end(); it != e; ++it) {
+		/// @todo replace the inside of this loop with osgDB::Registry::instance()->loadLibrary()
+		/// This would let OSG manage library lifetimes for us - a mixed blessing, since it does it
+		/// globally, but probably better than right now, where we'll joyfully crash if you
+		/// load the same lib twice.
+		OSG_INFO << "Trying to load " << *it << std::endl;
 
-	/// Try all ideas until we succeed or run out of htem
-	n = libnames.size();
-	for (unsigned int i = 0; i < n; ++i) {
-#ifdef OSGLUA_VERBOSE
-		std::cout << "Trying to load " << libnames[i] << std::endl;
-#endif
-		osgDB::DynamicLibrary * lib = osgDB::DynamicLibrary::loadLibrary(libnames[i]);
+		osgDB::DynamicLibrary * lib = osgDB::DynamicLibrary::loadLibrary(*it);
 		if (lib) {
-#ifdef OSGLUA_VERBOSE
-			std::cout << "Success!" << std::endl;
-#endif
+			OSG_INFO << "Success!" << std::endl;
 			return lib;
 		}
 	}
@@ -92,4 +159,14 @@ osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname) {
 	throw std::runtime_error("Could not load wrapper for " + libname);
 
 	return NULL;
+}
+
+
+void outputLibraryPathListToOsgInfo() {
+	if (osg::isNotifyEnabled(osg::INFO)) {
+		OSG_INFO << "[OSGLUA] osgLua loaded! Here is the library path list:";
+		osgDB::FilePathList & lpl = osgDB::getLibraryFilePathList();
+		std::for_each(lpl.begin(), lpl.end(), OsgInfoPathListPrinter());
+		OSG_INFO << std::endl;
+	}
 }

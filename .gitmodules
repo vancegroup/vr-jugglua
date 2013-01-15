@@ -4,3 +4,6 @@
 [submodule "third-party/lua_modules/lua-docstring/lunatest"]
 	path = third-party/lua_modules/lua-docstring/lunatest
 	url = git://github.com/silentbicycle/lunatest.git
+[submodule "doc/generation/LDoc"]
+	path = doc/generation/LDoc
+	url = https://github.com/stevedonovan/LDoc.git

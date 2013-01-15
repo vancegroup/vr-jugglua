@@ -2,6 +2,8 @@
 -- Enable help by default
 require("help")
 
+require("runfile")
+
 -- Override print function with threadsafe Juggler one
 do
 	local oldprint = print
@@ -16,10 +18,6 @@ end
 
 -- Let Lua know that vrjugglua is loaded
 package.loaded["vrjugglua"] = true
-
--- Let Lua know that osgLua and osg are loaded
-package.loaded["osgLua"] = osgLua
-package.loaded["osg"] = osg
 
 -- Add support for loading osg wrappers using require()
 local function osgLuaSearcherFunction(modname)

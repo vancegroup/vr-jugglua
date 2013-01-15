@@ -5,9 +5,9 @@ if(BUILD_FLTK_GUI)
 endif()
 
 if(BUILD_EMBEDDED_LUA)
-	# Lua 5.1.4-3 (that is, patch level 3)
-	add_subdirectory(lua-5.1.4/src)
-	set(LUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/lua-5.1.4/src")
+	# Lua 5.1.5
+	add_subdirectory(lua-5.1.5/src)
+	set(LUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/lua-5.1.5/src")
 	set(LUA_INCLUDE_DIRS ${LUA_INCLUDE_DIRS} PARENT_SCOPE)
 	set(LUA_LIBRARIES lua)
 	set(LUA_LIBRARIES ${LUA_LIBRARIES} PARENT_SCOPE)

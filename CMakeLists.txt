@@ -40,14 +40,18 @@ option(INSTALL_CXX_SDK "Should we install the headers and libraries needed for C
 
 if(WIN32 OR APPLE)
 	set(SNAPSHOT_ROOT_README_DEFAULT on)
+	set(BUNDLE_DEFAULT on)
 else()
 	set(SNAPSHOT_ROOT_README_DEFAULT off)
+	set(BUNDLE_DEFAULT off)
 endif()
 option(INSTALL_SNAPSHOT_README_TO_ROOT "Should we install the binary snapshot readme to the root install directory?" ${SNAPSHOT_ROOT_README_DEFAULT})
 
 option(BUILD_WITHOUT_TERMINAL "Build GUI applications without the terminal when possible." on)
 
 option(BUILD_WITH_CPPINTROSPECTION "Build against cppintrospection instead of osgIntrospection." off)
+
+option(INSTALL_LIBRARIES_BUNDLE "Use BundleUtils to install dependent libraries, etc." ${BUNDLE_DEFAULT})
 
 # Define advanced options
 option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app - highly recommended." ON)
@@ -141,6 +145,13 @@ endif()
 include(SearchProgramFilesForOpenSceneGraph)
 find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgUtil ${OSGINTROSPECTION_COMPONENT})
 
+if(APPLE)
+	# TODO: Make this workaround prettier or, better, fix the libgif issue
+	# Someone is using the old libgif in ImageIO.framework
+	# Therefore we need to add its path to the runtime library dirs
+	list(APPEND RUNTIME_LIBRARY_DIRS "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/Versions/A/Resources")
+endif()
+
 get_directory_list(OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS ${OPENSCENEGRAPH_LIBRARIES})
 list(APPEND RUNTIME_LIBRARY_DIRS ${OPENSCENEGRAPH_RUNTIME_LIBRARY_DIRS})
 if(WIN32)
@@ -202,6 +213,19 @@ if(BUILD_QT_GUI)
 	endif()
 endif()
 
+if(NOT (WIN32 OR APPLE))
+	find_library(READLINE_LIBRARY
+		NAMES
+		readline)
+	find_package(Curses)
+	if(READLINE_LIBRARY AND CURSES_FOUND)
+		set(LUA_USE_LINUX 1)
+	else()
+		set(LUA_USE_POSIX 1)
+		set(LUA_USE_DLOPEN 1)
+	endif()
+endif()
+
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/vrjugglua/VRJLuaConfig.h.in"
 	"${CMAKE_CURRENT_BINARY_DIR}/vrjugglua/VRJLuaConfig.h")
 
@@ -214,7 +238,7 @@ if(WIN32)
 endif()
 find_package(Markdown)
 if(MARKDOWN_FOUND)
-	include(MarkdownTargets)
+	include(UseMarkdown)
 endif()
 
 ###

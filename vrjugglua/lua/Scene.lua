@@ -23,38 +23,74 @@ ScaleFrom = {
 	m = 1.0
 }
 
-function Axis(coords)
-	return osg.Vec3d(coords[1], coords[2], coords[3])
+local isOsgVec = function(a)
+	if type(a) == "userdata" then
+		local typeinfo = osgLua.getTypeInfo(a)
+		if type(typeinfo) == "table" and typeinfo.name ~= nil then
+			local dimension = typeinfo.name:gsub("^osg::Vec(.).*", "%1")
+			local success, dim = pcall(tonumber, dimension)
+			if not success then return false end
+			local suffix = typeinfo.name:gsub("^osg::Vec.(.*)", "%1")
+			return true, dim, suffix
+		end
+	end
+	return false
 end
 
-Vec3 = Axis
-
-function Vec(x, y, z, w)
-	if w ~= nil then
-		return osg.Vec4d(x, y, z, w)
+local coeffNames = {
+	[2] = {"x", "y"};
+	[3] = {"x", "y", "z"};
+	[4] = {"x", "y", "z", "w"};
+}
+local vecToTable = function(vec)
+	local isVec, dim, suffix = isOsgVec(vec)
+	if not isVec then
+		error("Can't turn something that's not an OSG Vector from an OSG Vector into a Table!")
 	end
-
-	if z ~= nil then
-		return osg.Vec3d(x, y, z)
+	local ret = {}
+	for _, memberName in ipairs(coeffNames[dim]) do
+		table.insert(ret, vec[memberName](vec)) -- accessing member function
 	end
+	return ret
+end
 
-	if y ~= nil then
-		return osg.Vec2d(x, y)
+-- This function returns functions that create vectors automatically, using
+-- the suffix specified initially (like "d") and the number of arguments (3 to make Vec3d)
+local makeVectorConstructor = function(suffix)
+	return function(...)
+		local a = {...}
+		if #a == 1 and type(a[1]) == "table" then
+			-- They just passed a table
+			a = a[1]
+		end
+		if #a == 1 then
+			if (isOsgVec(a[1])) then
+				print("It's an OSG vec")
+				a = vecToTable(a[1])
+			end
+		end
+		local dim = #a
+		local typename = ("Vec%d%s"):format(dim, suffix)
+		-- A proper type will be a table, not a function
+		if type(osg[typename]) == "table" then
+			return osg[typename](unpack(a))
+		else
+			error("Can't create a vector of type " .. typename .. " - no such type exists", 3)
+		end
 	end
+end
 
-	-- OK, so they didn't pass the arguments one-by-one, but rather
-	-- as a list
+-- Make Vec a nice function for creating right-sized vectors of doubles
+Vec = makeVectorConstructor("d")
+Axis = Vec -- Just a nicer name for more readable rotation specification
+Vec3 = function(...)
+	print("Using the function Vec3 is deprecated - just use Vec")
+	return Vec(...)
+end
 
-	if #x == 4 then
-		return osg.Vec4d(x[1], x[2], x[3], x[4])
-	elseif #x == 3 then
-		return osg.Vec3d(x[1], x[2], x[3])
-	elseif #x == 2 then
-		return osg.Vec2d(x[1], x[2])
-	end
-
-	-- Hmm, well, they didn't pass as a list either. Bail!
-	error("Must call Vec with 2, 3, or 4 elements!", 2)
+-- Make Vecd, Vecf, Vecb, ... for when you need to be more specific.
+for _, suffix in ipairs{"d", "f", "b", "s", "ub"} do
+	_G["Vec" .. suffix] = makeVectorConstructor(suffix)
 end
 
 function AngleAxis(angle, axis)
@@ -112,7 +148,7 @@ function Light(...)
 		setLightType = "positional"
 	end
 	if arg.position == nil then
-		light:setPosition(osg.Vec4(0, 1, -1, fourthPosition))
+		light:setPosition(osg.Vec4(0, 1, - 1, fourthPosition))
 	else
 		if type(arg.position) == "table" then
 			if #(arg.position) == 4 then
@@ -125,14 +161,14 @@ function Light(...)
 			local osgvec = osg.Vec4(arg.position[1], arg.position[2], arg.position[3], arg.position[4])
 			print("Setting light position to " .. tostring(osgvec))
 			light:setPosition()
-			
+
 		else
 			--- Assume it's a vec4 - perhaps a bad assumption
 			print("WARNING: Assuming your position value is an osg.Vec4")
 			light:setPosition(arg.position)
 		end
 	end
-	
+
 	if arg.direction then
 		if type(arg.direction) == "table" then
 			arg.direction = osg.Vec3(arg.direction[1], arg.direction[2], arg.direction[3])
@@ -159,7 +195,7 @@ function AmbientIntensity(a)
 		node = a[1]
 	else
 		node = osg.Group()
-		for _,v in ipairs(a) do
+		for _, v in ipairs(a) do
 			node:addChild(v)
 		end
 	end
@@ -176,28 +212,30 @@ function AmbientIntensity(a)
 	return node
 end
 
-function Group(arg)
-	local t = osg.Group()
+local handleGroupChildren = function(node, arg)
 	-- Add nodes just tacked on the end of the list.
 	for _, v in ipairs(arg) do
 		if v ~= nil then
-			t:addChild(v)
+			node:addChild(v)
 		end
 	end
 
-	return t
+	return node
+end
+
+function Group(arg)
+	local t = osg.Group()
+	return handleGroupChildren(t, arg)
 end
 
 function Transform(arg)
 	local t = osg.PositionAttitudeTransform()
 	if arg.position ~= nil then
-		if #arg.position ~=3 then
+		local pos = Vecd(arg.position)
+		if #vecToTable(pos) ~= 3 then
 			error("Cannot set position: position must have 3 elements!", 2)
 		else
-			t:setPosition(osg.Vec3d(
-				arg.position[1],
-				arg.position[2],
-				arg.position[3]))
+			t:setPosition(pos)
 		end
 	end
 
@@ -212,19 +250,30 @@ function Transform(arg)
 		t:getOrCreateStateSet():setMode(GL_RESCALE_NORMAL, 1)
 	end
 
-	-- Deprecated: Add nodes in the "children" list
-	if arg.children ~= nil then
-		error("No longer need to pass children={}, just list the children directly.", 2)
+	return handleGroupChildren(t, arg)
+end
+
+function MatrixTransform(arg)
+	local t = osg.MatrixTransform()
+	if arg.matrix ~= nil then
+		t:setMatrix(arg.matrix)
 	end
 
-	-- Add nodes just tacked on the end of the list.
-	for _, v in ipairs(arg) do
-		if v ~= nil then
-			t:addChild(v)
+	return handleGroupChildren(t, arg)
+end
+
+
+function Switch(arg)
+	local t = osg.Switch()
+
+	--- If you pass something as [somenode] = true, it will be added with that enabled state (true or false)
+	for k, v in pairs(arg) do
+		if type(k) == "userdata" and type(v) == "boolean" then
+			t:addChild(k, v)
 		end
 	end
 
-	return t
+	return handleGroupChildren(t, arg)
 end
 
 function Model(filename)

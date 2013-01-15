@@ -8,10 +8,12 @@ include(${QT_USE_FILE})
 
 
 set(SOURCES
-	QTConsole.cpp)
+	QTConsole.cpp
+	QTCodeInput.cpp)
 
 set(MOCS
-	QTConsole.h)
+	QTConsole.h
+	QTCodeInput.h)
 set(API
 	${MOCS})
 

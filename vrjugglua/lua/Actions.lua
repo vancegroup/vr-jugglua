@@ -1,7 +1,13 @@
 require("help")
 
+local verifyInAction = function(fname)
+	if coroutine.running() == nil then
+		error(("Can't call %s from your main code, only from a frame action!"):format(fname), 3)
+	end
+end
+
 Actions = help.docstring{
-[[
+	[[
 Actions can be considered separate "mini-programs" that you can start
 to run a single task - keep an object at the same location as a positional
 device, display an animation on button click, etc.
@@ -33,7 +39,7 @@ will run.
 				local succeeded, results = coroutine.resume(co, Actions.appProxy:getTimeDelta())
 				if not succeeded then
 					print(string.format("A node action failed and will be stopped/removed. Error details: %s",
-						debug.traceback(co, result)))
+							debug.traceback(co, result)))
 				elseif coroutine.status(v) == 'dead' then
 					actionDead = true
 				end
@@ -66,7 +72,7 @@ Remove a frame action, stopping it from executing, presumably prior to
 its natural exit.
 ]] .. function (action)
 	local n
-	for i,v in ipairs(Actions._frameActions) do
+	for i, v in ipairs(Actions._frameActions) do
 		if v == action then
 			n = i
 		end
@@ -86,9 +92,10 @@ only waits once.
 
 Returns the amount of time that it waited, in seconds.
 ]] .. function (num)
+	verifyInAction("Actions.waitForRedraw")
 	if type(num) == "number" then
 		local dt = 0
-		for i=1,num do
+		for i = 1, num do
 			dt = dt + coroutine.yield()
 		end
 		return dt
@@ -103,6 +110,7 @@ Just like Actions.waitForRedraw, it updates the display.
 
 Returns the exact amount of time that it waited, in seconds.
 ]] .. function (seconds)
+	verifyInAction("Actions.waitSeconds")
 	if not type(seconds) == "number" then
 		error("Action.waitSeconds requires that you pass a single number as a parameter.", 2)
 	end
@@ -129,7 +137,7 @@ If that made no sense to you, you do not need to use this function.
 		local succeeded, result = coroutine.resume(v, Actions.appProxy:getTimeDelta())
 		if not succeeded then
 			print(("Frame action %s failed and will be stopped/removed."):format(
-				tostring(v)))
+					tostring(v)))
 			local tb = debug.traceback(v, result)
 			if type(tb) == "string" then
 				print(("Error details: %s"):format(tb))

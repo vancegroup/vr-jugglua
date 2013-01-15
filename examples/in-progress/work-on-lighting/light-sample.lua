@@ -20,7 +20,7 @@ RelativeTo.World:addChild(newroom)
 RelativeTo.World:addChild(teapot)
 
 ss = RelativeTo.World:getOrCreateStateSet()
-	
+
 function doLight1()
 	--[[
 	l1 = Light{
@@ -37,7 +37,7 @@ function doLight1()
 	ls1 = osg.LightSource()
 	ls1:setLight(l1)
 	ls1:setLocalStateSetModes(osg.StateAttribute.Values.ON)
-	
+
 	-- This next line is equivalent to
 	-- ls1:setStateSetModes(ss, osg.StateAttribute.Values.ON)
 	ss:setAssociatedModes(l1, osg.StateAttribute.Values.ON)
@@ -72,7 +72,7 @@ function doLight2()
 	--ss:setMode(GL_LIGHT1, 1)
 	--ls2:setStateSetModes(ss, osg.StateAttribute.Values.ON)
 	ss:setAssociatedModes(l2, osg.StateAttribute.Values.ON)
-	
+
 	RelativeTo.Room:addChild(
 		ls2
 	)
