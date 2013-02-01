@@ -27,6 +27,7 @@
 #include "../Internal_PositionInterface.h"
 #include "../Internal_DigitalInterface.h"
 #include "../Internal_AnalogInterface.h"
+#include "../Internal_StringInterface.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
@@ -71,10 +72,16 @@ namespace vrjLua {
 		               .property("data", & Internal::AnalogInterface::getData)
 		               .property("centered", & Internal::AnalogInterface::getCentered);
 
+		luabind::scope string = class_ < Internal::StringInterface,
+		               boost::shared_ptr<Internal::StringInterface> > ("StringInterface")
+		               .def(constructor<const std::string &>())
+		               .property("getStringData", & Internal::StringInterface::getStringData);
+
 		module(state.get(), "gadget") [
 		    position,
 		    digital,
-		    analog
+		    analog,
+		    string
 		];
 	}
 
