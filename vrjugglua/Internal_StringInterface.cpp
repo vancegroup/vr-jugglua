@@ -34,10 +34,6 @@ namespace vrjLua {
 			_iface.init(device);
 		}
 
-		StringInterface::StringInterface(const StringInterface & other) :
-			_iface(other._iface) {
-		}
-
 		std::string StringInterface::getStringData() {
 			//see StringProxy.h in VRJuggler for getData() method implementation
 			return (_iface->getData());

@@ -36,7 +36,6 @@ namespace vrjLua {
 		class DigitalInterface {
 			public:
 				DigitalInterface(const std::string & device);
-				DigitalInterface(const DigitalInterface & other);
 
 				bool pressed();
 				bool justChanged();

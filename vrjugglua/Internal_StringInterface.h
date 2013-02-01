@@ -36,7 +36,6 @@ namespace vrjLua {
 		class StringInterface {
 			public:
 				StringInterface(const std::string & device);
-				StringInterface(const StringInterface & other);
 
 				std::string getStringData();
 

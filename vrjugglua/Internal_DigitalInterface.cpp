@@ -34,10 +34,6 @@ namespace vrjLua {
 			_iface.init(device);
 		}
 
-		DigitalInterface::DigitalInterface(const DigitalInterface & other) :
-			_iface(other._iface) {
-		}
-
 		bool DigitalInterface::pressed() {
 			return (_iface->getData() == gadget::Digital::TOGGLE_ON ||
 			        _iface->getData() == gadget::Digital::ON);
