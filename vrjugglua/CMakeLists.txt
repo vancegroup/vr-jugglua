@@ -32,6 +32,7 @@ set(SOURCES
 	Internal_AnalogInterface.cpp
 	Internal_DigitalInterface.cpp
 	Internal_PositionInterface.cpp
+	Internal_StringInterface.cpp
 	LuaConsole.cpp
 	LuaRunBuffer.cpp
 	LuaScript.cpp
@@ -47,6 +48,7 @@ set(API
 	Internal_AnalogInterface.h
 	Internal_DigitalInterface.h
 	Internal_PositionInterface.h
+	Internal_StringInterface.h
 	LuaConsole.h
 	LuaGCBlock.h
 	LuaIncludeFull.h
