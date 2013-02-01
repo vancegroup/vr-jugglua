@@ -1,8 +1,8 @@
 /**	@file
-	@brief	DigitalInterface wrapper class for LuaBind
+	@brief	StringInterface wrapper class for LuaBind
 
 	@date
-	2009-2011
+	2009-2013
 
 	@author
 	Ryan Pavlik
@@ -19,34 +19,30 @@
 
 
 #pragma once
-#ifndef INCLUDED_vrjugglua_Internal_DigitalInterface_h
-#define INCLUDED_vrjugglua_Internal_DigitalInterface_h
+#ifndef INCLUDED_vrjugglua_Internal_StringInterface_h
+#define INCLUDED_vrjugglua_Internal_StringInterface_h
 
 // Internal Includes
 // - none
 
 // Library/third-party includes
-#include <gadget/Type/DigitalInterface.h>
+#include <gadget/Type/StringInterface.h>
 
 // Standard includes
 #include <string>
 
 namespace vrjLua {
 	namespace Internal {
-		class DigitalInterface {
+		class StringInterface {
 			public:
-				DigitalInterface(const std::string & device);
+				StringInterface(const std::string & device);
 
-				bool pressed();
-				bool justChanged();
-
-				bool justPressed();
-				bool justReleased();
+				std::string getStringData();
 
 			protected:
-				gadget::DigitalInterface _iface;
+				gadget::StringInterface _iface;
 		};
 	} // end of Internal namespace
 } // end of vrjLua namespace
 
-#endif // INCLUDED_vrjugglua_Internal_DigitalInterface_h
+#endif // INCLUDED_vrjugglua_Internal_StringInterface_h

@@ -2,7 +2,7 @@
 	@brief	implementation
 
 	@date
-	2009-2011
+	2009-2013
 
 	@author
 	Ryan Pavlik
@@ -19,7 +19,7 @@
 
 
 // Internal Includes
-#include "Internal_DigitalInterface.h"
+#include "Internal_StringInterface.h"
 
 // Library/third-party includes
 // - none
@@ -30,26 +30,13 @@
 namespace vrjLua {
 	namespace Internal {
 
-		DigitalInterface::DigitalInterface(const std::string & device) {
+		StringInterface::StringInterface(const std::string & device) {
 			_iface.init(device);
 		}
 
-		bool DigitalInterface::pressed() {
-			return (_iface->getData() == gadget::Digital::TOGGLE_ON ||
-			        _iface->getData() == gadget::Digital::ON);
-		}
-
-		bool DigitalInterface::justChanged() {
-			return (_iface->getData() == gadget::Digital::TOGGLE_ON ||
-			        _iface->getData() == gadget::Digital::TOGGLE_OFF);
-		}
-
-		bool DigitalInterface::justPressed() {
-			return (_iface->getData() == gadget::Digital::TOGGLE_ON);
-		}
-
-		bool DigitalInterface::justReleased() {
-			return (_iface->getData() == gadget::Digital::TOGGLE_OFF);
+		std::string StringInterface::getStringData() {
+			//see StringProxy.h in VRJuggler for getData() method implementation
+			return (_iface->getData());
 		}
 
 
