@@ -40,7 +40,7 @@
 namespace osgLua {
 	template<typename T, typename Operator>
 	inline void reportRegistration(bool applicable) {
-		OSG_INFO << (applicable ? "Registering " : "Skipping ") << getTypeName<T>() << " metamethod " << MetamethodName<Operator>::get() << " (" << MetamethodName<Operator>::getSymbol() << ")" << std::endl;
+		std::cerr << (applicable ? "Registering " : "Skipping ") << getTypeName<T>() << " metamethod " << MetamethodName<Operator>::get() << " (" << MetamethodName<Operator>::getSymbol() << ")" << std::endl;
 	}
 
 	template<typename T, typename Operator>
