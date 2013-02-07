@@ -44,8 +44,7 @@ namespace osgLua {
 	}
 
 	template<typename T, typename Operator>
-	inline typename boost::enable_if<boost::mpl::equal_to<typename osgTraits::get_operator_arity<Operator>::type, boost::mpl::int_<2> > >::type
-	pushAndSetOperator(lua_State * L, boost::mpl::true_ const&) {
+	inline void pushAndSetOperator(lua_State * L, boost::mpl::true_ const&, boost::mpl::int_<2> const&) {
 		reportRegistration<T, Operator>(true);
 		//boost::mpl::for_each<osgTraits::math_and_arithmetic_types>(PrintInfoFunctor<T, Operator>());
 		lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
@@ -53,15 +52,14 @@ namespace osgLua {
 	}
 
 	template<typename T, typename Operator>
-	inline typename boost::enable_if<boost::mpl::equal_to<typename osgTraits::get_operator_arity<Operator>::type, boost::mpl::int_<1> > >::type
-	pushAndSetOperator(lua_State * L, boost::mpl::true_ const&) {
+	inline void pushAndSetOperator(lua_State * L, boost::mpl::true_ const&, boost::mpl::int_<1> const&) {
 		reportRegistration<T, Operator>(true);
 		lua_pushcfunction(L, &(attemptUnaryOperator<Operator, T>));
 		lua_setfield(L, -2, MetamethodName<Operator>::get());
 	}
 
-	template<typename T, typename Operator>
-	inline void pushAndSetOperator(lua_State *, boost::mpl::false_ const&) {
+	template<typename T, typename Operator, typename Arity>
+	inline void pushAndSetOperator(lua_State *, boost::mpl::false_ const&, Arity const&) {
 		reportRegistration<T, Operator>(false);
 	}
 
@@ -77,7 +75,7 @@ namespace osgLua {
 		template<typename Operator>
 		struct visit_operator {
 			static void visit(RegistrationData const& d) {
-				pushAndSetOperator<T, Operator>(d.L, typename osgTraits::is_operator_applicable<Operator, T>::type());
+				pushAndSetOperator<T, Operator>(d.L, typename osgTraits::is_operator_applicable<Operator, T>::type(), typename osgTraits::get_operator_arity<Operator>::type());
 			}
 		};
 
