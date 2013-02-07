@@ -89,7 +89,8 @@ namespace osgLua {
 
 	bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
 		RegistrationData data(L, t);
-		boost::mpl::for_each<osgTraits::math_types, visit_types<boost::mpl::_1> >(util::visitorState(data));
+		typedef boost::mpl::list<osg::Vec3d, osg::Vec3f, osg::Matrixd, osg::Quat> limitedTypes;
+		boost::mpl::for_each<limitedTypes, visit_types<boost::mpl::_1> >(util::visitorState(data));
 		return data.foundOurType;
 	}
 
