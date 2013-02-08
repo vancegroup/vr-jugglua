@@ -82,7 +82,7 @@ namespace osgLua {
 			}
 		};
 
-		typedef typename osgTraits::get_valid_other_arg_types<BoundOp>::type OtherArgumentPossibilities;
+		typedef osgTraits::get_valid_other_arg_types<BoundOp> OtherArgumentPossibilities;
 	};
 
 	template<typename Op, typename T1, int BindArg>
