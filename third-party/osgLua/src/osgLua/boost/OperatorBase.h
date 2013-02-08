@@ -64,7 +64,7 @@ namespace osgTraits {
 	};
 
 	template<typename Operator>
-	struct OperatorVerb {};
+	struct OperatorVerb;
 
 	struct UnaryOperatorBase {
 		typedef boost::mpl::int_<1> operator_arity;
