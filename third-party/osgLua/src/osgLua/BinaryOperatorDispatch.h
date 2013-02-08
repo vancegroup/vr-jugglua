@@ -83,12 +83,24 @@ namespace osgLua {
 		};
 
 		typedef typename osgTraits::get_valid_other_arg_types<BoundOp>::type OtherArgumentPossibilities;
-		static int attempt(lua_State * L, int otherStackIdx) {
-			BinaryOpData data(L, otherStackIdx);
-			boost::mpl::for_each<OtherArgumentPossibilities, visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
-			return data.pushIfSuccessful(L);
-		}
 	};
+
+	template<typename Op, typename T1, int BindArg>
+	inline bool checkAndRun(lua_State * L, int & ret) {
+		enum {
+		    BoundArg = (BindArg  == 1 ? -2 : -1),
+		    OtherArg = (BindArg  == 2 ? -2 : -1)
+		};
+		if (osgLuaValueUsableAs<T1>(L, BoundArg)) {
+			typedef typename osgTraits::operator_bind<Op, T1, BindArg>::type BoundOp;
+			typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
+			BinaryOpData data(L, OtherArg);
+			boost::mpl::for_each<typename AttemptStruct::OtherArgumentPossibilities, typename AttemptStruct::visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
+			ret = data.pushIfSuccessful(L);
+			return true;
+		}
+		return false;
+	}
 
 	namespace {
 		template<typename Op, typename T1>
@@ -98,17 +110,7 @@ namespace osgLua {
 				return luaL_error(L, "[%s:%d] Could not %s: %s operand is nil", __FILE__, __LINE__,
 				                  osgTraits::OperatorVerb<Op>::get(), (lua_isnil(L, -2) ? "first" : "second"));
 			}
-			if (osgLuaValueUsableAs<T1>(L, -2)) {
-				typedef typename osgTraits::operator_bind_first<Op, T1>::type BoundOp;
-				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
-
-				ret = AttemptStruct::attempt(L, -1);
-			} else if (osgLuaValueUsableAs<T1>(L, -1)) {
-				typedef typename osgTraits::operator_bind_second<Op, T1>::type BoundOp;
-				typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
-
-				ret = AttemptStruct::attempt(L, -2);
-			}
+			checkAndRun<Op, T1, 1>(L, ret) || checkAndRun<Op, T1, 2>(L, ret);
 			if (ret == 0) {
 				return luaL_error(L, "[%s:%d] Could not %s instances of %s, %s", __FILE__, __LINE__,
 				                  osgTraits::OperatorVerb<Op>::get(), getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());

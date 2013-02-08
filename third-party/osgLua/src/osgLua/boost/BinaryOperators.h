@@ -50,16 +50,21 @@ namespace osgTraits {
 
 	typedef boost::mpl::list7<Addition, Subtraction, Multiplication, Pow, Division, Equality, LessThan> BinaryOperators;
 
+	template<typename Op, typename T, int Arg>
+	struct operator_bind;
+
 	template<typename Op, typename T>
-	struct operator_bind_first {
+	struct operator_bind<Op, T, 1> {
 		typedef boost::mpl::bind2<Op, T, boost::mpl::_> type;
 	};
 
 	template<typename Op, typename T>
-	struct operator_bind_second {
+	struct operator_bind<Op, T, 2> {
 		typedef boost::mpl::bind2<Op, boost::mpl::_, T> type;
 	};
 
+	template<typename Op, typename T>
+	struct operator_bind_first : operator_bind<Op, T, 1> {};
 	template<typename BoundOp, typename T>
 	struct is_bound_operator_available {
 		typedef typename boost::mpl::apply<BoundOp, T>::type SpecOp;
@@ -67,6 +72,8 @@ namespace osgTraits {
 	};
 
 
+	template<typename Op, typename T>
+	struct operator_bind_second : operator_bind<Op, T, 2> {};
 	template<typename BoundOp>
 	struct get_valid_other_arg_types {
 		typedef boost::mpl::filter_view<other_argument_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, boost::mpl::_> > type;
