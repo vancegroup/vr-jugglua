@@ -34,11 +34,9 @@
 
 // Library/third-party includes
 #include <boost/mpl/bind.hpp>
-#include <boost/mpl/size.hpp>
 #include <boost/mpl/list.hpp>
 #include <boost/mpl/not.hpp>
 #include <boost/mpl/apply.hpp>
-#include <boost/mpl/filter_view.hpp>
 #include <boost/mpl/copy_if.hpp>
 #include <boost/mpl/back_inserter.hpp>
 #include <boost/mpl/vector.hpp>
@@ -65,12 +63,6 @@ namespace osgTraits {
 	struct operator_bind<Op, T, 2> {
 		typedef boost::mpl::bind2<Op, boost::mpl::_, T> type;
 	};
-
-	template<typename Op, typename T>
-	struct operator_bind_first : operator_bind<Op, T, 1> {};
-
-	template<typename Op, typename T>
-	struct operator_bind_second : operator_bind<Op, T, 2> {};
 
 	namespace detail {
 		namespace mpl = boost::mpl;
