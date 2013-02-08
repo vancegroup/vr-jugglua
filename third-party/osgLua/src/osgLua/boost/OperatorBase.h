@@ -63,6 +63,16 @@ namespace osgTraits {
 		BOOST_MPL_ASSERT((boost::mpl::equal<typename boost::mpl::size<argument_types>::type, operator_arity>));
 	};
 
+	template<typename Operator, typename T1, typename = void>
+	struct UnaryOperatorImplementation {
+		typedef void unimplemented_tag;
+	};
+
+	template<typename Operator, typename T1, typename T2, typename = void>
+	struct BinaryOperatorImplementation {
+		typedef void unimplemented_tag;
+	};
+
 	template<typename Operator>
 	struct OperatorVerb;
 
