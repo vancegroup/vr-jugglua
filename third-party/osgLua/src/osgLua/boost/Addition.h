@@ -36,7 +36,7 @@
 
 
 namespace osgTraits {
-	struct Addition;
+	struct Addition : BinaryOperator<Addition> {};
 
 	template<>
 	struct OperatorVerb<Addition> {
@@ -45,65 +45,21 @@ namespace osgTraits {
 		}
 	};
 
-	namespace Addition_Tags {
-		using boost::enable_if;
-		using boost::mpl::and_;
-		using boost::mpl::or_;
-
-		struct Componentwise;
-
-		template<typename T1, typename T2, typename = void>
-		struct Compute {
-			typedef void type;
-		};
-
-		template<typename T1, typename T2>
-		struct Compute < T1, T2, typename enable_if <
-				or_ <
-				are_compatible_vectors<T1, T2>,
-				are_compatible_quats<T1, T2> > >::type > {
-			typedef Componentwise type;
-		};
-
-	}
-
-	namespace detail {
-		template<typename Tag>
-		struct Addition_impl;
-
-		template<typename T1, typename T2>
-		struct Addition_Specialization :
-				Addition_impl<typename Addition_Tags::Compute<T1, T2>::type>::template apply<T1, T2>,
-		              BinarySpecializedOperator<Addition, T1, T2> {};
-
-		template<typename Tag>
-		struct Addition_impl {
-			template<typename T1, typename T2>
-			struct apply {
-			};
-		};
-
-		/// Two vectors: subtraction.
-		template<>
-		struct Addition_impl <Addition_Tags::Componentwise> {
-
-			template<typename T1, typename T2>
-			struct apply {
-				typedef typename promote_type_with_scalar<T1, typename get_scalar<T2>::type>::type return_type;
-
-				template<typename A, typename B>
-				static return_type performOperation(A const& v1, B const& v2) {
-					return return_type(v1) + return_type(v2);
-				}
-			};
-		};
-	} // end of namespace detail
-
-	struct Addition : BinaryOperatorBase {
-		template<typename T1, typename T2>
-		struct apply {
-			typedef detail::Addition_Specialization<T1, T2> type;
-		};
+	template<typename Ret>
+	struct ComponentwiseAddition {
+		typedef Ret return_type;
+		template<typename A, typename B>
+		static return_type performOperation(A const& v1, B const& v2) {
+			return return_type(v1) + return_type(v2);
+		}
+	};
+	template<typename T1, typename T2>
+	struct BinaryOperatorImplementation < Addition, T1, T2, typename boost::enable_if <
+			boost::mpl::or_ <
+			are_compatible_vectors<T1, T2>,
+			are_compatible_quats<T1, T2> > >::type >  {
+		typedef typename promote_type_with_scalar<T1, typename get_scalar<T2>::type>::type return_type;
+		typedef ComponentwiseAddition<return_type> apply;
 	};
 
 } // end of namespace osgTraits

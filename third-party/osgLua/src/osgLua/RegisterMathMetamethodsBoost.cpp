@@ -47,8 +47,10 @@ namespace osgLua {
 	inline void pushAndSetOperator(lua_State * L, boost::mpl::true_ const&, boost::mpl::int_<2> const&) {
 		reportRegistration<T, Operator>(true);
 		//boost::mpl::for_each<osgTraits::math_and_arithmetic_types>(PrintInfoFunctor<T, Operator>());
+		/* TESTING
 		lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
 		lua_setfield(L, -2, MetamethodName<Operator>::get());
+		*/
 	}
 
 	template<typename T, typename Operator>

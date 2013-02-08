@@ -39,7 +39,7 @@ namespace osgLua {
 		template<typename Op, typename T>
 		int attemptUnaryOperator(lua_State * L) {
 			if (osgLuaValueUsableAs<T>(L, -1)) {
-				introspection::Value ret = osgTraits::invokeOperator<Op>(introspection::variant_cast<T>(getValue(L, -1)));
+				introspection::Value ret = osgTraits::invokeOperation<osgTraits::construct_operation<Op, T> >(introspection::variant_cast<T>(getValue(L, -1)));
 				Value::push(L, ret);
 				return 1;
 			}

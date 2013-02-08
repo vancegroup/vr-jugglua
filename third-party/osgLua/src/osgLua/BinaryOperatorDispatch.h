@@ -23,6 +23,7 @@
 // Internal Includes
 #include "boost/BinaryOperators.h"
 #include "boost/InvokeOperator.h"
+#include "boost/IsOperatorAvailable.h"
 
 #include "UsableAs.h"
 #include "StatefulTypeVisitFunctor.h"
@@ -67,17 +68,23 @@ namespace osgLua {
 		}
 	};
 
+	namespace {
+		template<typename Operation>
+		void performBinaryOperation(BinaryOpData & d) {
+			typedef typename osgTraits::get_operation_argument_c<Operation, 0>::type T1;
+			typedef typename osgTraits::get_operation_argument_c<Operation, 1>::type T2;
+			d.r = osgTraits::invokeOperation<Operation>(introspection::variant_cast<T1>(d.a1), introspection::variant_cast<T2>(d.a2));
+			d.success = true;
+		}
+	}// end of namespace
 	template<typename BoundOp>
 	struct AttemptBoundBinaryOperator {
 		template<typename T>
 		struct visit_binary_op_application {
 			static void visit(BinaryOpData & d) {
 				if (!d.success && typeUsableAs<T>(d.other)) {
-					typedef typename boost::mpl::apply<BoundOp, T>::type OpSpec;
-					typedef typename osgTraits::get_operator_argument_c<OpSpec, 0>::type first;
-					typedef typename osgTraits::get_operator_argument_c<OpSpec, 1>::type second;
-					d.r = osgTraits::invokeOperator<OpSpec>(introspection::variant_cast<first>(d.a1), introspection::variant_cast<second>(d.a2));
-					d.success = true;
+					typedef typename osgTraits::add_argtype<BoundOp, T>::type Operation;
+					performBinaryOperation<Operation>(d);
 				}
 			}
 		};
@@ -92,7 +99,7 @@ namespace osgLua {
 		    OtherArg = (BindArg  == 2 ? -2 : -1)
 		};
 		if (osgLuaValueUsableAs<T1>(L, BoundArg)) {
-			typedef typename osgTraits::operator_bind<Op, T1, BindArg>::type BoundOp;
+			typedef typename osgTraits::construct_bound_operation<Op, T1, BindArg>::type BoundOp;
 			typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 			BinaryOpData data(L, OtherArg);
 			boost::mpl::for_each<typename AttemptStruct::OtherArgumentPossibilities, typename AttemptStruct::visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));

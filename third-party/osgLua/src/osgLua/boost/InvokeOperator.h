@@ -31,6 +31,7 @@
 
 namespace osgTraits {
 
+#if 0
 	template<typename SpecOp>
 	struct get_operator_return_type {
 		typedef typename SpecOp::return_type type;
@@ -94,6 +95,19 @@ namespace osgTraits {
 	invokeOperator(A const& a) {
 		return detail::InvokeUnaryOperator<Op, A>::invoke(a);
 	};
+#endif
+	template<typename Operation>
+	typename get_operation_invoker<Operation>::return_type invokeOperation(typename get_operation_argument_c<Operation, 0>::type const& a) {
+		typedef typename boost::mpl::apply<get_operation_invoker<Operation> >::type Invoker;
+		return invoker::performOperation(a);
+	}
+
+	template<typename Operation>
+	typename get_operation_invoker<Operation>::return_type invokeOperation(typename get_operation_argument_c<Operation, 0>::type const& a, typename get_operation_argument_c<Operation, 1>::type const& b) {
+		typedef typename boost::mpl::apply<get_operation_invoker<Operation> >::type Invoker;
+		return invoker::performOperation(a, b);
+	}
+
 } // end of namespace osgTraits
 
 #endif // INCLUDED_InvokeOperator_h_GUID_a76515c6_9231_4154_a0cb_168bce258629
