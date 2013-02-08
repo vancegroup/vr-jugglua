@@ -39,7 +39,6 @@
 #include <boost/mpl/apply.hpp>
 #include <boost/mpl/copy_if.hpp>
 #include <boost/mpl/back_inserter.hpp>
-#include <boost/mpl/vector.hpp>
 #include <boost/mpl/protect.hpp>
 #include <boost/mpl/empty.hpp>
 
@@ -76,7 +75,7 @@ namespace osgTraits {
 			mpl::copy_if <
 			other_argument_types,
 			is_bound_operator_available<mpl::protect<BoundOp>, mpl::_>,
-			mpl::back_inserter< mpl::vector<> >
+			mpl::back_inserter< mpl::list0<> >
 			>::type type;
 		};
 		template<typename BoundOp>
