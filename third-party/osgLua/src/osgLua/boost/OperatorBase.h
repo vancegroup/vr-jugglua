@@ -84,6 +84,15 @@ namespace osgTraits {
 		typedef boost::mpl::int_<2> operator_arity;
 	};
 
+	template<typename Op>
+	struct BinaryOperator : BinaryOperatorBase {
+		typedef Op unspecialized_operator_type;
+		template<typename T1, typename T2>
+		struct apply {
+			typedef BinaryOperatorImplementation<Op, T1, T2> type;
+		};
+	};
+
 
 	template<typename T>
 	struct is_unspecialized_operator :
