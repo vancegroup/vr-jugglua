@@ -23,7 +23,7 @@
 namespace osgLua {
 
 	inline Value* Value::_rawGet(lua_State *L, int index) {
-		Value **value = reinterpret_cast<Value**>(lua_touserdata(L,index));
+		Value **value = reinterpret_cast<Value**>(lua_touserdata(L, index));
 		if (value) {
 			return *value;
 		}
