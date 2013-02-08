@@ -53,9 +53,11 @@ namespace osgLua {
 
 	template<typename T, typename Operator>
 	inline void pushAndSetOperator(lua_State * L, boost::mpl::true_ const&, boost::mpl::int_<1> const&) {
+		/* TESTING
 		reportRegistration<T, Operator>(true);
 		lua_pushcfunction(L, &(attemptUnaryOperator<Operator, T>));
 		lua_setfield(L, -2, MetamethodName<Operator>::get());
+		*/
 	}
 
 	template<typename T, typename Operator, typename Arity>

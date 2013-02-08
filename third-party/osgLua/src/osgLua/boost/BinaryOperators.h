@@ -48,7 +48,8 @@
 namespace osgTraits {
 	typedef math_and_arithmetic_types other_argument_types;
 
-	typedef boost::mpl::list7<Addition, Subtraction, Multiplication, Pow, Division, Equality, LessThan> BinaryOperators;
+	//typedef boost::mpl::list7<Addition, Subtraction, Multiplication, Pow, Division, Equality, LessThan> BinaryOperators;
+	typedef boost::mpl::list1<Addition> BinaryOperators;
 
 	template<typename Op, typename T, int Arg>
 	struct operator_bind;
