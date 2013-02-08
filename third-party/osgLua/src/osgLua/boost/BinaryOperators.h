@@ -39,6 +39,9 @@
 #include <boost/mpl/not.hpp>
 #include <boost/mpl/apply.hpp>
 #include <boost/mpl/filter_view.hpp>
+#include <boost/mpl/copy_if.hpp>
+#include <boost/mpl/back_inserter.hpp>
+#include <boost/mpl/vector.hpp>
 #include <boost/mpl/protect.hpp>
 #include <boost/mpl/empty.hpp>
 
@@ -65,22 +68,32 @@ namespace osgTraits {
 
 	template<typename Op, typename T>
 	struct operator_bind_first : operator_bind<Op, T, 1> {};
-	template<typename BoundOp, typename T>
-	struct is_bound_operator_available {
-		typedef typename boost::mpl::apply<BoundOp, T>::type SpecOp;
-		typedef typename is_operator_available<SpecOp>::type type;
-	};
-
 
 	template<typename Op, typename T>
 	struct operator_bind_second : operator_bind<Op, T, 2> {};
-	template<typename BoundOp>
-	struct get_valid_other_arg_types {
-		typedef boost::mpl::filter_view<other_argument_types, is_bound_operator_available<boost::mpl::protect<BoundOp>, boost::mpl::_> > type;
-	};
 
-	template<typename BoundOp>
-	struct bound_op_has_overloads : boost::mpl::not_<boost::mpl::empty<typename get_valid_other_arg_types<BoundOp>::type > > {};
+	namespace detail {
+		namespace mpl = boost::mpl;
+		template<typename BoundOp, typename T>
+		struct is_bound_operator_available : is_operator_available<mpl::apply<BoundOp, T> > {};
+
+
+		template<typename BoundOp>
+		struct get_valid_other_arg_types {
+			typedef typename
+			mpl::copy_if <
+			other_argument_types,
+			is_bound_operator_available<mpl::protect<BoundOp>, mpl::_>,
+			mpl::back_inserter< mpl::vector<> >
+			>::type type;
+		};
+		template<typename BoundOp>
+		struct bound_op_has_overloads {
+			typedef typename mpl::not_<mpl::empty<typename get_valid_other_arg_types<BoundOp>::type > >::type type;
+		};
+	} // end of namespace detail
+	using detail::get_valid_other_arg_types;
+	using detail::bound_op_has_overloads;
 
 } // end of namespace osgTraits
 #endif // INCLUDED_BinaryOperators_h_GUID_9d5a8223_67c4_4299_99ef_30fe8607bab4

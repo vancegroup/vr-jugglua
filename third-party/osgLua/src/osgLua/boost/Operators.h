@@ -53,24 +53,15 @@ namespace osgTraits {
 			template<typename Operator, typename T>
 			struct apply;
 		};
+		template<typename Operator, typename T, typename = get_operator_arity<Operator>::type>
+		struct is_operator_applicable;
 		template<typename Operator, typename T>
-		struct is_operator_applicable : is_operator_applicable_impl<typename apply<quote1<get_operator_arity>, Operator>::type>::template apply<Operator, T> {};
+		struct is_operator_applicable<Operator, T, int_<1> > : is_operator_available<typename boost::mpl::apply<Operator, T>::type> {};
 
-		template<>
-		struct is_operator_applicable_impl<int_<1> > {
-			template<typename Operator, typename T>
-			struct apply {
-				typedef typename is_operator_available<typename boost::mpl::apply<Operator, T>::type>::type type;
-			};
-		};
-
-		template<>
-		struct is_operator_applicable_impl<int_<2> > {
-			template<typename Operator, typename T>
-			struct apply : or_ <
-					bound_op_has_overloads<protect<typename operator_bind_first<Operator, T>::type> >,
-					bound_op_has_overloads<protect<typename operator_bind_second<Operator, T>::type > > >  {};
-		};
+		template<typename Operator, typename T>
+		struct is_operator_applicable<Operator, T, int_<2> > : or_ <
+				bound_op_has_overloads<protect<typename operator_bind<Operator, T, 1>::type> >,
+				bound_op_has_overloads<protect<typename operator_bind<Operator, T, 2>::type> > > {};
 	} // end of namespace detail
 
 	using detail::is_operator_applicable;
