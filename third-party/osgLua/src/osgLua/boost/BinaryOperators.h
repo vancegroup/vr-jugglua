@@ -51,6 +51,49 @@ namespace osgTraits {
 	//typedef boost::mpl::list7<Addition, Subtraction, Multiplication, Pow, Division, Equality, LessThan> BinaryOperators;
 	typedef boost::mpl::list1<Addition> BinaryOperators;
 
+	/*
+
+		struct UnspecifiedArgument;
+		template<typename Op, typename T1 = UnspecifiedArgument, typename T2 = UnspecifiedArgument>
+		struct bound_operator {
+			typedef Op operation_type;
+			typedef T1 arg_type_1;
+			typedef T2 arg_type_2;
+
+			typedef bound_operator<Op, T1, T2> type;
+		};
+
+		template<typename BoundOperator, typename NewArg>
+		struct bind_other_arg;
+
+		template<typename Op, typename PrevArg, typename NewArg>
+		struct bind_other_arg<bound_operator<Op, PrevArg, UnspecifiedArgument>, NewArg> {
+			typedef bound_operator<Op, PrevArg, NewArg> type;
+		};
+
+		template<typename Op, typename PrevArg, typename NewArg>
+		struct bind_other_arg<bound_operator<Op, UnspecifiedArgument, PrevArg>, NewArg> {
+			typedef bound_operator<Op, NewArg, PrevArg> type;
+		};
+
+		template<typename Op, typename T, int Arg>
+		struct create_partial_operator;
+
+		template<typename Op, typename T>
+		struct create_partial_operator<Op, T, 1> {
+			typedef bound_operator<Op, T, UnspecifiedArgument> type;
+		};
+
+		template<typename Op, typename T>
+		struct create_partial_operator<Op, T, 2> {
+			typedef bound_operator<Op, UnspecifiedArgument, T> type;
+		};
+
+		template<typename BoundOperator>
+		struct specialize_operator {
+			typedef typename BoundOperator::operation_type:: template apply< typename BoundOperator::arg_type_1, typename BoundOperator::arg_type_2>::type type;
+		};
+	*/
 	template<typename Op, typename T, int Arg>
 	struct operator_bind;
 
