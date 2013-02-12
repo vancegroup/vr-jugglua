@@ -11,6 +11,8 @@ RelativeTo = {
 
 osgnav = {position = osg.Vec3d(0, 0, 0)}
 
+GlobalStateSet = nil
+
 local setUpActions = false
 
 function osgnav:initScene()
@@ -27,12 +29,15 @@ function osgnav:initScene()
 	self.nav = Navigator.create(maxspeed)
 	Navigator.useWandTranslation(self.nav, wand, button)
 
+	local scene = self.appProxy:getScene()
 	--print("Setting up scenegraph")
-	self.appProxy:getScene():addChild(RelativeTo.World)
+	scene:addChild(RelativeTo.World)
 
 
 	--print("Attaching to app proxy's scene")
-	self.appProxy:getScene():addChild(RelativeTo.Room)
+	scene:addChild(RelativeTo.Room)
+
+	GlobalStateSet = scene:getOrCreateStateSet()
 
 	print("Scenegraph Navigation Testbed loaded!")
 	print("")
