@@ -32,6 +32,10 @@ Changes
 -------
 For the full change history, see the git repository.  This section is a high-level overview of useful, user-facing changes by date (newest changes at the top).
 
+### February 2013
+- *Additional functionality*: You can now access VR Juggler/Gadgeteer "String" devices (like speech recognition devices) with `gadget.StringInterface` objects, that have a single string property `data` that changes each frame. Thanks to [Patrick Carlson](https://github.com/carlsonp) for the implementation of this!
+- *Additional functionality*: For those who would like to apply lighting or other state to the entire scene, including both nodes under `RelativeTo.World` and `RelativeTo.Room`, you may now use the global `GlobalStateSet` to do so.
+
 ### October 2012
 - *Community change*: We now use a Google Group for mailing list/forum purposes.
 
