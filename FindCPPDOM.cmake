@@ -41,6 +41,7 @@ set(_FP_PKG_NAME cppdom)
 
 set(CPPDOM_VERSIONS
 	${CPPDOM_ADDITIONAL_VERSIONS}
+	1.3.0
 	1.2.0
 	1.1.2
 	1.1.1
@@ -67,6 +68,23 @@ include(SelectLibraryConfigurations)
 include(CreateImportedTarget)
 include(CleanLibraryList)
 include(CleanDirectoryList)
+include(FindPackageHandleStandardArgs)
+
+# Handle the case where a recent cppdom is supplying its own cmake config file.
+option(CPPDOM_ATTEMPT_CMAKE_MODULE "Should we attempt to use CPPDOM's own CMake module for configuration?" ON)
+mark_as_advanced(CPPDOM_ATTEMPT_CMAKE_MODULE)
+if(NOT cppdom_FOUND)
+	find_package(cppdom QUIET NO_MODULE)
+	if(cppdom_FOUND)
+		set(CPPDOM_LIBRARIES ${cppdom_LIBRARIES})
+		set(CPPDOM_INCLUDE_DIRS ${cppdom_INCLUDE_DIRS})
+		find_package_handle_standard_args(CPPDOM
+			DEFAULT_MSG
+			CPPDOM_LIBRARIES
+			CPPDOM_INCLUDE_DIRS)
+		return()
+	endif()
+endif()
 
 if(CPPDOM_INCLUDE_DIRS AND CPPDOM_LIBRARIES)
 	# in cache already
@@ -99,6 +117,28 @@ if(NOT CPPDOM_ROOT_DIR)
 endif()
 
 set(_ROOT_DIR "${CPPDOM_ROOT_DIR}")
+
+if(CMAKE_SIZEOF_VOID_P MATCHES "8")
+	set(_VRJ_LIBSUFFIXES lib64 lib)
+	set(_VRJ_LIBDSUFFIXES
+		debug
+		lib64/x86_64/debug
+		lib64/debug
+		lib64
+		lib/x86_64/debug
+		lib/debug
+		lib)
+	set(_VRJ_LIBDSUFFIXES_ONLY
+		debug
+		lib64/x86_64/debug
+		lib64/debug
+		lib/x86_64/debug
+		lib/debug)
+else()
+	set(_VRJ_LIBSUFFIXES lib)
+	set(_VRJ_LIBDSUFFIXES debug lib/i686/debug lib/debug lib)
+	set(_VRJ_LIBDSUFFIXES_ONLY debug lib/i686/debug lib/debug)
+endif()
 
 find_path(CPPDOM_INCLUDE_DIR
 	${_HEADER}
@@ -157,7 +197,6 @@ endif()
 
 # handle the QUIETLY and REQUIRED arguments and set xxx_FOUND to TRUE if
 # all listed variables are TRUE
-include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(CPPDOM
 	DEFAULT_MSG
 	CPPDOM_LIBRARY
