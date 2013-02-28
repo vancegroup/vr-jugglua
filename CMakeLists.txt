@@ -41,13 +41,16 @@ option(INSTALL_CXX_SDK "Should we install the headers and libraries needed for C
 if(WIN32 OR APPLE)
 	set(SNAPSHOT_ROOT_README_DEFAULT on)
 	set(BUNDLE_DEFAULT on)
+	set(BUILD_WITHOUT_TERMINAL_DEFAULT ON)
 else()
 	set(SNAPSHOT_ROOT_README_DEFAULT off)
 	set(BUNDLE_DEFAULT off)
+	set(BUILD_WITHOUT_TERMINAL_DEFAULT OFF)
 endif()
+
 option(INSTALL_SNAPSHOT_README_TO_ROOT "Should we install the binary snapshot readme to the root install directory?" ${SNAPSHOT_ROOT_README_DEFAULT})
 
-option(BUILD_WITHOUT_TERMINAL "Build GUI applications without the terminal when possible." on)
+option(BUILD_WITHOUT_TERMINAL "Build GUI applications without the terminal when possible." ${BUILD_WITHOUT_TERMINAL_DEFAULT})
 
 option(BUILD_WITH_CPPINTROSPECTION "Build against cppintrospection instead of osgIntrospection." off)
 
