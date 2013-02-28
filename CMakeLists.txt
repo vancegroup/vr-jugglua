@@ -27,6 +27,20 @@ if(APPLE AND CMAKE_SIZEOF_VOID_P EQUAL 8)
 	set(HIDE_FLTK TRUE)
 endif()
 
+# Set up build directories
+if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+endif()
+if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+endif()
+if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+endif()
+if(NOT SHARE_OUTPUT_DIRECTORY)
+	set(SHARE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/share)
+endif()
+
 # Define Simple Options
 option(BUILD_DOCS "Add a target to build documentation" on)
 option(BUILD_VERBOSE "Turn on lots of runtime output." off)
