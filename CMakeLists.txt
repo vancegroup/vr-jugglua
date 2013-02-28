@@ -74,6 +74,8 @@ option(INSTALL_LIBRARIES_BUNDLE "Use BundleUtils to install dependent libraries,
 option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app - highly recommended." ON)
 option(BUILD_LUA_UTILS "Build a stock, standalone lua-interpreter and luac" ON)
 option(BUILD_SHARED_OSGLUA "Whether to also build a DLL/.so version of osgLua." OFF)
+option(BUILD_SHARED_LUA "Whether to build Lua as a shared library." OFF)
+option(BUILD_SHARED_LUABIND "Whether to build LuaBind as a shared library." OFF)
 option(BUILD_LUA_AS_CPP "Build Lua as C++, rather than C - recommended." OFF)
 option(BUILD_VERY_VERBOSE "Turn on excessive amounts of runtime output." OFF)
 
@@ -81,6 +83,8 @@ option(BUILD_VERY_VERBOSE "Turn on excessive amounts of runtime output." OFF)
 mark_as_advanced(BUILD_EMBEDDED_LUA
 	BUILD_LUA_UTILS
 	BUILD_SHARED_OSGLUA
+	BUILD_SHARED_LUA
+	BUILD_SHARED_LUABIND
 	BUILD_LUA_AS_CPP
 	BUILD_VERY_VERBOSE)
 
@@ -202,9 +206,16 @@ if(BUILD_EMBEDDED_LUA)
 	set(LUABIND_DEFINITIONS -DLUABIND_MAX_BASES=3 -DLUABIND_MAX_ARITY=3)
 	set(LUABIND_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/luabind")
 	set(LUABIND_LIBRARIES luabind)
+	if(BUILD_SHARED_LUABIND)
+		set(LUABIND_DEFINITIONS "${LUABIND_DEFINITIONS} -DLUABIND_DYNAMIC_LINK")
+	endif()
 
 	set(OSGLUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/osgLua")
-	set(OSGLUA_LIBRARIES osgLua_static)
+	if(BUILD_SHARED_OSGLUA)
+		set(OSGLUA_LIBRARIES osgLua)
+	else()
+		set(OSGLUA_LIBRARIES osgLua_static)
+	endif()
 else()
 	find_package(Luabind REQUIRED)
 
@@ -266,7 +277,7 @@ endif()
 add_subdirectory(third-party)
 
 if(BUILD_EMBEDDED_LUA)
-	list(APPEND EXTRA_LIBS luabind osgLua_static)
+	list(APPEND EXTRA_LIBS ${LUABIND_LIBRARIES} ${OSGLUA_LIBRARIES})
 endif()
 
 if(BUILD_FLTK_GUI)
