@@ -16,15 +16,16 @@
 #ifndef OSGLUA_LOADWRAPPER
 #define OSGLUA_LOADWRAPPER
 
+#include <osgLua/Config>
 #include <osgLua/LuaInclude>
 
 namespace osgLua {
 	/// Registers osgLua functions on the provided state
-	void open(lua_State *L);
+	void OSGLUA_API open(lua_State *L);
 
 	/// Loads the wrapped content of the indicated library into the provided
 	/// state, as well as registering osgLua functions if needed.
-	bool loadWrapper(lua_State *L, const char *name);
+	bool OSGLUA_API loadWrapper(lua_State *L, const char *name);
 }
 
 #endif

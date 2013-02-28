@@ -14,6 +14,7 @@
     OpenSceneGraph Public License for more details.
 */
 
+#include "InternalConfig.h"
 #include "Value_metamethods.h"
 #include <osgLua/Value>
 

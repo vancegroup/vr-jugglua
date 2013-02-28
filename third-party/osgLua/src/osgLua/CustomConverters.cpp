@@ -18,6 +18,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 // Internal Includes
+#include "InternalConfig.h"
 #include "CustomConverters.h"
 
 // Library/third-party includes

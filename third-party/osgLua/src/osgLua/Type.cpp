@@ -14,6 +14,8 @@
     OpenSceneGraph Public License for more details.
 */
 
+
+#include "InternalConfig.h"
 #include "Type.h"
 
 #include <osgLua/Value>                 // for getValue, Value

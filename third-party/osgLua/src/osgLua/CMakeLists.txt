@@ -28,6 +28,7 @@ set(OSGLUA_SRCS
 set(OSGLUA_PRIVATE_API
 	ArrayPropertyProxy.h
 	CustomConverters.h
+	InternalConfig.h
 	lua_functions.h
 	LuaIncludeFull.h
 	LuaUserdata.h
@@ -48,33 +49,36 @@ include(${HEADER_DIR}/introspection/headers.cmake)
 source_group(API FILES ${OSGLUA_PUBLIC_API})
 
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${HEADER_DIR}/")
-configure_file("${HEADER_DIR}/Config.in" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER_DIR}/Config")
 
 if(BUILD_LUA_AS_CPP)
 	add_definitions(-DOSGLUA_LUA_BUILT_AS_CPP)
 endif()
 
 if(BUILD_SHARED_OSGLUA)
-	add_library(osgLua SHARED ${OSGLUA_SRCS} ${OSGLUA_PRIVATE_API} ${OSGLUA_PUBLIC_API})
-	target_link_libraries(osgLua lua ${OPENSCENEGRAPH_LIBRARIES} lua)
+	set(LIBTYPE SHARED)
+else()
+	set(LIBTYPE STATIC)
+	set(OSGLUA_LIBRARY_STATIC)
+	add_definitions(-DOSGLUA_LIBRARY_STATIC)
 endif()
 
-# TODO: this might make it impossible to build an osgLua dll on windows
-add_definitions(-DOSGLUA_LIBRARY_STATIC)
-add_library(osgLua_static ${OSGLUA_SRCS} ${OSGLUA_PRIVATE_API} ${OSGLUA_PUBLIC_API})
-set_target_properties(osgLua_static PROPERTIES PUBLIC_HEADER "${OSGLUA_PUBLIC_API}")
-target_link_libraries(osgLua_static lua ${OPENSCENEGRAPH_LIBRARIES} ${INTROSPECTION_LIBRARIES} lua)
+configure_file("${HEADER_DIR}/Config.in" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER_DIR}/Config")
+
+
+add_library(osgLua ${LIBTYPE} ${OSGLUA_SRCS} ${OSGLUA_PRIVATE_API} ${OSGLUA_PUBLIC_API})
+set_target_properties(osgLua PROPERTIES PUBLIC_HEADER "${OSGLUA_PUBLIC_API}")
+target_link_libraries(osgLua lua ${OPENSCENEGRAPH_LIBRARIES} ${INTROSPECTION_LIBRARIES} ${OPENGL_LIBRARIES} lua)
 
 set_property(TARGET
-	osgLua_static
+	osgLua
 	PROPERTY
 	PROJECT_LABEL
-	"OsgLua Static Library")
+	"osgLua Library")
 
-set_target_properties(osgLua_static PROPERTIES FOLDER "Third-Party")
+set_target_properties(osgLua PROPERTIES FOLDER "Third-Party")
 
 if(INSTALL_CXX_SDK)
-	install(TARGETS osgLua_static
+	install(TARGETS osgLua
 		EXPORT vrjlua-sdk
 		RUNTIME DESTINATION ${BIN_DIR} COMPONENT runtime
 		LIBRARY DESTINATION ${LIB_DIR} COMPONENT runtime

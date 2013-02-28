@@ -14,6 +14,8 @@
 */
 
 
+#include "InternalConfig.h"
+
 #include <osgLua/Callback>
 #include <osgLua/Value>
 #include <osgLua/introspection/Value>

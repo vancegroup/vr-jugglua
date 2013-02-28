@@ -19,18 +19,6 @@
 
 #include <osgLua/Config>
 
-#if defined(_MSC_VER)
-#  if defined( OSGLUA_LIBRARY_STATIC )
-#    define OSGLUA_API
-#  elif defined( OSGLUA_LIBRARY )
-#    define OSGLUA_API   __declspec(dllexport)
-#  else
-#    define OSGLUA_API   __declspec(dllimport)
-#  endif /* OSGLUA_API */
-#else
-#  define OSGLUA_API
-#endif
-
 #include <osg/ref_ptr>
 #include <osgLua/Script>
 #include <osgLua/LuaInclude>

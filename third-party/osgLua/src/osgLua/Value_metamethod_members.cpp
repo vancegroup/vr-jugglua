@@ -14,6 +14,8 @@
     OpenSceneGraph Public License for more details.
 */
 
+
+#include "InternalConfig.h"
 #include <osgLua/Value>
 #include "ArrayPropertyProxy.h"
 #include "Value_metamethods.h"

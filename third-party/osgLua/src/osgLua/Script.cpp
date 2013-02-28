@@ -14,6 +14,8 @@
     OpenSceneGraph Public License for more details.
 */
 
+
+#include "InternalConfig.h"
 #include <osgLua/Script>
 #include <osgLua/Value>
 #include <osgLua/LoadWrapper>

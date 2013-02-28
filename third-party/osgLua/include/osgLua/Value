@@ -17,6 +17,7 @@
 #ifndef OSGLUA_VALUE
 #define OSGLUA_VALUE
 
+#include <osgLua/Config>
 #include <osgLua/LuaInclude>
 
 #include <osgLua/introspection/Value>
@@ -30,7 +31,7 @@ namespace osgLua {
 		template<typename T> int explicitNumericType(lua_State * L);
 	}
 
-	class Value {
+	class OSGLUA_API Value {
 		public:
 			introspection::Value &get();
 			const introspection::Type &getRealType() const;
@@ -92,7 +93,7 @@ namespace osgLua {
 			/// @}
 	};
 
-	introspection::Value getValue(lua_State *L, int index);
+	introspection::Value OSGLUA_API getValue(lua_State *L, int index);
 
 
 	/****************************************************************/

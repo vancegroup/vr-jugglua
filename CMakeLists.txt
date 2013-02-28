@@ -211,11 +211,7 @@ if(BUILD_EMBEDDED_LUA)
 	endif()
 
 	set(OSGLUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/osgLua")
-	if(BUILD_SHARED_OSGLUA)
-		set(OSGLUA_LIBRARIES osgLua)
-	else()
-		set(OSGLUA_LIBRARIES osgLua_static)
-	endif()
+	set(OSGLUA_LIBRARIES osgLua)
 else()
 	find_package(Luabind REQUIRED)
 
@@ -336,7 +332,7 @@ create_dashboard_scripts("DashboardBuildInitialCache.cmake.in")
 ###
 
 # Set up use from build tree
-set(BUILD_TREE_TARGETS lua osgLua_static luabind vrjugglua)
+set(BUILD_TREE_TARGETS lua osgLua luabind vrjugglua)
 if(BUILD_FLTK_GUI)
 	list(APPEND BUILD_TREE_TARGETS Fl_Native_File_Chooser vrjugglua-fltk)
 endif()

@@ -13,6 +13,8 @@
     OpenSceneGraph Public License for more details.
 */
 
+
+#include "InternalConfig.h"
 #include "lua_functions.h"
 #include "LuaIncludeFull.h"
 
