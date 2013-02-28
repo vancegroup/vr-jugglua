@@ -87,20 +87,37 @@ endif()
 
 set(LUA_EXTRA_LIBS ${LUA_EXTRA_LIBS} CACHE INTERNAL "" FORCE)
 
-add_library(lua ${LUA_SRCS} ${LUA_HEADERS} ${LUA_API})
-if(LUA_EXTRA_LIBS)
-	target_link_libraries(lua ${LUA_EXTRA_LIBS})
+if(BUILD_SHARED_LUA)
+	set(LIBTYPE SHARED)
+	set(LUALIB_EXTRA_DEFINES LUA_BUILD_AS_DLL)
+else()
+	set(LIBTYPE STATIC)
+	set(LUALIB_EXTRA_DEFINES)
 endif()
 
+add_library(lua ${LIBTYPE} ${LUA_SRCS} ${LUA_HEADERS} ${LUA_API})
+
 if(NOT MSVC)
-	target_link_libraries(lua m)
+	list(APPEND LUA_EXTRA_LIBS m)
+endif()
+
+if(LUA_EXTRA_LIBS)
+	target_link_libraries(lua ${LUA_EXTRA_LIBS})
 endif()
 
 set_property(TARGET
     lua
     PROPERTY
     COMPILE_DEFINITIONS
-    ${LUA_EXTRA_DEFINES})
+    ${LUA_EXTRA_DEFINES} ${LUALIB_EXTRA_DEFINES})
+
+if(BUILD_SHARED_LUA)
+	set_property(TARGET
+		lua
+		PROPERTY
+		OUTPUT_NAME
+		lua51)
+endif()
 
 if(BUILD_LUA_UTILS)
 	add_executable(lua-interp ${LUA_INTERP_SOURCES})
@@ -112,9 +129,23 @@ if(BUILD_LUA_UTILS)
 		COMPILE_DEFINITIONS
 		${LUA_EXTRA_DEFINES})
 
+	if(BUILD_SHARED_LUA)
+		# Essentially statically link luac
+		list(APPEND LUAC_SOURCES ${LUA_SRCS} ${LUA_HEADERS} ${LUA_API})
+	endif()
+
 	add_executable(luac ${LUAC_SOURCES})
-	target_link_libraries(luac lua)
+
+	if(BUILD_SHARED_LUA)
+		if(LUA_EXTRA_LIBS)
+			target_link_libraries(luac ${LUA_EXTRA_LIBS})
+		endif()
+	else()
+		target_link_libraries(luac lua)
+	endif()
+
 	set_target_properties(luac PROPERTIES FOLDER "Third-Party")
+
 	set_property(TARGET
 		luac
 		PROPERTY
