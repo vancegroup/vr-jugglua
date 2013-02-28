@@ -74,7 +74,7 @@ option(INSTALL_LIBRARIES_BUNDLE "Use BundleUtils to install dependent libraries,
 option(BUILD_EMBEDDED_LUA "Build Lua, LuaBind, and osgLua as a part of the app - highly recommended." ON)
 option(BUILD_LUA_UTILS "Build a stock, standalone lua-interpreter and luac" ON)
 option(BUILD_SHARED_OSGLUA "Whether to also build a DLL/.so version of osgLua." OFF)
-option(BUILD_LUA_AS_CPP "Build Lua as C++, rather than C - recommended." ON)
+option(BUILD_LUA_AS_CPP "Build Lua as C++, rather than C - recommended." OFF)
 option(BUILD_VERY_VERBOSE "Turn on excessive amounts of runtime output." OFF)
 
 # Mark some as advanced
