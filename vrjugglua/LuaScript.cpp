@@ -328,8 +328,10 @@ namespace vrjLua {
 			it = std::find(_searchPaths.begin(), _searchPaths.end(), "?.lua");
 		}
 
-		_searchPaths.push_front(_luaDir + "?.lua");
-		_searchPaths.push_front(_luaDir + "?");
+		// Add the custom items based on where we know we are.
+		_pushFrontLuaRequirePath(_luaDir);
+		_pushFrontLuaRequirePath(_root + "/share/lua/5.1/");
+		_pushFrontLuaRequirePath(_root + "/lib/lua/5.1/");
 	}
 
 	void LuaPath::_setLuaSearchPaths(LuaStatePtr state) {

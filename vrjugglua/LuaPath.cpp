@@ -257,9 +257,16 @@ namespace vrjLua {
 	}
 
 	void LuaPath::addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash) {
-		_searchPaths.push_front(dirEndingInSlash + "?.lua");
-		_searchPaths.push_front(dirEndingInSlash + "?");
+		if (_searchPaths.empty()) {
+			_populateSearchPathsVector(state);
+		}
+		_pushFrontLuaRequirePath(dirEndingInSlash);
 		updateLuaRequirePath(state);
+	}
+
+	void LuaPath::_pushFrontLuaRequirePath(std::string const& dirEndingInSlash) {
+		_searchPaths.push_front(dirEndingInSlash + "?.lua");
+		_searchPaths.push_front(dirEndingInSlash + "?/init.lua");
 	}
 
 	void LuaPath::updateLuaRequirePath(LuaStatePtr state) {

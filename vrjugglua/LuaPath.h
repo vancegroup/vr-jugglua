@@ -61,6 +61,7 @@ namespace vrjLua {
 			static std::string _findFilePath(std::vector<std::string> const& startingPlaces, std::string const& qualified);
 			static std::string _findFilePath(std::string const& startingAt, std::string const& fn);
 
+			void _pushFrontLuaRequirePath(std::string const& dirEndingInSlash);
 			void _populateSearchPathsVector(LuaStatePtr state);
 			void _setLuaSearchPaths(LuaStatePtr state);
 			std::string _findJuggler();
