@@ -48,6 +48,9 @@ namespace vrjLua {
 			std::string const& getInitialPath() const;
 			std::string const& getLuaDir() const;
 
+			/// DEPRECATED
+			void addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash);
+
 		protected:
 			LuaPath();
 			void _init(std::string const& arg0, std::string const& vrjlua_base);

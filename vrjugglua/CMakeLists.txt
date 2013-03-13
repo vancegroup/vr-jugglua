@@ -38,6 +38,7 @@ set(SOURCES
 	LuaRunBuffer.cpp
 	LuaScript.cpp
 	LuaPath.cpp
+	LuaPathLuabind.cpp
 	OsgAppProxy.cpp
 	Reconfiguration.cpp
 	SearchPath.cpp
