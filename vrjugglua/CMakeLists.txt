@@ -27,6 +27,7 @@ add_subdirectory(lua)
 add_subdirectory(constants)
 
 set(SOURCES
+	AddToLuaPaths.cpp
 	FindVPRDLL.cpp
 	FindVPRDLL.h
 	Internal_AnalogInterface.cpp
@@ -45,6 +46,7 @@ set(SOURCES
 	VRJLuaConfig.h.in)
 
 set(API
+	AddToLuaPaths.h
 	osgLuaBind.h
 	Internal_AnalogInterface.h
 	Internal_DigitalInterface.h
