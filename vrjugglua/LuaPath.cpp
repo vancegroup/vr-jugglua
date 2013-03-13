@@ -247,6 +247,9 @@ namespace vrjLua {
 	std::string const& LuaPath::getInitialPath() const {
 		return _initialPath;
 	}
+	std::string const& LuaPath::getLuaDir() const {
+		return _luaDir;
+	}
 
 	void LuaPath::addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash) {
 		if (_searchPaths.empty()) {
