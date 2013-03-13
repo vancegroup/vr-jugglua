@@ -50,7 +50,6 @@ namespace vrjLua {
 
 		template<>
 		const char * GetDirsFromRoot<LuaPathTags::LuaSearch>::dirs[] = {
-			"etc/vrjugglua/",
 			"share/vrjugglua/lua/",
 			"share/lua/" LUA_VER "/",
 			"lib/lua/" LUA_VER "/"
@@ -58,7 +57,6 @@ namespace vrjLua {
 
 		template<>
 		const char * GetDirsFromRoot<LuaPathTags::LuaCSearch>::dirs[] = {
-			"etc/vrjugglua/",
 			"share/vrjugglua/lua/",
 			"share/lua/" LUA_VER "/",
 			"lib/lua/" LUA_VER "/"
