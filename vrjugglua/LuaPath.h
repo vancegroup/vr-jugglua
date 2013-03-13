@@ -46,6 +46,7 @@ namespace vrjLua {
 			std::string const& getShareDir() const;
 			std::string const& getExeDir() const;
 			std::string const& getInitialPath() const;
+			std::string const& getLuaDir() const;
 
 			void addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash);
 			void updateLuaRequirePath(LuaStatePtr state);
