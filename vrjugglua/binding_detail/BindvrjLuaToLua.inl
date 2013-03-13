@@ -65,7 +65,7 @@ namespace vrjLua {
 		luabind::object package(luabind::globals(s)["package"]);
 
 		LuaSearchPath searchpath(object_cast<std::string>(package["path"]));
-		extendLuaSearchPath(SearchDirectory(path), searchpath);
+		searchpath.extend(SearchDirectory(path));
 		package["path"] = searchpath.toString();
 	}
 
