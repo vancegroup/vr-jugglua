@@ -67,13 +67,13 @@ namespace vrjLua {
 
 	};
 
-	class RootDirectory : DirectoryBase<LuaPathTags::RootDirectory> {
+	class RootDirectory : public DirectoryBase<LuaPathTags::RootDirectory> {
 		public:
 			RootDirectory(std::string const& dir)
 				: DirectoryBase<LuaPathTags::RootDirectory>(dir)	{}
 	};
 
-	class SearchDirectory : DirectoryBase<LuaPathTags::SearchDirectory> {
+	class SearchDirectory : public DirectoryBase<LuaPathTags::SearchDirectory> {
 		public:
 			SearchDirectory(std::string const& dir)
 				: DirectoryBase<LuaPathTags::SearchDirectory>(dir)	{}
@@ -85,9 +85,17 @@ namespace vrjLua {
 			SearchPathContainerBase(SearchPath const& p)
 				: _path(p) {}
 
+			SearchPathContainerBase()
+				: _path() {}
+
+			void set(std::string const& s) {
+				_path.set(s);
+			}
+
 			void insert(std::vector<std::string> const& patterns) {
 				_path.insertAt(patterns, 1);
 			}
+
 			std::string toString() {
 				return _path.toString();
 			}
@@ -95,72 +103,21 @@ namespace vrjLua {
 			SearchPath _path;
 	};
 
-	class LuaSearchPath : SearchPathContainerBase<LuaPathTags::LuaSearch> {
+	class LuaSearchPath : public SearchPathContainerBase<LuaPathTags::LuaSearch> {
 		public:
 			LuaSearchPath(std::string const& s) : SearchPathContainerBase<LuaPathTags::LuaSearch>(s) {}
+			LuaSearchPath() : SearchPathContainerBase<LuaPathTags::LuaSearch>() {}
 	};
-	class LuaCSearchPath : SearchPathContainerBase<LuaPathTags::LuaCSearch> {
+
+	class LuaCSearchPath : public SearchPathContainerBase<LuaPathTags::LuaCSearch> {
 		public:
 			LuaCSearchPath(std::string const& s) : SearchPathContainerBase<LuaPathTags::LuaCSearch>(s) {}
+			LuaCSearchPath() : SearchPathContainerBase<LuaPathTags::LuaCSearch>() {}
 	};
 
 	template<typename DirectoryTag, typename SearchTag>
-	void extendLuaSearchPath(DirectoryBase<DirectoryTag> & d, SearchPathContainerBase<SearchTag> & s);
+	extern void extendLuaSearchPath(DirectoryBase<DirectoryTag> const& d, SearchPathContainerBase<SearchTag> & s);
 
-	/*
-	class LuaSearchPattern {
-
-	};
-
-	class CatFirstTransform {
-		public:
-			CatFirstTransform(std::string const& s) : _s(s) {}
-			template<typename T>
-			std::string operator()(T const& a) {
-				return _s + a;
-			}
-		private:
-			std::string const _s;
-	};
-
-	class CatSecondTransform {
-		public:
-			CatSecondTransform(std::string const& s) : _s(s) {}
-			template<typename T>
-			std::string operator()(T const& a) {
-				return a + _s;
-			}
-		private:
-			std::string const _s;
-	};
-
-
-	class RootDirectory {
-		public:
-			RootDirectory(std::string const& dir)
-				: _dir(ensureTrailingSlash(dir))
-			{}
-
-			typedef boost::array<const char *, 4> LuaDirSuffixesType;
-			typedef boost::array<const char *, 2> LuaCDirSuffixesType;
-
-			typedef boost::iterator_range<boost::transform_iterator<CatFirstTransform, LuaDirSuffixesType::iterator> > lua_dir_range_type;
-			getLuaDirs() const;
-
-			typedef boost::iterator_range<boost::transform_iterator<CatFirstTransform, LuaCDirSuffixesType::iterator> > lua_cdir_range_type;
-			boost::iterator_range<boost::transform_iterator<CatFirstTransform, LuaCDirSuffixesType::iterator> >
-			getLuaCDirs() const;
-			std::string const& get() const {
-				return _dir;
-			}
-		private:
-			static const LuaDirSuffixesType s_luaDirs;
-			static const LuaCDirSuffixesType s_luaCDirs;
-			const std::string _dir;
-	};
-
-	*/
-	void addRootToLuaPath(SearchPath & p, std::string const& root);
 
 } // end of namespace vrjLua
 
