@@ -22,7 +22,7 @@
 #include "BindvrjLuaToLua.h"
 #include <vrjugglua/VRJLuaOutput.h>
 #include <vrjugglua/LuaPath.h>
-#include <vrjugglua/AddToLuaPaths.h>
+#include <vrjugglua/LuaPathUpdater.h>
 #include <vrjugglua/LuaInclude.h>
 
 // Library/third-party includes
@@ -68,13 +68,9 @@ namespace vrjLua {
 		if (p.empty()) {
 			throw std::runtime_error("Can't append an empty string to the require path!");
 		}
-
-		luabind::object package(luabind::globals(s)["package"]);
-		LuaSearchPath searchpath(object_cast<std::string>(package["path"]));
+		LuaSearchPathUpdater searchpath(s);
 
 		searchpath.extend(SearchDirectory(p));
-
-		package["path"] = searchpath.toString();
 	}
 
 	static luabind::object getModelSearchPath(lua_State *L) {
