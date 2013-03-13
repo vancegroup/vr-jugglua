@@ -40,21 +40,12 @@
 namespace vrjLua {
 	using namespace luabind;
 
-	static void appendToModelSearchPath(std::string const& path) {
-		std::string p = path;
-		if (osgDB::fileExists(path)) {
-			p = osgDB::convertFileNameToUnixStyle(osgDB::getRealPath(path));
-			if (osgDB::fileType(p) == osgDB::REGULAR_FILE) {
-				p = osgDB::getFilePath(p);
-			}
+	static inline std::string getDirectoryPart(std::string p) {
+		if (p.empty()) {
+			return p;
 		}
-		osgDB::Registry::instance()->getDataFilePathList().push_back(p);
-	}
-
-	static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
-		std::string p = path;
-		if (osgDB::fileExists(path)) {
-			p = osgDB::convertFileNameToUnixStyle(osgDB::getRealPath(path));
+		if (osgDB::fileExists(p)) {
+			p = osgDB::convertFileNameToUnixStyle(osgDB::getRealPath(p));
 			if (osgDB::fileType(p) == osgDB::REGULAR_FILE) {
 				p = osgDB::getFilePath(p);
 			}
@@ -62,10 +53,21 @@ namespace vrjLua {
 		if (p[p.size() - 1] != '/') {
 			p.push_back('/');
 		}
-		luabind::object package(luabind::globals(s)["package"]);
+		return p;
+	}
+	static void appendToModelSearchPath(std::string const& path) {
+		std::string p = getDirectoryPart(path);
+		osgDB::Registry::instance()->getDataFilePathList().push_back(p);
+	}
 
+	static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
+		std::string p = getDirectoryPart(path);
+
+		luabind::object package(luabind::globals(s)["package"]);
 		LuaSearchPath searchpath(object_cast<std::string>(package["path"]));
-		searchpath.extend(SearchDirectory(path));
+
+		searchpath.extend(SearchDirectory(p));
+
 		package["path"] = searchpath.toString();
 	}
 
