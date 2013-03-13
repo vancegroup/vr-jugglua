@@ -24,7 +24,7 @@
 
 #include "OsgAppProxy.h"
 #include "LuaPath.h"
-#include "AddToLuaPaths.h"
+#include "LuaPathUpdater.h"
 #include "LuaGCBlock.h"
 
 #include "VRJLuaOutput.h"
@@ -217,16 +217,16 @@ namespace vrjLua {
 		// Extend the lua script search path for "require"
 		LuaPath& lp = LuaPath::instance();
 		{
-			luabind::object package(luabind::globals(_state.get())["package"]);
-
-			LuaSearchPath searchpath(object_cast<std::string>(package["path"]));
+			LuaSearchPathUpdater searchpath(_state.get());
 			searchpath.extend(SearchDirectory(lp.getLuaDir()));
 			searchpath.extend(RootDirectory(lp.getRootDir()));
-			package["path"] = searchpath.toString();
-
-			/// @todo c search path
-			//LuaCSearchPath csearchpath(object_cast<std::string>(package["path"]));
 		}
+
+		{
+			/// @todo c search path
+			//LuaCSearchPathUpdater csearchpath(_state.get());
+		}
+
 
 		// osgLua
 		bindOsgToLua(_state);
