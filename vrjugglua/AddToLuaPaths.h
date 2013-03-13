@@ -82,6 +82,11 @@ namespace vrjLua {
 					_path.insertAt(patterns, 1);
 				}
 
+				template<typename DirectoryTag>
+				void extend(DirectoryBase<DirectoryTag> const& d) {
+					detail::extendLuaSearchPath(d, *this);
+				}
+
 				std::string toString() {
 					return _path.toString();
 				}
