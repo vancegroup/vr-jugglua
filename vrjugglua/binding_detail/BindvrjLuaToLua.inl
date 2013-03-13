@@ -57,11 +57,17 @@ namespace vrjLua {
 	}
 	static void appendToModelSearchPath(std::string const& path) {
 		std::string p = getDirectoryPart(path);
+		if (p.empty()) {
+			throw std::runtime_error("Can't append an empty string to the model search path!");
+		}
 		osgDB::Registry::instance()->getDataFilePathList().push_back(p);
 	}
 
 	static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
 		std::string p = getDirectoryPart(path);
+		if (p.empty()) {
+			throw std::runtime_error("Can't append an empty string to the require path!");
+		}
 
 		luabind::object package(luabind::globals(s)["package"]);
 		LuaSearchPath searchpath(object_cast<std::string>(package["path"]));
