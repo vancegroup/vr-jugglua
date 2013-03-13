@@ -32,10 +32,6 @@
 
 namespace vrjLua {
 	SearchPath::SearchPath(std::string const& input, const char * delim) {
-		set(input, delim);
-	}
-
-	void SearchPath::set(std::string const& input, const char * delim) {
 		boost::algorithm::split(_data, input, boost::algorithm::is_any_of(delim));
 		_reapplyUniqueness();
 	}

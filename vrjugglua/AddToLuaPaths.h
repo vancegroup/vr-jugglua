@@ -34,89 +34,89 @@
 
 namespace vrjLua {
 
-
-
-	inline std::string ensureTrailingSlash(std::string dir) {
-		if (dir.size() > 0) {
-			const char back = *(dir.end() - 1);
-			if (back != '/' && back != '\\') {
-				dir += '/';
-			}
-		}
-		return dir;
-	}
-
 	namespace LuaPathTags {
 		struct RootDirectory;
 		struct SearchDirectory;
 		struct LuaSearch;
 		struct LuaCSearch;
-	};
+	} // end of namespace LuaPathTags
 
-	template<typename Tag>
-	class DirectoryBase {
-		public:
-			DirectoryBase(std::string const& dir)
-				: _dir(ensureTrailingSlash(dir))
-			{}
-			std::string const& get() const {
-				return _dir;
+	namespace detail {
+		inline std::string ensureTrailingSlash(std::string dir) {
+			if (dir.size() > 0) {
+				const char back = *(dir.end() - 1);
+				if (back != '/' && back != '\\') {
+					dir += '/';
+				}
 			}
-		private:
-			std::string const _dir;
+			return dir;
+		}
 
-	};
+		template<typename Tag>
+		class DirectoryBase {
+			public:
+				DirectoryBase(std::string const& dir)
+					: _dir(detail::ensureTrailingSlash(dir))
+				{}
+				std::string const& get() const {
+					return _dir;
+				}
+			private:
+				std::string const _dir;
 
-	class RootDirectory : public DirectoryBase<LuaPathTags::RootDirectory> {
+		};
+
+		template<typename Tag>
+		class SearchPathContainerBase;
+
+		template<typename DirectoryTag, typename SearchTag>
+		extern void extendLuaSearchPath(DirectoryBase<DirectoryTag> const& d, SearchPathContainerBase<SearchTag> & s);
+
+		template<typename Tag>
+		class SearchPathContainerBase {
+			public:
+				SearchPathContainerBase(SearchPath const& p)
+					: _path(p) {}
+
+				void insert(std::vector<std::string> const& patterns) {
+					_path.insertAt(patterns, 1);
+				}
+
+				std::string toString() {
+					return _path.toString();
+				}
+			private:
+				SearchPath _path;
+		};
+	} // end of namespace detail
+
+
+
+
+	class RootDirectory : public detail::DirectoryBase<LuaPathTags::RootDirectory> {
 		public:
 			RootDirectory(std::string const& dir)
-				: DirectoryBase<LuaPathTags::RootDirectory>(dir)	{}
+				: detail::DirectoryBase<LuaPathTags::RootDirectory>(dir)	{}
 	};
 
-	class SearchDirectory : public DirectoryBase<LuaPathTags::SearchDirectory> {
+	class SearchDirectory : public detail::DirectoryBase<LuaPathTags::SearchDirectory> {
 		public:
 			SearchDirectory(std::string const& dir)
-				: DirectoryBase<LuaPathTags::SearchDirectory>(dir)	{}
+				: detail::DirectoryBase<LuaPathTags::SearchDirectory>(dir)	{}
 	};
 
-	template<typename Tag>
-	class SearchPathContainerBase {
+
+
+	class LuaSearchPath : public detail::SearchPathContainerBase<LuaPathTags::LuaSearch> {
 		public:
-			SearchPathContainerBase(SearchPath const& p)
-				: _path(p) {}
-
-			SearchPathContainerBase()
-				: _path() {}
-
-			void set(std::string const& s) {
-				_path.set(s);
-			}
-
-			void insert(std::vector<std::string> const& patterns) {
-				_path.insertAt(patterns, 1);
-			}
-
-			std::string toString() {
-				return _path.toString();
-			}
-		private:
-			SearchPath _path;
+			LuaSearchPath(std::string const& s) : detail::SearchPathContainerBase<LuaPathTags::LuaSearch>(s) {}
 	};
 
-	class LuaSearchPath : public SearchPathContainerBase<LuaPathTags::LuaSearch> {
+	class LuaCSearchPath : public detail::SearchPathContainerBase<LuaPathTags::LuaCSearch> {
 		public:
-			LuaSearchPath(std::string const& s) : SearchPathContainerBase<LuaPathTags::LuaSearch>(s) {}
-			LuaSearchPath() : SearchPathContainerBase<LuaPathTags::LuaSearch>() {}
+			LuaCSearchPath(std::string const& s) : detail::SearchPathContainerBase<LuaPathTags::LuaCSearch>(s) {}
 	};
 
-	class LuaCSearchPath : public SearchPathContainerBase<LuaPathTags::LuaCSearch> {
-		public:
-			LuaCSearchPath(std::string const& s) : SearchPathContainerBase<LuaPathTags::LuaCSearch>(s) {}
-			LuaCSearchPath() : SearchPathContainerBase<LuaPathTags::LuaCSearch>() {}
-	};
-
-	template<typename DirectoryTag, typename SearchTag>
-	extern void extendLuaSearchPath(DirectoryBase<DirectoryTag> const& d, SearchPathContainerBase<SearchTag> & s);
 
 
 } // end of namespace vrjLua

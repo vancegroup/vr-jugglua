@@ -42,90 +42,93 @@ namespace vrjLua {
 		};
 	} // end of namespace
 
-	template<typename SearchTag>
-	struct GetDirsFromRoot {
-		static const char * dirs[];
-	};
+	namespace detail {
+		template<typename SearchTag>
+		struct GetDirsFromRoot {
+			static const char * dirs[];
+		};
 
-	template<>
-	const char * GetDirsFromRoot<LuaPathTags::LuaSearch>::dirs[] = {
-		"etc/vrjugglua/",
-		"share/vrjugglua/lua/",
-		"share/lua/" LUA_VER "/",
-		"lib/lua/" LUA_VER "/"
-	};
+		template<>
+		const char * GetDirsFromRoot<LuaPathTags::LuaSearch>::dirs[] = {
+			"etc/vrjugglua/",
+			"share/vrjugglua/lua/",
+			"share/lua/" LUA_VER "/",
+			"lib/lua/" LUA_VER "/"
+		};
 
-	template<>
-	const char * GetDirsFromRoot<LuaPathTags::LuaCSearch>::dirs[] = {
-		"etc/vrjugglua/",
-		"share/vrjugglua/lua/",
-		"share/lua/" LUA_VER "/",
-		"lib/lua/" LUA_VER "/"
-	};
+		template<>
+		const char * GetDirsFromRoot<LuaPathTags::LuaCSearch>::dirs[] = {
+			"etc/vrjugglua/",
+			"share/vrjugglua/lua/",
+			"share/lua/" LUA_VER "/",
+			"lib/lua/" LUA_VER "/"
+		};
 
-	template<typename SearchTag>
-	struct CallWithPatterns;
+		template<typename SearchTag>
+		struct CallWithPatterns;
 
-	template<>
-	struct CallWithPatterns<LuaPathTags::LuaSearch> {
-		template<typename F>
-		static void apply(std::string const& dir, F func) {
-			static const char * luaPatterns[] = {
-				"?.lua",
-				"?/init.lua"
-			};
-			BOOST_FOREACH(const char * patt, luaPatterns) {
-				func(dir + patt);
+		template<>
+		struct CallWithPatterns<LuaPathTags::LuaSearch> {
+			template<typename F>
+			static void apply(std::string const& dir, F func) {
+				static const char * luaPatterns[] = {
+					"?.lua",
+					"?/init.lua"
+				};
+				BOOST_FOREACH(const char * patt, luaPatterns) {
+					func(dir + patt);
+				}
 			}
-		}
-	};
+		};
 
-	template<>
-	struct CallWithPatterns<LuaPathTags::LuaCSearch> {
-		template<typename F>
-		static void apply(std::string const& dir, F func) {
+		template<>
+		struct CallWithPatterns<LuaPathTags::LuaCSearch> {
+			template<typename F>
+			static void apply(std::string const& dir, F func) {
 #ifdef _WIN32
-			static const char luaCPattern[] = "?.dll";
+				static const char luaCPattern[] = "?.dll";
 #else
-			static const char luaCPattern[] = "?.so";
+				static const char luaCPattern[] = "?.so";
 #endif
-			func(dir + luaCPattern);
-		}
-	};
-
-
-	template<typename DirectoryTag, typename SearchTag>
-	struct CallWithDirectory;
-
-	template<typename SearchTag>
-	struct CallWithDirectory<LuaPathTags::RootDirectory, SearchTag> {
-		template<typename F>
-		static void apply(std::string const& rootdir, F func) {
-			BOOST_FOREACH(const char * patt, GetDirsFromRoot<SearchTag>::dirs) {
-				CallWithPatterns<SearchTag>::apply(rootdir + patt, func);
+				func(dir + luaCPattern);
 			}
+		};
+
+
+		template<typename DirectoryTag, typename SearchTag>
+		struct CallWithDirectory;
+
+		template<typename SearchTag>
+		struct CallWithDirectory<LuaPathTags::RootDirectory, SearchTag> {
+			template<typename F>
+			static void apply(std::string const& rootdir, F func) {
+				BOOST_FOREACH(const char * patt, GetDirsFromRoot<SearchTag>::dirs) {
+					CallWithPatterns<SearchTag>::apply(rootdir + patt, func);
+				}
+			}
+		};
+
+		template<typename SearchTag>
+		struct CallWithDirectory<LuaPathTags::SearchDirectory, SearchTag> {
+			template<typename F>
+			static void apply(std::string const& rootdir, F func) {
+				CallWithPatterns<SearchTag>::apply(rootdir, func);
+			}
+		};
+
+		template<typename DirectoryTag, typename SearchTag>
+		void extendLuaSearchPath(DirectoryBase<DirectoryTag> const& d, SearchPathContainerBase<SearchTag> & s) {
+			typedef std::vector<std::string> StringList;
+			StringList newpaths;
+			CallWithDirectory<DirectoryTag, SearchTag>::apply(d.get(), PushBackFunctor<StringList>(newpaths));
+			s.insert(newpaths);
 		}
-	};
 
-	template<typename SearchTag>
-	struct CallWithDirectory<LuaPathTags::SearchDirectory, SearchTag> {
-		template<typename F>
-		static void apply(std::string const& rootdir, F func) {
-			CallWithPatterns<SearchTag>::apply(rootdir, func);
-		}
-	};
-
-	template<typename DirectoryTag, typename SearchTag>
-	void extendLuaSearchPath(DirectoryBase<DirectoryTag> const& d, SearchPathContainerBase<SearchTag> & s) {
-		typedef std::vector<std::string> StringList;
-		StringList newpaths;
-		CallWithDirectory<DirectoryTag, SearchTag>::apply(d.get(), PushBackFunctor<StringList>(newpaths));
-		s.insert(newpaths);
-	}
-
-	template void extendLuaSearchPath(DirectoryBase<LuaPathTags::RootDirectory> const&, SearchPathContainerBase<LuaPathTags::LuaSearch> &);
-	template void extendLuaSearchPath(DirectoryBase<LuaPathTags::SearchDirectory> const&, SearchPathContainerBase<LuaPathTags::LuaSearch> &);
-	template void extendLuaSearchPath(DirectoryBase<LuaPathTags::RootDirectory> const&, SearchPathContainerBase<LuaPathTags::LuaCSearch> &);
-	template void extendLuaSearchPath(DirectoryBase<LuaPathTags::SearchDirectory> const&, SearchPathContainerBase<LuaPathTags::LuaCSearch> &);
+		// Explicit instantiation of function template above, so we can hide this all in the CPP file.
+		template void extendLuaSearchPath(DirectoryBase<LuaPathTags::RootDirectory> const&, SearchPathContainerBase<LuaPathTags::LuaSearch> &);
+		template void extendLuaSearchPath(DirectoryBase<LuaPathTags::SearchDirectory> const&, SearchPathContainerBase<LuaPathTags::LuaSearch> &);
+		template void extendLuaSearchPath(DirectoryBase<LuaPathTags::RootDirectory> const&, SearchPathContainerBase<LuaPathTags::LuaCSearch> &);
+		template void extendLuaSearchPath(DirectoryBase<LuaPathTags::SearchDirectory> const&, SearchPathContainerBase<LuaPathTags::LuaCSearch> &);
+	} // end of namespace detail
 
 } // end of namespace vrjLua

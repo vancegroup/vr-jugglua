@@ -39,10 +39,7 @@ namespace vrjLua {
 
 			typedef std::vector<std::string> StringList;
 
-			SearchPath() {}
 			SearchPath(std::string const& input, const char * delim = defaultDelimiter());
-
-			void set(std::string const& input, const char * delim = defaultDelimiter());
 
 			void insertAt(StringList const& elts, size_t position = 0);
 
