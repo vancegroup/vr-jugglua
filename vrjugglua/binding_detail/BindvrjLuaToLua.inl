@@ -22,6 +22,7 @@
 #include "BindvrjLuaToLua.h"
 #include <vrjugglua/VRJLuaOutput.h>
 #include <vrjugglua/LuaPath.h>
+#include <vrjugglua/AddToLuaPaths.h>
 #include <vrjugglua/LuaInclude.h>
 
 // Library/third-party includes
@@ -61,7 +62,11 @@ namespace vrjLua {
 		if (p[p.size() - 1] != '/') {
 			p.push_back('/');
 		}
-		LuaPath::instance().addLuaRequirePath(borrowStatePtr(s), path);
+		luabind::object package(luabind::globals(s)["package"]);
+
+		LuaSearchPath searchpath(object_cast<std::string>(package["path"]));
+		extendLuaSearchPath(SearchDirectory(path), searchpath);
+		package["path"] = searchpath.toString();
 	}
 
 	static luabind::object getModelSearchPath(lua_State *L) {
