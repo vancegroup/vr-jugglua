@@ -57,6 +57,7 @@ set(API
 	LuaIncludeFull.h
 	LuaInclude.h
 	LuaPath.h
+	LuaPathUpdater.h
 	LuaRunBuffer.h
 	LuaScript.h
 	OsgAppProxy.h

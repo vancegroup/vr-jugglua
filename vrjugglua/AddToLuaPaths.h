@@ -115,11 +115,18 @@ namespace vrjLua {
 	class LuaSearchPath : public detail::SearchPathContainerBase<LuaPathTags::LuaSearch> {
 		public:
 			LuaSearchPath(std::string const& s) : detail::SearchPathContainerBase<LuaPathTags::LuaSearch>(s) {}
+
+			static const char * getTableKey() {
+				return "path";
+			}
 	};
 
 	class LuaCSearchPath : public detail::SearchPathContainerBase<LuaPathTags::LuaCSearch> {
 		public:
 			LuaCSearchPath(std::string const& s) : detail::SearchPathContainerBase<LuaPathTags::LuaCSearch>(s) {}
+			static const char * getTableKey() {
+				return "cpath";
+			}
 	};
 
 
