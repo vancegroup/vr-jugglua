@@ -57,9 +57,12 @@ namespace vrjLua {
 
 		template<>
 		const char * GetDirsFromRoot<LuaPathTags::LuaCSearch>::dirs[] = {
-			"share/vrjugglua/lua/",
-			"share/lua/" LUA_VER "/",
-			"lib/lua/" LUA_VER "/"
+			"lib/lua/" LUA_VER "/",
+			"lib/"
+#ifdef _WIN32
+			,
+			"bin/"
+#endif
 		};
 
 		template<typename SearchTag>
