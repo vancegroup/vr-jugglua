@@ -52,7 +52,7 @@ else()
 	add_subdirectory(luarocks)
 	include(luarocks/UseLuarocks.cmake)
 
-	luarocks_install(luarocks-luafilesystem luafilesystem ${CMAKE_CURRENT_BINARY_DIR}/rockstree)
+	luarocks_install(luarocks-luafilesystem luafilesystem "${ROOT_OUTPUT_DIRECTORY}")
 
-	luarocks_install(luarocks-luasocket "${CMAKE_CURRENT_SOURCE_DIR}/luasocket-2.0.2-5.rockspec" ${CMAKE_CURRENT_BINARY_DIR}/rockstree)
+	luarocks_install(luarocks-luasocket "${CMAKE_CURRENT_SOURCE_DIR}/luasocket-2.0.2-5.rockspec" "${ROOT_OUTPUT_DIRECTORY}")
 endif()
