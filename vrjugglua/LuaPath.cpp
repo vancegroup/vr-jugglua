@@ -30,7 +30,6 @@
 #include <boost/algorithm/string/trim.hpp>
 
 #include <vpr/System.h>
-#include <vpr/vprDefines.h>             // for VPR_OS_Linux
 #include <vrj/vrjParam.h> // for __VJ_version define
 
 // Standard includes
@@ -39,24 +38,6 @@
 
 namespace fs = boost::filesystem;
 
-#ifdef VPR_OS_Linux
-
-#include <link.h>
-
-extern "C" {
-	int sharedObjectCallback(struct dl_phdr_info *info,
-	                         size_t, void *data);
-}
-
-int sharedObjectCallback(struct dl_phdr_info *info, size_t, void *data) {
-	std::string fn(info->dlpi_name);
-	if (fn.find("vpr") != std::string::npos) {
-		(*static_cast<std::string*>(data)) = fn;
-	}
-	return 0;
-}
-
-#endif // VPR_OS_Linux
 
 namespace vrjLua {
 
