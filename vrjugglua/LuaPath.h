@@ -46,13 +46,10 @@ namespace vrjLua {
 			std::string const& getShareDir() const;
 			std::string const& getExeDir() const;
 			std::string const& getInitialPath() const;
-			std::string getPathToLuaScript(const std::string & scriptfn) const;
+			std::string const& getLuaDir() const;
 
-			void chdir(std::string const& path);
-
+			/// DEPRECATED
 			void addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash);
-			void updateLuaRequirePath(LuaStatePtr state);
-
 
 		protected:
 			LuaPath();
@@ -61,8 +58,6 @@ namespace vrjLua {
 			static std::string _findFilePath(std::vector<std::string> const& startingPlaces, std::string const& qualified);
 			static std::string _findFilePath(std::string const& startingAt, std::string const& fn);
 
-			void _populateSearchPathsVector(LuaStatePtr state);
-			void _setLuaSearchPaths(LuaStatePtr state);
 			std::string _findJuggler();
 			bool _setJugglerEnvironment() const;
 
@@ -77,8 +72,6 @@ namespace vrjLua {
 			std::string _jugglerRoot;
 
 			bool _valid;
-
-			std::deque<std::string> _searchPaths;
 	};
 
 // -- inline implementations -- /

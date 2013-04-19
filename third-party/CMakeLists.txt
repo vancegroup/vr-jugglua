@@ -6,15 +6,18 @@ endif()
 
 if(BUILD_EMBEDDED_LUA)
 	# Lua 5.1.5
-	if(BUILD_SHARED_LUA)
+	if(BUILD_SHARED_LUA AND WIN32)
 		set(LUA_DEFINITIONS "-DLUA_BUILD_AS_DLL")
 		set(LUA_DEFINITIONS ${LUA_DEFINITIONS} PARENT_SCOPE)
 	endif()
 	add_subdirectory(lua-5.1.5/src)
-	set(LUA_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/lua-5.1.5/src")
+	set(LUA_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lua-5.1.5/src")
+	set(LUA_INCLUDE_DIRS "${LUA_INCLUDE_DIR}")
 	set(LUA_INCLUDE_DIRS ${LUA_INCLUDE_DIRS} PARENT_SCOPE)
+	set(LUA_LIBRARY lua)
 	set(LUA_LIBRARIES lua)
 	set(LUA_LIBRARIES ${LUA_LIBRARIES} PARENT_SCOPE)
+	set(LUA_INTERPRETER "lua-interp")
 	set(LUA51_FOUND YES)
 
 	add_definitions(${LUA_DEFINITIONS})
@@ -37,3 +40,19 @@ endif()
 add_subdirectory(stdlib/modules)
 
 add_subdirectory(lua_modules)
+
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/luarocks/CMakeLists.txt")
+	message(STATUS "NOTE: Skipping LuaRocks because the submodule is missing.  Try 'git submodule update --init --recursive'")
+
+elseif(BUILD_LUA_AS_CPP)
+	message(STATUS "NOTE: Skipping LuaRocks because BUILD_LUA_AS_CPP is set which would confuse most compiled modules.")
+
+else()
+	set(LUAROCKS_LUA_SUFFIX "")
+	add_subdirectory(luarocks)
+	include(luarocks/UseLuarocks.cmake)
+
+	luarocks_install(luarocks-luafilesystem luafilesystem "${ROOT_OUTPUT_DIRECTORY}")
+
+	luarocks_install(luarocks-luasocket "${CMAKE_CURRENT_SOURCE_DIR}/luasocket-2.0.2-5.rockspec" "${ROOT_OUTPUT_DIRECTORY}")
+endif()
