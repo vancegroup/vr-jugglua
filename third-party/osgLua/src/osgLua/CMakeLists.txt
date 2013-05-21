@@ -61,8 +61,10 @@ find_package(Boost)
 
 if(Boost_FOUND)
 	message(STATUS "Building osgLua with Boost-based enhanced math metamethods!")
+	add_subdirectory(osgBoost)
+
+	include_directories(${Boost_INCLUDE_DIR} osgBoost)
 	add_definitions(-DOSGLUA_HAVE_BOOST)
-	include_directories(${Boost_INCLUDE_DIR})
 endif()
 
 if(BUILD_SHARED_OSGLUA)
