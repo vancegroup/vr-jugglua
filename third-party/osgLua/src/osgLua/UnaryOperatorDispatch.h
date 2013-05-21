@@ -23,7 +23,8 @@
 // Internal Includes
 #include <osgLua/Value>
 #include <osgLua/introspection/Value>
-#include "boost/InvokeOperator.h"
+#include <osgTraits/InvokeOperator.h>
+#include <osgTraits/ConstructOperation.h>
 
 #include "UsableAs.h"
 

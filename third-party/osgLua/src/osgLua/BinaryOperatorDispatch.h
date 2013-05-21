@@ -21,16 +21,16 @@
 #define INCLUDED_BinaryOperatorDispatch_h_GUID_6c86a34e_7070_4d10_aa19_5ae304064960
 
 // Internal Includes
-#include "boost/BinaryOperators.h"
-#include "boost/InvokeOperator.h"
-#include "boost/IsOperatorAvailable.h"
-
 #include "UsableAs.h"
 #include "StatefulTypeVisitFunctor.h"
 
 #include "LuaIncludeFull.h"
 
 // Library/third-party includes
+#include <osgTraits/InvokeOperator.h>
+#include <osgTraits/IsOperatorAvailable.h>
+#include <osgTraits/ConstructOperation.h>
+
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/filter_view.hpp>
 #include <boost/type_traits/add_reference.hpp>
@@ -70,7 +70,7 @@ namespace osgLua {
 
 	namespace {
 		template<typename Operation>
-		void performBinaryOperation(BinaryOpData & d) {
+		inline void performBinaryOperation(BinaryOpData & d) {
 			typedef typename osgTraits::get_operation_argument_c<Operation, 0>::type T1;
 			typedef typename osgTraits::get_operation_argument_c<Operation, 1>::type T2;
 			d.r = osgTraits::invokeOperation<Operation>(introspection::variant_cast<T1>(d.a1), introspection::variant_cast<T2>(d.a2));
@@ -102,7 +102,7 @@ namespace osgLua {
 			typedef typename osgTraits::construct_bound_operation<Op, T1, BindArg>::type BoundOp;
 			typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 			BinaryOpData data(L, OtherArg);
-			boost::mpl::for_each<typename AttemptStruct::OtherArgumentPossibilities, typename AttemptStruct::visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
+			boost::mpl::for_each<typename AttemptStruct::OtherArgumentPossibilities, AttemptStruct::template visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
 			ret = data.pushIfSuccessful(L);
 			return true;
 		}

@@ -24,26 +24,14 @@
 // - none
 
 // Library/third-party includes
-// - none
+#include <osgTraits/Operators.h>
 
 // Standard includes
 // - none
 
-namespace osgTraits {
-	struct UnaryMinus;
-	struct Addition;
-	struct Subtraction;
-	struct Multiplication;
-	struct CrossProduct;
-	struct Division;
-	struct Equality;
-	struct LessThan;
-}
-
 namespace osgLua {
 	template<typename Op>
 	struct MetamethodName;
-	/*
 		template<>
 		struct MetamethodName<osgTraits::UnaryMinus> {
 			static const char * get() {
@@ -53,7 +41,6 @@ namespace osgLua {
 				return "-";
 			}
 		};
-	*/
 	template<>
 	struct MetamethodName<osgTraits::Addition> {
 		static const char * get() {
@@ -63,7 +50,6 @@ namespace osgLua {
 			return "+";
 		}
 	};
-	/*
 		template<>
 		struct MetamethodName<osgTraits::Subtraction> {
 			static const char * get() {
@@ -123,7 +109,7 @@ namespace osgLua {
 				return "<";
 			}
 		};
-	*/
+
 } // end of namespace osgLua
 
 #endif // INCLUDED_OperatorMetamethodTraits_h_GUID_f50476b4_fdfa_4906_af5a_217b87918f8f

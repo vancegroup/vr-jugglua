@@ -24,10 +24,12 @@
 // - none
 
 // Library/third-party includes
-// - none
+#include <boost/mpl/identity.hpp>
 
 // Standard includes
-// - none
+#include <iostream>
+#include <typeinfo>
+
 namespace osgLua {
 	template<typename T>
 	inline std::string const& getTypeName() {
@@ -38,6 +40,7 @@ namespace osgLua {
 	inline const char * getIdentityTypeName() {
 		return typeid(boost::mpl::identity<T>).name();
 	}
+	/*
 	template<typename Operator, typename T1, typename T2>
 	inline void printBinaryInfo() {
 		std::cout << std::endl << getTypeName<T1>() << " and " << getTypeName<T2>() << ":" << std::endl;
@@ -62,13 +65,6 @@ namespace osgLua {
 		std::cout << "	get_category: " << typeid(typename osgTraits::get_category<T>::type).name() << std::endl;
 
 	}
-	template<typename T1, typename Operator>
-	struct PrintInfoFunctor {
-		template<typename T2>
-		void operator()(T2 const&) {
-			printInfo<T2>();
-			printBinaryInfo<Operator, T1, T2>();
-		}
-	};
+	*/
 } // end of namespace osgLua
 #endif // INCLUDED_PrintInfoFunctor_h_GUID_d31f32e7_cf9c_49fb_803e_08e52b032153

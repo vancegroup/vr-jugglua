@@ -21,8 +21,6 @@
 
 // Internal Includes
 #include "RegisterMathMetamethods.h"
-#include "boost/Operators.h"
-#include "boost/MathAndArithmeticTypes.h"
 #include "UnaryOperatorDispatch.h"
 #include "BinaryOperatorDispatch.h"
 #include "OperatorMetamethodTraits.h"
@@ -31,8 +29,13 @@
 #include <osgLua/LuaInclude>
 #include <osgLua/Value>
 
+#include <osgTraits/Operators.h>
+#include <osgTraits/OperatorArity.h>
+#include <osgTraits/IsOperatorAvailable.h>
+
 // Library/third-party includes
 #include <boost/mpl/for_each.hpp>
+#include <boost/mpl/identity.hpp>
 
 // Standard includes
 // - none
@@ -40,31 +43,7 @@
 namespace osgLua {
 	template<typename T, typename Operator>
 	inline void reportRegistration(bool applicable) {
-		std::cerr << (applicable ? "Registering " : "Skipping ") << getTypeName<T>() << " metamethod " << MetamethodName<Operator>::get() << " (" << MetamethodName<Operator>::getSymbol() << ")" << std::endl;
-	}
-
-	template<typename T, typename Operator>
-	inline void pushAndSetOperator(lua_State * L, boost::mpl::true_ const&, boost::mpl::int_<2> const&) {
-		reportRegistration<T, Operator>(true);
-		//boost::mpl::for_each<osgTraits::math_and_arithmetic_types>(PrintInfoFunctor<T, Operator>());
-		/* TESTING
-		lua_pushcfunction(L, &(attemptBinaryOperator<Operator, T>));
-		lua_setfield(L, -2, MetamethodName<Operator>::get());
-		*/
-	}
-
-	template<typename T, typename Operator>
-	inline void pushAndSetOperator(lua_State * L, boost::mpl::true_ const&, boost::mpl::int_<1> const&) {
-		/* TESTING
-		reportRegistration<T, Operator>(true);
-		lua_pushcfunction(L, &(attemptUnaryOperator<Operator, T>));
-		lua_setfield(L, -2, MetamethodName<Operator>::get());
-		*/
-	}
-
-	template<typename T, typename Operator, typename Arity>
-	inline void pushAndSetOperator(lua_State *, boost::mpl::false_ const&, Arity const&) {
-		reportRegistration<T, Operator>(false);
+		std::cerr << (applicable ? "Registering " : "Skipping ") << getTypeName<T>() << " metamethod " << MetamethodName<Operator>::get() << " (" << MetamethodName<Operator>::getSymbol() << ")" << std::flush << std::endl;
 	}
 
 	struct RegistrationData {
@@ -74,19 +53,38 @@ namespace osgLua {
 		bool foundOurType;
 	};
 
+	template<typename T, typename Operator, typename Arity = typename osgTraits::get_arity<Operator>::type, typename = void>
+	struct PushOperator {
+		static void visit(RegistrationData const&) {		
+			reportRegistration<T, Operator>(false);
+		}
+	};
+
+	template<typename T, typename Operator>
+	struct PushOperator<T, Operator, osgTraits::arity_tags::unary_tag, typename boost::enable_if< typename osgTraits::is_operator_applicable<Operator, T>::type>::type > {
+		static void visit(RegistrationData const& d) {
+			std::cerr << "pushing a unary operator" << std::endl;
+			reportRegistration<T, Operator>(true);
+			lua_pushcfunction(d.L, &(attemptUnaryOperator<Operator, T>));
+			lua_setfield(d.L, -2, MetamethodName<Operator>::get());
+		}
+	};
+	template<typename T, typename Operator>
+	struct PushOperator<T, Operator, osgTraits::arity_tags::binary_tag, typename boost::enable_if< typename osgTraits::is_operator_applicable<Operator, T>::type>::type > {
+		static void visit(RegistrationData const& d) {
+			std::cerr << "pushing a binary operator" << std::endl;
+			reportRegistration<T, Operator>(true);
+			lua_pushcfunction(d.L, &(attemptBinaryOperator<Operator, T>));
+			lua_setfield(d.L, -2, MetamethodName<Operator>::get());
+		}
+	};
 	template<typename T>
 	struct visit_types {
-		template<typename Operator>
-		struct visit_operator {
-			static void visit(RegistrationData const& d) {
-				pushAndSetOperator<T, Operator>(d.L, typename osgTraits::is_operator_applicable<Operator, T>::type(), typename osgTraits::get_operator_arity<Operator>::type());
-			}
-		};
 
 		static void visit(RegistrationData & d) {
 			if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
 				d.foundOurType = true;
-				boost::mpl::for_each<osgTraits::MathOperators, visit_operator<boost::mpl::_1> >(util::visitorState(d));
+				boost::mpl::for_each<osgTraits::MathOperators, PushOperator<T, boost::mpl::_1> >(util::visitorState(d));
 			}
 		}
 	};
