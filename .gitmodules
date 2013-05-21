@@ -7,3 +7,6 @@
 [submodule "doc/generation/LDoc"]
 	path = doc/generation/LDoc
 	url = https://github.com/stevedonovan/LDoc.git
+[submodule "third-party/osgLua/src/osgLua/osgBoost"]
+	path = third-party/osgLua/src/osgLua/osgBoost
+	url = https://github.com/vancegroup/osgBoost.git
