@@ -22,6 +22,7 @@
 
 // Internal Includes
 #include "UsableAs.h"
+#include "AttemptOperator.h"
 #include "StatefulTypeVisitFunctor.h"
 
 #include "LuaIncludeFull.h"
@@ -30,6 +31,7 @@
 #include <osgTraits/InvokeOperator.h>
 #include <osgTraits/IsOperatorAvailable.h>
 #include <osgTraits/ConstructOperation.h>
+#include <osgTraits/ArityTags.h>
 
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/filter_view.hpp>
@@ -91,12 +93,17 @@ namespace osgLua {
 
 		typedef osgTraits::get_valid_other_arg_types<BoundOp> OtherArgumentPossibilities;
 	};
-
+	namespace ArgumentLocations {
+		enum {
+			FIRST = 0,
+			SECOND = 1
+		};
+	}
 	template<typename Op, typename T1, int BindArg>
 	inline bool checkAndRun(lua_State * L, int & ret) {
 		enum {
-		    BoundArg = (BindArg  == 1 ? -2 : -1),
-		    OtherArg = (BindArg  == 2 ? -2 : -1)
+			BoundArg = (BindArg  == ArgumentLocations::FIRST ? -2 : -1),
+			OtherArg = (BindArg  == ArgumentLocations::SECOND ? -2 : -1)
 		};
 		if (osgLuaValueUsableAs<T1>(L, BoundArg)) {
 			typedef typename osgTraits::construct_bound_operation<Op, T1, BindArg>::type BoundOp;
@@ -109,22 +116,23 @@ namespace osgLua {
 		return false;
 	}
 
-	namespace {
-		template<typename Op, typename T1>
-		int attemptBinaryOperator(lua_State * L) {
+	template<typename Operator, typename T>
+	struct AttemptOperator<Operator, T, osgTraits::arity_tags::binary_tag> {
+		typedef typename osgTraits::construct_operation<Op, T>::type Operation;
+		static int attempt(lua_State * L) {
 			int ret = 0;
 			if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
 				return luaL_error(L, "[%s:%d] Could not %s: %s operand is nil", __FILE__, __LINE__,
 				                  osgTraits::OperatorVerb<Op>::get(), (lua_isnil(L, -2) ? "first" : "second"));
 			}
-			checkAndRun<Op, T1, 1>(L, ret) || checkAndRun<Op, T1, 2>(L, ret);
+			checkAndRun<Op, T1, ArgumentLocations::FIRST>(L, ret) || checkAndRun<Op, T1, ArgumentLocations::SECOND>(L, ret);
 			if (ret == 0) {
 				return luaL_error(L, "[%s:%d] Could not %s instances of %s, %s", __FILE__, __LINE__,
 				                  osgTraits::OperatorVerb<Op>::get(), getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
 			}
 			return ret;
 		}
-	} // end of anonymous namespace
+	};
 
 
 } // end of namespace osgLua
