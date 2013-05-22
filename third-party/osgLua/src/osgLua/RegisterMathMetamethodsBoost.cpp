@@ -42,7 +42,8 @@
 // - none
 
 namespace osgLua {
-	typedef boost::mpl::list2<osgTraits::Addition, osgTraits::Subtraction> SpecializedOperators;
+	//typedef boost::mpl::list3<osgTraits::Addition, osgTraits::Subtraction, osgTraits::Equality> SpecializedOperators;
+	typedef osgTraits::MathOperators SpecializedOperators;
 	//typedef boost::mpl::single_view<osg::Vec3d> SpecializedTypes;
 	typedef osgTraits::math_types SpecializedTypes;
 
