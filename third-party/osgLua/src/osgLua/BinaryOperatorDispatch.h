@@ -57,7 +57,7 @@ namespace osgLua {
 			, a2(getValue(L, -1))
 			, r()
 			, otherIdx(otherStackIdx)
-			, isOtherNumber(lua_isnumber(L, otherStackIdx))
+			, isOtherNumber(static_cast<bool>(lua_isnumber(L, otherStackIdx)))
 			, success(false) {}
 		lua_State * L;
 		introspection::Type const& other;
