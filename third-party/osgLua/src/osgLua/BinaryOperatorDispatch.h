@@ -50,16 +50,22 @@
 namespace osgLua {
 
 	struct BinaryOpData {
-		BinaryOpData(lua_State * L, int otherStackIdx)
-			: other(getValue(L, otherStackIdx).getType())
+		BinaryOpData(lua_State * _L, int otherStackIdx)
+			: L(_L)
+			, other(getValue(L, otherStackIdx).getType())
 			, a1(getValue(L, -2))
 			, a2(getValue(L, -1))
 			, r()
+			, otherIdx(otherStackIdx)
+			, isOtherNumber(lua_isnumber(L, otherStackIdx))
 			, success(false) {}
+		lua_State * L;
 		introspection::Type const& other;
 		introspection::Value a1;
 		introspection::Value a2;
 		introspection::Value r;
+		int otherIdx;
+		bool isOtherNumber;
 		bool success;
 		int pushIfSuccessful(lua_State * L) const {
 			if (success) {
@@ -102,7 +108,7 @@ namespace osgLua {
 			template<typename T2>
 			struct other_argument_visitor {
 				static void visit(BinaryOpData & d) {
-					if (!d.success && typeUsableAs<T2>(d.other)) {
+					if (!d.success && osgLuaValueUsableAs<T2>(d.L, d.otherIdx)) {
 						typedef typename osgTraits::add_argtype<BoundOp, T2>::type Operation;
 						performBinaryOperation<Operation>(d);
 					}
