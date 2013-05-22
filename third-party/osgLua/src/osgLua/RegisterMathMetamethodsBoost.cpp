@@ -53,50 +53,56 @@ namespace osgLua {
 		introspection::Type const& metatableType;
 		bool foundOurType;
 	};
+	namespace detail {
+		namespace mpl = boost::mpl;
+		using namespace boost::mpl::placeholders;
+		using boost::enable_if;
+		using boost::disable_if;
+		template<typename T>
+		struct type_visitor {
+			/// @brief Nested visitor template: for a given type, this is
+			/// applied with each of the operators, and the lone useful function
+			/// registers that operator if applicable.
+			template<typename Operator, typename = void>
+			struct operator_visitor;
+			template<typename Operator>
+			struct is_applicable :  mpl::apply<osgTraits::is_operator_applicable<_1, _2>, Operator, T>::type {};
 
-	template<typename T>
-	struct type_visitor {
-		/// @brief Nested visitor template: for a given type, this is
-		/// applied with each of the operators, and the lone useful function
-		/// registers that operator if applicable.
-		template<typename Operator, typename = void>
-		struct operator_visitor {
-		};
-
-		template<typename Operator>
-		struct operator_visitor<Operator, typename boost::enable_if<typename osgTraits::is_operator_applicable<Operator, T>::type>::type > {
-			static void visit(RegistrationData const& d) {
-				reportRegistration<T, Operator>(true);
+			template<typename Operator>
+			struct operator_visitor<Operator, typename boost::enable_if<typename is_applicable<Operator, T>::type>::type > {
+				static void visit(RegistrationData const& d) {
+					reportRegistration<T, Operator>(true);
 #if 0
-				lua_pushcfunction(d.L, &(AttemptOperator<Operator, T>::attempt));
-				lua_setfield(d.L, -2, MetamethodName<Operator>::get());
+					lua_pushcfunction(d.L, &(AttemptOperator<Operator, T>::attempt));
+					lua_setfield(d.L, -2, MetamethodName<Operator>::get());
 #endif
-			}
-		};
-		template<typename Operator>
-		struct operator_visitor<Operator, typename boost::disable_if<typename osgTraits::is_operator_applicable<Operator, T>::type>::type > {
-			static void visit(RegistrationData const& d) {
-				reportRegistration<T, Operator>(false);
-			}
-		};
+				}
+			};
+			template<typename Operator>
+			struct operator_visitor<Operator, typename boost::disable_if<typename is_applicable<Operator, T>::type>::type > {
+				static void visit(RegistrationData const& d) {
+					reportRegistration<T, Operator>(false);
+				}
+			};
 
-		/// @brief Function called for each known math type: if it matches
-		/// the type we're registering, we proceed on to visit all operators.
-		static void visit(RegistrationData & d) {
-			std::cerr << "Trying " << getTypeName<T>() << std::flush << std::endl;
-			if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
-				d.foundOurType = true;
-				boost::mpl::for_each<osgTraits::MathOperators, operator_visitor<boost::mpl::_1> >(util::visitorState(d));
+			/// @brief Function called for each known math type: if it matches
+			/// the type we're registering, we proceed on to visit all operators.
+			static void visit(RegistrationData & d) {
+				std::cerr << "Trying " << getTypeName<T>() << std::flush << std::endl;
+				if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
+					d.foundOurType = true;
+					boost::mpl::for_each<osgTraits::MathOperators, operator_visitor<boost::mpl::_1> >(util::visitorState(d));
+				}
 			}
-		}
-	};
+		};
+	} // end of namespace detail
 
 	bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
 		RegistrationData data(L, t);
 		std::cerr << "Attempting to register " << t.getQualifiedName() << std::flush << std::endl;
 		typedef boost::mpl::single_view<osg::Vec3d> SpecialTypes;
 		//typedef osgTraits::math_types SpecialTypes;
-		boost::mpl::for_each<SpecialTypes, type_visitor<boost::mpl::_1> >(util::visitorState(data));
+		boost::mpl::for_each<SpecialTypes, detail::type_visitor<boost::mpl::_1> >(util::visitorState(data));
 		return data.foundOurType;
 	}
 
