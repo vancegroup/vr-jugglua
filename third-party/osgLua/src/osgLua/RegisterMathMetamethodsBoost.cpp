@@ -63,25 +63,14 @@ namespace osgLua {
 			/// @brief Nested visitor template: for a given type, this is
 			/// applied with each of the operators, and the lone useful function
 			/// registers that operator if applicable.
-			template<typename Operator, typename = void>
-			struct operator_visitor;
 			template<typename Operator>
-			struct is_applicable :  mpl::apply<osgTraits::is_operator_applicable<_1, _2>, Operator, T>::type {};
-
-			template<typename Operator>
-			struct operator_visitor<Operator, typename boost::enable_if<typename is_applicable<Operator, T>::type>::type > {
+			struct operator_visitor {
 				static void visit(RegistrationData const& d) {
 					reportRegistration<T, Operator>(true);
 #if 0
 					lua_pushcfunction(d.L, &(AttemptOperator<Operator, T>::attempt));
 					lua_setfield(d.L, -2, MetamethodName<Operator>::get());
 #endif
-				}
-			};
-			template<typename Operator>
-			struct operator_visitor<Operator, typename boost::disable_if<typename is_applicable<Operator, T>::type>::type > {
-				static void visit(RegistrationData const& d) {
-					reportRegistration<T, Operator>(false);
 				}
 			};
 
@@ -91,7 +80,8 @@ namespace osgLua {
 				std::cerr << "Trying " << getTypeName<T>() << std::flush << std::endl;
 				if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
 					d.foundOurType = true;
-					boost::mpl::for_each<osgTraits::MathOperators, operator_visitor<boost::mpl::_1> >(util::visitorState(d));
+					typedef typename osgTraits::get_applicable_operators<T>::type ApplicableOperators;
+					boost::mpl::for_each<ApplicableOperators, operator_visitor<boost::mpl::_1> >(util::visitorState(d));
 				}
 			}
 		};
