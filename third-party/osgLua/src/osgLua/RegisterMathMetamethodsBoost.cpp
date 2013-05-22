@@ -67,10 +67,8 @@ namespace osgLua {
 			struct operator_visitor {
 				static void visit(RegistrationData const& d) {
 					reportRegistration<T, Operator>(true);
-#if 0
 					lua_pushcfunction(d.L, &(AttemptOperator<Operator, T>::attempt));
 					lua_setfield(d.L, -2, MetamethodName<Operator>::get());
-#endif
 				}
 			};
 
