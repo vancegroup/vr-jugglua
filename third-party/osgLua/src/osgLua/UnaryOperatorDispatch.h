@@ -39,10 +39,10 @@ namespace osgLua {
 
 	template<typename Operator, typename T>
 	struct AttemptOperator<Operator, T, osgTraits::arity_tags::unary_tag> {
-		typedef typename osgTraits::construct_operation<Op, T>::type Operation;
+		typedef typename osgTraits::construct_operation<Operator, T>::type Operation;
 		static int attempt(lua_State * L) {
 			if (osgLuaValueUsableAs<T>(L, -1)) {
-				introspection::Value ret = osgTraits::invokeOperation<Operation >(introspection::variant_cast<T>(getValue(L, -1)));
+				introspection::Value ret = osgTraits::invokeOperation<Operation>(introspection::variant_cast<T>(getValue(L, -1)));
 				Value::push(L, ret);
 				return 1;
 			}

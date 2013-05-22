@@ -55,25 +55,38 @@ namespace osgLua {
 	};
 
 	template<typename T>
-	struct visit_types {
+	struct type_visitor {
+		/// @brief Nested visitor template: for a given type, this is
+		/// applied with each of the operators, and the lone useful function
+		/// registers that operator if applicable.
+		template<typename Operator, typename = void>
+		struct operator_visitor {
+		};
 
 		template<typename Operator>
-		struct visit_operators {
-			static typename boost::enable_if< typename osgTraits::is_operator_applicable<Operator, T>::type>::type visit(RegistrationData const& d) {
+		struct operator_visitor<Operator, typename boost::enable_if<typename osgTraits::is_operator_applicable<Operator, T>::type>::type > {
+			static void visit(RegistrationData const& d) {
 				reportRegistration<T, Operator>(true);
+#if 0
 				lua_pushcfunction(d.L, &(AttemptOperator<Operator, T>::attempt));
 				lua_setfield(d.L, -2, MetamethodName<Operator>::get());
+#endif
 			}
-
-			static void visit(...) {
+		};
+		template<typename Operator>
+		struct operator_visitor<Operator, typename boost::disable_if<typename osgTraits::is_operator_applicable<Operator, T>::type>::type > {
+			static void visit(RegistrationData const& d) {
 				reportRegistration<T, Operator>(false);
 			}
 		};
+
+		/// @brief Function called for each known math type: if it matches
+		/// the type we're registering, we proceed on to visit all operators.
 		static void visit(RegistrationData & d) {
 			std::cerr << "Trying " << getTypeName<T>() << std::flush << std::endl;
 			if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
 				d.foundOurType = true;
-				boost::mpl::for_each<osgTraits::MathOperators, visit_operators<boost::mpl::_1> >(util::visitorState(d));
+				boost::mpl::for_each<osgTraits::MathOperators, operator_visitor<boost::mpl::_1> >(util::visitorState(d));
 			}
 		}
 	};
@@ -81,7 +94,9 @@ namespace osgLua {
 	bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
 		RegistrationData data(L, t);
 		std::cerr << "Attempting to register " << t.getQualifiedName() << std::flush << std::endl;
-		boost::mpl::for_each<osgTraits::math_types, visit_types<boost::mpl::_1> >(util::visitorState(data));
+		typedef boost::mpl::single_view<osg::Vec3d> SpecialTypes;
+		//typedef osgTraits::math_types SpecialTypes;
+		boost::mpl::for_each<SpecialTypes, type_visitor<boost::mpl::_1> >(util::visitorState(data));
 		return data.foundOurType;
 	}
 
