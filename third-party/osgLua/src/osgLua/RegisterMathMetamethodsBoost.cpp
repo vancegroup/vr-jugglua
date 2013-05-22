@@ -42,6 +42,10 @@
 // - none
 
 namespace osgLua {
+	typedef boost::mpl::list2<osgTraits::Addition, osgTraits::Subtraction> SpecializedOperators;
+	//typedef boost::mpl::single_view<osg::Vec3d> SpecializedTypes;
+	typedef osgTraits::math_types SpecializedTypes;
+
 	template<typename T, typename Operator>
 	inline void reportRegistration(bool applicable) {
 		std::cerr << (applicable ? "Registering " : "Skipping ") << getTypeName<T>() << " metamethod " << MetamethodName<Operator>::get() << " (" << MetamethodName<Operator>::getSymbol() << ")" << std::flush << std::endl;
@@ -78,7 +82,7 @@ namespace osgLua {
 				std::cerr << "Trying " << getTypeName<T>() << std::flush << std::endl;
 				if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
 					d.foundOurType = true;
-					typedef typename osgTraits::get_applicable_operators<T>::type ApplicableOperators;
+					typedef typename osgTraits::get_applicable_operators<T, SpecializedOperators>::type ApplicableOperators;
 					boost::mpl::for_each<ApplicableOperators, operator_visitor<boost::mpl::_1> >(util::visitorState(d));
 				}
 			}
@@ -88,9 +92,7 @@ namespace osgLua {
 	bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
 		RegistrationData data(L, t);
 		std::cerr << "Attempting to register " << t.getQualifiedName() << std::flush << std::endl;
-		//typedef boost::mpl::single_view<osg::Vec3d> SpecialTypes;
-		typedef osgTraits::math_types SpecialTypes;
-		boost::mpl::for_each<SpecialTypes, detail::type_visitor<boost::mpl::_1> >(util::visitorState(data));
+		boost::mpl::for_each<SpecializedTypes, detail::type_visitor<boost::mpl::_1> >(util::visitorState(data));
 		return data.foundOurType;
 	}
 
