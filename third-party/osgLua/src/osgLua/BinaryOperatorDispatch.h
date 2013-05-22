@@ -63,7 +63,7 @@ namespace osgLua {
 		introspection::Value r;
 		int otherIdx;
 		bool success;
-		int pushIfSuccessful(lua_State * L) const {
+		int pushIfSuccessful() const {
 			if (success) {
 				Value::push(L, r);
 				return 1;
@@ -72,15 +72,13 @@ namespace osgLua {
 		}
 	};
 
-	namespace {
-		template<typename Operation>
-		inline void performBinaryOperation(BinaryOpData & d) {
-			typedef typename osgTraits::get_operation_argument_c<Operation, 0>::type T1;
-			typedef typename osgTraits::get_operation_argument_c<Operation, 1>::type T2;
-			d.r = osgTraits::invokeOperation<Operation>(introspection::variant_cast<T1>(d.a1), introspection::variant_cast<T2>(d.a2));
-			d.success = true;
-		}
-	}// end of namespace
+	template<typename Operation>
+	inline void performBinaryOperation(BinaryOpData & d) {
+		typedef typename osgTraits::get_operation_argument_c<Operation, 0>::type T1;
+		typedef typename osgTraits::get_operation_argument_c<Operation, 1>::type T2;
+		d.r = osgTraits::invokeOperation<Operation>(introspection::variant_cast<T1>(d.a1), introspection::variant_cast<T2>(d.a2));
+		d.success = true;
+	}
 
 	namespace ArgumentLocations {
 		enum {
@@ -89,38 +87,36 @@ namespace osgLua {
 		};
 	}
 
+	template<typename BoundOp, typename T2>
+	struct other_argument_visitor {
+		static void visit(BinaryOpData & d) {
+			if (!d.success && osgLuaValueUsableAs<T2>(d.L, d.otherIdx)) {
+				typedef typename osgTraits::add_argtype<BoundOp, T2>::type Operation;
+				performBinaryOperation<Operation>(d);
+			}
+		}
+	};
 
-	template<typename Operator, typename T>
-	struct AttemptOperator<Operator, T, osgTraits::arity_tags::binary_tag> {
-		template<int BindArg>
-		struct AttemptOrder {
-			enum {
-				BoundArg = (BindArg  == ArgumentLocations::FIRST ? -2 : -1),
-				OtherArg = (BindArg  == ArgumentLocations::SECOND ? -2 : -1)
-			};
+	template<typename Operator, typename T, int BindArg>
+
+
+	static inline bool checkAndRun(lua_State * L, int & ret) {
+		enum {
+			BoundArg = (BindArg  == ArgumentLocations::FIRST ? -2 : -1),
+			OtherArg = (BindArg  == ArgumentLocations::SECOND ? -2 : -1)
+		};
+		if (osgLuaValueUsableAs<T>(L, BoundArg)) {
 			typedef typename osgTraits::construct_bound_operation<Operator, T, BindArg>::type BoundOp;
 			typedef typename osgTraits::get_valid_other_arg_types<BoundOp>::type OtherArgumentPossibilities;
-
-			template<typename T2>
-			struct other_argument_visitor {
-				static void visit(BinaryOpData & d) {
-					if (!d.success && osgLuaValueUsableAs<T2>(d.L, d.otherIdx)) {
-						typedef typename osgTraits::add_argtype<BoundOp, T2>::type Operation;
-						performBinaryOperation<Operation>(d);
-					}
-				}
-			};
-			static bool checkAndRun(lua_State * L, int & ret) {
-				if (osgLuaValueUsableAs<T>(L, BoundArg)) {
-					BinaryOpData data(L, OtherArg);
-					boost::mpl::for_each<OtherArgumentPossibilities, other_argument_visitor<boost::mpl::_1> >(util::visitorState(data));
-					ret = data.pushIfSuccessful(L);
-					return true;
-				}
-				return false;
-			}
-
-		};
+			BinaryOpData data(L, OtherArg);
+			boost::mpl::for_each<OtherArgumentPossibilities, other_argument_visitor<BoundOp, boost::mpl::_1> >(util::visitorState(data));
+			ret = data.pushIfSuccessful();
+			return true;
+		}
+		return false;
+	}
+	template<typename Operator, typename T>
+	struct AttemptOperator<Operator, T, osgTraits::arity_tags::binary_tag> {
 
 		static int attempt(lua_State * L) {
 			int ret = 0;
@@ -128,7 +124,7 @@ namespace osgLua {
 				return luaL_error(L, "[%s:%d] Could not %s: %s operand is nil", __FILE__, __LINE__,
 				                  osgTraits::OperatorVerb<Operator>::get(), (lua_isnil(L, -2) ? "first" : "second"));
 			}
-			AttemptOrder<ArgumentLocations::FIRST>::checkAndRun(L, ret) || AttemptOrder<ArgumentLocations::SECOND>::checkAndRun(L, ret);
+			checkAndRun<Operator, T, ArgumentLocations::FIRST>(L, ret) || checkAndRun<Operator, T, ArgumentLocations::SECOND>(L, ret);
 			if (ret == 0) {
 				return luaL_error(L, "[%s:%d] Could not %s instances of %s, %s", __FILE__, __LINE__,
 				                  osgTraits::OperatorVerb<Operator>::get(), getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
