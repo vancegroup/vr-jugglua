@@ -90,8 +90,8 @@ namespace osgLua {
 	bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
 		RegistrationData data(L, t);
 		std::cerr << "Attempting to register " << t.getQualifiedName() << std::flush << std::endl;
-		typedef boost::mpl::single_view<osg::Vec3d> SpecialTypes;
-		//typedef osgTraits::math_types SpecialTypes;
+		//typedef boost::mpl::single_view<osg::Vec3d> SpecialTypes;
+		typedef osgTraits::math_types SpecialTypes;
 		boost::mpl::for_each<SpecialTypes, detail::type_visitor<boost::mpl::_1> >(util::visitorState(data));
 		return data.foundOurType;
 	}
