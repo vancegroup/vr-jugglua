@@ -109,7 +109,7 @@ namespace osgLua {
 			typedef typename osgTraits::construct_bound_operation<Operator, T1, BindArg>::type BoundOp;
 			typedef AttemptBoundBinaryOperator<BoundOp> AttemptStruct;
 			BinaryOpData data(L, OtherArg);
-			boost::mpl::for_each<typename AttemptStruct::OtherArgumentPossibilities, AttemptStruct::template visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
+			boost::mpl::for_each<typename AttemptStruct::OtherArgumentPossibilities::type, AttemptStruct::template visit_binary_op_application<boost::mpl::_1> >(util::visitorState(data));
 			ret = data.pushIfSuccessful(L);
 			return true;
 		}
