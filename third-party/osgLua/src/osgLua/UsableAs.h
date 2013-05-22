@@ -42,13 +42,32 @@ namespace osgLua {
 	}
 
 	template<typename T>
-	inline bool osgLuaValueUsableAs(lua_State * L, int i) {
-		Value * a = Value::get(L, i);
-		if (a) {
-			return typeUsableAs<T>(a->get().getType());
+	struct osgLuaValueUsableImpl {
+		static bool check(lua_State * L, int i) {
+			bool ret = false;
+			Value * a = Value::get(L, i);
+			if (a) {
+				ret = typeUsableAs<T>(a->get().getType());
+			}
+			return ret;
 		}
-		return false;
+	};
+	template<>
+	bool osgLuaValueUsableImpl<double>::check(lua_State * L, int i) {
+		return lua_isnumber(L, i);
 	}
+
+	template<>
+	bool osgLuaValueUsableImpl<float>::check(lua_State * L, int i) {
+		return lua_isnumber(L, i);
+	}
+
+	template<typename T>
+	inline bool osgLuaValueUsableAs(lua_State * L, int i) {
+		return osgLuaValueUsableImpl<T>::check(L, i);
+	}
+
+
 
 } // end of namespace osgLua
 
