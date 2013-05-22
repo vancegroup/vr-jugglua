@@ -52,20 +52,16 @@ namespace osgLua {
 	struct BinaryOpData {
 		BinaryOpData(lua_State * _L, int otherStackIdx)
 			: L(_L)
-			, other(getValue(L, otherStackIdx).getType())
 			, a1(getValue(L, -2))
 			, a2(getValue(L, -1))
 			, r()
 			, otherIdx(otherStackIdx)
-			, isOtherNumber(static_cast<bool>(lua_isnumber(L, otherStackIdx)))
 			, success(false) {}
 		lua_State * L;
-		introspection::Type const& other;
 		introspection::Value a1;
 		introspection::Value a2;
 		introspection::Value r;
 		int otherIdx;
-		bool isOtherNumber;
 		bool success;
 		int pushIfSuccessful(lua_State * L) const {
 			if (success) {
