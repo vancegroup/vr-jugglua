@@ -175,7 +175,6 @@ namespace osgLua {
 				} else if (!prop->canSet()) {
 					return luaL_error(L, "Property %s defined as not settable", prop->getName().c_str());
 				} else {
-					std::cout << "Setting a property named " << prop->getName() << std::endl;
 					prop->setValue(v->get(), newVal->get());
 					return 0;
 				}
