@@ -80,7 +80,6 @@ namespace osgLua {
 			/// @brief Function called for each known math type: if it matches
 			/// the type we're registering, we proceed on to visit all operators.
 			static void visit(RegistrationData & d) {
-				std::cerr << "Trying " << getTypeName<T>() << std::flush << std::endl;
 				if (!d.foundOurType && introspection::Reflection::getType(extended_typeid<T>()) == d.metatableType) {
 					d.foundOurType = true;
 					typedef typename osgTraits::get_applicable_operators<T, SpecializedOperators>::type ApplicableOperators;
