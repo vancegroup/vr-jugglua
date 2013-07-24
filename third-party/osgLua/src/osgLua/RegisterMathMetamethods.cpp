@@ -20,10 +20,15 @@
 
 // Internal Includes
 #include "RegisterMathMetamethods.h"
+#include "UsableAs.h"
+#include "MissingOperators.h"
 
 #include "LuaIncludeFull.h"
 
 // Library/third-party includes
+
+#include <osgLua/Value>
+
 #include <osgLua/introspection/ExtendedTypeInfo>
 #include <osgLua/introspection/Value>
 #include <osgLua/introspection/Type>
@@ -81,7 +86,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -89,7 +94,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) + osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -97,17 +102,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) + osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -115,7 +121,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -123,7 +129,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) + osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -131,7 +137,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) + osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -161,7 +167,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -169,7 +175,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) - osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -177,17 +183,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) - osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -195,7 +202,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -203,7 +210,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) - osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -211,7 +218,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) - osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -230,22 +237,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -260,22 +268,6 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
@@ -287,7 +279,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -295,7 +287,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) * osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -303,105 +295,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) * osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -409,7 +314,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -417,7 +322,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) * osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -425,79 +330,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) * osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -519,7 +352,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -535,7 +368,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -543,17 +376,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -561,7 +395,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -569,7 +403,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -577,7 +411,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -599,7 +433,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -615,7 +449,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -623,17 +457,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -641,7 +476,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -649,7 +484,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -657,7 +492,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -676,22 +511,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -706,17 +542,17 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
@@ -725,7 +561,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -741,7 +577,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -749,97 +585,26 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
+        if (osgLuaValueUsableAs<double>(L, -2)) {
+          double a = introspection::variant_cast<double>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = b * a;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
+        if (osgLuaValueUsableAs<float>(L, -2)) {
+          float a = introspection::variant_cast<float>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = b * a;
           Value::push(L, r);
           return 1;
 
@@ -847,7 +612,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -855,7 +620,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -863,7 +628,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -871,79 +636,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -965,7 +658,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) + osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -973,7 +666,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -989,17 +682,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) + osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) + osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1007,7 +701,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1015,7 +709,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -1023,7 +717,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) + osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1045,7 +739,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) - osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1053,7 +747,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1069,17 +763,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) - osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) - osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1087,7 +782,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1095,7 +790,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -1103,7 +798,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) - osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1122,22 +817,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -1152,17 +848,17 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
@@ -1171,7 +867,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) * osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1179,7 +875,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1195,97 +891,26 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) * osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
+        if (osgLuaValueUsableAs<double>(L, -2)) {
+          double a = introspection::variant_cast<double>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = b * a;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
+        if (osgLuaValueUsableAs<float>(L, -2)) {
+          float a = introspection::variant_cast<float>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = b * a;
           Value::push(L, r);
           return 1;
 
@@ -1293,7 +918,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) * osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1301,7 +926,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1309,7 +934,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -1317,79 +942,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) * osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1411,7 +964,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) + osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1419,7 +972,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1427,7 +980,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) + osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1440,12 +993,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) + osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1453,7 +1007,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) + osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1461,7 +1015,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) + osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1469,7 +1023,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -1491,7 +1045,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) - osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1499,7 +1053,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1507,7 +1061,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) - osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1520,12 +1074,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) - osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1533,7 +1088,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) - osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1541,7 +1096,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) - osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1549,7 +1104,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -1568,22 +1123,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -1598,26 +1154,10 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) * osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1625,7 +1165,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1633,7 +1173,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) * osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1646,100 +1186,13 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
           osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2s(a[0], a[1]) * osg::Vec2s(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1747,7 +1200,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
           osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2d(a[0], a[1]) * osg::Vec2d(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1755,7 +1208,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
           osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec2f(a[0], a[1]) * osg::Vec2f(b[0], b[1]);
           Value::push(L, r);
           return 1;
 
@@ -1763,79 +1216,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
           osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
           osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -1865,7 +1246,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1873,7 +1254,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) + osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1881,17 +1262,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) + osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -1899,7 +1281,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1907,7 +1289,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) + osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1915,7 +1297,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) + osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1945,7 +1327,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1953,7 +1335,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) - osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1961,17 +1343,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) - osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -1979,7 +1362,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1987,7 +1370,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) - osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -1995,7 +1378,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) - osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2014,22 +1397,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -2044,54 +1428,6 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
@@ -2103,7 +1439,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2111,7 +1447,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) * osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2119,129 +1455,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) * osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -2249,7 +1474,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2257,7 +1482,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) * osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2265,71 +1490,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) * osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2337,86 +1498,6 @@ namespace osgLua {
       }
       
       return luaL_error(L, "[%s:%d] Could not mul instances of %s, %s", __FILE__, __LINE__,
-        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
-    }
-  };
-
-  template<>
-  struct AttemptOperator<pow, osg::Vec3b> {
-    static int attempt(lua_State * L) {
-      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
-        return luaL_error(L, "[%s:%d] Could not pow: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
-      }
-      if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
-      }
-      if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-      }
-      
-      return luaL_error(L, "[%s:%d] Could not pow instances of %s, %s", __FILE__, __LINE__,
         getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
     }
   };
@@ -2431,7 +1512,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2447,7 +1528,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2455,17 +1536,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2473,7 +1555,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -2481,7 +1563,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2489,7 +1571,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2511,7 +1593,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2527,7 +1609,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2535,17 +1617,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2553,7 +1636,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -2561,7 +1644,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2569,7 +1652,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2588,22 +1671,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -2618,49 +1702,17 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
@@ -2669,7 +1721,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2685,7 +1737,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2693,47 +1745,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2754,58 +1766,19 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+        if (osgLuaValueUsableAs<double>(L, -2)) {
+          double a = introspection::variant_cast<double>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
           introspection::Value r = b * a;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+        if (osgLuaValueUsableAs<float>(L, -2)) {
+          float a = introspection::variant_cast<float>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
           introspection::Value r = b * a;
           Value::push(L, r);
@@ -2815,7 +1788,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2823,7 +1796,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -2831,7 +1804,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2839,47 +1812,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -2887,7 +1820,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -2895,15 +1828,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -2922,14 +1847,6 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not pow: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
@@ -2946,28 +1863,13 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b ^ a;
+          introspection::Value r = a ^ b;
           Value::push(L, r);
           return 1;
 
@@ -2975,15 +1877,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = b ^ a;
+          introspection::Value r = a ^ b;
           Value::push(L, r);
           return 1;
 
@@ -3005,7 +1899,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) + osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3013,7 +1907,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3029,17 +1923,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) + osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) + osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3047,7 +1942,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3055,7 +1950,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -3063,7 +1958,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) + osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3085,7 +1980,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) - osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3093,7 +1988,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3109,17 +2004,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) - osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) - osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3127,7 +2023,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3135,7 +2031,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -3143,7 +2039,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) - osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3162,22 +2058,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -3192,49 +2089,17 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
@@ -3243,7 +2108,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) * osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3251,7 +2116,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3267,47 +2132,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) * osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3328,58 +2153,19 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+        if (osgLuaValueUsableAs<double>(L, -2)) {
+          double a = introspection::variant_cast<double>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
           introspection::Value r = b * a;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+        if (osgLuaValueUsableAs<float>(L, -2)) {
+          float a = introspection::variant_cast<float>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
           introspection::Value r = b * a;
           Value::push(L, r);
@@ -3389,7 +2175,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) * osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3397,7 +2183,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3405,7 +2191,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -3413,47 +2199,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) * osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3461,7 +2207,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -3469,15 +2215,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -3496,14 +2234,6 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not pow: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
@@ -3520,28 +2250,13 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b ^ a;
+          introspection::Value r = a ^ b;
           Value::push(L, r);
           return 1;
 
@@ -3549,15 +2264,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = b ^ a;
+          introspection::Value r = a ^ b;
           Value::push(L, r);
           return 1;
 
@@ -3579,7 +2286,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) + osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3587,7 +2294,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3595,7 +2302,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) + osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3608,12 +2315,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) + osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3621,7 +2329,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) + osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3629,7 +2337,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) + osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3637,7 +2345,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -3659,7 +2367,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) - osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3667,7 +2375,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3675,7 +2383,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) - osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3688,12 +2396,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) - osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3701,7 +2410,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) - osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3709,7 +2418,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) - osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3717,7 +2426,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -3736,22 +2445,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -3766,58 +2476,10 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) * osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3825,7 +2487,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3833,7 +2495,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) * osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3846,124 +2508,13 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
           osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) * osg::Vec3s(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3971,7 +2522,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) * osg::Vec3d(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3979,7 +2530,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) * osg::Vec3f(b[0], b[1], b[2]);
           Value::push(L, r);
           return 1;
 
@@ -3987,71 +2538,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
           osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
           osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -4059,86 +2546,6 @@ namespace osgLua {
       }
       
       return luaL_error(L, "[%s:%d] Could not mul instances of %s, %s", __FILE__, __LINE__,
-        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
-    }
-  };
-
-  template<>
-  struct AttemptOperator<pow, osg::Vec3s> {
-    static int attempt(lua_State * L) {
-      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
-        return luaL_error(L, "[%s:%d] Could not pow: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
-      }
-      if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a ^ b;
-          Value::push(L, r);
-          return 1;
-
-        }
-      }
-      if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = b ^ a;
-          Value::push(L, r);
-          return 1;
-
-        }
-      }
-      
-      return luaL_error(L, "[%s:%d] Could not pow instances of %s, %s", __FILE__, __LINE__,
         getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
     }
   };
@@ -4161,7 +2568,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4169,7 +2576,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4177,7 +2584,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) + osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4185,17 +2592,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) + osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -4203,7 +2611,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4211,7 +2619,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4219,7 +2627,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) + osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4227,7 +2635,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) + osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4257,7 +2665,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4265,7 +2673,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4273,7 +2681,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) - osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4281,17 +2689,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) - osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -4299,7 +2708,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4307,7 +2716,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4315,7 +2724,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) - osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4323,7 +2732,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) - osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4342,22 +2751,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -4372,86 +2782,6 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
@@ -4463,7 +2793,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4471,7 +2801,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4479,7 +2809,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) * osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4487,121 +2817,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) * osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -4609,7 +2836,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4617,7 +2844,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4625,7 +2852,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) * osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4633,31 +2860,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) * osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4679,7 +2882,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4695,7 +2898,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4703,7 +2906,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4711,17 +2914,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4729,7 +2933,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -4737,7 +2941,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4745,7 +2949,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4753,7 +2957,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4775,7 +2979,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4791,7 +2995,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4799,7 +3003,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4807,17 +3011,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4825,7 +3030,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -4833,7 +3038,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4841,7 +3046,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4849,7 +3054,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4868,22 +3073,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -4898,81 +3104,17 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
@@ -4981,7 +3123,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -4997,7 +3139,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5005,7 +3147,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5013,7 +3155,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5034,90 +3176,19 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+        if (osgLuaValueUsableAs<double>(L, -2)) {
+          double a = introspection::variant_cast<double>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
           introspection::Value r = b * a;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+        if (osgLuaValueUsableAs<float>(L, -2)) {
+          float a = introspection::variant_cast<float>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
           introspection::Value r = b * a;
           Value::push(L, r);
@@ -5127,7 +3198,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5135,7 +3206,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -5143,7 +3214,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5151,7 +3222,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5159,7 +3230,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5167,7 +3238,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -5175,15 +3246,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -5205,7 +3268,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5213,7 +3276,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5229,7 +3292,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5237,17 +3300,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5255,7 +3319,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5263,7 +3327,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -5271,7 +3335,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5279,7 +3343,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5301,7 +3365,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5309,7 +3373,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5325,7 +3389,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5333,17 +3397,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5351,7 +3416,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5359,7 +3424,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -5367,7 +3432,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5375,7 +3440,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5394,22 +3459,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -5424,81 +3490,17 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
@@ -5507,7 +3509,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5515,7 +3517,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5531,7 +3533,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5539,7 +3541,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5560,90 +3562,19 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+        if (osgLuaValueUsableAs<double>(L, -2)) {
+          double a = introspection::variant_cast<double>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
           introspection::Value r = b * a;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+        if (osgLuaValueUsableAs<float>(L, -2)) {
+          float a = introspection::variant_cast<float>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
           introspection::Value r = b * a;
           Value::push(L, r);
@@ -5653,7 +3584,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5661,7 +3592,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5669,7 +3600,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -5677,7 +3608,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5685,7 +3616,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5693,7 +3624,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -5701,15 +3632,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -5731,7 +3654,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) + osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5739,7 +3662,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5747,7 +3670,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5763,17 +3686,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) + osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) + osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5781,7 +3705,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5789,7 +3713,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5797,7 +3721,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -5805,7 +3729,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) + osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5827,7 +3751,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) - osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5835,7 +3759,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5843,7 +3767,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5859,17 +3783,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) - osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) - osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5877,7 +3802,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5885,7 +3810,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5893,7 +3818,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -5901,7 +3826,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) - osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -5920,22 +3845,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -5950,90 +3876,10 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) * osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6041,7 +3887,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6049,7 +3895,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6065,121 +3911,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) * osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) * osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6187,7 +3930,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6195,7 +3938,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6203,7 +3946,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -6211,31 +3954,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) * osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6257,7 +3976,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) + osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6265,7 +3984,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6273,7 +3992,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6281,7 +4000,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a + b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) + osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6294,12 +4013,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) + osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6307,7 +4027,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) + osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6315,7 +4035,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) + osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6323,7 +4043,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) + osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6331,7 +4051,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b + a;
+          introspection::Value r = a + b;
           Value::push(L, r);
           return 1;
 
@@ -6353,7 +4073,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) - osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6361,7 +4081,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6369,7 +4089,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6377,7 +4097,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a - b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) - osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6390,12 +4110,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) - osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6403,7 +4124,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) - osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6411,7 +4132,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) - osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6419,7 +4140,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) - osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6427,7 +4148,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b - a;
+          introspection::Value r = a - b;
           Value::push(L, r);
           return 1;
 
@@ -6446,22 +4167,23 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not div: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
+        if (osgLuaValueUsableAs<double>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
+          double b = introspection::variant_cast<double>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
+        if (osgLuaValueUsableAs<float>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
+          float b = introspection::variant_cast<float>(getValue(L, -1));
           introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       
       return luaL_error(L, "[%s:%d] Could not div instances of %s, %s", __FILE__, __LINE__,
@@ -6476,90 +4198,10 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::double b = introspection::variant_cast<osg::double>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::float b = introspection::variant_cast<osg::float>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) * osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6567,7 +4209,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6575,7 +4217,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6583,7 +4225,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) * osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6596,116 +4238,13 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::double>(L, -2)) {
-          osg::double a = introspection::variant_cast<osg::double>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::float>(L, -2)) {
-          osg::float a = introspection::variant_cast<osg::float>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
-          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
-          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
-          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
-          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
           osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) * osg::Vec4b(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6713,7 +4252,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) * osg::Vec4d(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6721,7 +4260,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) * osg::Vec4f(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6729,7 +4268,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
           osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) * osg::Vec4s(b[0], b[1], b[2], b[3]);
           Value::push(L, r);
           return 1;
 
@@ -6737,31 +4276,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
           osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
           osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -6780,14 +4295,6 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
@@ -6799,22 +4306,6 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
@@ -6836,22 +4327,6 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
@@ -6863,25 +4338,18 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Matrixd(a) * osg::Matrixd(b);
           Value::push(L, r);
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -6889,23 +4357,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -6913,7 +4365,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -6921,23 +4373,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -6945,7 +4381,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -6953,7 +4389,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Matrixd(a) * osg::Matrixd(b);
           Value::push(L, r);
           return 1;
 
@@ -6972,14 +4408,6 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
@@ -6991,22 +4419,6 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
           introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
@@ -7028,26 +4440,10 @@ namespace osgLua {
           return 1;
 
         }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
-          introspection::Value r = a * b;
+          introspection::Value r = osg::Matrixd(a) * osg::Matrixd(b);
           Value::push(L, r);
           return 1;
 
@@ -7060,20 +4456,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
           osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
           osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -7081,23 +4470,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
           osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
           osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -7105,7 +4478,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
           osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
           osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -7113,23 +4486,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
           osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
           osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -7137,7 +4494,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
           osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
           osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = osg::Matrixd(a) * osg::Matrixd(b);
           Value::push(L, r);
           return 1;
 
@@ -7145,7 +4502,7 @@ namespace osgLua {
         if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
           osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
           osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -7172,12 +4529,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
         if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
           osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
           osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b / a;
+          introspection::Value r = a / b;
           Value::push(L, r);
           return 1;
 
@@ -7196,78 +4554,6 @@ namespace osgLua {
         return luaL_error(L, "[%s:%d] Could not mul: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
       }
       if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
-          osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
-          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
-          introspection::Value r = a * b;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
           osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
           osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
@@ -7276,84 +4562,13 @@ namespace osgLua {
           return 1;
 
         }
+        return true;
       }
       if (osgLuaValueUsableAs<osg::Quat>(L, -1)) {
-        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
-          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
-          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
-          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
-          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
-          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
-          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
-          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
-          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
-        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
-          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
-          osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
-          Value::push(L, r);
-          return 1;
-
-        }
         if (osgLuaValueUsableAs<osg::Quat>(L, -2)) {
           osg::Quat a = introspection::variant_cast<osg::Quat>(getValue(L, -2));
           osg::Quat b = introspection::variant_cast<osg::Quat>(getValue(L, -1));
-          introspection::Value r = b * a;
+          introspection::Value r = a * b;
           Value::push(L, r);
           return 1;
 
@@ -7366,8 +4581,8 @@ namespace osgLua {
   };
 
 
-  void registerMathMetamethods(lua_State * L, introspection::Type const& t) {
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec2b>) == t)) {
+  bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec2b>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec2b>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec2b>::attempt));
@@ -7376,9 +4591,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec2b>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec2d>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec2d>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec2d>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec2d>::attempt));
@@ -7387,9 +4602,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec2d>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec2f>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec2f>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec2f>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec2f>::attempt));
@@ -7398,9 +4613,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec2f>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec2s>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec2s>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec2s>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec2s>::attempt));
@@ -7409,9 +4624,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec2s>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec3b>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec3b>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec3b>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec3b>::attempt));
@@ -7420,11 +4635,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec3b>::attempt));
       lua_setfield(L, -2, "__mul");
-      lua_pushcfunction(L, &(AttemptOperator<pow, osg::Vec3b>::attempt));
-      lua_setfield(L, -2, "__pow");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec3d>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec3d>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec3d>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec3d>::attempt));
@@ -7435,9 +4648,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__mul");
       lua_pushcfunction(L, &(AttemptOperator<pow, osg::Vec3d>::attempt));
       lua_setfield(L, -2, "__pow");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec3f>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec3f>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec3f>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec3f>::attempt));
@@ -7448,9 +4661,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__mul");
       lua_pushcfunction(L, &(AttemptOperator<pow, osg::Vec3f>::attempt));
       lua_setfield(L, -2, "__pow");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec3s>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec3s>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec3s>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec3s>::attempt));
@@ -7459,11 +4672,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec3s>::attempt));
       lua_setfield(L, -2, "__mul");
-      lua_pushcfunction(L, &(AttemptOperator<pow, osg::Vec3s>::attempt));
-      lua_setfield(L, -2, "__pow");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec4b>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec4b>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec4b>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec4b>::attempt));
@@ -7472,9 +4683,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4b>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec4d>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec4d>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec4d>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec4d>::attempt));
@@ -7483,9 +4694,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4d>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec4f>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec4f>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec4f>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec4f>::attempt));
@@ -7494,9 +4705,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4f>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec4s>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec4s>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec4s>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec4s>::attempt));
@@ -7505,9 +4716,9 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4s>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Vec4ub>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Vec4ub>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<add, osg::Vec4ub>::attempt));
       lua_setfield(L, -2, "__add");
       lua_pushcfunction(L, &(AttemptOperator<sub, osg::Vec4ub>::attempt));
@@ -7516,25 +4727,26 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4ub>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Matrixd>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Matrixd>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Matrixd>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Matrixf>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Matrixf>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Matrixf>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
-    if (introspection::Reflection::getType(extended_typeid<osg::Quat>) == t)) {
+    if (introspection::Reflection::getType(extended_typeid<osg::Quat>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<div, osg::Quat>::attempt));
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Quat>::attempt));
       lua_setfield(L, -2, "__mul");
-      return;
+      return true;
     }
+    return false;
   }
 } // end of namespace osgLua
 

@@ -21,8 +21,16 @@ do
     end
   }
 
-  mtindex.getName = function(self)
+  mtindex.getUnqualifiedName = function(self)
     return cats[self.category](self)
+  end
+
+  mtindex.getName = function(self)
+  	if self.category == "Scalar" then
+	    return self:getUnqualifiedName()
+	else
+		return "osg::" .. self:getUnqualifiedName()
+	end
   end
 end
 
@@ -38,7 +46,7 @@ do
 end
 
 mtindex.isSameAs = function(self, other)
-  return selfLgetName() == other:getName()
+  return self:getName() == other:getName()
 end
 
 
@@ -120,8 +128,8 @@ MathTypes = {
 	Matrix("f");
 	MathType{
 		category = "Quat";
-    dimension = 4;
-    scalar = "d";
+		dimension = 4;
+		scalar = "d";
 	};
 }
 
@@ -139,19 +147,54 @@ genericBinaryOp = function(symbol)
     return table.concat({a1, symbol, a2}, " ")
   end
 end
-
-genericReverseBinaryOp = function(symbol)
+reverseArgs = function(op)
   return function(a1,  a2)
-    return table.concat({a2, symbol, a1}, " ")
+    return op(a2, a1)
   end
 end
+
+local accessAllElements = function(t, a)
+	local r = {}
+	for i=1,t.dimension do
+  		table.insert(r, table.concat({a, "[", i - 1, "]"}))
+	end
+	return table.concat(r, ", ")
+end
+
+promoting = function(op, t1, t2)
+  return function(a1,  a2)
+  	local a1t = {t1:getName(), "("}
+  	if t1.category == "Vec" then
+  		table.insert(a1t, accessAllElements(t1, a1))
+  	else
+  		table.insert(a1t, a1)
+  	end
+  	table.insert(a1t,  ")")
+ 	
+  	
+  	local a2t = {t2:getName(), "("}
+  	if t2.category == "Vec" then
+  		table.insert(a2t, accessAllElements(t2, a2))
+  	else
+  		table.insert(a2t, a2)
+  	end
+  	table.insert(a2t,  ")")
+    return op(table.concat(a1t), table.concat(a2t))
+  end
+end
+
+
 
 Operators = {
   {
     name = "add";
     test = function(a, b)
       if a.category == "Vec" and b.category == "Vec" and a.dimension == b.dimension then
-        return genericBinaryOp("+")
+      	if a.scalar == b.scalar then
+	        return genericBinaryOp("+")
+	    else
+	    	return promoting(genericBinaryOp("+"), a:promoteScalar(b), b:promoteScalar(a))
+	    end
       end
     end
   };
@@ -159,7 +202,11 @@ Operators = {
     name = "sub";
     test = function(a, b)
       if a.category == "Vec" and b.category == "Vec" and a.dimension == b.dimension then
-        return genericBinaryOp("-")
+      	if a.scalar == b.scalar then
+	        return genericBinaryOp("-")
+	    else
+	    	return promoting(genericBinaryOp("-"), a:promoteScalar(b), b:promoteScalar(a))
+	    end
       end
     end
   };
@@ -174,34 +221,42 @@ Operators = {
   {
     name = "mul";
     test = function(a, b)
+      local optionallyPromoting = function()
+        if a.scalar == b.scalar then
+        end
+      end
       -- composing rotations or doing a dot product
       if 
         (a.category == b.category) and
-        (a.category == "Matrix" or a.category == "Vec" or a.category == "Quat")
+        (a.category == "Matrix" or a.category == "Vec" or a.category == "Quat") and
+        (a.dimension == b.dimension)
         then
-        return genericBinaryOp("*")
-
+      	if a.scalar == b.scalar then
+	        return genericBinaryOp("*")
+	      else
+	      	return promoting(genericBinaryOp("*"), a:promoteScalar(b), b:promoteScalar(a))
+	      end
       -- Applying transformations
       elseif
-        (a.category == "Matrix" or a.category == "Quat") and
-        (b.category == "Vec" and (b.dimension == 3 or b.dimension == 4))
+        (a.category == "Matrix" --[[or a.category == "Quat"]]) and
+        (b.category == "Vec" and (b.dimension == 3 or b.dimension == 4) and b:isFloating())
         then
         return genericBinaryOp("*")
       elseif
-        (a.category == "Vec" and (a.dimension == 3 or a.dimension == 4)) and
-        (b.category == "Matrix" or b.category == "Quat")
+        (a.category == "Vec" and (a.dimension == 3 or a.dimension == 4) and a:isFloating()) and
+        (b.category == "Matrix" --[[or b.category == "Quat"]])
         then
         return genericBinaryOp("*")
 
       -- Scaling a vector
       elseif
-        a.category == "Vec" and b.category == "Scalar"
+        a.category == "Vec" and a:isFloating() and b.category == "Scalar"
         then
         return genericBinaryOp("*")
       elseif
-        a.category == "Scalar" and b.category == "Vec"
+        a.category == "Scalar" and b.category == "Vec" and b:isFloating() 
         then
-        return genericReverseBinaryOp("*")
+        return reverseArgs(genericBinaryOp("*"))
       end
     end
   };
@@ -210,7 +265,8 @@ Operators = {
     test = function(a, b)
       if 
         a.category == "Vec" and b.category == a.category and
-        a.dimension == 3 and b.dimension == 3
+        a.dimension == 3 and b.dimension == 3 and
+        a:isFloating() and b:isFloating()
         then
         return genericBinaryOp("^")
       end
@@ -251,10 +307,15 @@ wholeFile = [[
 
 // Internal Includes
 #include "RegisterMathMetamethods.h"
+#include "UsableAs.h"
+#include "MissingOperators.h"
 
 #include "LuaIncludeFull.h"
 
 // Library/third-party includes
+
+#include <osgLua/Value>
+
 #include <osgLua/introspection/ExtendedTypeInfo>
 #include <osgLua/introspection/Value>
 #include <osgLua/introspection/Type>
@@ -277,21 +338,22 @@ namespace osgLua {
 
   ${attempts/singleTypeAttempt()}
 
-  void registerMathMetamethods(lua_State * L, introspection::Type const& t) {
+  bool registerMathMetamethods(lua_State * L, introspection::Type const& t) {
     ${types/singleTypePush()}
+    return false;
   }
 } // end of namespace osgLua
 
 ]];
   
-includes = [[#include <osg/${typename}>]];
+includes = [[#include <osg/${baretypename}>]];
 
 operatorTag = [[struct ${name};
 ]];
  
 singleTypeAttempt = [[
 template<>
-struct AttemptOperator<${operator}, osg::${typename}> {
+struct AttemptOperator<${operator}, ${typename}> {
   static int attempt(lua_State * L) {
     if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
       return luaL_error(L, "[%s:%d] Could not ${operator}: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
@@ -307,43 +369,44 @@ struct AttemptOperator<${operator}, osg::${typename}> {
 ]];
 
 singleTypePush = [[
-if (introspection::Reflection::getType(extended_typeid<osg::${typename}>) == t)) {
+if (introspection::Reflection::getType(extended_typeid<${typename}>()) == t) {
   ${operators/singleOperatorPush()}
-  return;
+  return true;
 }
 ]];
 singleOperatorPush = [[
-lua_pushcfunction(L, &(AttemptOperator<${operator}, osg::${typename}>::attempt));
+lua_pushcfunction(L, &(AttemptOperator<${operator}, ${typename}>::attempt));
 lua_setfield(L, -2, "__${operator}");
 ]];
 
 attemptFirst = [[
-if (osgLuaValueUsableAs<osg::${typename}>(L, -2)) {
+if (osgLuaValueUsableAs<${typename}>(L, -2)) {
   ${asFirst/bothArgAttemptFirst()}
+  return true;
 }
 ]];
 
 bothArgAttemptFirst = [[
-if (osgLuaValueUsableAs<osg::${other}>(L, -1)) {
+if (osgLuaValueUsableAs<${other}>(L, -1)) {
   ${bothArgPerform()}
 }
 ]];
 
 attemptSecond = [[
-if (osgLuaValueUsableAs<osg::${typename}>(L, -1)) {
+if (osgLuaValueUsableAs<${typename}>(L, -1)) {
   ${asSecond/bothArgAttemptSecond()}
 }
 ]];
 
 bothArgAttemptSecond = [[
-if (osgLuaValueUsableAs<osg::${other}>(L, -2)) {
+if (osgLuaValueUsableAs<${other}>(L, -2)) {
   ${bothArgPerform()}
 }
 ]];
 
 bothArgPerform = [[
-osg::${aType} a = introspection::variant_cast<osg::${aType}>(getValue(L, -2));
-osg::${bType} b = introspection::variant_cast<osg::${bType}>(getValue(L, -1));
+${aType} a = introspection::variant_cast<${aType}>(getValue(L, -2));
+${bType} b = introspection::variant_cast<${bType}>(getValue(L, -1));
 introspection::Value r = ${perform};
 Value::push(L, r);
 return 1;
@@ -360,6 +423,7 @@ for _, a in ipairs(MathTypes) do
   local mytype = {}
   local inserted = false
   mytype.typename = a:getName()
+  mytype.baretypename = a:getUnqualifiedName()
   mytype.operators = {}
   for _, op in ipairs(Operators) do
     if anotherOperandExists(a, op) then
@@ -395,7 +459,7 @@ for _, a in ipairs(MathTypes) do
             aType = b:getName();
             bType = a:getName();
             other = b:getName();
-            perform = result("b", "a")
+            perform = result("a", "b")
           }
           table.insert(myoperator.asSecond, thisOperation)
         end
