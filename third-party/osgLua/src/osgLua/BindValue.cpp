@@ -15,6 +15,7 @@
 */
 
 #include "InternalConfig.h"
+#include "RegisterMathMetamethods.h"
 
 #include <osgLua/Value>
 #include "Value_metamethods.h"
@@ -101,44 +102,8 @@ namespace osgLua {
 			}
 			lua_setfield(L, -2, "__tostring");
 
-			/// Bind mathematically-inclined values specially - only
-			/// one such binding will succeed for a type, obviously, so
-			/// exit the method immediately at that point.
-#define BIND_VECTOR(TYPE) \
-			if (Vector::bind_metamethods<TYPE>(L, t)) { \
-		  		return; \
-		  	}
-
-			BIND_VECTOR(osg::Vec4d)
-			BIND_VECTOR(osg::Vec4f)
-			BIND_VECTOR(osg::Vec4b)
-			BIND_VECTOR(osg::Vec4ub)
-			BIND_VECTOR(osg::Vec4s)
-			BIND_VECTOR(osg::Vec4)
-			BIND_VECTOR(osg::Vec3d)
-			BIND_VECTOR(osg::Vec3f)
-			BIND_VECTOR(osg::Vec3s)
-			BIND_VECTOR(osg::Vec3b)
-			BIND_VECTOR(osg::Vec3)
-			BIND_VECTOR(osg::Vec2d)
-			BIND_VECTOR(osg::Vec2f)
-			BIND_VECTOR(osg::Vec2b)
-			BIND_VECTOR(osg::Vec2s)
-			BIND_VECTOR(osg::Vec2)
-
-#undef BIND_VECTOR
-
-
-#define BIND_MATRIX(TYPE) \
-			if (Matrix::bind_metamethods<TYPE>(L, t)) { \
-		  		return; \
-		  	}
-
-			BIND_MATRIX(osg::Matrixd)
-			BIND_MATRIX(osg::Matrixf)
-			BIND_MATRIX(osg::Matrix)
-
-#undef BIND_MATRIX
+			/// Bind mathematically-inclined values specially
+			registerMathMetamethods(L, t);
 
 		}
 	}
