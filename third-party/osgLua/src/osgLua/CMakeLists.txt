@@ -10,8 +10,6 @@ set(OSGLUA_SRCS
 	CustomConverters.cpp
 	loadObjectFile.cpp
 	lua_functions.cpp
-	MathValueTags.cpp
-	MatrixTemplates.h
 	osgLua.cpp
 	loadWrapperLib.cpp
 	loadWrapperLib.h
@@ -23,8 +21,7 @@ set(OSGLUA_SRCS
 	Value_rawget.inl
 	Value_metamethod_members.cpp
 	Value_metamethods.cpp
-	Value_metamethods.h
-	VectorTemplates.h)
+	Value_metamethods.h)
 
 set(OSGLUA_PRIVATE_API
 	ArrayPropertyProxy.h
@@ -34,7 +31,6 @@ set(OSGLUA_PRIVATE_API
 	LuaIncludeFull.h
 	LuaUserdata.h
 	LuaStackChecker.h
-	MathValueTags.h
 	MissingOperators.h
 	osgLua.h
 	RegisterMathMetamethods.h

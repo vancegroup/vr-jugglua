@@ -19,33 +19,9 @@
 
 #include <osgLua/Value>
 #include "Value_metamethods.h"
-#include "VectorTemplates.h"
-#include "MatrixTemplates.h"
 #include "LuaIncludeFull.h"
 
 #include <osgLua/introspection/Type>
-
-// cd /usr/include && find osg -name "Vec*" | sort | sed 's/\(.*\)/\#include \<\1\>/g'
-#include <osg/Vec2>
-#include <osg/Vec2b>
-#include <osg/Vec2d>
-#include <osg/Vec2f>
-#include <osg/Vec2s>
-#include <osg/Vec3>
-#include <osg/Vec3b>
-#include <osg/Vec3d>
-#include <osg/Vec3f>
-#include <osg/Vec3s>
-#include <osg/Vec4>
-#include <osg/Vec4b>
-#include <osg/Vec4d>
-#include <osg/Vec4f>
-#include <osg/Vec4s>
-#include <osg/Vec4ub>
-
-#include <osg/Matrix>
-#include <osg/Matrixd>
-#include <osg/Matrixf>
 
 namespace osgLua {
 	static const char OSGLUAVALUEMETATABLE[] = "__isOsgLuaValue";
