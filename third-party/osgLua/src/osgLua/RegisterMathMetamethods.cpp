@@ -63,6 +63,7 @@ namespace osgLua {
     struct div;
     struct mul;
     struct pow;
+    struct eq;
   } // end of namespace
 
   template<typename Operator, typename T>
@@ -338,6 +339,87 @@ namespace osgLua {
       }
       
       return luaL_error(L, "[%s:%d] Could not mul instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
+  struct AttemptOperator<eq, osg::Vec2b> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
+          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
+          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
+          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
+          introspection::Value r = osg::Vec2f(a[0], a[1]) == osg::Vec2f(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
+          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          introspection::Value r = osg::Vec2s(a[0], a[1]) == osg::Vec2s(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
+          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
+          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
+          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
+          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
+          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
+          introspection::Value r = osg::Vec2f(a[0], a[1]) == osg::Vec2f(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
+          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
+          introspection::Value r = osg::Vec2s(a[0], a[1]) == osg::Vec2s(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
         getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
     }
   };
@@ -649,6 +731,87 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Vec2d> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
+          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
+          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
+          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
+          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
+          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
+          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
+          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
+          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
+          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
+          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
+          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
+          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
+          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
+          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<add, osg::Vec2f> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -955,6 +1118,87 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Vec2f> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
+          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
+          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
+          introspection::Value r = osg::Vec2f(a[0], a[1]) == osg::Vec2f(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
+          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
+          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
+          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
+          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
+          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
+          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          introspection::Value r = osg::Vec2f(a[0], a[1]) == osg::Vec2f(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
+          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
+          introspection::Value r = osg::Vec2f(a[0], a[1]) == osg::Vec2f(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
+          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
+          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
+          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
+          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
+          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
+          introspection::Value r = osg::Vec2f(a[0], a[1]) == osg::Vec2f(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<add, osg::Vec2s> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -1229,6 +1473,87 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Vec2s> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec2b>(L, -1)) {
+          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+          osg::Vec2b b = introspection::variant_cast<osg::Vec2b>(getValue(L, -1));
+          introspection::Value r = osg::Vec2s(a[0], a[1]) == osg::Vec2s(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2d>(L, -1)) {
+          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+          osg::Vec2d b = introspection::variant_cast<osg::Vec2d>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2f>(L, -1)) {
+          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+          osg::Vec2f b = introspection::variant_cast<osg::Vec2f>(getValue(L, -1));
+          introspection::Value r = osg::Vec2f(a[0], a[1]) == osg::Vec2f(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
+          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec2s>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec2b>(L, -2)) {
+          osg::Vec2b a = introspection::variant_cast<osg::Vec2b>(getValue(L, -2));
+          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          introspection::Value r = osg::Vec2s(a[0], a[1]) == osg::Vec2s(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2d>(L, -2)) {
+          osg::Vec2d a = introspection::variant_cast<osg::Vec2d>(getValue(L, -2));
+          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          introspection::Value r = osg::Vec2d(a[0], a[1]) == osg::Vec2d(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2f>(L, -2)) {
+          osg::Vec2f a = introspection::variant_cast<osg::Vec2f>(getValue(L, -2));
+          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          introspection::Value r = osg::Vec2f(a[0], a[1]) == osg::Vec2f(b[0], b[1]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec2s>(L, -2)) {
+          osg::Vec2s a = introspection::variant_cast<osg::Vec2s>(getValue(L, -2));
+          osg::Vec2s b = introspection::variant_cast<osg::Vec2s>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<add, osg::Vec3b> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -1498,6 +1823,87 @@ namespace osgLua {
       }
       
       return luaL_error(L, "[%s:%d] Could not mul instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
+  struct AttemptOperator<eq, osg::Vec3b> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
+          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
+          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
+          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
+          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
+          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
+          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) == osg::Vec3f(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
+          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
+          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) == osg::Vec3s(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
+          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
+          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
+          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
+          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
+          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
+          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) == osg::Vec3f(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
+          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) == osg::Vec3s(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
         getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
     }
   };
@@ -1890,6 +2296,87 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Vec3d> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
+          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
+          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
+          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
+          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
+          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
+          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
+          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
+          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
+          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
+          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
+          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
+          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
+          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
+          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
+          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<add, osg::Vec3f> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -2277,6 +2764,87 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Vec3f> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
+          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
+          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) == osg::Vec3f(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
+          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
+          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
+          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
+          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
+          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
+          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) == osg::Vec3f(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
+          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
+          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) == osg::Vec3f(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
+          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
+          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
+          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
+          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
+          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) == osg::Vec3f(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<add, osg::Vec3s> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -2546,6 +3114,87 @@ namespace osgLua {
       }
       
       return luaL_error(L, "[%s:%d] Could not mul instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
+  struct AttemptOperator<eq, osg::Vec3s> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec3b>(L, -1)) {
+          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+          osg::Vec3b b = introspection::variant_cast<osg::Vec3b>(getValue(L, -1));
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) == osg::Vec3s(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3d>(L, -1)) {
+          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+          osg::Vec3d b = introspection::variant_cast<osg::Vec3d>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3f>(L, -1)) {
+          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+          osg::Vec3f b = introspection::variant_cast<osg::Vec3f>(getValue(L, -1));
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) == osg::Vec3f(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
+          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec3s>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec3b>(L, -2)) {
+          osg::Vec3b a = introspection::variant_cast<osg::Vec3b>(getValue(L, -2));
+          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          introspection::Value r = osg::Vec3s(a[0], a[1], a[2]) == osg::Vec3s(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3d>(L, -2)) {
+          osg::Vec3d a = introspection::variant_cast<osg::Vec3d>(getValue(L, -2));
+          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          introspection::Value r = osg::Vec3d(a[0], a[1], a[2]) == osg::Vec3d(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3f>(L, -2)) {
+          osg::Vec3f a = introspection::variant_cast<osg::Vec3f>(getValue(L, -2));
+          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          introspection::Value r = osg::Vec3f(a[0], a[1], a[2]) == osg::Vec3f(b[0], b[1], b[2]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec3s>(L, -2)) {
+          osg::Vec3s a = introspection::variant_cast<osg::Vec3s>(getValue(L, -2));
+          osg::Vec3s b = introspection::variant_cast<osg::Vec3s>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
         getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
     }
   };
@@ -2868,6 +3517,103 @@ namespace osgLua {
       }
       
       return luaL_error(L, "[%s:%d] Could not mul instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
+  struct AttemptOperator<eq, osg::Vec4b> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) == osg::Vec4s(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) == osg::Vec4b(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) == osg::Vec4s(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) == osg::Vec4b(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
         getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
     }
   };
@@ -3259,6 +4005,103 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Vec4d> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<add, osg::Vec4f> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -3645,6 +4488,103 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Vec4f> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<add, osg::Vec4s> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -3962,6 +4902,103 @@ namespace osgLua {
       }
       
       return luaL_error(L, "[%s:%d] Could not mul instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
+  struct AttemptOperator<eq, osg::Vec4s> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) == osg::Vec4s(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) == osg::Vec4s(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) == osg::Vec4s(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) == osg::Vec4s(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
         getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
     }
   };
@@ -4289,6 +5326,103 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Vec4ub> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -1)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4b b = introspection::variant_cast<osg::Vec4b>(getValue(L, -1));
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) == osg::Vec4b(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -1)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4d b = introspection::variant_cast<osg::Vec4d>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -1)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4f b = introspection::variant_cast<osg::Vec4f>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -1)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4s b = introspection::variant_cast<osg::Vec4s>(getValue(L, -1));
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) == osg::Vec4s(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Vec4ub>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Vec4b>(L, -2)) {
+          osg::Vec4b a = introspection::variant_cast<osg::Vec4b>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = osg::Vec4b(a[0], a[1], a[2], a[3]) == osg::Vec4b(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4d>(L, -2)) {
+          osg::Vec4d a = introspection::variant_cast<osg::Vec4d>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = osg::Vec4d(a[0], a[1], a[2], a[3]) == osg::Vec4d(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4f>(L, -2)) {
+          osg::Vec4f a = introspection::variant_cast<osg::Vec4f>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = osg::Vec4f(a[0], a[1], a[2], a[3]) == osg::Vec4f(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4s>(L, -2)) {
+          osg::Vec4s a = introspection::variant_cast<osg::Vec4s>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = osg::Vec4s(a[0], a[1], a[2], a[3]) == osg::Vec4s(b[0], b[1], b[2], b[3]);
+          Value::push(L, r);
+          return 1;
+
+        }
+        if (osgLuaValueUsableAs<osg::Vec4ub>(L, -2)) {
+          osg::Vec4ub a = introspection::variant_cast<osg::Vec4ub>(getValue(L, -2));
+          osg::Vec4ub b = introspection::variant_cast<osg::Vec4ub>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<mul, osg::Matrixd> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -4397,6 +5531,39 @@ namespace osgLua {
       }
       
       return luaL_error(L, "[%s:%d] Could not mul instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
+  struct AttemptOperator<eq, osg::Matrixd> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
+          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
+          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Matrixd>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Matrixd>(L, -2)) {
+          osg::Matrixd a = introspection::variant_cast<osg::Matrixd>(getValue(L, -2));
+          osg::Matrixd b = introspection::variant_cast<osg::Matrixd>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
         getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
     }
   };
@@ -4515,6 +5682,39 @@ namespace osgLua {
   };
 
   template<>
+  struct AttemptOperator<eq, osg::Matrixf> {
+    static int attempt(lua_State * L) {
+      if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
+        return luaL_error(L, "[%s:%d] Could not eq: %s operand is nil", __FILE__, __LINE__, (lua_isnil(L, -2) ? "first" : "second"));
+      }
+      if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
+        if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
+          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
+          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+        return true;
+      }
+      if (osgLuaValueUsableAs<osg::Matrixf>(L, -1)) {
+        if (osgLuaValueUsableAs<osg::Matrixf>(L, -2)) {
+          osg::Matrixf a = introspection::variant_cast<osg::Matrixf>(getValue(L, -2));
+          osg::Matrixf b = introspection::variant_cast<osg::Matrixf>(getValue(L, -1));
+          introspection::Value r = a == b;
+          Value::push(L, r);
+          return 1;
+
+        }
+      }
+      
+      return luaL_error(L, "[%s:%d] Could not eq instances of %s, %s", __FILE__, __LINE__,
+        getValue(L, -2).getType().getQualifiedName().c_str(), getValue(L, -1).getType().getQualifiedName().c_str());
+    }
+  };
+
+  template<>
   struct AttemptOperator<div, osg::Quat> {
     static int attempt(lua_State * L) {
       if (lua_isnil(L, -2) || lua_isnil(L, -1)) {
@@ -4591,6 +5791,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec2b>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec2b>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec2d>()) == t) {
@@ -4602,6 +5804,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec2d>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec2d>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec2f>()) == t) {
@@ -4613,6 +5817,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec2f>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec2f>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec2s>()) == t) {
@@ -4624,6 +5830,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec2s>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec2s>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec3b>()) == t) {
@@ -4635,6 +5843,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec3b>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec3b>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec3d>()) == t) {
@@ -4648,6 +5858,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__mul");
       lua_pushcfunction(L, &(AttemptOperator<pow, osg::Vec3d>::attempt));
       lua_setfield(L, -2, "__pow");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec3d>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec3f>()) == t) {
@@ -4661,6 +5873,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__mul");
       lua_pushcfunction(L, &(AttemptOperator<pow, osg::Vec3f>::attempt));
       lua_setfield(L, -2, "__pow");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec3f>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec3s>()) == t) {
@@ -4672,6 +5886,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec3s>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec3s>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec4b>()) == t) {
@@ -4683,6 +5899,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4b>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec4b>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec4d>()) == t) {
@@ -4694,6 +5912,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4d>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec4d>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec4f>()) == t) {
@@ -4705,6 +5925,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4f>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec4f>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec4s>()) == t) {
@@ -4716,6 +5938,8 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4s>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec4s>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Vec4ub>()) == t) {
@@ -4727,16 +5951,22 @@ namespace osgLua {
       lua_setfield(L, -2, "__div");
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Vec4ub>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Vec4ub>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Matrixd>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Matrixd>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Matrixd>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Matrixf>()) == t) {
       lua_pushcfunction(L, &(AttemptOperator<mul, osg::Matrixf>::attempt));
       lua_setfield(L, -2, "__mul");
+      lua_pushcfunction(L, &(AttemptOperator<eq, osg::Matrixf>::attempt));
+      lua_setfield(L, -2, "__eq");
       return true;
     }
     if (introspection::Reflection::getType(extended_typeid<osg::Quat>()) == t) {

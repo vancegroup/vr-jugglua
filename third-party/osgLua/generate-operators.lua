@@ -272,6 +272,24 @@ Operators = {
       end
     end
   };
+  {
+    name = "eq";
+    test = function(a, b)
+      if 
+        a.category == "Matrix" and a:isSameAs(b)
+        then
+        return genericBinaryOp("==")
+      elseif
+        a.category == "Vec" and a.category == b.category and a.dimension == b.dimension
+        then
+        if a.scalar == b.scalar then
+	        return genericBinaryOp("==")
+	      else
+	      	return promoting(genericBinaryOp("=="), a:promoteScalar(b), b:promoteScalar(a))
+	      end
+      end
+    end
+  };
 }
 
 anotherOperandExists = function(a, op)
