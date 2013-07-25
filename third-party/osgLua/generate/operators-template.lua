@@ -50,10 +50,13 @@ namespace osgLua {
   // Anonymous namespace for tag types
   namespace {
     ${operators/operatorTag()}
+    ${unaryoperators/operatorTag()}
   } // end of namespace
 
   template<typename Operator, typename T>
   struct AttemptOperator;
+
+  ${unaryattempts/singleTypeUnaryAttempt()}
 
   ${attempts/singleTypeAttempt()}
 
@@ -69,7 +72,23 @@ includes = [[#include <osg/${baretypename}>]];
 
 operatorTag = [[struct ${name};
 ]];
- 
+
+singleTypeUnaryAttempt = [[
+template<>
+struct AttemptOperator<${operator}, ${typename}> {
+  static int attempt(lua_State * L) {
+   if (lua_isnil(L, -1)) {
+     return luaL_error(L, "[%s:%d] Could not ${operator}: operand is nil", __FILE__, __LINE__);
+   }
+   ${typename} a = introspection::variant_cast<${typename}>(getValue(L, -1));
+   introspection::Value r = ${perform};
+   Value::push(L, r);
+   return 1;
+  }
+};
+
+]];
+
 singleTypeAttempt = [[
 template<>
 struct AttemptOperator<${operator}, ${typename}> {

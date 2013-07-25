@@ -185,6 +185,19 @@ Operators = {
   };
 }
 
+UnaryOperators = {
+	{
+    name = "unm";
+    test = function(a)
+      if a.category == "Vec" and a:isFloating() then
+        return function(a)
+          return "-" .. a
+        end
+      end
+    end
+  };
+}
+
 anotherOperandExists = function(a, op)
   for _, b in ipairs(MathAndArithmeticTypes) do
     if op.test(a, b) or op.test(b, a) then
@@ -197,7 +210,9 @@ tmpl = dofile("operators-template.lua")
 
 tmpl.types = {}
 tmpl.attempts = {}
+tmpl.unaryattempts = {}
 tmpl.operators = Operators
+tmpl.unaryoperators = UnaryOperators
 
 for _, a in ipairs(MathTypes) do
   local mytype = {}
@@ -205,6 +220,18 @@ for _, a in ipairs(MathTypes) do
   mytype.typename = a:getName()
   mytype.baretypename = a:getUnqualifiedName()
   mytype.operators = {}
+  for _, op in ipairs(UnaryOperators) do
+    local result = op.test(a)
+    if result then
+      if not inserted then
+        inserted = true
+        table.insert(tmpl.types, mytype)
+      end
+      local myoperator = {operator = op.name, typename = a:getName(), perform = result("a")}
+      table.insert(mytype.operators, myoperator)
+      table.insert(tmpl.unaryattempts, myoperator)
+    end
+  end
   for _, op in ipairs(Operators) do
     if anotherOperandExists(a, op) then
       
