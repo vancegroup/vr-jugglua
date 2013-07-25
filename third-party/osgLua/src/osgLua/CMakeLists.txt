@@ -3,6 +3,8 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+
 set(OSGLUA_SRCS
 	ArrayPropertyProxy.cpp
 	BindValue.cpp
@@ -10,11 +12,10 @@ set(OSGLUA_SRCS
 	CustomConverters.cpp
 	loadObjectFile.cpp
 	lua_functions.cpp
-	MathValueTags.cpp
-	MatrixTemplates.h
 	osgLua.cpp
 	loadWrapperLib.cpp
 	loadWrapperLib.h
+	RegisterMathMetamethods.cpp
 	saveObjectFile.cpp
 	Script.cpp
 	Type.cpp
@@ -22,8 +23,7 @@ set(OSGLUA_SRCS
 	Value_rawget.inl
 	Value_metamethod_members.cpp
 	Value_metamethods.cpp
-	Value_metamethods.h
-	VectorTemplates.h)
+	Value_metamethods.h)
 
 set(OSGLUA_PRIVATE_API
 	ArrayPropertyProxy.h
@@ -33,9 +33,11 @@ set(OSGLUA_PRIVATE_API
 	LuaIncludeFull.h
 	LuaUserdata.h
 	LuaStackChecker.h
-	MathValueTags.h
+	MissingOperators.h
 	osgLua.h
-	Type.h)
+	RegisterMathMetamethods.h
+	Type.h
+	UsableAs.h)
 
 set(HEADER_DIR ../../include/osgLua)
 set(OSGLUA_PUBLIC_API
@@ -66,6 +68,7 @@ configure_file("${HEADER_DIR}/Config.in" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER_D
 
 
 add_library(osgLua ${LIBTYPE} ${OSGLUA_SRCS} ${OSGLUA_PRIVATE_API} ${OSGLUA_PUBLIC_API})
+add_dependencies(osgLua osgLua-generate-operators)
 set_target_properties(osgLua PROPERTIES PUBLIC_HEADER "${OSGLUA_PUBLIC_API}")
 target_link_libraries(osgLua lua ${OPENSCENEGRAPH_LIBRARIES} ${INTROSPECTION_LIBRARIES} ${OPENGL_LIBRARIES} lua)
 
