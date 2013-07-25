@@ -109,7 +109,7 @@ GitHub provides a lot of useful services for us at [project homepage][home].
 Dependencies:
 -------------
 
-- CMake 2.6 or newer (tested mainly with 2.8.3) - build system generator
+- CMake 2.6 or newer (tested mainly with 2.8.3+) - build system generator
 
 - Boost 1.35 or newer (tested mainly with 1.40 and 1.45)
 
@@ -183,7 +183,7 @@ file location references are in the source tree.
 The VR JuggLua code itself (the files in `vrjugglua/` and most in
 `src/`) are subject to the following license:
 
-> Copyright Iowa State University 2010-2012.
+> Copyright Iowa State University 2010-2013.
 >
 > Distributed under the Boost Software License, Version 1.0.
 >
@@ -196,7 +196,7 @@ following license:
 
 > Copyright &copy; 2003-2011 Daniel Wallin and Arvid Norberg
 >
-> Copyright &copy; 2008-2011 Contributors
+> Copyright &copy; 2008-2013 Contributors
 >
 > Permission is hereby granted, free of charge, to any person obtaining a
 > copy of this software and associated documentation files (the "Software"),
@@ -223,7 +223,7 @@ osgLua has been highly modified/improved and is bundled in `third-party/osgLua`,
 and is subject to the following license:
 
 > Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
-> Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
+> Copyright(C) 2010-2013 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
 >
 > This library is open source and may be redistributed and/or modified under
 > the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -265,5 +265,5 @@ Maintainer
 Ryan Pavlik
 <rpavlik@iastate.edu> <abiryan@ryand.net>
 http://academic.cleardefinition.com/
-2009-2012 Iowa State University
+2009-2013 Iowa State University
 Virtual Reality Applications Center/Human-Computer Interaction Graduate Program
