@@ -4,7 +4,7 @@ require("help")
 
 function doSubtest(matrixType, vectorType)
 	assert((vectorType(5, 5, 5) * matrixType.identity()) == vectorType(5, 5, 5))
-	assert((vectorType(5, 5, 5) * matrixType.identity()) == vectorType(5, 5, 5))
+	assert((matrixType.identity() * vectorType(5, 5, 5)) == vectorType(5, 5, 5))
 end
 
 function doTest(matrixType)
