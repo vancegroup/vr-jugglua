@@ -3,6 +3,8 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+
 set(OSGLUA_SRCS
 	ArrayPropertyProxy.cpp
 	BindValue.cpp
@@ -66,6 +68,7 @@ configure_file("${HEADER_DIR}/Config.in" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER_D
 
 
 add_library(osgLua ${LIBTYPE} ${OSGLUA_SRCS} ${OSGLUA_PRIVATE_API} ${OSGLUA_PUBLIC_API})
+add_dependencies(osgLua osgLua-generate-operators)
 set_target_properties(osgLua PROPERTIES PUBLIC_HEADER "${OSGLUA_PUBLIC_API}")
 target_link_libraries(osgLua lua ${OPENSCENEGRAPH_LIBRARIES} ${INTROSPECTION_LIBRARIES} ${OPENGL_LIBRARIES} lua)
 

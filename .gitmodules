@@ -7,3 +7,6 @@
 [submodule "doc/generation/LDoc"]
 	path = doc/generation/LDoc
 	url = https://github.com/stevedonovan/LDoc.git
+[submodule "third-party/osgLua/generate/lua-CodeGen"]
+	path = third-party/osgLua/generate/lua-CodeGen
+	url = https://github.com/fperrad/lua-CodeGen.git

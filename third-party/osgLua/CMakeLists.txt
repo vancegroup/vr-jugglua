@@ -11,10 +11,12 @@ include_directories(${LUA_INCLUDE_DIRS})
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/include")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/generate")
 
 if(OSGLUA_USE_CPPINTROSPECTION)
 	include_directories(${CPPINTROSPECTION_INCLUDE_DIRS})
 	set(INTROSPECTION_LIBRARIES ${CPPINTROSPECTION_LIBRARIES})
 endif()
 
+add_subdirectory(generate)
 add_subdirectory(src/osgLua)
