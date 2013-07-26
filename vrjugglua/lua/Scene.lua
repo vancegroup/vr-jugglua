@@ -65,7 +65,7 @@ local makeVectorConstructor = function(suffix)
 		end
 		if #a == 1 then
 			if (isOsgVec(a[1])) then
-				print("It's an OSG vec")
+				-- print("It's an OSG vec")
 				a = vecToTable(a[1])
 			end
 		end
