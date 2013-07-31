@@ -120,7 +120,6 @@ lua_setfield(L, -2, "__${operator}");
 attemptFirst = [[
 if (osgLuaValueUsableAs<${typename}>(L, -2)) {
   ${asFirst/bothArgAttemptFirst()}
-  return true;
 }
 ]];
 
