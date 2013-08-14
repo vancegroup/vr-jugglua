@@ -31,7 +31,7 @@
 #include <map>                          // for _Rb_tree_const_iterator, etc
 #include <string>                       // for string, basic_string, etc
 #include <utility>                      // for pair, make_pair
-
+#include <iostream>
 
 namespace osgLua {
 
@@ -155,7 +155,30 @@ namespace osgLua {
 			return 1;
 		} catch (introspection::TypeNotFoundException&) {
 			// if base is not a valid type... suppose that
-			// tbase.name is an static function
+			// tbase.name is an enum or static function
+			
+			// Iterate through the table to find nested enums
+			lua_pushnil(L);
+			while (lua_next(L, 1) != 0) {
+				std::cout << "Iterating through table, now at key " << lua_tostring(L, -2) << std::endl;
+				/* uses 'key' (at index -2) and 'value' (at index -1) */
+				if (lua_istable(L, -1)) {
+					// Now -1 has a table that might be our enum
+					std::cout << "Looking in " << lua_tostring(L, -2) << std::endl;
+					
+					lua_pushstring(L, name);
+					lua_rawget(L, -2);
+					if (lua_isnumber(L, -1)) {
+						// OK, we found it - it's on the top of the stack
+						return 1;
+					}
+					lua_pop(L, 1); // Pop the non-number we don't want
+				}
+				// Otherwise pop the value and leave the key for the next iteration.
+				lua_pop(L, 1);
+			}
+			// OK, we failed.  The last call to lua_next returned 0 and pushed nothing.
+			
 			lua_pushstring(L, tbase.c_str());
 			lua_pushstring(L, name);
 			lua_pushcclosure(L, staticMethodCall, 2);
