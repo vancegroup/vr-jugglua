@@ -24,6 +24,7 @@
 
 #include "OsgAppProxy.h"
 #include "LuaPath.h"
+#include "LuaPathUpdater.h"
 #include "LuaGCBlock.h"
 
 #include "VRJLuaOutput.h"
@@ -215,7 +216,17 @@ namespace vrjLua {
 
 		// Extend the lua script search path for "require"
 		LuaPath& lp = LuaPath::instance();
-		lp.updateLuaRequirePath(_state);
+		{
+			LuaSearchPathUpdater searchpath(_state.get());
+			searchpath.extend(SearchDirectory(lp.getLuaDir()));
+			searchpath.extend(RootDirectory(lp.getRootDir()));
+		}
+
+		{
+			/// @todo c search path
+			//LuaCSearchPathUpdater csearchpath(_state.get());
+		}
+
 
 		// osgLua
 		bindOsgToLua(_state);
@@ -308,39 +319,4 @@ namespace vrjLua {
 			        << VRJLUA_MSG_END(dbgVRJLUA_APP, MSG_STATUS);
 		}
 	}
-
-
-	void LuaPath::_populateSearchPathsVector(LuaStatePtr state) {
-		luabind::object package = luabind::globals(state.get())["package"];
-		std::string input = luabind::object_cast<std::string>(package["path"]);
-		boost::algorithm::split(_searchPaths, input, boost::is_any_of(";"));
-
-		// Remove the items we'll add ourselves.
-		std::deque<std::string>::iterator it = std::find(_searchPaths.begin(), _searchPaths.end(), "?");
-		while (it != _searchPaths.end()) {
-			_searchPaths.erase(it);
-			it = std::find(_searchPaths.begin(), _searchPaths.end(), "?");
-		}
-
-		it = std::find(_searchPaths.begin(), _searchPaths.end(), "?.lua");
-		while (it != _searchPaths.end()) {
-			_searchPaths.erase(it);
-			it = std::find(_searchPaths.begin(), _searchPaths.end(), "?.lua");
-		}
-
-		_searchPaths.push_front(_luaDir + "?.lua");
-		_searchPaths.push_front(_luaDir + "?");
-	}
-
-	void LuaPath::_setLuaSearchPaths(LuaStatePtr state) {
-		std::ostringstream scr;
-		scr << "?;";
-		scr << "?.lua;";
-		for (unsigned int i = 0; i < _searchPaths.size(); ++i) {
-			scr << _searchPaths[i] << ";";
-		}
-		luabind::object package = luabind::globals(state.get())["package"];
-		package["path"] = scr.str();
-	}
-
 } // end of vrjLua namespace

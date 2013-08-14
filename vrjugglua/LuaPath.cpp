@@ -30,7 +30,6 @@
 #include <boost/algorithm/string/trim.hpp>
 
 #include <vpr/System.h>
-#include <vpr/vprDefines.h>             // for VPR_OS_Linux
 #include <vrj/vrjParam.h> // for __VJ_version define
 
 // Standard includes
@@ -39,24 +38,6 @@
 
 namespace fs = boost::filesystem;
 
-#ifdef VPR_OS_Linux
-
-#include <link.h>
-
-extern "C" {
-	int sharedObjectCallback(struct dl_phdr_info *info,
-	                         size_t, void *data);
-}
-
-int sharedObjectCallback(struct dl_phdr_info *info, size_t, void *data) {
-	std::string fn(info->dlpi_name);
-	if (fn.find("vpr") != std::string::npos) {
-		(*static_cast<std::string*>(data)) = fn;
-	}
-	return 0;
-}
-
-#endif // VPR_OS_Linux
 
 namespace vrjLua {
 
@@ -247,26 +228,8 @@ namespace vrjLua {
 	std::string const& LuaPath::getInitialPath() const {
 		return _initialPath;
 	}
-
-	std::string LuaPath::getPathToLuaScript(const std::string & scriptfn) const {
-		return (fs::path(_luaDir) / scriptfn).string();
-	}
-
-	void LuaPath::chdir(std::string const& path) {
-		fs::current_path(path);
-	}
-
-	void LuaPath::addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash) {
-		_searchPaths.push_front(dirEndingInSlash + "?.lua");
-		_searchPaths.push_front(dirEndingInSlash + "?");
-		updateLuaRequirePath(state);
-	}
-
-	void LuaPath::updateLuaRequirePath(LuaStatePtr state) {
-		if (_searchPaths.empty()) {
-			_populateSearchPathsVector(state);
-		}
-		_setLuaSearchPaths(state);
+	std::string const& LuaPath::getLuaDir() const {
+		return _luaDir;
 	}
 
 	bool LuaPath::_setJugglerEnvironment() const {

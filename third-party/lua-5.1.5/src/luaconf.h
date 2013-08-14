@@ -757,7 +757,8 @@ union luai_Cast { double l_d; long l_l; };
 ** without modifying the main part of the file.
 */
 
-
+/* Required for osgLua to work properly. */
+#define LUA_DL_USE_RTLD_GLOBAL
 
 #endif
 

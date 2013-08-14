@@ -22,6 +22,7 @@
 #include "BindvrjLuaToLua.h"
 #include <vrjugglua/VRJLuaOutput.h>
 #include <vrjugglua/LuaPath.h>
+#include <vrjugglua/LuaPathUpdater.h>
 #include <vrjugglua/LuaInclude.h>
 
 // Library/third-party includes
@@ -39,21 +40,12 @@
 namespace vrjLua {
 	using namespace luabind;
 
-	static void appendToModelSearchPath(std::string const& path) {
-		std::string p = path;
-		if (osgDB::fileExists(path)) {
-			p = osgDB::convertFileNameToUnixStyle(osgDB::getRealPath(path));
-			if (osgDB::fileType(p) == osgDB::REGULAR_FILE) {
-				p = osgDB::getFilePath(p);
-			}
+	static inline std::string getDirectoryPart(std::string p) {
+		if (p.empty()) {
+			return p;
 		}
-		osgDB::Registry::instance()->getDataFilePathList().push_back(p);
-	}
-
-	static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
-		std::string p = path;
-		if (osgDB::fileExists(path)) {
-			p = osgDB::convertFileNameToUnixStyle(osgDB::getRealPath(path));
+		if (osgDB::fileExists(p)) {
+			p = osgDB::convertFileNameToUnixStyle(osgDB::getRealPath(p));
 			if (osgDB::fileType(p) == osgDB::REGULAR_FILE) {
 				p = osgDB::getFilePath(p);
 			}
@@ -61,7 +53,24 @@ namespace vrjLua {
 		if (p[p.size() - 1] != '/') {
 			p.push_back('/');
 		}
-		LuaPath::instance().addLuaRequirePath(borrowStatePtr(s), path);
+		return p;
+	}
+	static void appendToModelSearchPath(std::string const& path) {
+		std::string p = getDirectoryPart(path);
+		if (p.empty()) {
+			throw std::runtime_error("Can't append an empty string to the model search path!");
+		}
+		osgDB::Registry::instance()->getDataFilePathList().push_back(p);
+	}
+
+	static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
+		std::string p = getDirectoryPart(path);
+		if (p.empty()) {
+			throw std::runtime_error("Can't append an empty string to the require path!");
+		}
+		LuaSearchPathUpdater searchpath(s);
+
+		searchpath.extend(SearchDirectory(p));
 	}
 
 	static luabind::object getModelSearchPath(lua_State *L) {

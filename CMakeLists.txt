@@ -40,6 +40,9 @@ endif()
 if(NOT SHARE_OUTPUT_DIRECTORY)
 	set(SHARE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/share)
 endif()
+if(NOT ROOT_OUTPUT_DIRECTORY)
+	set(ROOT_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+endif()
 
 # Define Simple Options
 option(BUILD_DOCS "Add a target to build documentation" on)
