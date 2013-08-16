@@ -10,3 +10,6 @@
 [submodule "third-party/osgLua/generate/lua-CodeGen"]
 	path = third-party/osgLua/generate/lua-CodeGen
 	url = https://github.com/fperrad/lua-CodeGen.git
+[submodule "third-party/luabind"]
+	path = third-party/luabind
+	url = https://github.com/rpavlik/luabind.git
