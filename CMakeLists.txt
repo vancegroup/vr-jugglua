@@ -354,6 +354,8 @@ export(PACKAGE VRJuggLua)
 
 # Set up use from install tree
 if(INSTALL_CXX_SDK)
+	install(TARGETS luabind
+		EXPORT vrjlua-sdk)
 	install(EXPORT vrjlua-sdk
 		DESTINATION ${EXPORT_DIR}
 		NAMESPACE vrjlua_exported_
