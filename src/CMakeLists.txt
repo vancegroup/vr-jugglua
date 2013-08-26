@@ -63,6 +63,7 @@ if(BUILD_FLTK_GUI)
 	else()
 		set(FLTK_GUI_APP FLTKNavTestbed)
 	endif()
+	include_directories(${FLTK_INCLUDE_DIR})
     add_executable(${FLTK_GUI_APP} MACOSX_BUNDLE FLTKNavMain.cpp)
     target_link_libraries(${FLTK_GUI_APP} vrjugglua-fltk)
 
