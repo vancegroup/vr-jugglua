@@ -85,6 +85,9 @@ local jconfs = {}
 local newarg = {}
 
 -- Parse the command line arguments
+if not arg or type(arg) ~= "table" then
+	arg = {}
+end
 for _, argument in ipairs(arg) do
 	if optionFlags[argument] then
 		-- this is an option, not a file, and we recognize it!
