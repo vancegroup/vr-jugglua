@@ -31,11 +31,11 @@
 
 // Library/third-party includes
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 
 #include <QMainWindow>
 #include <QApplication>
 #include <QUrl>
+#include <QScopedPointer>
 
 // Standard includes
 #include <string>
@@ -109,7 +109,7 @@ namespace vrjLua {
 			RunLoopManager run_;
 
 			static QApplication * s_app;
-			boost::shared_ptr<Ui::MainWindow> _ui;
+			QScopedPointer<Ui::MainWindow> _ui;
 
 	};
 
