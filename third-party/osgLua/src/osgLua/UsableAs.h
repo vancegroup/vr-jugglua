@@ -54,12 +54,12 @@ namespace osgLua {
 	};
 	template<>
 	bool osgLuaValueUsableImpl<double>::check(lua_State * L, int i) {
-		return static_cast<bool>(lua_isnumber(L, i));
+		return (lua_isnumber(L, i) != 0);
 	}
 
 	template<>
 	bool osgLuaValueUsableImpl<float>::check(lua_State * L, int i) {
-		return static_cast<bool>(lua_isnumber(L, i));
+		return (lua_isnumber(L, i) != 0);
 	}
 
 	template<typename T>
