@@ -26,8 +26,6 @@
 #include <vrjlua-fltk-console.h>
 
 // Library/third-party includes
-#include <boost/scoped_ptr.hpp>
-
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Native_File_Chooser.H>
 
@@ -46,25 +44,21 @@ namespace vrjLua {
 		public:
 			FLTKConsoleView(FLTKConsole* console) :
 				_console(console),
-				FLTKConsoleUI(700, 590, "VRJLua Console"),
-				_inputBuf(new Fl_Text_Buffer()),
-				_codeBuf(new Fl_Text_Buffer()) {
-				_input->buffer(_inputBuf.get());
-				_existingCode->buffer(_codeBuf.get());
+				FLTKConsoleUI(700, 590, "VRJLua Console") {
 				show();
 			}
 
 			virtual void runInput() {
 				std::string input;
 				{
-					char * input_chars = _inputBuf->text();
+					char * input_chars = _input->buffer()->text();
 					input = std::string(input_chars);
 					free(input_chars);
 				}
 
 				bool ret = _console->addString(input);
 				if (ret) {
-					_inputBuf->text("");
+					_input->buffer()->text("");
 				}
 			}
 
@@ -95,7 +89,7 @@ namespace vrjLua {
 					return;
 				}
 
-				int saveret = _codeBuf->savefile(fc.filename());
+				int saveret = _existingCode->buffer()->savefile(fc.filename());
 				if (saveret == 0) {
 					// Successful - append to the text display
 					std::string code("-- code up to here saved to file '");
@@ -108,16 +102,14 @@ namespace vrjLua {
 			}
 
 			virtual void appendToDisplay(std::string const& message) {
-				_codeBuf->append(message.c_str());
-				_codeBuf->append("\n");
+				_existingCode->buffer()->append(message.c_str());
+				_existingCode->buffer()->append("\n");
 				// Scroll to bottom
-				_existingCode->scroll(_existingCode->count_lines(0, _codeBuf->length(), 1), 0);
+				_existingCode->scroll(_existingCode->count_lines(0, _existingCode->buffer()->length(), 1), 0);
 			}
 
 		protected:
 			FLTKConsole * _console;
-			boost::scoped_ptr<Fl_Text_Buffer> _inputBuf;
-			boost::scoped_ptr<Fl_Text_Buffer> _codeBuf;
 	};
 
 	void FLTKConsole::setup(int & argc, char * argv[]) {
