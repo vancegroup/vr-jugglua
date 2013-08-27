@@ -55,7 +55,6 @@ namespace vrjLua {
 
 	QTConsole::QTConsole() :
 		_app(s_app),
-		_running(false),
 		_ui(new Ui::MainWindow()) {
 		_shared_init();
 	}
@@ -63,14 +62,12 @@ namespace vrjLua {
 	QTConsole::QTConsole(LuaScript const& script) :
 		LuaConsole(script),
 		_app(s_app),
-		_running(false),
 		_ui(new Ui::MainWindow()) {
 		_shared_init();
 	}
 
 	QTConsole::QTConsole(QApplication* app) :
 		_app(app),
-		_running(false),
 		_ui(new Ui::MainWindow()) {
 		_shared_init();
 	}
@@ -78,7 +75,6 @@ namespace vrjLua {
 	QTConsole::QTConsole(QApplication* app, LuaScript const& script) :
 		LuaConsole(script),
 		_app(app),
-		_running(false),
 		_ui(new Ui::MainWindow()) {
 		_shared_init();
 	}
@@ -184,7 +180,7 @@ namespace vrjLua {
 	}
 
 	void QTConsole::checkRunningState() {
-		if (!_running || !vrj::Kernel::instance()->isRunning()) {
+		if (!vrj::Kernel::instance()->isRunning() || !run_.shouldContinue()) {
 			close();
 		}
 	}
@@ -196,37 +192,31 @@ namespace vrjLua {
 	}
 
 	bool QTConsole::threadLoop() {
-		if (_running) {
-			/// @todo notify that the thread is already running?
-			return false;
+		{
+			LoopGuard guard(run_, LoopGuard::DELAY_REPORTING_START);
+			boost::shared_ptr<QTimer> timer(new QTimer(this));
+			connect(this, SIGNAL(textDisplaySignal(QString const&)), this, SLOT(addTextToDisplay(QString const&)));
+			connect(this, SIGNAL(disableGUISignal()), this, SLOT(disableGUIAction()));
+			connect(timer.get(), SIGNAL(timeout()), this, SLOT(checkRunningState()));
+			timer->start(POLLING_INTERVAL);
+			connect(_ui->plainTextEdit, SIGNAL(gotJconf(QUrl)), this, SLOT(loadJconf(QUrl)));
+			connect(_ui->plainTextEdit, SIGNAL(gotLuaFile(QUrl)), this, SLOT(runLuaFile(QUrl)));
+
+
+			boost::shared_ptr<QTimer> logTimer(new QTimer(this));
+			if (_loggingActive) {
+				connect(logTimer.get(), SIGNAL(timeout()), this, SLOT(updateDebugLog()));
+				logTimer->start(LOG_UPDATE_INTERVAL);
+			} else {
+				_ui->actionShow_debug_log->setEnabled(false);
+			}
+
+			/// Once GUI is ready, tell the console base class to redirect print statements.
+			QTimer::singleShot(0, this, SLOT(consoleReady()));
+
+			show();
+			_app->exec();
 		}
-
-		_running = true;
-
-		boost::shared_ptr<QTimer> timer(new QTimer(this));
-		connect(this, SIGNAL(textDisplaySignal(QString const&)), this, SLOT(addTextToDisplay(QString const&)));
-		connect(this, SIGNAL(disableGUISignal()), this, SLOT(disableGUIAction()));
-		connect(timer.get(), SIGNAL(timeout()), this, SLOT(checkRunningState()));
-		timer->start(POLLING_INTERVAL);
-		connect(_ui->plainTextEdit, SIGNAL(gotJconf(QUrl)), this, SLOT(loadJconf(QUrl)));
-		connect(_ui->plainTextEdit, SIGNAL(gotLuaFile(QUrl)), this, SLOT(runLuaFile(QUrl)));
-
-
-		boost::shared_ptr<QTimer> logTimer(new QTimer(this));
-		if (_loggingActive) {
-			connect(logTimer.get(), SIGNAL(timeout()), this, SLOT(updateDebugLog()));
-			logTimer->start(LOG_UPDATE_INTERVAL);
-		} else {
-			_ui->actionShow_debug_log->setEnabled(false);
-		}
-
-		/// Once GUI is ready, tell the console base class to redirect print statements.
-		QTimer::singleShot(0, this, SLOT(consoleReady()));
-
-		show();
-		_app->exec();
-
-		_running = false;
 		vrj::Kernel * kern = vrj::Kernel::instance();
 		if (kern) {
 			kern->stop();
@@ -236,7 +226,7 @@ namespace vrjLua {
 	}
 
 	void QTConsole::stopThread() {
-		_running = false;
+		run_.signalAndWaitForShutdown();
 	}
 
 	void QTConsole::appendToDisplay(std::string const& message) {
@@ -252,6 +242,7 @@ namespace vrjLua {
 	}
 
 	void QTConsole::consoleReady() {
+		run_.reportRunning();
 		_consoleIsReady();
 	}
 

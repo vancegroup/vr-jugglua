@@ -27,6 +27,8 @@
 #include <vrjugglua/LuaConsole.h>
 #include <vrjugglua/LuaScript.h>
 
+#include <vrjugglua/RunLoopManager.h>
+
 // Library/third-party includes
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -104,7 +106,7 @@ namespace vrjLua {
 		protected:
 			void _shared_init();
 			QApplication * _app;
-			bool _running;
+			RunLoopManager run_;
 
 			static QApplication * s_app;
 			boost::shared_ptr<Ui::MainWindow> _ui;
