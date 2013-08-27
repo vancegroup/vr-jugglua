@@ -127,12 +127,12 @@ namespace vrjLua {
 
 	FLTKConsole::FLTKConsole() :
 		LuaConsole() {
-		_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
+		_view.reset(new FLTKConsoleView(this));
 	}
 
 	FLTKConsole::FLTKConsole(LuaScript const& script) :
 		LuaConsole(script) {
-		_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
+		_view.reset(new FLTKConsoleView(this));
 	}
 
 	FLTKConsole::~FLTKConsole() {
