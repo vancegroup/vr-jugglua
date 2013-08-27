@@ -23,6 +23,7 @@
 
 // Local includes
 #include <vrjugglua/LuaConsole.h>
+#include <vrjugglua/RunLoopManager.h>
 
 // Library/third-party includes
 #include <boost/utility.hpp> // for boost::noncopyable
@@ -59,7 +60,7 @@ namespace vrjLua {
 		protected:
 			bool _doThreadWork();
 
-			bool _running;
+			RunLoopManager run_;
 
 			boost::shared_ptr<FLTKConsoleUI> _view;
 	};

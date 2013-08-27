@@ -144,8 +144,7 @@ namespace vrjLua {
 	}
 
 	FLTKConsole::FLTKConsole() :
-		LuaConsole(),
-		_running(false) {
+		LuaConsole() {
 #ifdef VERBOSE
 		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
@@ -153,8 +152,7 @@ namespace vrjLua {
 	}
 
 	FLTKConsole::FLTKConsole(LuaScript const& script) :
-		LuaConsole(script),
-		_running(false) {
+		LuaConsole(script) {
 #ifdef VERBOSE
 		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
@@ -165,34 +163,27 @@ namespace vrjLua {
 #ifdef VERBOSE
 		std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
-		stopThread();
 	}
 
 	bool FLTKConsole::threadLoop() {
-		if (_running) {
-			/// @todo notify that the thread is already running?
-			return false;
-		}
-
-		_running = true;
-		bool ret = true;
-		_consoleIsReady();
-		while (_running && vrj::Kernel::instance()->isRunning()) {
-			// Do the FLTK loop
-			ret = _doThreadWork();
-			if (!ret) {
-				// Exit originating from FLTK
-				break;
+		{
+			LoopGuard guard(run_);
+			while (run_.shouldContinue() && vrj::Kernel::instance()->isRunning()) {
+				// Do the FLTK loop
+				bool ret = _doThreadWork();
+				if (!ret) {
+					// Exit originating from FLTK
+					break;
+				}
 			}
 		}
-		_running = false;
 		vrj::Kernel::instance()->stop();
 		vrj::Kernel::instance()->waitForKernelStop();
 		return true;
 	}
 
 	void FLTKConsole::stopThread() {
-		_running = false;
+		run_.signalAndWaitForShutdown();
 	}
 
 	void FLTKConsole::appendToDisplay(std::string const& message) {
