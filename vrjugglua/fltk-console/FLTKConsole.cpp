@@ -138,9 +138,17 @@ namespace vrjLua {
 	FLTKConsole::~FLTKConsole() {
 	}
 
+	namespace {
+		void reportRunning(void * data) {
+			RunLoopManager & run_ = *static_cast<RunLoopManager*>(data);
+			run_.reportRunning();
+		}
+	}
+
 	bool FLTKConsole::threadLoop() {
 		{
-			LoopGuard guard(run_);
+			LoopGuard guard(run_, LoopGuard::DELAY_REPORTING_START);
+			Fl::add_timeout(0, &reportRunning, static_cast<void*>(&run_));
 			while (run_.shouldContinue() && vrj::Kernel::instance()->isRunning()) {
 				// Do the FLTK loop
 				bool ret = _doThreadWork();
