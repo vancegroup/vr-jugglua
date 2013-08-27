@@ -145,24 +145,15 @@ namespace vrjLua {
 
 	FLTKConsole::FLTKConsole() :
 		LuaConsole() {
-#ifdef VERBOSE
-		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
 		_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
 	}
 
 	FLTKConsole::FLTKConsole(LuaScript const& script) :
 		LuaConsole(script) {
-#ifdef VERBOSE
-		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
 		_view = boost::shared_ptr<FLTKConsoleView>(new FLTKConsoleView(this));
 	}
 
 	FLTKConsole::~FLTKConsole() {
-#ifdef VERBOSE
-		std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
-#endif
 	}
 
 	bool FLTKConsole::threadLoop() {
