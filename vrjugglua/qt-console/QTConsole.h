@@ -23,6 +23,9 @@
 
 #define QT_NO_KEYWORDS
 
+#ifndef QT_MOC_RUN
+// See https://bugreports.qt-project.org/browse/QTBUG-22829
+
 // Local includes
 #include <vrjugglua/LuaConsole.h>
 #include <vrjugglua/LuaScript.h>
@@ -31,6 +34,8 @@
 
 // Library/third-party includes
 #include <boost/noncopyable.hpp>
+
+#endif
 
 #include <QMainWindow>
 #include <QApplication>
@@ -45,7 +50,7 @@ namespace Ui {
 }
 
 namespace vrjLua {
-
+	class LuaConsole;
 
 	class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
 
