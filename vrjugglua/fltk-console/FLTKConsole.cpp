@@ -45,6 +45,8 @@ namespace vrjLua {
 			FLTKConsoleView(FLTKConsole* console) :
 				_console(console),
 				FLTKConsoleUI(700, 590, "VRJLua Console") {
+				_input->buffer(new Fl_Text_Buffer());
+				_existingCode->buffer(new Fl_Text_Buffer());
 				show();
 			}
 
