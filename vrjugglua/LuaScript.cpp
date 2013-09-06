@@ -90,8 +90,8 @@ namespace vrjLua {
 	LuaScript::LuaScript(lua_State * state, bool bind) :
 		_state(borrowStatePtr(state)) {
 		VERBOSE_MSG("Constructor from lua_State * with bind = " << bind);
-		if (!state) {
-			std::cerr << "Warning: constructing a LuaScript from a null state pointer!" << std::endl;
+		if (!_state) {
+			throw NoValidLuaState();
 		}
 
 		// If requested, bind.
@@ -108,8 +108,8 @@ namespace vrjLua {
 	LuaScript::LuaScript(const LuaStatePtr & otherptr) :
 		_state(otherptr) {
 		VERBOSE_MSG("Constructor from LuaStatePtr (smart pointer)");
-		if (!otherptr) {
-			std::cerr << "Warning: constructing a LuaScript from an empty state smart pointer!" << std::endl;
+		if (!_state) {
+			throw NoValidLuaState();
 		}
 	}
 
