@@ -82,13 +82,7 @@ namespace vrjLua {
 	}
 
 	bool LuaConsole::getRunBufFromLuaGlobal() {
-
-		LuaStatePtr state = _script.getLuaState().lock();
-		if (!state) {
-			throw std::runtime_error("Could not get a valid lua state pointer!");
-		}
-
-		luabind::object runbufLua(luabind::globals(state.get())["runbuf"]);
+		luabind::object runbufLua(luabind::globals(_script.getLuaRawState())["runbuf"]);
 		if (!runbufLua || luabind::type(runbufLua) == LUA_TNIL) {
 			throw std::runtime_error("Could not get a lua global named runbuf!");
 		}

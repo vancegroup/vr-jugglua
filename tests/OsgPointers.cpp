@@ -64,7 +64,7 @@ void matrixFunc(osg::Matrixd mat) {
 
 struct Fixture {
 	Fixture() {
-		LuaStatePtr ptr(s.getLuaState().lock());
+		LuaStatePtr ptr(s.getLuaState());
 		module(ptr.get())[
 		    def("nodeFunc", &nodeFunc),
 		    def("groupFunc", &groupFunc),

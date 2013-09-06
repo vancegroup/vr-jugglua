@@ -78,7 +78,7 @@ class A {
 
 struct Fixture {
 	Fixture() {
-		LuaStatePtr ptr(s.getLuaState().lock());
+		LuaStatePtr ptr(s.getLuaState());
 		module(ptr.get())[
 			def("passconstbyref", &passconstbyref),
 			def("passconst", &passconst),

@@ -62,7 +62,7 @@ namespace vrjLua {
 	class OsgAppProxy : public OsgApp {
 		public:
 			/// @brief Lua binding call
-			static void bindToLua(LuaStatePtr & state);
+			static void bindToLua(lua_State * L);
 
 			/// @brief Standard constructor
 			OsgAppProxy(vrj::Kernel* kern);

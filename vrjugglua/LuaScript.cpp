@@ -263,12 +263,18 @@ namespace vrjLua {
 		_printFunc = func;
 	}
 
-	LuaStateWeakPtr LuaScript::getLuaState() const {
+	LuaStatePtr LuaScript::getLuaState() const {
+		if (!_state) {
+			throw NoValidLuaState();
+		}
 		return _state;
 	}
 
 
 	LuaStateRawPtr LuaScript::getLuaRawState() const {
+		if (!_state) {
+			throw NoValidLuaState();
+		}
 		return _state.get();
 	}
 

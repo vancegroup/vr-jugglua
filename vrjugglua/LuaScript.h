@@ -26,7 +26,6 @@
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
 
@@ -42,7 +41,6 @@ namespace vrjLua {
 
 	typedef lua_State * LuaStateRawPtr;
 	typedef boost::shared_ptr<lua_State> LuaStatePtr;
-	typedef boost::weak_ptr<lua_State> LuaStateWeakPtr;
 
 	inline LuaStatePtr borrowStatePtr(LuaStateRawPtr ptr) {
 		return LuaStatePtr(ptr, std::ptr_fun(state_no_op_deleter));
@@ -64,10 +62,10 @@ namespace vrjLua {
 			/// @brief constructor from an externally-allocated state
 			LuaScript(lua_State * state, bool bind = false);
 
-			/// @brief copy constructor - doesn't re-bind
+			/// @brief copy constructor - doesn't re-bind. Will not copy from an empty pointer.
 			LuaScript(const LuaScript & other);
 
-			/// @brief copy constructor - doesn't re-bind
+			/// @brief copy constructor - doesn't re-bind. Will not copy from an empty pointer.
 			LuaScript(const LuaStatePtr & other);
 
 			~LuaScript();
@@ -82,7 +80,10 @@ namespace vrjLua {
 			void setPrintFunction(boost::function<void (std::string const&)> func);
 			static void doPrint(std::string const& str);
 
-			LuaStateWeakPtr getLuaState() const;
+			/// Gets a shared pointer to the Lua state, guaranteed to be non-null.
+			LuaStatePtr getLuaState() const;
+
+			/// Gets a raw pointer to the Lua state, guaranteed to be non-null
 			LuaStateRawPtr getLuaRawState() const;
 
 			bool isValid() const;

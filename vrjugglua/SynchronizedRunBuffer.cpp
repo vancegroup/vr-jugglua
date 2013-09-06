@@ -47,7 +47,7 @@ namespace vrjLua {
 	SynchronizedRunBuffer::SynchronizedRunBuffer(LuaScript const& script) :
 		_init(false) {
 		/// @todo own this state? How?
-		_state = script.getLuaState().lock().get();
+		_state = script.getLuaRawState();
 	}
 
 	void SynchronizedRunBuffer::init() {

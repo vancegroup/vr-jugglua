@@ -44,16 +44,16 @@ namespace vrjLua {
 /// Initialize static member variable
 	OsgAppProxy* OsgAppProxy::_pApp = NULL;
 
-	void OsgAppProxy::bindToLua(LuaStatePtr & state) {
+	void OsgAppProxy::bindToLua(lua_State * L) {
 		// Bind this class
-		if (state) {
+		if (L) {
 #ifdef VERBOSE
 			VRJLUA_MSG_START(dbgVRJLUA_PROXY, MSG_STATUS)
 			        << "Registering vrj.OsgAppProxy with Lua"
 			        << VRJLUA_MSG_END(dbgVRJLUA_PROXY, MSG_STATUS);
 #endif
 			using namespace luabind;
-			module(state.get(), "vrjApp") [
+			module(L, "vrjApp") [
 			    class_<OsgAppProxy>("OsgAppProxy")
 			    .def(constructor<>())
 			    .def("setAppDelegate", & OsgAppProxy::setAppDelegate)
