@@ -48,6 +48,10 @@ namespace vrjLua {
 		return LuaStatePtr(ptr, std::ptr_fun(state_no_op_deleter));
 	}
 
+	struct CouldNotOpenState : public std::runtime_error {
+		CouldNotOpenState() : std::runtime_error("Could not open a new Lua state.") {}
+	};
+
 	struct NoValidLuaState : public std::logic_error {
 		NoValidLuaState() : std::logic_error("Attempted to perform a LuaScript manipulation on a LuaScript instance without a valid state pointer!") {}
 	};
