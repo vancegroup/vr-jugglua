@@ -22,7 +22,7 @@
 #define INCLUDED_vrjugglua_LuaScript_h
 
 // Local includes
-#include <vrjugglua/LuaInclude.h>
+#include <vrjugglua/LuaStateFwd.h>
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
@@ -31,6 +31,7 @@
 // Standard includes
 #include <string>
 #include <stdexcept>
+#include <functional> // for std::ptr_fun
 
 namespace vrjLua {
 	/// @brief no-op deleter for externally-provided state pointers
