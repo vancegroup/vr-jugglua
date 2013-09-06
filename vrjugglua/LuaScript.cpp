@@ -231,12 +231,12 @@ namespace vrjLua {
 
 		// set up global for debug mode
 		/// @todo make this work
-		/*
+/*
 		luabind::module(_state.get(), "vrjlua")[
-											   def_readwrite(&LuaScript::exitOnError)
+		                                        luabind::def_readwrite(boost::ref(LuaScript::exitOnError))
 											   ];
-		*/
 
+*/
 	}
 
 	bool LuaScript::call(const std::string & func, bool silentSuccess) {
