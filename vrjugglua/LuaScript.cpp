@@ -69,8 +69,7 @@ namespace vrjLua {
 			_state = LuaStatePtr(luaL_newstate(), std::ptr_fun(lua_close));
 
 			if (!_state) {
-				std::cerr << "Warning: Could not allocate a new Lua state in the LuaScript constructor!" << std::endl;
-				return;
+				throw CouldNotOpenState();
 			}
 
 			{
