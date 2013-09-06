@@ -194,7 +194,7 @@ namespace vrjLua {
 	}
 #endif
 
-	namespace Kernel {
+	namespace {
 		void initAsClusterSecondaryNodeDefaultPort() {
 			KernelState::initAsClusterSecondaryNode();
 		}
@@ -254,25 +254,25 @@ namespace vrjLua {
 			return vrj::Kernel::instance()->isRunning();
 		}
 
-	} // end of Kernel namespace
+	} // end of namespace
 
 	void bindKernelToLua(lua_State * L) {
 #ifdef VERBOSE
 		std::cerr << "Registering vrjKernel module functions with Lua..." << std::flush << std::endl;
 #endif
 		module(L, "vrjKernel") [
-		    def("enter", &Kernel::enter),
-		    def("start", &Kernel::start),
-		    def("stop", &Kernel::stop),
-		    def("setApplication", &Kernel::setApplication),
-		    def("loadConfigFile", &Kernel::loadConfigFile),
+		    def("enter", &enter),
+		    def("start", &start),
+		    def("stop", &stop),
+		    def("setApplication", &setApplication),
+		    def("loadConfigFile", &loadConfigFile),
 		    def("deconfigureElementByName", &deconfigureElementByName),
 		    def("deconfigureAll", &deconfigureAll),
-		    def("waitForKernelStop", &Kernel::waitForKernelStop),
-		    def("isRunning", &Kernel::isRunning),
+		    def("waitForKernelStop", &waitForKernelStop),
+		    def("isRunning", &isRunning),
 		    def("initAsClusterPrimaryNode", &KernelState::initAsClusterPrimaryNode),
 		    def("initAsClusterSecondaryNode", &KernelState::initAsClusterSecondaryNode),
-		    def("initAsClusterSecondaryNode", &Kernel::initAsClusterSecondaryNodeDefaultPort),
+		    def("initAsClusterSecondaryNode", &initAsClusterSecondaryNodeDefaultPort),
 		    def("initAsSingleMachine", &KernelState::initAsSingleMachine)
 
 		];
