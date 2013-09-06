@@ -31,6 +31,7 @@
 #include <vrj/Kernel/Kernel.h>
 #include <vpr/Thread/Thread.h>
 #include <vpr/System.h>
+#include <vrj/vrjParam.h> // for version define
 
 #if __VJ_version < 2003011
 #	include <vrj/Draw/OSG/OsgApp.h>
