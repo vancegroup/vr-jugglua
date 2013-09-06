@@ -199,7 +199,7 @@ namespace vrjLua {
 			KernelState::initAsClusterSecondaryNode();
 		}
 
-		void doStart(bool waiting = false) {
+		void doStart(lua_State * L, bool waiting = false) {
 			if (!KernelState::hasInitialized()) {
 				VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
 				        << "Warning: vrjKernel.start called before vrjKernel.init - your app will not support clustering in VR Juggler 3.x!"
@@ -212,11 +212,15 @@ namespace vrjLua {
 				        << "Warning: vrjKernel.start called: possible race condition if you run Lua code in the frame loop! (Use vrjKernel.enter to avoid this)"
 				        << VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 			}
+
+			// Override os.exit to actually just call kernel stop.
+			luabind::globals(L)["os"]["exit"] = luabind::globals(L)["vrjKernel"]["stop"];
+
 			vrj::Kernel::instance()->start();
 		}
 
-		void start() {
-			doStart();
+		void start(lua_State * L) {
+			doStart(L);
 		}
 
 		void stop() {
@@ -237,8 +241,8 @@ namespace vrjLua {
 			vrj::Kernel::instance()->waitForKernelStop();
 		}
 
-		void enter() {
-			doStart(true);
+		void enter(lua_State * L) {
+			doStart(L, true);
 			waitForKernelStop();
 		}
 
