@@ -1,8 +1,7 @@
-/**	@file
-	@brief	header
+/** @file
+	@brief Header
 
-	@date
-	2009-2011
+	@date 2013
 
 	@author
 	Ryan Pavlik
@@ -12,20 +11,27 @@
 	Human-Computer Interaction Graduate Program
 */
 
-//          Copyright Iowa State University 2009-2011.
+//          Copyright Iowa State University 2013.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#pragma once
-#ifndef INCLUDED_vrjugglua_LuaIncludeFull_h
-#define INCLUDED_vrjugglua_LuaIncludeFull_h
+#ifndef INCLUDED_LuaStateFwd_h_GUID_6284647f_def7_4e60_9cc3_eafaebb2ab5a
+#define INCLUDED_LuaStateFwd_h_GUID_6284647f_def7_4e60_9cc3_eafaebb2ab5a
+
+// Internal Includes
+// - none
+
+// Library/third-party includes
+// - none
+
+// Standard includes
+// - none
 
 #include "LuaCInterfaceBegin.h"
 
-#include <lauxlib.h>
-#include <lualib.h>
+struct lua_State;
 
 #include "LuaCInterfaceEnd.h"
 
-#endif // INCLUDED_vrjugglua_LuaIncludeFull_h
+#endif // INCLUDED_LuaStateFwd_h_GUID_6284647f_def7_4e60_9cc3_eafaebb2ab5a

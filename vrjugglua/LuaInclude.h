@@ -21,25 +21,10 @@
 #ifndef INCLUDED_vrjugglua_LuaInclude_h
 #define INCLUDED_vrjugglua_LuaInclude_h
 
-#include <vrjugglua/VRJLuaConfig.h>
-
-#ifdef __cplusplus
-#ifndef BUILD_LUA_AS_CPP
-#define LUA_C_INTERFACE_BEGIN extern "C" {
-#define LUA_C_INTERFACE_END }
-#endif
-#endif
-
-#ifndef LUA_C_INTERFACE_BEGIN
-#define LUA_C_INTERFACE_BEGIN
-#define LUA_C_INTERFACE_END
-#endif
-
-LUA_C_INTERFACE_BEGIN
+#include "LuaCInterfaceBegin.h"
 
 #include <lua.h>
 
-LUA_C_INTERFACE_END
-
+#include "LuaCInterfaceEnd.h"
 
 #endif // INCLUDED_vrjugglua_LuaInclude_h

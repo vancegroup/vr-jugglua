@@ -55,6 +55,8 @@ set(API
 	Internal_DigitalInterface.h
 	Internal_PositionInterface.h
 	Internal_StringInterface.h
+	LuaCInterfaceBegin.h
+	LuaCInterfaceEnd.h
 	LuaConsole.h
 	LuaGCBlock.h
 	LuaIncludeFull.h

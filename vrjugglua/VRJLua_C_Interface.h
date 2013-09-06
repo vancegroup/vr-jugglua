@@ -21,17 +21,16 @@
 #ifndef INCLUDED_vrjugglua_VRJLua_C_Interface_h
 #define INCLUDED_vrjugglua_VRJLua_C_Interface_h
 
-#include <vrjugglua/LuaInclude.h>
+#include "LuaStateFwd.h"
 
-LUA_C_INTERFACE_BEGIN
-
+#include "LuaCInterfaceBegin.h"
 int luaopen_vrjugglua(lua_State *L);
 int luaopen_libvrjugglua(lua_State *L);
 int add_file_and_line(lua_State* L);
 
 void set_exec_path(const char* argv0);
 
-LUA_C_INTERFACE_END
+#include "LuaCInterfaceEnd.h"
 
 
 #endif // INCLUDED_vrjugglua_VRJLua_C_Interface_h
