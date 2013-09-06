@@ -71,8 +71,8 @@ namespace vrjLua {
 			bool _init;
 			cluster::UserData<LuaRunBuffer> _runBuf;
 			enum COMMAND {
-			    CM_ADDFILE,
-			    CM_ADDSTRING
+				CM_ADDFILE,
+				CM_ADDSTRING
 			};
 			typedef std::pair<COMMAND, std::string> RunBufCmd;
 
