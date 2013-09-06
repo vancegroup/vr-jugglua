@@ -214,6 +214,7 @@ namespace vrjLua {
 			}
 
 			// Override os.exit to actually just call kernel stop.
+			luabind::globals(L)["os"]["sysexit"] = luabind::globals(L)["os"]["exit"];
 			luabind::globals(L)["os"]["exit"] = luabind::globals(L)["vrjKernel"]["stop"];
 
 			vrj::Kernel::instance()->start();
