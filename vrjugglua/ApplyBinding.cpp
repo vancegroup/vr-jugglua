@@ -39,7 +39,30 @@
 #include <luabind/class_info.hpp>
 
 // Standard includes
-// - none
+#include <iostream>
+#include <sstream>
+#include <string>                       // for operator<<, string
+
+namespace {
+	// From the Luabind docs
+	int add_file_and_line(lua_State* L) {
+		lua_Debug d;
+		lua_getstack(L, 1, &d);
+		lua_getinfo(L, "Sln", &d);
+		std::string err = lua_tostring(L, -1);
+		lua_pop(L, 1);
+		std::stringstream msg;
+		msg << d.short_src << ":" << d.currentline;
+
+		if (d.name != 0) {
+			msg << "(" << d.namewhat << " " << d.name << ")";
+		}
+		msg << " " << err;
+		lua_pushstring(L, msg.str().c_str());
+		std::cerr << std::endl << msg.str() << std::endl;
+		return 1;
+	}
+} // end of namespace
 
 namespace vrjLua {
 	void applyBinding(lua_State * L) {

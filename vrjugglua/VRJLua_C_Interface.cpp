@@ -21,44 +21,27 @@
 // Internal Includes
 #include "VRJLua_C_Interface.h"
 
-#include "LuaScript.h"
+#include "ApplyBinding.h"
 #include "LuaPath.h"
 
 // Library/third-party includes
-#include <vrjugglua/LuaInclude.h>
+#include <vrjugglua/LuaIncludeFull.h>
 
 // Standard includes
-#include <iostream>
-#include <sstream>
-#include <string>                       // for operator<<, string
+// - none
 
 int luaopen_vrjugglua(lua_State *L) {
-	// Create a script and load the bindings
-	vrjLua::LuaScript script(L, true);
+	try {
+		// Load the bindings
+		vrjLua::applyBinding(L);
+	} catch (std::exception & e) {
+		return luaL_error(L, e.what());
+	}
 	return 0; // success
 }
 
 int luaopen_libvrjugglua(lua_State *L) {
 	return luaopen_vrjugglua(L);
-}
-
-// From the Luabind docs
-int add_file_and_line(lua_State* L) {
-	lua_Debug d;
-	lua_getstack(L, 1, &d);
-	lua_getinfo(L, "Sln", &d);
-	std::string err = lua_tostring(L, -1);
-	lua_pop(L, 1);
-	std::stringstream msg;
-	msg << d.short_src << ":" << d.currentline;
-
-	if (d.name != 0) {
-		msg << "(" << d.namewhat << " " << d.name << ")";
-	}
-	msg << " " << err;
-	lua_pushstring(L, msg.str().c_str());
-	std::cerr << std::endl << msg.str() << std::endl;
-	return 1;
 }
 
 void set_exec_path(const char* argv0) {
