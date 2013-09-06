@@ -79,10 +79,7 @@ namespace vrjLua {
 				// Load default Lua libs
 				luaL_openlibs(_state.get());
 
-				/// @todo Extend the path here for shared libraries?
-				//luabind::call_function<std::string>(_state.get(), "format", "%q", )
-				//luaL_dostring(_state.get(), "package.cpath = ")
-
+				// Load our bindings.
 				_applyBindings();
 			}
 		}
