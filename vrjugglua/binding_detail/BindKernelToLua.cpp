@@ -45,27 +45,48 @@ typedef vrj::osg::App KernelOsgApp;
 
 namespace vrjLua {
 	using namespace luabind;
+	/// @brief Singleton class for internal use
+	class KernelState {
+		public:
+			static KernelState & instance();
+			static void init(boost::program_options::variables_map vm);
+			static void init(int argc, char* argv[]);
+			static void init();
+			static void initAsSingleMachine();
+			static void initAsClusterPrimaryNode();
+			static void initAsClusterSecondaryNode(int port = 0);
+			static bool hasInitialized();
 
-// Static members
-	bool KernelState::_init = false;
-	bool KernelState::_isCluster = false;
-	bool KernelState::_isPrimary = false;
+		protected:
+
+			KernelState();
+			bool _init;
+			bool _isCluster;
+			bool _isPrimary;
+	};
+
+	KernelState & KernelState::instance() {
+		static KernelState o;
+		return o;
+	}
+
+	KernelState::KernelState() : _init(false), _isCluster(false), _isPrimary(false) {};
 
 
 	bool KernelState::hasInitialized() {
-		return _init;
+		return instance()._init;
 	}
 
 #if __VJ_version >= 2003000
 // Juggler 3.x - initialize the kernel
-	boost::program_options::options_description KernelState::getVrjOptionsDescriptions() {
+	inline boost::program_options::options_description getVrjOptionsDescriptions() {
 		boost::program_options::options_description desc("VR Juggler 3.x Options");
 		desc.add(vrj::Kernel::instance()->getClusterOptions()).add(vrj::Kernel::instance()->getConfigOptions());
 		return desc;
 	}
 
 	void KernelState::init(boost::program_options::variables_map vm) {
-		if (_init) {
+		if (instance()._init) {
 			VRJLUA_MSG_START(dbgVRJLUA, MSG_WARNING)
 			        << "Warning: vrjKernel.init called a second time!"
 			        << VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
@@ -73,12 +94,12 @@ namespace vrjLua {
 		bool isPrimary = vm.count("vrjmaster") && vm["vrjmaster"].as<bool>();
 		bool isSecondary = vm.count("vrjslave") && vm["vrjslave"].as<bool>();
 		if (isPrimary || isSecondary) {
-			_isCluster = true;
+			instance()._isCluster = true;
 		}
-		_isPrimary = isPrimary;
+		instance()._isPrimary = isPrimary;
 
 		vrj::Kernel::instance()->init(vm);
-		_init = true;
+		instance()._init = true;
 	}
 
 	void KernelState::init(int argc, char* argv[]) {
@@ -130,18 +151,18 @@ namespace vrjLua {
 
 #else
 // Juggler 2.2 - stub methods
-	boost::program_options::options_description KernelState::getVrjOptionsDescriptions() {
+	inline boost::program_options::options_description getVrjOptionsDescriptions() {
 		return boost::program_options::options_description();
 	}
 
 	void KernelState::init(boost::program_options::variables_map /*vm*/) {
 		// no-op
-		_init = true;
+		instance()._init = true;
 	}
 
 	void KernelState::init(int /*argc*/, char* /*argv*/[]) {
 		// no-op
-		_init = true;
+		instance()._init = true;
 	}
 
 	void KernelState::init() {
@@ -150,25 +171,25 @@ namespace vrjLua {
 		        << "Warning: your application will not cluster-capable with VR Juggler 3.x because you did not initialize the kernel with command line arguments!"
 		        << VRJLUA_MSG_END(dbgVRJLUA, MSG_WARNING);
 
-		_init = true;
+		instance()._init = true;
 	}
 
 	void KernelState::initAsSingleMachine() {
-		_isCluster = false;
-		_isPrimary = false;
-		_init = true;
+		instance()._isCluster = false;
+		instance()._isPrimary = false;
+		instance()._init = true;
 	}
 
 	void KernelState::initAsClusterPrimaryNode() {
-		_isCluster = true;
-		_isPrimary = true;
-		_init = true;
+		instance()._isCluster = true;
+		instance()._isPrimary = true;
+		instance()._init = true;
 	}
 
 	void KernelState::initAsClusterSecondaryNode(int /*port*/) {
-		_isCluster = true;
-		_isPrimary = false;
-		_init = true;
+		instance()._isCluster = true;
+		instance()._isPrimary = false;
+		instance()._init = true;
 	}
 #endif
 
