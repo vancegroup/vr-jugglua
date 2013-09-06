@@ -29,6 +29,7 @@
 
 // Standard includes
 #include <fstream>
+#include <sstream>
 
 namespace vrjLua {
 

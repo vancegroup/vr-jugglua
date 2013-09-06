@@ -26,6 +26,7 @@
 
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
+#include <boost/function.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
 
