@@ -28,9 +28,7 @@
 #include <snx/SoundHandle.h>
 
 // Standard includes
-#ifdef VERBOSE
-#include <iostream>
-#endif
+// - none
 
 namespace vrjLua {
 	using namespace luabind;
@@ -42,9 +40,6 @@ namespace vrjLua {
 	} // end of Internal namespace
 
 	void bindSonixToLua(lua_State * L) {
-#ifdef VERBOSE
-		std::cerr << "Registering snx module functions and objects with Lua..." << std::flush << std::endl;
-#endif
 		module(L, "snx") [
 		    def("changeAPI", &Sonix::changeAPI),
 

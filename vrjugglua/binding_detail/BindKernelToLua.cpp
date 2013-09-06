@@ -19,10 +19,9 @@
 
 
 // Local includes
-#ifndef LUABIND_COMBINED_COMPILE
-#include <vrjugglua/osgLuaBind.h>
-#endif
 #include "BindKernelToLua.h"
+
+#include <vrjugglua/osgLuaBind.h>
 #include <vrjugglua/VRJLuaOutput.h>
 #include <vrjugglua/Reconfiguration.h>
 
@@ -42,9 +41,7 @@ typedef vrj::osg::App KernelOsgApp;
 #endif
 
 // Standard includes
-#ifdef VERBOSE
-#include <iostream>
-#endif
+// - none
 
 namespace vrjLua {
 	using namespace luabind;

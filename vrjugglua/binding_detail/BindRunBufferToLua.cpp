@@ -24,21 +24,16 @@
 #include "../SynchronizedRunBuffer.h"
 
 // Library/third-party includes
-#include <luabind/luabind.hpp>
+#include <luabind/class.hpp>
 #include <boost/shared_ptr.hpp>
 
 // Standard includes
-#ifdef VERBOSE
-#include <iostream>
-#endif
+// - none
 
 namespace vrjLua {
 	using namespace luabind;
 
 	void bindRunBufferToLua(lua_State * L) {
-#ifdef VERBOSE
-		std::cerr << "Registering vrjSync.RunBuffer object with Lua..." << std::flush << std::endl;
-#endif
 		module(L, "vrjSync") [
 		    class_<SynchronizedRunBuffer, boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
 		    .def(constructor<luabind::object>())

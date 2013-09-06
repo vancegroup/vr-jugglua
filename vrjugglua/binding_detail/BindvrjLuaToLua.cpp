@@ -33,6 +33,7 @@
 #include <osgDB/FileNameUtils>
 
 // Standard includes
+#include <stdexcept>
 #ifdef VERBOSE
 #include <iostream>
 #endif

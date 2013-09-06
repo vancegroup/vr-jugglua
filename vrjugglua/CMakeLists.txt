@@ -1,7 +1,3 @@
-if(BUILD_LUABIND_COMBINED)
-	add_definitions(-DLUABIND_COMBINED_COMPILE)
-endif()
-
 if(BUILD_EMBEDDED_LUA)
 	add_definitions(-DEMBEDDED_LUA)
 endif()
@@ -79,12 +75,12 @@ set(LUA_BINDING_SOURCES
 	binding_detail/BindGadgetInterfacesToLua.h
 	binding_detail/BindRunBufferToLua.h
 	binding_detail/BindvrjLuaToLua.h
-	binding_detail/BindKernelToLua.inl
-	binding_detail/BindOsgToLua.inl
-	binding_detail/BindSonixToLua.inl
-	binding_detail/BindGadgetInterfacesToLua.inl
-	binding_detail/BindRunBufferToLua.inl
-	binding_detail/BindvrjLuaToLua.inl)
+	binding_detail/BindKernelToLua.cpp
+	binding_detail/BindOsgToLua.cpp
+	binding_detail/BindSonixToLua.cpp
+	binding_detail/BindGadgetInterfacesToLua.cpp
+	binding_detail/BindRunBufferToLua.cpp
+	binding_detail/BindvrjLuaToLua.cpp)
 
 source_group("Binding Details" FILES ${LUA_BINDING_SOURCES})
 

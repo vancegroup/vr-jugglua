@@ -19,10 +19,8 @@
 
 
 // Local includes
-#ifndef LUABIND_COMBINED_COMPILE
-#include <vrjugglua/osgLuaBind.h>
 #include "BindGadgetInterfacesToLua.h"
-#endif
+#include "../osgLuaBind.h"
 
 #include "../Internal_PositionInterface.h"
 #include "../Internal_DigitalInterface.h"
@@ -30,26 +28,19 @@
 #include "../Internal_StringInterface.h"
 
 // Library/third-party includes
-#include <luabind/luabind.hpp>
+#include <luabind/class.hpp>
 
 #include <osgLua/Value>
 #include <osg/Quat>
 
-
-
 // Standard includes
-#ifdef VERBOSE
-#include <iostream>
-#endif
+// - none
 
 namespace vrjLua {
 
 	using namespace luabind;
 
 	void bindGadgetInterfacesToLua(lua_State * L) {
-#ifdef VERBOSE
-		std::cerr << "Registering Gadgeteer device interfaces with Lua..." << std::flush << std::endl;
-#endif
 		luabind::scope position = class_ < Internal::PositionInterface,
 		               boost::shared_ptr<Internal::PositionInterface> > ("PositionInterface")
 		               .def(constructor<const std::string &>())
