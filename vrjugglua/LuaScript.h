@@ -35,7 +35,7 @@
 #include <stdexcept>
 
 namespace vrjLua {
-
+	/// @brief no-op deleter for externally-provided state pointers
 	inline void state_no_op_deleter(lua_State * /*L*/) {
 		return;
 	}

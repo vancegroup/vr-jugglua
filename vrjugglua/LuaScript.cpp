@@ -59,11 +59,6 @@
 
 namespace vrjLua {
 
-/// @brief no-op deleter for externally-provided state pointers
-	static void no_op_deleter(lua_State *L) {
-		return;
-	}
-
 	bool LuaScript::exitOnError = false;
 	boost::function<void (std::string const&)> LuaScript::_printFunc;
 
