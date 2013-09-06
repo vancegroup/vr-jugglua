@@ -76,7 +76,7 @@ namespace vrjLua {
 				/// RAII-style disabling of garbage collector during init
 				LuaGCBlock gcBlocker(_state.get());
 				// Load default Lua libs
-				luaL_openlibs(gcBlocker.state());
+				luaL_openlibs(_state.get());
 
 				/// @todo Extend the path here for shared libraries?
 				//luabind::call_function<std::string>(_state.get(), "format", "%q", )
