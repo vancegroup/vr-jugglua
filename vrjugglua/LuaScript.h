@@ -38,10 +38,9 @@ namespace vrjLua {
 		return;
 	}
 
-	typedef lua_State * LuaStateRawPtr;
 	typedef boost::shared_ptr<lua_State> LuaStatePtr;
 
-	inline LuaStatePtr borrowStatePtr(LuaStateRawPtr ptr) {
+	inline LuaStatePtr borrowStatePtr(lua_State * ptr) {
 		return LuaStatePtr(ptr, std::ptr_fun(state_no_op_deleter));
 	}
 
@@ -80,10 +79,10 @@ namespace vrjLua {
 			static void doPrint(std::string const& str);
 
 			/// Gets a shared pointer to the Lua state, guaranteed to be non-null.
-			LuaStatePtr getLuaState() const;
+			LuaStatePtr const & getLuaState() const;
 
 			/// Gets a raw pointer to the Lua state, guaranteed to be non-null
-			LuaStateRawPtr getLuaRawState() const;
+			lua_State * getLuaRawState() const;
 
 			bool isValid() const;
 

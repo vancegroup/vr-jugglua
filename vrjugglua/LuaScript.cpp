@@ -200,7 +200,7 @@ namespace vrjLua {
 		_printFunc = func;
 	}
 
-	LuaStatePtr LuaScript::getLuaState() const {
+	LuaStatePtr const & LuaScript::getLuaState() const {
 		if (!_state) {
 			throw NoValidLuaState();
 		}
@@ -208,7 +208,7 @@ namespace vrjLua {
 	}
 
 
-	LuaStateRawPtr LuaScript::getLuaRawState() const {
+	lua_State * LuaScript::getLuaRawState() const {
 		if (!_state) {
 			throw NoValidLuaState();
 		}

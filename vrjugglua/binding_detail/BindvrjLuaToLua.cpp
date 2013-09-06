@@ -64,12 +64,12 @@ namespace vrjLua {
 		osgDB::Registry::instance()->getDataFilePathList().push_back(p);
 	}
 
-	static void appendToLuaRequirePath(LuaStateRawPtr s, std::string const& path) {
+	static void appendToLuaRequirePath(lua_State * L, std::string const& path) {
 		std::string p = getDirectoryPart(path);
 		if (p.empty()) {
 			throw std::runtime_error("Can't append an empty string to the require path!");
 		}
-		LuaSearchPathUpdater searchpath(s);
+		LuaSearchPathUpdater searchpath(L);
 
 		searchpath.extend(SearchDirectory(p));
 	}
