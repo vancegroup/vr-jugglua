@@ -245,12 +245,6 @@ namespace vrjLua {
 		}
 		try {
 			return luabind::call_function<bool>(_state.get(), func.c_str());
-
-			if (!silentSuccess) {
-				VRJLUA_MSG_START(dbgVRJLUA, MSG_STATUS)
-				        << "Successfully called Lua function  " << func
-				        << VRJLUA_MSG_END(dbgVRJLUA, MSG_STATUS);
-			}
 		} catch (const std::exception & e) {
 			std::cerr << "Caught exception calling '" << func << "': " << e.what() << std::endl;
 			throw;
