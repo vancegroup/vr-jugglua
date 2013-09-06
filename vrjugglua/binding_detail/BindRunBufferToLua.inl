@@ -35,11 +35,11 @@
 namespace vrjLua {
 	using namespace luabind;
 
-	void bindRunBufferToLua(LuaStatePtr state) {
+	void bindRunBufferToLua(lua_State * L) {
 #ifdef VERBOSE
 		std::cerr << "Registering vrjSync.RunBuffer object with Lua..." << std::flush << std::endl;
 #endif
-		module(state.get(), "vrjSync") [
+		module(L, "vrjSync") [
 		    class_<SynchronizedRunBuffer, boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
 		    .def(constructor<luabind::object>())
 		    .def("init", &SynchronizedRunBuffer::init)

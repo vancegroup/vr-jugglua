@@ -46,7 +46,7 @@ namespace vrjLua {
 
 	using namespace luabind;
 
-	void bindGadgetInterfacesToLua(LuaStatePtr state) {
+	void bindGadgetInterfacesToLua(lua_State * L) {
 #ifdef VERBOSE
 		std::cerr << "Registering Gadgeteer device interfaces with Lua..." << std::flush << std::endl;
 #endif
@@ -77,7 +77,7 @@ namespace vrjLua {
 		               .def(constructor<const std::string &>())
 		               .property("data", & Internal::StringInterface::getStringData);
 
-		module(state.get(), "gadget") [
+		module(L, "gadget") [
 		    position,
 		    digital,
 		    analog,

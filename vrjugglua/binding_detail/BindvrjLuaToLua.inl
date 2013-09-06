@@ -86,11 +86,11 @@ namespace vrjLua {
 		return osgDB::findDataFile(fn);
 	}
 
-	void BindvrjLuaToLua(LuaStatePtr state) {
+	void BindvrjLuaToLua(lua_State * L) {
 #ifdef VERBOSE
 		std::cerr << "Registering vrjLua module functions with Lua..." << std::flush << std::endl;
 #endif
-		module(state.get(), "vrjLua") [
+		module(L, "vrjLua") [
 		    def("appendToModelSearchPath", &appendToModelSearchPath),
 		    def("getModelSearchPath", &getModelSearchPath),
 		    def("findInModelSearchPath", &findInModelSearchPath),
@@ -110,7 +110,7 @@ namespace vrjLua {
 			appendToModelSearchPath(rootDir);
 
 			std::cout << "Adding config directory (" << rootDir << "/etc/vrjugglua/) to Lua package path..." << std::endl;
-			appendToLuaRequirePath(state.get(), rootDir + "/etc/vrjugglua/");
+			appendToLuaRequirePath(L, rootDir + "/etc/vrjugglua/");
 		}
 
 

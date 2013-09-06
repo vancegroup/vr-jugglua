@@ -20,29 +20,16 @@
 
 // Internal Includes
 #include "LuaScript.h"
-#include "VRJLua_C_Interface.h"
-
-#include "OsgAppProxy.h"
-#include "LuaPath.h"
-#include "LuaPathUpdater.h"
+#include "ApplyBinding.h"
 #include "LuaGCBlock.h"
 
+
 #include "VRJLuaOutput.h"
-
-#include "osgLuaBind.h"
-#include "binding_detail/BindOsgToLua.inl"
-
-#include "binding_detail/BindKernelToLua.inl"
-#include "binding_detail/BindSonixToLua.inl"
-#include "binding_detail/BindGadgetInterfacesToLua.inl"
-#include "binding_detail/BindRunBufferToLua.inl"
-#include "binding_detail/BindvrjLuaToLua.inl"
 
 // Library/third-party includes
 #include <vrjugglua/LuaIncludeFull.h>
 
 #include <luabind/luabind.hpp>
-#include <luabind/class_info.hpp>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -194,57 +181,7 @@ namespace vrjLua {
 		if (!_state) {
 			throw NoValidLuaState();
 		}
-		// Connect LuaBind to this state
-		try {
-			luabind::open(_state.get());
-			luabind::bind_class_info(_state.get());
-		} catch (const std::exception & e) {
-			std::cerr << "Caught exception connecting luabind and class_info: " << e.what() << std::endl;
-			throw;
-		}
-
-		/// Apply our bindings to this state
-
-		// Extend the lua script search path for "require"
-		LuaPath& lp = LuaPath::instance();
-		{
-			LuaSearchPathUpdater searchpath(_state.get());
-			searchpath.extend(SearchDirectory(lp.getLuaDir()));
-			searchpath.extend(RootDirectory(lp.getRootDir()));
-		}
-
-		{
-			/// @todo c search path
-			//LuaCSearchPathUpdater csearchpath(_state.get());
-		}
-
-
-		// osgLua
-		bindOsgToLua(_state);
-
-		// vrjugglua
-		bindKernelToLua(_state);
-		bindSonixToLua(_state);
-		bindGadgetInterfacesToLua(_state);
-		bindRunBufferToLua(_state);
-		BindvrjLuaToLua(_state);
-
-		OsgAppProxy::bindToLua(_state);
-
-		// Set up traceback...
-		luabind::set_pcall_callback(&add_file_and_line);
-
-		// Load the vrjlua init script
-		requireModule("vrjlua-init", true);
-
-		// set up global for debug mode
-		/// @todo make this work
-/*
-		luabind::module(_state.get(), "vrjlua")[
-		                                        luabind::def_readwrite(boost::ref(LuaScript::exitOnError))
-											   ];
-
-*/
+		applyBinding(_state.get());
 	}
 
 	bool LuaScript::call(const std::string & func, bool silentSuccess) {

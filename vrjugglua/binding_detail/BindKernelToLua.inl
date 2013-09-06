@@ -237,11 +237,11 @@ namespace vrjLua {
 
 	} // end of Kernel namespace
 
-	void bindKernelToLua(LuaStatePtr state) {
+	void bindKernelToLua(lua_State * L) {
 #ifdef VERBOSE
 		std::cerr << "Registering vrjKernel module functions with Lua..." << std::flush << std::endl;
 #endif
-		module(state.get(), "vrjKernel") [
+		module(L, "vrjKernel") [
 		    def("enter", &Kernel::enter),
 		    def("start", &Kernel::start),
 		    def("stop", &Kernel::stop),

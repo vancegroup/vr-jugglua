@@ -41,11 +41,11 @@ namespace vrjLua {
 		}
 	} // end of Internal namespace
 
-	void bindSonixToLua(LuaStatePtr state) {
+	void bindSonixToLua(lua_State * L) {
 #ifdef VERBOSE
 		std::cerr << "Registering snx module functions and objects with Lua..." << std::flush << std::endl;
 #endif
-		module(state.get(), "snx") [
+		module(L, "snx") [
 		    def("changeAPI", &Sonix::changeAPI),
 
 		    class_<snx::SoundInfo>("SoundInfo")
