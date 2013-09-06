@@ -47,7 +47,7 @@ namespace vrjLua {
 			/// @brief Checks to see if we've been initialized
 			bool ready() const;
 
-			/// @brief Get the GUID for a single RunBuffer syncronized in an app
+			/// @brief Get the GUID for a single RunBuffer synchronized in an app
 			static vpr::GUID getGUID();
 
 			/// @name Adding new chunks to the run buffer
