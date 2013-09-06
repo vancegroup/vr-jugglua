@@ -27,6 +27,7 @@ add_subdirectory(lua)
 add_subdirectory(constants)
 
 set(SOURCES
+	AddToLuaPaths.cpp
 	FindVPRDLL.cpp
 	FindVPRDLL.h
 	Internal_AnalogInterface.cpp
@@ -37,13 +38,16 @@ set(SOURCES
 	LuaRunBuffer.cpp
 	LuaScript.cpp
 	LuaPath.cpp
+	LuaPathLuabind.cpp
 	OsgAppProxy.cpp
 	Reconfiguration.cpp
+	SearchPath.cpp
 	SynchronizedRunBuffer.cpp
 	VRJLua_C_Interface.cpp
 	VRJLuaConfig.h.in)
 
 set(API
+	AddToLuaPaths.h
 	osgLuaBind.h
 	Internal_AnalogInterface.h
 	Internal_DigitalInterface.h
@@ -54,10 +58,12 @@ set(API
 	LuaIncludeFull.h
 	LuaInclude.h
 	LuaPath.h
+	LuaPathUpdater.h
 	LuaRunBuffer.h
 	LuaScript.h
 	OsgAppProxy.h
 	Reconfiguration.h
+	SearchPath.h
 	SynchronizedRunBuffer.h
 	VRJLua_C_Interface.h
 	VRJLuaOutput.h)
