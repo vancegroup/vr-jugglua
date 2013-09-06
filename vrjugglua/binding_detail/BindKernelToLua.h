@@ -23,7 +23,7 @@
 #define INCLUDED_vrjugglua_binding_detail_BindKernelToLua_h
 
 // Local includes
-#include <vrjugglua/LuaScript.h>
+#include <vrjugglua/LuaStateFwd.h>
 
 // Library/third-party includes
 // - none
@@ -33,9 +33,9 @@
 
 namespace vrjLua {
 
-	void bindKernelToLua(LuaStatePtr state);
+	void bindKernelToLua(lua_State * L);
 
-/// @brief Class for internal use - use the static methods in LuaScript.h
+	/// @brief Class for internal use
 	class KernelState {
 		public:
 			static void init(boost::program_options::variables_map vm);

@@ -22,7 +22,7 @@
 #define INCLUDED_vrjugglua_binding_detail_BindSonixToLua_h
 
 // Local includes
-#include <vrjugglua/LuaScript.h>
+#include <vrjugglua/LuaStateFwd.h>
 
 // Library/third-party includes
 // - none
@@ -32,7 +32,7 @@
 
 namespace vrjLua {
 
-	void bindSonixToLua(LuaStatePtr state);
+	void bindSonixToLua(lua_State * L);
 
 } // end of vrjLua namespace
 
