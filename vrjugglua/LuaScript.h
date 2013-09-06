@@ -27,8 +27,6 @@
 // Library/third-party includes
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/variables_map.hpp>
 
 // Standard includes
 #include <string>
@@ -90,14 +88,6 @@ namespace vrjLua {
 			bool isValid() const;
 
 			static bool exitOnError;
-
-			static boost::program_options::options_description getVrjOptionsDescriptions();
-			static void initVrjKernel(boost::program_options::variables_map const& vm);
-			static void initVrjKernel(int argc, char* argv[]);
-
-			static void initVrjKernelAsSingleMachine();
-			static void initVrjKernelAsClusterPrimary();
-			static void initVrjKernelAsClusterSecondary(int port = 0);
 
 		protected:
 			static boost::function<void (std::string const&)> _printFunc;

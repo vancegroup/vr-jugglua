@@ -215,29 +215,6 @@ namespace vrjLua {
 		return _state.get();
 	}
 
-	boost::program_options::options_description LuaScript::getVrjOptionsDescriptions() {
-		return KernelState::getVrjOptionsDescriptions();
-	}
-
-	void LuaScript::initVrjKernel(boost::program_options::variables_map const& vm) {
-		KernelState::init(vm);
-	}
-
-	void LuaScript::initVrjKernel(int argc, char* argv[]) {
-		KernelState::init(argc, argv);
-	}
-
-	void LuaScript::initVrjKernelAsSingleMachine() {
-		KernelState::initAsSingleMachine();
-	}
-
-	void LuaScript::initVrjKernelAsClusterPrimary() {
-		KernelState::initAsClusterPrimaryNode();
-	}
-	void LuaScript::initVrjKernelAsClusterSecondary(int port) {
-		KernelState::initAsClusterSecondaryNode(port);
-	}
-
 	void LuaScript::doPrint(std::string const& str) {
 		if (_printFunc) {
 			_printFunc(str);
