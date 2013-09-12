@@ -40,7 +40,7 @@ set(SOURCES
 	LuaPathLuabind.cpp
 	OsgAppProxy.cpp
 	Reconfiguration.cpp
-	SearchPath.cpp
+	SearchPathString.cpp
 	SynchronizedRunBuffer.cpp
 	VRJLua_C_Interface.cpp
 	VRJLuaConfig.h.in)
@@ -65,7 +65,7 @@ set(API
 	LuaScript.h
 	OsgAppProxy.h
 	Reconfiguration.h
-	SearchPath.h
+	SearchPathString.h
 	SynchronizedRunBuffer.h
 	VRJLua_C_Interface.h
 	VRJLuaOutput.h)

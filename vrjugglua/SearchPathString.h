@@ -17,8 +17,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#ifndef INCLUDED_SearchPath_h_GUID_1091ef29_04ea_4776_a191_3d2bf5a56ecd
-#define INCLUDED_SearchPath_h_GUID_1091ef29_04ea_4776_a191_3d2bf5a56ecd
+#ifndef INCLUDED_SearchPathString_h_GUID_1091ef29_04ea_4776_a191_3d2bf5a56ecd
+#define INCLUDED_SearchPathString_h_GUID_1091ef29_04ea_4776_a191_3d2bf5a56ecd
 
 // Internal Includes
 // - none
@@ -31,7 +31,7 @@
 #include <vector>
 
 namespace vrjLua {
-	class SearchPath {
+	class SearchPathString {
 		public:
 			static const char * defaultDelimiter() {
 				return ";";
@@ -39,7 +39,7 @@ namespace vrjLua {
 
 			typedef std::vector<std::string> StringList;
 
-			SearchPath(std::string const& input, const char * delim = defaultDelimiter());
+			SearchPathString(std::string const& input, const char * delim = defaultDelimiter());
 
 			void insertAt(StringList const& elts, size_t position = 0);
 

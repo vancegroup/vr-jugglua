@@ -21,7 +21,7 @@
 #define INCLUDED_AddToLuaPaths_h_GUID_7c879366_eb17_457c_be5c_cd606e6943a2
 
 // Internal Includes
-#include "SearchPath.h"
+#include "SearchPathString.h"
 
 // Library/third-party includes
 #include <boost/array.hpp>
@@ -75,7 +75,7 @@ namespace vrjLua {
 		template<typename Tag>
 		class SearchPathContainerBase {
 			public:
-				SearchPathContainerBase(SearchPath const& p)
+				SearchPathContainerBase(SearchPathString const& p)
 					: _path(p) {}
 
 				void insert(std::vector<std::string> const& patterns) {
@@ -91,7 +91,7 @@ namespace vrjLua {
 					return _path.toString();
 				}
 			private:
-				SearchPath _path;
+				SearchPathString _path;
 		};
 	} // end of namespace detail
 

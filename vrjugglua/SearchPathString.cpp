@@ -18,7 +18,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 // Internal Includes
-#include "SearchPath.h"
+#include "SearchPathString.h"
 
 // Library/third-party includes
 #include <boost/algorithm/string/split.hpp>
@@ -31,22 +31,22 @@
 // - none
 
 namespace vrjLua {
-	SearchPath::SearchPath(std::string const& input, const char * delim) {
+	SearchPathString::SearchPathString(std::string const& input, const char * delim) {
 		boost::algorithm::split(_data, input, boost::algorithm::is_any_of(delim));
 		_reapplyUniqueness();
 	}
 
-	void SearchPath::insertAt(StringList const& elts, size_t position) {
+	void SearchPathString::insertAt(StringList const& elts, size_t position) {
 		BOOST_ASSERT(position <= _data.size() && "Position is bound by the size of the existing list!");
 		_data.insert(_data.begin() + position, elts.begin(), elts.end());
 		_reapplyUniqueness();
 	}
 
-	std::string SearchPath::toString(const char * delim) const {
+	std::string SearchPathString::toString(const char * delim) const {
 		return boost::algorithm::join(_data, delim);
 	}
 
-	void SearchPath::_reapplyUniqueness() {
+	void SearchPathString::_reapplyUniqueness() {
 		StringList::iterator it = std::unique(_data.begin(), _data.end());
 		_data.resize(std::distance(_data.begin(), it));
 	}
