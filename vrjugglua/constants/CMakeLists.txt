@@ -1,6 +1,6 @@
 set(outname "gldef.lua")
 set(script "${CMAKE_CURRENT_SOURCE_DIR}/extract.lua")
-set(input "${CMAKE_CURRENT_SOURCE_DIR}/gl.h")
+set(input "${CMAKE_CURRENT_SOURCE_DIR}/../../third-party/opengl-header/gl.h")
 set(tablename gldef)
 
 if(NOT LUA_INTERPRETER)
