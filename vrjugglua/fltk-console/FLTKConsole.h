@@ -1,15 +1,15 @@
 /**	@file
-	@brief	header for an FLTK-based GUI console
+        @brief	header for an FLTK-based GUI console
 
-	@date
-	2009-2011
+        @date
+        2009-2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2009-2011.
@@ -35,38 +35,38 @@ class FLTKConsoleUI;
 
 namespace vrjLua {
 
-	class FLTKConsole : public LuaConsole, boost::noncopyable {
-		public:
-			FLTKConsole();
-			FLTKConsole(LuaScript const& script);
+    class FLTKConsole : public LuaConsole, boost::noncopyable {
+      public:
+        FLTKConsole();
+        FLTKConsole(LuaScript const &script);
 
-			static void setup(int & argc, char * argv[]);
+        static void setup(int &argc, char *argv[]);
 
-			virtual ~FLTKConsole();
+        virtual ~FLTKConsole();
 
-			/// @name Interface required by LuaConsole
-			/// @{
-			virtual bool threadLoop();
+        /// @name Interface required by LuaConsole
+        /// @{
+        virtual bool threadLoop();
 
-			virtual void stopThread();
+        virtual void stopThread();
 
-			virtual void appendToDisplay(std::string const& message);
+        virtual void appendToDisplay(std::string const &message);
 
-			virtual void setTitle(std::string const& title);
+        virtual void setTitle(std::string const &title);
 
-			virtual void disableAction();
-			/// @}
+        virtual void disableAction();
+        /// @}
 
-		protected:
-			bool _doThreadWork();
+      protected:
+        bool _doThreadWork();
 
-			RunLoopManager run_;
+        RunLoopManager run_;
 
-			boost::shared_ptr<FLTKConsoleUI> _view;
-	};
+        boost::shared_ptr<FLTKConsoleUI> _view;
+    };
 
-// -- inline implementations -- /
+    // -- inline implementations -- /
 
-}// end of vrjLua namespace
+} // end of vrjLua namespace
 
 #endif // INCLUDED_vrjugglua_fltk_console_FLTKConsole_h

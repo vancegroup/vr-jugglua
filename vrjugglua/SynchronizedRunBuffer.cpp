@@ -1,22 +1,21 @@
 /**	@file
-	@brief	implementation
+        @brief	implementation
 
-	@date
-	2009-2011
+        @date
+        2009-2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2009-2011.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
-
 
 // Local includes
 #define NEED_RUNBUFFER_LUABIND_OBJECT
@@ -28,107 +27,116 @@
 
 // Standard includes
 #include <stdexcept>
-#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <iostream> // for operator<<, basic_ostream, etc
 
 namespace vrjLua {
 
-	SynchronizedRunBuffer::SynchronizedRunBuffer(luabind::object const& delegate) :
-		_init(false) {
-		_state = delegate.interpreter();
-	}
+    SynchronizedRunBuffer::SynchronizedRunBuffer(
+        luabind::object const &delegate)
+        : _init(false) {
+        _state = delegate.interpreter();
+    }
 
+    SynchronizedRunBuffer::SynchronizedRunBuffer(LuaStatePtr const &state)
+        : _init(false) {
+        /// @todo own this state? How?
+        _state = state.get();
+    }
 
-	SynchronizedRunBuffer::SynchronizedRunBuffer(LuaStatePtr const& state) :
-		_init(false) {
-		/// @todo own this state? How?
-		_state = state.get();
-	}
+    SynchronizedRunBuffer::SynchronizedRunBuffer(LuaScript const &script)
+        : _init(false) {
+        /// @todo own this state? How?
+        _state = script.getLuaRawState();
+    }
 
-	SynchronizedRunBuffer::SynchronizedRunBuffer(LuaScript const& script) :
-		_init(false) {
-		/// @todo own this state? How?
-		_state = script.getLuaRawState();
-	}
+    void SynchronizedRunBuffer::init() {
+        if (_init) {
+            throw std::logic_error(
+                "SynchronizedRunBuffer already initialized!");
+        }
 
-	void SynchronizedRunBuffer::init() {
-		if (_init) {
-			throw std::logic_error("SynchronizedRunBuffer already initialized!");
-		}
+        /// Initialize run buffer's shared data ID
+        _runBuf.init(LuaRunBuffer::getGUID());
+        // Tell the run buffer what our state pointer is.
+        _runBuf->initLua(_state);
 
-		/// Initialize run buffer's shared data ID
-		_runBuf.init(LuaRunBuffer::getGUID());
-		// Tell the run buffer what our state pointer is.
-		_runBuf->initLua(_state);
+        _init = true;
 
-		_init = true;
+        // Run all the early birds.
+        for (unsigned int i = 0; i < _earlyBirds.size(); ++i) {
+            RunBufCmd current = _earlyBirds[i];
+            switch (current.first) {
+                case CM_ADDSTRING:
+                    _runBuf->addString(current.second, false);
+                    break;
 
-		// Run all the early birds.
-		for (unsigned int i = 0; i < _earlyBirds.size(); ++i) {
-			RunBufCmd current = _earlyBirds[i];
-			switch (current.first) {
-				case CM_ADDSTRING:
-					_runBuf->addString(current.second, false);
-					break;
+                case CM_ADDFILE:
+                    _runBuf->addFile(current.second, false);
+                    break;
+            }
+        }
+        _earlyBirds.clear();
 
-				case CM_ADDFILE:
-					_runBuf->addFile(current.second, false);
-					break;
-			}
-		}
-		_earlyBirds.clear();
+        LuaConsole *console = LuaConsole::getConsole();
+        if (console && (!isLocal())) {
+            console->disableAction();
+        }
+    }
 
-		LuaConsole * console = LuaConsole::getConsole();
-		if (console && (!isLocal())) {
-			console->disableAction();
-		}
-	}
+    bool SynchronizedRunBuffer::isLocal() {
+        _checkInit();
+        return _runBuf.isLocal();
+    }
 
-	bool SynchronizedRunBuffer::isLocal() {
-		_checkInit();
-		return _runBuf.isLocal();
-	}
+    bool SynchronizedRunBuffer::addFile(std::string const &filename,
+                                        bool blocking) {
+        if (!_init) {
+            if (blocking) {
+                std::cerr << "WARNING: Can't block on an addFile call prior to "
+                             "initialization!" << std::endl;
+            }
+            _earlyBirds.push_back(RunBufCmd(CM_ADDFILE, filename));
+            return true;
+        } else if (_runBuf.isLocal()) {
+            _checkInit();
+            return _runBuf->addFile(filename, blocking);
+        } else {
+            return false;
+        }
+    }
 
-	bool SynchronizedRunBuffer::addFile(std::string const& filename, bool blocking) {
-		if (!_init) {
-			if (blocking) {
-				std::cerr << "WARNING: Can't block on an addFile call prior to initialization!" << std::endl;
-			}
-			_earlyBirds.push_back(RunBufCmd(CM_ADDFILE, filename));
-			return true;
-		} else if (_runBuf.isLocal()) {
-			_checkInit();
-			return _runBuf->addFile(filename, blocking);
-		} else {
-			return false;
-		}
-	}
+    bool SynchronizedRunBuffer::addString(std::string const &str,
+                                          bool blocking) {
+        if (!_init) {
+            if (blocking) {
+                std::cerr << "WARNING: Can't block on an addString call prior "
+                             "to initialization!" << std::endl;
+            }
+            _earlyBirds.push_back(RunBufCmd(CM_ADDSTRING, str));
+            return true;
+        } else if (_runBuf.isLocal()) {
+            _checkInit();
+            return _runBuf->addString(str, blocking);
+        } else {
+            std::cerr
+                << "WARNING: can't add a string if the buffer isn't local!"
+                << std::endl;
+            return false;
+        }
+    }
 
-	bool SynchronizedRunBuffer::addString(std::string const& str, bool blocking) {
-		if (!_init) {
-			if (blocking) {
-				std::cerr << "WARNING: Can't block on an addString call prior to initialization!" << std::endl;
-			}
-			_earlyBirds.push_back(RunBufCmd(CM_ADDSTRING, str));
-			return true;
-		} else if (_runBuf.isLocal()) {
-			_checkInit();
-			return _runBuf->addString(str, blocking);
-		} else {
-			std::cerr << "WARNING: can't add a string if the buffer isn't local!" << std::endl;
-			return false;
-		}
-	}
+    unsigned int SynchronizedRunBuffer::runBuffer() {
+        _checkInit();
+        return _runBuf->runBuffer();
+    }
 
-	unsigned int SynchronizedRunBuffer::runBuffer() {
-		_checkInit();
-		return _runBuf->runBuffer();
-	}
+    void SynchronizedRunBuffer::_checkInit() {
+        if (!_init) {
+            std::cerr << "WARNING: init was not called on the run buffer "
+                         "during init/initScene - cluster support won't work"
+                      << std::endl;
+            init();
+        }
+    }
 
-	void SynchronizedRunBuffer::_checkInit() {
-		if (!_init) {
-			std::cerr << "WARNING: init was not called on the run buffer during init/initScene - cluster support won't work" << std::endl;
-			init();
-		}
-	}
-
-}// end of vrjLua namespace
+} // end of vrjLua namespace

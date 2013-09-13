@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2013
+        @date 2013
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2013.
@@ -31,27 +31,27 @@
 
 namespace vrjLua {
 
-	template<typename Contained>
-	class SearchPathUpdater {
-		public:
-			SearchPathUpdater(lua_State * L)
-				: package(luabind::globals(L)["package"])
-				, _p(luabind::object_cast<std::string>(package[Contained::getTableKey()]))
-			{}
-			~SearchPathUpdater() {
-				package[Contained::getTableKey()] = _p.toString();
-			}
-			template<typename DirectoryTag>
-			void extend(detail::DirectoryBase<DirectoryTag> const& d) {
-				_p.extend(d);
-			}
-		private:
-			luabind::object package;
-			Contained _p;
-	};
+    template <typename Contained> class SearchPathUpdater {
+      public:
+        SearchPathUpdater(lua_State *L)
+            : package(luabind::globals(L)["package"])
+            , _p(luabind::object_cast<std::string>(
+                  package[Contained::getTableKey()])) {}
+        ~SearchPathUpdater() {
+            package[Contained::getTableKey()] = _p.toString();
+        }
+        template <typename DirectoryTag>
+        void extend(detail::DirectoryBase<DirectoryTag> const &d) {
+            _p.extend(d);
+        }
 
-	typedef SearchPathUpdater<LuaSearchPath> LuaSearchPathUpdater;
-	typedef SearchPathUpdater<LuaCSearchPath> LuaCSearchPathUpdater;
+      private:
+        luabind::object package;
+        Contained _p;
+    };
+
+    typedef SearchPathUpdater<LuaSearchPath> LuaSearchPathUpdater;
+    typedef SearchPathUpdater<LuaCSearchPath> LuaCSearchPathUpdater;
 
 } // end of namespace vrjLua
 

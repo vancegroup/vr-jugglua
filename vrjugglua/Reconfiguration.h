@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2012
+        @date 2012
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 
 */
 
@@ -21,7 +21,6 @@
 #ifndef INCLUDED_Reconfiguration_h_GUID_D0A5B873_67E9_408F_4423_6C9DD2DC0F21
 #define INCLUDED_Reconfiguration_h_GUID_D0A5B873_67E9_408F_4423_6C9DD2DC0F21
 
-
 // Internal Includes
 // - none
 
@@ -33,13 +32,13 @@
 
 namespace vrjLua {
 
-	/// @brief Remove the entire active configuration, so that it can be replaced.
-	void deconfigureAll();
+    /// @brief Remove the entire active configuration, so that it can be
+    /// replaced.
+    void deconfigureAll();
 
-	/// @brief Remove the named configuration element, if present.
-	void deconfigureElementByName(std::string const& elem);
+    /// @brief Remove the named configuration element, if present.
+    void deconfigureElementByName(std::string const &elem);
 
 } // end of namespace vrjLua
 
 #endif // INCLUDED_Reconfiguration_h_GUID_D0A5B873_67E9_408F_4423_6C9DD2DC0F21
-

@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2011
+        @date 2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2011.
@@ -29,7 +29,8 @@
 // Standard includes
 #include <string>
 
-/// Find the path to the VPR dynamic library, or an empty string if not possible.
+/// Find the path to the VPR dynamic library, or an empty string if not
+/// possible.
 /// (Implementation is platform-specific so not available everywhere.)
 std::string findVPRDLL();
 

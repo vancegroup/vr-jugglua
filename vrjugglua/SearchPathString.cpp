@@ -1,15 +1,15 @@
 /**
-	@file
-	@brief Implementation
+        @file
+        @brief Implementation
 
-	@date 2013
+        @date 2013
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2013.
@@ -31,24 +31,26 @@
 // - none
 
 namespace vrjLua {
-	SearchPathString::SearchPathString(std::string const& input, const char * delim) {
-		boost::algorithm::split(_data, input, boost::algorithm::is_any_of(delim));
-		_reapplyUniqueness();
-	}
+    SearchPathString::SearchPathString(std::string const &input,
+                                       const char *delim) {
+        boost::algorithm::split(_data, input,
+                                boost::algorithm::is_any_of(delim));
+        _reapplyUniqueness();
+    }
 
-	void SearchPathString::insertAt(StringList const& elts, size_t position) {
-		BOOST_ASSERT(position <= _data.size() && "Position is bound by the size of the existing list!");
-		_data.insert(_data.begin() + position, elts.begin(), elts.end());
-		_reapplyUniqueness();
-	}
+    void SearchPathString::insertAt(StringList const &elts, size_t position) {
+        BOOST_ASSERT(position <= _data.size() &&
+                     "Position is bound by the size of the existing list!");
+        _data.insert(_data.begin() + position, elts.begin(), elts.end());
+        _reapplyUniqueness();
+    }
 
-	std::string SearchPathString::toString(const char * delim) const {
-		return boost::algorithm::join(_data, delim);
-	}
+    std::string SearchPathString::toString(const char *delim) const {
+        return boost::algorithm::join(_data, delim);
+    }
 
-	void SearchPathString::_reapplyUniqueness() {
-		StringList::iterator it = std::unique(_data.begin(), _data.end());
-		_data.resize(std::distance(_data.begin(), it));
-	}
-
+    void SearchPathString::_reapplyUniqueness() {
+        StringList::iterator it = std::unique(_data.begin(), _data.end());
+        _data.resize(std::distance(_data.begin(), it));
+    }
 }

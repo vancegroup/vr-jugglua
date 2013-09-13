@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2013
+        @date 2013
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2013.
@@ -29,7 +29,7 @@
 // - none
 
 namespace vrjLua {
-	void applyBinding(lua_State * L);
+    void applyBinding(lua_State *L);
 }
 
 #endif // INCLUDED_ApplyBinding_h_GUID_30d7c69b_7e43_49b1_b482_9272bf7aca75

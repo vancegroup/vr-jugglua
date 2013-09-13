@@ -1,17 +1,17 @@
 /** @file
-	@brief Header to open extern "C" {} if needed for the Lua interface.
+        @brief Header to open extern "C" {} if needed for the Lua interface.
 
-	Include this file, declare or include what you need to, then include
-	LuaCInterfaceEnd.h
+        Include this file, declare or include what you need to, then include
+        LuaCInterfaceEnd.h
 
-	@date 2013
+        @date 2013
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2013.
@@ -38,4 +38,3 @@
 #if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 extern "C" {
 #endif
-

@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2013
+        @date 2013
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2013.
@@ -31,105 +31,92 @@
 // Standard includes
 // - none
 
-
 namespace vrjLua {
 
-	namespace LuaPathTags {
-		struct RootDirectory;
-		struct SearchDirectory;
-		struct LuaSearch;
-		struct LuaCSearch;
-	} // end of namespace LuaPathTags
+    namespace LuaPathTags {
+        struct RootDirectory;
+        struct SearchDirectory;
+        struct LuaSearch;
+        struct LuaCSearch;
+    } // end of namespace LuaPathTags
 
-	namespace detail {
-		inline std::string ensureTrailingSlash(std::string dir) {
-			if (dir.size() > 0) {
-				const char back = *(dir.end() - 1);
-				if (back != '/' && back != '\\') {
-					dir += '/';
-				}
-			}
-			return dir;
-		}
+    namespace detail {
+        inline std::string ensureTrailingSlash(std::string dir) {
+            if (dir.size() > 0) {
+                const char back = *(dir.end() - 1);
+                if (back != '/' && back != '\\') {
+                    dir += '/';
+                }
+            }
+            return dir;
+        }
 
-		template<typename Tag>
-		class DirectoryBase {
-			public:
-				DirectoryBase(std::string const& dir)
-					: _dir(detail::ensureTrailingSlash(dir))
-				{}
-				std::string const& get() const {
-					return _dir;
-				}
-			private:
-				std::string const _dir;
+        template <typename Tag> class DirectoryBase {
+          public:
+            DirectoryBase(std::string const &dir)
+                : _dir(detail::ensureTrailingSlash(dir)) {}
+            std::string const &get() const { return _dir; }
 
-		};
+          private:
+            std::string const _dir;
+        };
 
-		template<typename Tag>
-		class SearchPathContainerBase;
+        template <typename Tag> class SearchPathContainerBase;
 
-		template<typename DirectoryTag, typename SearchTag>
-		extern void extendLuaSearchPath(DirectoryBase<DirectoryTag> const& d, SearchPathContainerBase<SearchTag> & s);
+        template <typename DirectoryTag, typename SearchTag>
+        extern void extendLuaSearchPath(DirectoryBase<DirectoryTag> const &d,
+                                        SearchPathContainerBase<SearchTag> &s);
 
-		template<typename Tag>
-		class SearchPathContainerBase {
-			public:
-				SearchPathContainerBase(SearchPathString const& p)
-					: _path(p) {}
+        template <typename Tag> class SearchPathContainerBase {
+          public:
+            SearchPathContainerBase(SearchPathString const &p) : _path(p) {}
 
-				void insert(std::vector<std::string> const& patterns) {
-					_path.insertAt(patterns, 1);
-				}
+            void insert(std::vector<std::string> const &patterns) {
+                _path.insertAt(patterns, 1);
+            }
 
-				template<typename DirectoryTag>
-				void extend(DirectoryBase<DirectoryTag> const& d) {
-					detail::extendLuaSearchPath(d, *this);
-				}
+            template <typename DirectoryTag>
+            void extend(DirectoryBase<DirectoryTag> const &d) {
+                detail::extendLuaSearchPath(d, *this);
+            }
 
-				std::string toString() {
-					return _path.toString();
-				}
-			private:
-				SearchPathString _path;
-		};
-	} // end of namespace detail
+            std::string toString() { return _path.toString(); }
 
+          private:
+            SearchPathString _path;
+        };
+    } // end of namespace detail
 
+    class RootDirectory
+        : public detail::DirectoryBase<LuaPathTags::RootDirectory> {
+      public:
+        RootDirectory(std::string const &dir)
+            : detail::DirectoryBase<LuaPathTags::RootDirectory>(dir) {}
+    };
 
+    class SearchDirectory
+        : public detail::DirectoryBase<LuaPathTags::SearchDirectory> {
+      public:
+        SearchDirectory(std::string const &dir)
+            : detail::DirectoryBase<LuaPathTags::SearchDirectory>(dir) {}
+    };
 
-	class RootDirectory : public detail::DirectoryBase<LuaPathTags::RootDirectory> {
-		public:
-			RootDirectory(std::string const& dir)
-				: detail::DirectoryBase<LuaPathTags::RootDirectory>(dir)	{}
-	};
+    class LuaSearchPath
+        : public detail::SearchPathContainerBase<LuaPathTags::LuaSearch> {
+      public:
+        LuaSearchPath(std::string const &s)
+            : detail::SearchPathContainerBase<LuaPathTags::LuaSearch>(s) {}
 
-	class SearchDirectory : public detail::DirectoryBase<LuaPathTags::SearchDirectory> {
-		public:
-			SearchDirectory(std::string const& dir)
-				: detail::DirectoryBase<LuaPathTags::SearchDirectory>(dir)	{}
-	};
+        static const char *getTableKey() { return "path"; }
+    };
 
-
-
-	class LuaSearchPath : public detail::SearchPathContainerBase<LuaPathTags::LuaSearch> {
-		public:
-			LuaSearchPath(std::string const& s) : detail::SearchPathContainerBase<LuaPathTags::LuaSearch>(s) {}
-
-			static const char * getTableKey() {
-				return "path";
-			}
-	};
-
-	class LuaCSearchPath : public detail::SearchPathContainerBase<LuaPathTags::LuaCSearch> {
-		public:
-			LuaCSearchPath(std::string const& s) : detail::SearchPathContainerBase<LuaPathTags::LuaCSearch>(s) {}
-			static const char * getTableKey() {
-				return "cpath";
-			}
-	};
-
-
+    class LuaCSearchPath
+        : public detail::SearchPathContainerBase<LuaPathTags::LuaCSearch> {
+      public:
+        LuaCSearchPath(std::string const &s)
+            : detail::SearchPathContainerBase<LuaPathTags::LuaCSearch>(s) {}
+        static const char *getTableKey() { return "cpath"; }
+    };
 
 } // end of namespace vrjLua
 

@@ -1,22 +1,21 @@
 /**	@file
-	@brief	implementation exposing binding function for the run buffer
+        @brief	implementation exposing binding function for the run buffer
 
-	@date
-	2009-2011
+        @date
+        2009-2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2009-2011.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
-
 
 // Local includes
 #include "BindRunBufferToLua.h"
@@ -31,21 +30,24 @@
 // - none
 
 namespace vrjLua {
-	using namespace luabind;
+    using namespace luabind;
 
-	void bindRunBufferToLua(lua_State * L) {
-		module(L, "vrjSync") [
-		    class_<SynchronizedRunBuffer, boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
-		    .def(constructor<luabind::object>())
-		    .def("init", &SynchronizedRunBuffer::init)
-		    .def("addFile", &SynchronizedRunBuffer::addFile)
-		    .def("addFile", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addFile)
-		    .def("addString", &SynchronizedRunBuffer::addString)
-		    .def("addString", (void(SynchronizedRunBuffer::*)(std::string const&))&SynchronizedRunBuffer::addString)
-		    .def("runBuffer", &SynchronizedRunBuffer::runBuffer)
-		    .property("local", &SynchronizedRunBuffer::isLocal)
-		];
+    void bindRunBufferToLua(lua_State *L) {
+        module(L, "vrjSync")
+            [class_<SynchronizedRunBuffer,
+                    boost::shared_ptr<SynchronizedRunBuffer> >("RunBuffer")
+                 .def(constructor<luabind::object>())
+                 .def("init", &SynchronizedRunBuffer::init)
+                 .def("addFile", &SynchronizedRunBuffer::addFile)
+                 .def("addFile",
+                      (void (SynchronizedRunBuffer::*)(std::string const &)) &
+                          SynchronizedRunBuffer::addFile)
+                 .def("addString", &SynchronizedRunBuffer::addString)
+                 .def("addString",
+                      (void (SynchronizedRunBuffer::*)(std::string const &)) &
+                          SynchronizedRunBuffer::addString)
+                 .def("runBuffer", &SynchronizedRunBuffer::runBuffer)
+                 .property("local", &SynchronizedRunBuffer::isLocal)];
+    }
 
-	}
-
-}// end of vrjLua namespace
+} // end of vrjLua namespace

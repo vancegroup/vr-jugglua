@@ -1,22 +1,21 @@
 /**	@file
-	@brief	implementation
+        @brief	implementation
 
-	@date
-	2009-2011
+        @date
+        2009-2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2009-2011.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
-
 
 // Internal Includes
 #include "LuaConsole.h"
@@ -36,233 +35,242 @@
 
 namespace vrjLua {
 
-/// Initialize static member
-	LuaConsole * LuaConsole::s_console = NULL;
+    /// Initialize static member
+    LuaConsole *LuaConsole::s_console = NULL;
 
-	LuaConsole * LuaConsole::getConsole() {
-		return s_console;
-	}
+    LuaConsole *LuaConsole::getConsole() { return s_console; }
 
-	static void consolePrintFunction(std::string const& str) {
-		LuaConsole * ptr = LuaConsole::getConsole();
-		if (ptr) {
-			std::string modified = str;
-			boost::algorithm::replace_all(modified, "\n", "\n-- ");
-			ptr->appendToDisplay("-- " + modified);
-		}
-	}
+    static void consolePrintFunction(std::string const &str) {
+        LuaConsole *ptr = LuaConsole::getConsole();
+        if (ptr) {
+            std::string modified = str;
+            boost::algorithm::replace_all(modified, "\n", "\n-- ");
+            ptr->appendToDisplay("-- " + modified);
+        }
+    }
 
-	LuaConsole::LuaConsole() :
-		_loggingActive(false) {
+    LuaConsole::LuaConsole() : _loggingActive(false) {
 #ifdef VERBOSE
-		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+        std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__
+                  << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
-		s_console = this;
-		// A new script context is automatically created
-	}
+        s_console = this;
+        // A new script context is automatically created
+    }
 
-	LuaConsole::LuaConsole(LuaScript const& script) :
-		_loggingActive(false),
-		_script(script) {
+    LuaConsole::LuaConsole(LuaScript const &script)
+        : _loggingActive(false)
+        , _script(script) {
 #ifdef VERBOSE
-		std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+        std::cout << "In constructor " << __FUNCTION__ << " at " << __FILE__
+                  << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
-		s_console = this;
-		// Using existing (provided) script context
-	}
+        s_console = this;
+        // Using existing (provided) script context
+    }
 
-	LuaConsole::~LuaConsole() {
+    LuaConsole::~LuaConsole() {
 #ifdef VERBOSE
-		std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__ << ":" << __LINE__ << " with this=" << this << std::endl;
+        std::cout << "In destructor " << __FUNCTION__ << " at " << __FILE__
+                  << ":" << __LINE__ << " with this=" << this << std::endl;
 #endif
-		if (s_console == this) {
-			s_console = NULL;
-			_script.setPrintFunction(boost::function<void (std::string const&)>());
-		}
-	}
+        if (s_console == this) {
+            s_console = NULL;
+            _script.setPrintFunction(
+                boost::function<void(std::string const &)>());
+        }
+    }
 
-	bool LuaConsole::getRunBufFromLuaGlobal() {
-		luabind::object runbufLua(luabind::globals(_script.getLuaRawState())["runbuf"]);
-		if (!runbufLua || luabind::type(runbufLua) == LUA_TNIL) {
-			throw std::runtime_error("Could not get a lua global named runbuf!");
-		}
+    bool LuaConsole::getRunBufFromLuaGlobal() {
+        luabind::object runbufLua(
+            luabind::globals(_script.getLuaRawState())["runbuf"]);
+        if (!runbufLua || luabind::type(runbufLua) == LUA_TNIL) {
+            throw std::runtime_error(
+                "Could not get a lua global named runbuf!");
+        }
 
-		try {
-			_runbuf = luabind::object_cast<boost::shared_ptr<SynchronizedRunBuffer> >(runbufLua);
-		} catch (luabind::cast_failed &) {
-			throw std::runtime_error("Could not get a valid run buffer pointer from lua - cast failed!");
-		}
-		return true;
-	}
+        try {
+            _runbuf =
+                luabind::object_cast<boost::shared_ptr<SynchronizedRunBuffer> >(
+                    runbufLua);
+        }
+        catch (luabind::cast_failed &) {
+            throw std::runtime_error("Could not get a valid run buffer pointer "
+                                     "from lua - cast failed!");
+        }
+        return true;
+    }
 
-	bool LuaConsole::createRunBuf() {
-		boost::shared_ptr<SynchronizedRunBuffer> buf(new SynchronizedRunBuffer(_script));
-		_runbuf = buf;
+    bool LuaConsole::createRunBuf() {
+        boost::shared_ptr<SynchronizedRunBuffer> buf(
+            new SynchronizedRunBuffer(_script));
+        _runbuf = buf;
 
-		/// @todo fix global
-		/*
-		LuaStatePtr state = _script.getLuaState().lock();
-		if (!state) {
-			throw std::runtime_error("Could not get a valid lua state pointer!");
-		}
+        /// @todo fix global
+        /*
+        LuaStatePtr state = _script.getLuaState().lock();
+        if (!state) {
+                throw std::runtime_error("Could not get a valid lua state
+        pointer!");
+        }
 
-		/// Set the global "runbuf" variable
-		luabind::globals(state.get())["runbuf"] = buf;
-		*/
+        /// Set the global "runbuf" variable
+        luabind::globals(state.get())["runbuf"] = buf;
+        */
 
-		return (_runbuf);
-	}
+        return (_runbuf);
+    }
 
-	bool LuaConsole::isValid() const {
-		return (_runbuf) && (_script.isValid());
-	}
+    bool LuaConsole::isValid() const {
+        return (_runbuf) && (_script.isValid());
+    }
 
-	bool LuaConsole::addFile(std::string const& fn) {
-		if (!_runbuf) {
-			throw std::runtime_error("Could not get the run buffer to add a file to!");
-		}
-		std::string code;
-		code = "dofile([[";
-		code += fn;
-		code += "]])\n";
+    bool LuaConsole::addFile(std::string const &fn) {
+        if (!_runbuf) {
+            throw std::runtime_error(
+                "Could not get the run buffer to add a file to!");
+        }
+        std::string code;
+        code = "dofile([[";
+        code += fn;
+        code += "]])\n";
 
-		bool ret = addString(code);
+        bool ret = addString(code);
 
-		return ret;
-	}
+        return ret;
+    }
 
-	bool LuaConsole::addString(std::string const& str) {
-		if (!_runbuf) {
-			throw std::runtime_error("Could not get the run buffer to add a string to!");
-		}
-		bool ret = _runbuf->addString(str);
-		std::string code;
-		if (ret) {
-			code = str + "\n";
-		} else {
-			code = "-- Failed attempting to add the following code to the buffer:\n";
-			code += "--[[\n";
-			code += str;
-			code += "\n]]--\n";
-		}
-		appendToDisplay(code);
-		return ret;
-	}
+    bool LuaConsole::addString(std::string const &str) {
+        if (!_runbuf) {
+            throw std::runtime_error(
+                "Could not get the run buffer to add a string to!");
+        }
+        bool ret = _runbuf->addString(str);
+        std::string code;
+        if (ret) {
+            code = str + "\n";
+        } else {
+            code = "-- Failed attempting to add the following code to the "
+                   "buffer:\n";
+            code += "--[[\n";
+            code += str;
+            code += "\n]]--\n";
+        }
+        appendToDisplay(code);
+        return ret;
+    }
 
-	void LuaConsole::captureStdOut() {
-		if (this->supportsAlternateLogging()) {
-			_loggingActive = true;
-			std::cout.rdbuf(_log.rdbuf());
-		}
-	}
+    void LuaConsole::captureStdOut() {
+        if (this->supportsAlternateLogging()) {
+            _loggingActive = true;
+            std::cout.rdbuf(_log.rdbuf());
+        }
+    }
 
-	void LuaConsole::captureStdErr() {
-		if (this->supportsAlternateLogging()) {
-			_loggingActive = true;
-			std::cerr.rdbuf(_log.rdbuf());
-		}
-	}
+    void LuaConsole::captureStdErr() {
+        if (this->supportsAlternateLogging()) {
+            _loggingActive = true;
+            std::cerr.rdbuf(_log.rdbuf());
+        }
+    }
 
-	bool LuaConsole::runFileImmediately(std::string const& fn) {
-		return _script.runFile(fn);
-	}
+    bool LuaConsole::runFileImmediately(std::string const &fn) {
+        return _script.runFile(fn);
+    }
 
-	bool LuaConsole::runStringImmediately(std::string const& str) {
-		return _script.runString(str);
-	}
+    bool LuaConsole::runStringImmediately(std::string const &str) {
+        return _script.runString(str);
+    }
 
-	bool LuaConsole::requireModuleImmediately(std::string const& module) {
-		return _script.requireModule(module);
-	}
+    bool LuaConsole::requireModuleImmediately(std::string const &module) {
+        return _script.requireModule(module);
+    }
 
-	bool LuaConsole::runBuffer() {
-		if (!_runbuf) {
-			return false;
-		}
+    bool LuaConsole::runBuffer() {
+        if (!_runbuf) {
+            return false;
+        }
 
 #ifdef VERBOSE
-		unsigned int ret = _runbuf->runBuffer();
-		if (ret > 0) {
-			std::cerr << "LuaConsole: ran " << ret << " entries successfully." << std::endl;
-		}
+        unsigned int ret = _runbuf->runBuffer();
+        if (ret > 0) {
+            std::cerr << "LuaConsole: ran " << ret << " entries successfully."
+                      << std::endl;
+        }
 #else
-		_runbuf->runBuffer();
+        _runbuf->runBuffer();
 #endif
-		return true;
-	}
+        return true;
+    }
 
-	LuaScript& LuaConsole::getScript() {
-		return _script;
-	}
+    LuaScript &LuaConsole::getScript() { return _script; }
 
-	void LuaConsole::_consoleIsReady() {
-		_script.setPrintFunction(consolePrintFunction);
-	}
+    void LuaConsole::_consoleIsReady() {
+        _script.setPrintFunction(consolePrintFunction);
+    }
 
+    void StubConsole::setup(int &argc, char *argv[]) {
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "StubConsole::setup called with these arguments:"
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+        for (int i = 0; i < argc; ++i) {
+            VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+                << "   '" << argv[i] << "'"
+                << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+        }
+    }
 
-	void StubConsole::setup(int & argc, char * argv[]) {
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "StubConsole::setup called with these arguments:"
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-		for (int i = 0; i < argc; ++i) {
-			VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-			        << "   '" << argv[i] << "'"
-			        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-		}
-	}
+    StubConsole::StubConsole() : LuaConsole() {
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "StubConsole instantiated."
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+    }
 
-	StubConsole::StubConsole() :
-		LuaConsole() {
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "StubConsole instantiated."
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-	}
+    StubConsole::StubConsole(LuaScript const &script) : LuaConsole(script) {
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "StubConsole instantiated with provided LuaScript."
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+    }
 
-	StubConsole::StubConsole(LuaScript const& script) :
-		LuaConsole(script) {
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "StubConsole instantiated with provided LuaScript."
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-	}
+    StubConsole::~StubConsole() {
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "StubConsole being destroyed."
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+        vrj::Kernel::instance()->waitForKernelStop();
+    }
 
-	StubConsole::~StubConsole() {
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "StubConsole being destroyed."
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-		vrj::Kernel::instance()->waitForKernelStop();
-	}
+    bool StubConsole::threadLoop() {
+        _consoleIsReady();
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "StubConsole::threadLoop called - joining the kernel thread "
+               "because we're a stub."
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+        vrj::Kernel::instance()->waitForKernelStop();
+        return true;
+    }
 
-	bool StubConsole::threadLoop() {
-		_consoleIsReady();
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "StubConsole::threadLoop called - joining the kernel thread because we're a stub."
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-		vrj::Kernel::instance()->waitForKernelStop();
-		return true;
-	}
+    void StubConsole::stopThread() {
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "StubConsole::stopThread called - no-op because we're a stub."
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+    }
 
-	void StubConsole::stopThread() {
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "StubConsole::stopThread called - no-op because we're a stub."
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-	}
+    void StubConsole::appendToDisplay(std::string const &message) {
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "appendToDisplay: " << message
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+    }
 
-	void StubConsole::appendToDisplay(std::string const& message) {
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "appendToDisplay: " << message
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-	}
+    void StubConsole::setTitle(std::string const &title) {
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "StubConsole::setTitle called with title " << title
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+    }
 
-	void StubConsole::setTitle(std::string const& title) {
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "StubConsole::setTitle called with title " << title
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-	}
-
-	void StubConsole::disableAction() {
-		VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
-		        << "StubConsole::disableAction called - no-op because we're a stub."
-		        << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
-	}
+    void StubConsole::disableAction() {
+        VRJLUA_MSG_START(dbgVRJLUA_CONSOLE, MSG_STATUS)
+            << "StubConsole::disableAction called - no-op because we're a stub."
+            << VRJLUA_MSG_END(dbgVRJLUA_CONSOLE, MSG_STATUS);
+    }
 
 } // end of vrjLua namespace

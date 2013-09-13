@@ -1,15 +1,15 @@
 /**
-	@file
-	@brief Implementation
+        @file
+        @brief Implementation
 
-	@date 2013
+        @date 2013
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2013.
@@ -28,9 +28,10 @@
 // - none
 
 namespace vrjLua {
-	void LuaPath::addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash) {
-		LuaSearchPathUpdater searchpath(state.get());
+    void LuaPath::addLuaRequirePath(LuaStatePtr state,
+                                    std::string const &dirEndingInSlash) {
+        LuaSearchPathUpdater searchpath(state.get());
 
-		searchpath.extend(SearchDirectory(dirEndingInSlash));
-	}
+        searchpath.extend(SearchDirectory(dirEndingInSlash));
+    }
 } // end of namespace vrjLua

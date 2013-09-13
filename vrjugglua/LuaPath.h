@@ -1,15 +1,15 @@
 /**	@file
-	@brief	header
+        @brief	header
 
-	@date
-	2009-2011
+        @date
+        2009-2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2009-2011.
@@ -34,49 +34,53 @@
 
 namespace vrjLua {
 
-	class LuaPath {
-		public:
-			~LuaPath();
-			static LuaPath& instance(std::string const& arg0 = "", std::string const& vrjlua_base = "");
+    class LuaPath {
+      public:
+        ~LuaPath();
+        static LuaPath &instance(std::string const &arg0 = "",
+                                 std::string const &vrjlua_base = "");
 
-			std::string findFilePath(std::string const& fn);
-			bool findAppRoot(std::string const& fn);
-			std::string const& getAppRoot() const;
-			std::string const& getRootDir() const;
-			std::string const& getShareDir() const;
-			std::string const& getExeDir() const;
-			std::string const& getInitialPath() const;
-			std::string const& getLuaDir() const;
+        std::string findFilePath(std::string const &fn);
+        bool findAppRoot(std::string const &fn);
+        std::string const &getAppRoot() const;
+        std::string const &getRootDir() const;
+        std::string const &getShareDir() const;
+        std::string const &getExeDir() const;
+        std::string const &getInitialPath() const;
+        std::string const &getLuaDir() const;
 
-			/// DEPRECATED
-			void addLuaRequirePath(LuaStatePtr state, std::string const& dirEndingInSlash);
+        /// DEPRECATED
+        void addLuaRequirePath(LuaStatePtr state,
+                               std::string const &dirEndingInSlash);
 
-		protected:
-			LuaPath();
-			void _init(std::string const& arg0, std::string const& vrjlua_base);
+      protected:
+        LuaPath();
+        void _init(std::string const &arg0, std::string const &vrjlua_base);
 
-			static std::string _findFilePath(std::vector<std::string> const& startingPlaces, std::string const& qualified);
-			static std::string _findFilePath(std::string const& startingAt, std::string const& fn);
+        static std::string
+        _findFilePath(std::vector<std::string> const &startingPlaces,
+                      std::string const &qualified);
+        static std::string _findFilePath(std::string const &startingAt,
+                                         std::string const &fn);
 
-			std::string _findJuggler();
-			bool _setJugglerEnvironment() const;
+        std::string _findJuggler();
+        bool _setJugglerEnvironment() const;
 
-			std::string _initialPath;
-			std::string _exeDir;
-			std::string _root;
-			std::string _luaDir;
-			std::string _shareDir;
-			std::string _appRoot;
+        std::string _initialPath;
+        std::string _exeDir;
+        std::string _root;
+        std::string _luaDir;
+        std::string _shareDir;
+        std::string _appRoot;
 
-			bool _foundJuggler;
-			std::string _jugglerRoot;
+        bool _foundJuggler;
+        std::string _jugglerRoot;
 
-			bool _valid;
-	};
+        bool _valid;
+    };
 
-// -- inline implementations -- /
+    // -- inline implementations -- /
 
-}// end of vrjLua namespace
-
+} // end of vrjLua namespace
 
 #endif // INCLUDED_vrjugglua_LuaPath_h

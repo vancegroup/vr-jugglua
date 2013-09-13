@@ -1,14 +1,14 @@
 /** @file
-	@brief Header to close extern "C" {} if needed for the Lua interface.
+        @brief Header to close extern "C" {} if needed for the Lua interface.
 
-	@date 2013
+        @date 2013
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2013.
@@ -36,4 +36,3 @@
 #if defined(__cplusplus) && !defined(BUILD_LUA_AS_CPP)
 }
 #endif
-

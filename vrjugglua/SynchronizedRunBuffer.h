@@ -1,15 +1,15 @@
 /**	@file
-	@brief	header
+        @brief	header
 
-	@date
-	2009-2011
+        @date
+        2009-2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2009-2011.
@@ -39,51 +39,49 @@
 
 namespace vrjLua {
 
-	class SynchronizedRunBuffer {
-		public:
-			/// @name Constructors
-			/// They accept different arguments as ways to get to the Lua state.
-			/// @{
+    class SynchronizedRunBuffer {
+      public:
+/// @name Constructors
+/// They accept different arguments as ways to get to the Lua state.
+/// @{
 #ifdef NEED_RUNBUFFER_LUABIND_OBJECT
-			SynchronizedRunBuffer(luabind::object const& delegate);
+        SynchronizedRunBuffer(luabind::object const &delegate);
 #endif
-			SynchronizedRunBuffer(LuaStatePtr const& state);
-			SynchronizedRunBuffer(LuaScript const& script);
-			/// @}
+        SynchronizedRunBuffer(LuaStatePtr const &state);
+        SynchronizedRunBuffer(LuaScript const &script);
+        /// @}
 
-			/// @brief Initialize application shared data, in initScene
-			void init();
+        /// @brief Initialize application shared data, in initScene
+        void init();
 
-			/// @brief are we the data-local (master) node?
-			bool isLocal();
+        /// @brief are we the data-local (master) node?
+        bool isLocal();
 
-			/// @name Methods that only make sense on the data-local (master) node
-			/// @{
-			bool addFile(std::string const& filename, bool blocking = false);
-			bool addString(std::string const& str, bool blocking = false);
-			/// @}
+        /// @name Methods that only make sense on the data-local (master) node
+        /// @{
+        bool addFile(std::string const &filename, bool blocking = false);
+        bool addString(std::string const &str, bool blocking = false);
+        /// @}
 
-			/** @brief Buffer execution - should take place in latePreFrame
-			 */
-			unsigned int runBuffer();
+        /** @brief Buffer execution - should take place in latePreFrame
+         */
+        unsigned int runBuffer();
 
-		protected:
-			bool _init;
-			cluster::UserData<LuaRunBuffer> _runBuf;
-			enum COMMAND {
-				CM_ADDFILE,
-				CM_ADDSTRING
-			};
-			typedef std::pair<COMMAND, std::string> RunBufCmd;
+      protected:
+        bool _init;
+        cluster::UserData<LuaRunBuffer> _runBuf;
+        enum COMMAND {
+            CM_ADDFILE,
+            CM_ADDSTRING
+        };
+        typedef std::pair<COMMAND, std::string> RunBufCmd;
 
-			std::vector<RunBufCmd> _earlyBirds;
-			lua_State * _state;
+        std::vector<RunBufCmd> _earlyBirds;
+        lua_State *_state;
 
-			void _checkInit();
-	};
+        void _checkInit();
+    };
 
 } // end of vrjLua namespace
-
-
 
 #endif // INCLUDED_vrjugglua_SynchronizedRunBuffer_h

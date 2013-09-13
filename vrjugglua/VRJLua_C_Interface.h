@@ -1,15 +1,15 @@
 /**	@file
-	@brief	header for the C interface to VRJuggLua
+        @brief	header for the C interface to VRJuggLua
 
-	@date
-	2009-2011
+        @date
+        2009-2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2009-2011.
@@ -27,9 +27,8 @@
 int luaopen_vrjugglua(lua_State *L);
 int luaopen_libvrjugglua(lua_State *L);
 
-void set_exec_path(const char* argv0);
+void set_exec_path(const char *argv0);
 
 #include "LuaCInterfaceEnd.h"
-
 
 #endif // INCLUDED_vrjugglua_VRJLua_C_Interface_h

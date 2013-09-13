@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2013
+        @date 2013
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2013.
@@ -31,26 +31,24 @@
 #include <vector>
 
 namespace vrjLua {
-	class SearchPathString {
-		public:
-			static const char * defaultDelimiter() {
-				return ";";
-			}
+    class SearchPathString {
+      public:
+        static const char *defaultDelimiter() { return ";"; }
 
-			typedef std::vector<std::string> StringList;
+        typedef std::vector<std::string> StringList;
 
-			SearchPathString(std::string const& input, const char * delim = defaultDelimiter());
+        SearchPathString(std::string const &input,
+                         const char *delim = defaultDelimiter());
 
-			void insertAt(StringList const& elts, size_t position = 0);
+        void insertAt(StringList const &elts, size_t position = 0);
 
-			std::string toString(const char * delim = defaultDelimiter()) const;
-		private:
-			StringList _data;
+        std::string toString(const char *delim = defaultDelimiter()) const;
 
-			void _reapplyUniqueness();
-	};
+      private:
+        StringList _data;
 
-
+        void _reapplyUniqueness();
+    };
 }
 
 #endif // INCLUDED_SearchPath_h_GUID_1091ef29_04ea_4776_a191_3d2bf5a56ecd

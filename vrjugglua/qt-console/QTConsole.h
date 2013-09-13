@@ -1,15 +1,15 @@
 /**	@file
-	@brief	header for an Qt-based GUI console
+        @brief	header for an Qt-based GUI console
 
-	@date
-	2009-2011
+        @date
+        2009-2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2009-2011.
@@ -46,80 +46,77 @@
 #include <string>
 
 namespace Ui {
-	class MainWindow;
+    class MainWindow;
 }
 
 namespace vrjLua {
-	class LuaConsole;
+    class LuaConsole;
 
-	class QTConsole : public QMainWindow, boost::noncopyable, public LuaConsole {
+    class QTConsole : public QMainWindow,
+                      boost::noncopyable,
+                      public LuaConsole {
 
-			Q_OBJECT
+        Q_OBJECT
 
-		public:
+      public:
 
-			QTConsole();
-			QTConsole(LuaScript const& script);
-			QTConsole(QApplication* app);
-			QTConsole(QApplication* app, LuaScript const& script);
+        QTConsole();
+        QTConsole(LuaScript const &script);
+        QTConsole(QApplication *app);
+        QTConsole(QApplication *app, LuaScript const &script);
 
-			static void setup(int & argc, char * argv[]);
+        static void setup(int &argc, char *argv[]);
 
+        virtual ~QTConsole();
 
-			virtual ~QTConsole();
+        /// @name Interface required by LuaConsole
+        /// @{
+        virtual bool threadLoop();
 
-			/// @name Interface required by LuaConsole
-			/// @{
-			virtual bool threadLoop();
+        virtual void stopThread();
 
-			virtual void stopThread();
+        virtual void appendToDisplay(std::string const &message);
 
-			virtual void appendToDisplay(std::string const& message);
+        virtual void setTitle(std::string const &title);
 
-			virtual void setTitle(std::string const& title);
+        virtual void disableAction();
+        /// @}
 
-			virtual void disableAction();
-			/// @}
+        bool supportsAlternateLogging() const { return true; }
 
-			bool supportsAlternateLogging() const {
-				return true;
-			}
+    Q_SIGNALS:
+        void textDisplaySignal(QString const &message);
+        void disableGUISignal();
 
+      private
+    Q_SLOTS:
 
+        void on_actionFileOpen_triggered();
+        void on_actionFileSave_triggered();
+        void on_actionLoadAddlJconf_triggered();
+        void on_actionFileExit_triggered();
+        void on_buttonRun_clicked();
 
-		Q_SIGNALS:
-			void textDisplaySignal(QString const& message);
-			void disableGUISignal();
+        void checkRunningState();
+        void updateDebugLog();
+        void addTextToDisplay(QString const &message);
+        void disableGUIAction();
+        void consoleReady();
 
-		private Q_SLOTS:
+        void loadJconf(QUrl url);
+        void runLuaFile(QUrl url);
 
-			void on_actionFileOpen_triggered();
-			void on_actionFileSave_triggered();
-			void on_actionLoadAddlJconf_triggered();
-			void on_actionFileExit_triggered();
-			void on_buttonRun_clicked();
+      protected:
+        void _shared_init();
+        QApplication *_app;
+        RunLoopManager run_;
 
-			void checkRunningState();
-			void updateDebugLog();
-			void addTextToDisplay(QString const& message);
-			void disableGUIAction();
-			void consoleReady();
+        static QApplication *s_app;
+        QScopedPointer<Ui::MainWindow> _ui;
+    };
 
-			void loadJconf(QUrl url);
-			void runLuaFile(QUrl url);
+    // -- inline implementations -- /
 
-		protected:
-			void _shared_init();
-			QApplication * _app;
-			RunLoopManager run_;
-
-			static QApplication * s_app;
-			QScopedPointer<Ui::MainWindow> _ui;
-
-	};
-
-// -- inline implementations -- /
-
-}// end of vrjLua namespace
+} // end of vrjLua namespace
 
 #endif // INCLUDED_vrjugglua_qt_console_QTConsole_h
