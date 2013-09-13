@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2011
+        @date 2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2011.
@@ -29,9 +29,8 @@
 // Standard includes
 // - none
 
-
 namespace osgLua {
-	void registerCustomConverters();
+    void registerCustomConverters();
 } // end of namespace osgLua
 
 #endif // INCLUDED_CustomConverters_h_GUID_342dcff5_98db_4d19_b2f1_e673e7984213

@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2011
+        @date 2011
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2011.
@@ -35,33 +35,37 @@
 #include <string>
 
 namespace osgLua {
-	class Value;
-	class ArrayPropertyProxy : public ::luacpputils::LuaUserdata<ArrayPropertyProxy> {
-		public:
-			typedef ::luacpputils::LuaUserdata<ArrayPropertyProxy> Base;
+    class Value;
+    class ArrayPropertyProxy
+        : public ::luacpputils::LuaUserdata<ArrayPropertyProxy> {
+      public:
+        typedef ::luacpputils::LuaUserdata<ArrayPropertyProxy> Base;
 
-			friend class ::luacpputils::LuaUserdata<ArrayPropertyProxy>;
+        friend class ::luacpputils::LuaUserdata<ArrayPropertyProxy>;
 
-			static void pushNew(lua_State * L, introspection::Value const& instance, const introspection::PropertyInfo * property) {
-				Base::pushNew(L, instance, property);
-			}
+        static void pushNew(lua_State *L, introspection::Value const &instance,
+                            const introspection::PropertyInfo *property) {
+            Base::pushNew(L, instance, property);
+        }
 
-			int index(lua_State *L);
-			int newindex(lua_State *L);
-			int len(lua_State *L);
-			int insert(lua_State *L);
-			int remove(lua_State *L);
-		private:
-			/// Look up item i, if in range, push and return true, else return false
-			static const char * _getMethodRegistryString();
-			bool _pushItemAtArrayIndex(lua_State *L, int i);
-			ArrayPropertyProxy(introspection::Value const& instance, const introspection::PropertyInfo * property);
-			static void registerAdditionalMetamethods(lua_State *L);
+        int index(lua_State *L);
+        int newindex(lua_State *L);
+        int len(lua_State *L);
+        int insert(lua_State *L);
+        int remove(lua_State *L);
 
-			introspection::Value _instance;
-			const introspection::PropertyInfo * _propInfo;
-			std::string _propName;
-	};
+      private:
+        /// Look up item i, if in range, push and return true, else return false
+        static const char *_getMethodRegistryString();
+        bool _pushItemAtArrayIndex(lua_State *L, int i);
+        ArrayPropertyProxy(introspection::Value const &instance,
+                           const introspection::PropertyInfo *property);
+        static void registerAdditionalMetamethods(lua_State *L);
+
+        introspection::Value _instance;
+        const introspection::PropertyInfo *_propInfo;
+        std::string _propName;
+    };
 
 } // end of namespace osgLua
 

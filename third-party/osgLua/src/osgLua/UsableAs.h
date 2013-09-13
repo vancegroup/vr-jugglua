@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2012
+        @date 2012
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2012.
@@ -34,40 +34,34 @@
 
 namespace osgLua {
 
-	template<typename T>
-	inline bool typeUsableAs(const introspection::Type& t) {
-		const introspection::Type& myType =
-		    introspection::Reflection::getType(extended_typeid<T>());
-		return t == myType || t.isSubclassOf(myType);
-	}
+    template <typename T>
+    inline bool typeUsableAs(const introspection::Type &t) {
+        const introspection::Type &myType =
+            introspection::Reflection::getType(extended_typeid<T>());
+        return t == myType || t.isSubclassOf(myType);
+    }
 
-	template<typename T>
-	struct osgLuaValueUsableImpl {
-		static bool check(lua_State * L, int i) {
-			bool ret = false;
-			Value * a = Value::get(L, i);
-			if (a) {
-				ret = typeUsableAs<T>(a->get().getType());
-			}
-			return ret;
-		}
-	};
-	template<>
-	bool osgLuaValueUsableImpl<double>::check(lua_State * L, int i) {
-		return (lua_isnumber(L, i) != 0);
-	}
+    template <typename T> struct osgLuaValueUsableImpl {
+        static bool check(lua_State *L, int i) {
+            bool ret = false;
+            Value *a = Value::get(L, i);
+            if (a) {
+                ret = typeUsableAs<T>(a->get().getType());
+            }
+            return ret;
+        }
+    };
+    template <> bool osgLuaValueUsableImpl<double>::check(lua_State *L, int i) {
+        return (lua_isnumber(L, i) != 0);
+    }
 
-	template<>
-	bool osgLuaValueUsableImpl<float>::check(lua_State * L, int i) {
-		return (lua_isnumber(L, i) != 0);
-	}
+    template <> bool osgLuaValueUsableImpl<float>::check(lua_State *L, int i) {
+        return (lua_isnumber(L, i) != 0);
+    }
 
-	template<typename T>
-	inline bool osgLuaValueUsableAs(lua_State * L, int i) {
-		return osgLuaValueUsableImpl<T>::check(L, i);
-	}
-
-
+    template <typename T> inline bool osgLuaValueUsableAs(lua_State *L, int i) {
+        return osgLuaValueUsableImpl<T>::check(L, i);
+    }
 
 } // end of namespace osgLua
 

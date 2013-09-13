@@ -1,7 +1,8 @@
 /*
-	osgLua: use Lua to access dynamically to osg using osgIntrospection
-	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
-	Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
+        osgLua: use Lua to access dynamically to osg using osgIntrospection
+        Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
+        Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik
+   <rpavlik@acm.org> )
 
     This library is open source and may be redistributed and/or modified under
     the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -21,15 +22,15 @@
 
 namespace osgLua {
 
-	namespace value_metamethods {
-		int tostring(lua_State *L);
+    namespace value_metamethods {
+        int tostring(lua_State *L);
 
-		int minimal_tostring(lua_State *L);
+        int minimal_tostring(lua_State *L);
 
-		int eq(lua_State *L);
-		int lt(lua_State *L);
-		int le(lua_State *L);
-	}
+        int eq(lua_State *L);
+        int lt(lua_State *L);
+        int le(lua_State *L);
+    }
 
 } // end of osgLua namespace
 

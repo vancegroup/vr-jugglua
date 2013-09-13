@@ -1,7 +1,8 @@
 /*
-	osgLua: use Lua to access dynamically to osg using osgIntrospection
-	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
-	Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
+        osgLua: use Lua to access dynamically to osg using osgIntrospection
+        Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
+        Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik
+   <rpavlik@acm.org> )
 
     This library is open source and may be redistributed and/or modified under
     the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -17,13 +18,12 @@
 #ifndef _OSGLUA_LOADWRAPPERLIB_H_
 #define _OSGLUA_LOADWRAPPERLIB_H_
 
-
 namespace osgDB {
-	class DynamicLibrary;
+    class DynamicLibrary;
 }
 #include <string>
 
-osgDB::DynamicLibrary * loadWrapperLib(std::string const& libname);
+osgDB::DynamicLibrary *loadWrapperLib(std::string const &libname);
 
 void outputLibraryPathListToOsgInfo();
 

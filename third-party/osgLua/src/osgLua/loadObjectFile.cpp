@@ -1,7 +1,8 @@
 /*
-	osgLua: use Lua to access dynamically to osg using osgIntrospection
-	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
-	Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
+        osgLua: use Lua to access dynamically to osg using osgIntrospection
+        Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
+        Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik
+   <rpavlik@acm.org> )
 
     This library is open source and may be redistributed and/or modified under
     the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -22,10 +23,9 @@
 #include <osgDB/ReadFile>
 
 int osgLua::lua_loadObjectFile(lua_State *L) {
-	const char *name = lua_tostring(L, 1);
-	luaL_argcheck(L, name != 0, 1, "need a string");
-	osg::Object *obj = osgDB::readObjectFile(name);
-	osgLua::Value::push(L, obj);
-	return 1;
+    const char *name = lua_tostring(L, 1);
+    luaL_argcheck(L, name != 0, 1, "need a string");
+    osg::Object *obj = osgDB::readObjectFile(name);
+    osgLua::Value::push(L, obj);
+    return 1;
 }
-

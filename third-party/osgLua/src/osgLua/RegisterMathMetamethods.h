@@ -1,14 +1,14 @@
 /** @file
-	@brief Header
+        @brief Header
 
-	@date 2012
+        @date 2012
 
-	@author
-	Ryan Pavlik
-	<rpavlik@iastate.edu> and <abiryan@ryand.net>
-	http://academic.cleardefinition.com/
-	Iowa State University Virtual Reality Applications Center
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik
+        <rpavlik@iastate.edu> and <abiryan@ryand.net>
+        http://academic.cleardefinition.com/
+        Iowa State University Virtual Reality Applications Center
+        Human-Computer Interaction Graduate Program
 */
 
 //          Copyright Iowa State University 2012.
@@ -31,10 +31,10 @@
 // - none
 
 namespace osgLua {
-	/// @brief Pass a Lua state with a new metatable on top, and an
-	/// introspection::Type to register any math methods and return true
-	/// if this is a math type.
-	bool registerMathMetamethods(lua_State * L, introspection::Type const& t);
+    /// @brief Pass a Lua state with a new metatable on top, and an
+    /// introspection::Type to register any math methods and return true
+    /// if this is a math type.
+    bool registerMathMetamethods(lua_State *L, introspection::Type const &t);
 
 } // end of namespace osgLua
 

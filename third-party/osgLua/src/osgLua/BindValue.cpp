@@ -1,7 +1,8 @@
 /*
-	osgLua: use Lua to access dynamically to osg using osgIntrospection
-	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
-	Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
+        osgLua: use Lua to access dynamically to osg using osgIntrospection
+        Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
+        Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik
+   <rpavlik@acm.org> )
 
     This library is open source and may be redistributed and/or modified under
     the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -24,65 +25,64 @@
 #include <osgLua/introspection/Type>
 
 namespace osgLua {
-	static const char OSGLUAVALUEMETATABLE[] = "__isOsgLuaValue";
+    static const char OSGLUAVALUEMETATABLE[] = "__isOsgLuaValue";
 
-	static int osgLuaTypeTag(lua_State *L) {
-		lua_pushboolean(L, true);
-		return 1;
-	}
+    static int osgLuaTypeTag(lua_State *L) {
+        lua_pushboolean(L, true);
+        return 1;
+    }
 
-	bool Value::_hasOsgLuaValueMetatable(lua_State *L, int index) {
-		int top = lua_gettop(L);
-		index = (index > 0) ? index : top + index + 1;
+    bool Value::_hasOsgLuaValueMetatable(lua_State *L, int index) {
+        int top = lua_gettop(L);
+        index = (index > 0) ? index : top + index + 1;
 
-		if (lua_isuserdata(L, index)) {
-			lua_getmetatable(L, index);
-			lua_pushstring(L, OSGLUAVALUEMETATABLE);
-			lua_gettable(L, -2);
-			if (lua_tocfunction(L, -1) == &osgLuaTypeTag) {
-				lua_settop(L, top);
-				return true;
-			}
-		}
-		lua_settop(L, top);
-		return false;
-	}
+        if (lua_isuserdata(L, index)) {
+            lua_getmetatable(L, index);
+            lua_pushstring(L, OSGLUAVALUEMETATABLE);
+            lua_gettable(L, -2);
+            if (lua_tocfunction(L, -1) == &osgLuaTypeTag) {
+                lua_settop(L, top);
+                return true;
+            }
+        }
+        lua_settop(L, top);
+        return false;
+    }
 
-
-	void Value::_getOrCreateMetatable(lua_State *L, introspection::Type const& t) {
-		// create/get the metatable
-		if (luaL_newmetatable(L, t.getQualifiedName().c_str())) {
+    void Value::_getOrCreateMetatable(lua_State *L,
+                                      introspection::Type const &t) {
+        // create/get the metatable
+        if (luaL_newmetatable(L, t.getQualifiedName().c_str())) {
 #ifdef OSGLUA_VERBOSE
-			std::cout << "First time pushing " << t.getQualifiedName() << " to Lua - creating metatable!" << std::endl;
+            std::cout << "First time pushing " << t.getQualifiedName()
+                      << " to Lua - creating metatable!" << std::endl;
 #endif
 
-			// tag this as an osgLua value
-			lua_pushcfunction(L, osgLuaTypeTag);
-			lua_setfield(L, -2, OSGLUAVALUEMETATABLE);
+            // tag this as an osgLua value
+            lua_pushcfunction(L, osgLuaTypeTag);
+            lua_setfield(L, -2, OSGLUAVALUEMETATABLE);
 
-			lua_pushcfunction(L, Value::_gc);
-			lua_setfield(L, -2, "__gc");
+            lua_pushcfunction(L, Value::_gc);
+            lua_setfield(L, -2, "__gc");
 
-			lua_pushcfunction(L, Value::_index);
-			lua_setfield(L, -2, "__index");
+            lua_pushcfunction(L, Value::_index);
+            lua_setfield(L, -2, "__index");
 
-			lua_pushcfunction(L, Value::_newindex);
-			lua_setfield(L, -2, "__newindex");
+            lua_pushcfunction(L, Value::_newindex);
+            lua_setfield(L, -2, "__newindex");
 
-			if (t.getReaderWriter()) {
-				/// If we know how to turn it into a string
-				lua_pushcfunction(L, value_metamethods::tostring);
-			} else {
-				/// Well, at least we can say what its type is
-				lua_pushcfunction(L, value_metamethods::minimal_tostring);
-			}
-			lua_setfield(L, -2, "__tostring");
+            if (t.getReaderWriter()) {
+                /// If we know how to turn it into a string
+                lua_pushcfunction(L, value_metamethods::tostring);
+            } else {
+                /// Well, at least we can say what its type is
+                lua_pushcfunction(L, value_metamethods::minimal_tostring);
+            }
+            lua_setfield(L, -2, "__tostring");
 
-			/// Bind mathematically-inclined values specially
-			registerMathMetamethods(L, t);
-
-		}
-	}
-
+            /// Bind mathematically-inclined values specially
+            registerMathMetamethods(L, t);
+        }
+    }
 
 } // end of osgLua namespace

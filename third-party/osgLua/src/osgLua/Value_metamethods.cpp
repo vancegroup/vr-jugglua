@@ -1,7 +1,8 @@
 /*
-	osgLua: use Lua to access dynamically to osg using osgIntrospection
-	Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
-	Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik <rpavlik@acm.org> )
+        osgLua: use Lua to access dynamically to osg using osgIntrospection
+        Copyright(C) 2006 Jose L. Hidalgo Valiño (PpluX) (pplux at pplux.com)
+        Copyright(C) 2010-2011 Iowa State University (Author: Ryan Pavlik
+   <rpavlik@acm.org> )
 
     This library is open source and may be redistributed and/or modified under
     the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
@@ -25,76 +26,83 @@
 
 #include "LuaIncludeFull.h"
 
-#include <string>                       // for string, operator<<
+#include <string> // for string, operator<<
 #include <sstream>
 
 namespace osgLua {
 
-	namespace value_metamethods {
+    namespace value_metamethods {
 
-		int tostring(lua_State *L) {
-			Value *a = Value::getRequired(L, 1);
+        int tostring(lua_State *L) {
+            Value *a = Value::getRequired(L, 1);
 
-			lua_pushstring(L, a->get().toString().c_str());
-			return 1;
-		}
+            lua_pushstring(L, a->get().toString().c_str());
+            return 1;
+        }
 
-		int minimal_tostring(lua_State *L) {
-			Value *a = Value::getRequired(L, 1);
-			std::stringstream s;
-			s << "osgLua::Value (" << a->get().getType().getQualifiedName() << ") " << a;
-			lua_pushstring(L, s.str().c_str());
-			return 1;
-		}
+        int minimal_tostring(lua_State *L) {
+            Value *a = Value::getRequired(L, 1);
+            std::stringstream s;
+            s << "osgLua::Value (" << a->get().getType().getQualifiedName()
+              << ") " << a;
+            lua_pushstring(L, s.str().c_str());
+            return 1;
+        }
 
-		int eq(lua_State *L) {
-			Value *a = Value::getRequired(L, 1);
-			Value *b = Value::getRequired(L, 2);
+        int eq(lua_State *L) {
+            Value *a = Value::getRequired(L, 1);
+            Value *b = Value::getRequired(L, 2);
 
-			bool ret;
-			try {
-				ret = a->get() == b->get();
-			} catch (introspection::Exception &e) {
-				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
-			}
+            bool ret;
+            try {
+                ret = a->get() == b->get();
+            }
+            catch (introspection::Exception &e) {
+                luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__,
+                           e.what().c_str());
+            }
 
-			lua_pushboolean(L, ret);
+            lua_pushboolean(L, ret);
 
-			return 1;
-		}
+            return 1;
+        }
 
-		int lt(lua_State *L) {
-			Value *a = Value::getRequired(L, 1);
+        int lt(lua_State *L) {
+            Value *a = Value::getRequired(L, 1);
 
-			Value *b = Value::getRequired(L, 2);
-			bool ret;
-			try {
-				ret = a->get() < b->get();
-			} catch (introspection::Exception &e) {
-				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
-			}
+            Value *b = Value::getRequired(L, 2);
+            bool ret;
+            try {
+                ret = a->get() < b->get();
+            }
+            catch (introspection::Exception &e) {
+                luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__,
+                           e.what().c_str());
+            }
 
-			lua_pushboolean(L, ret);
+            lua_pushboolean(L, ret);
 
-			return 1;
-		}
+            return 1;
+        }
 
-		int le(lua_State *L) {
-			Value *a = Value::getRequired(L, 1);
+        int le(lua_State *L) {
+            Value *a = Value::getRequired(L, 1);
 
-			Value *b = Value::getRequired(L, 2);
-			bool ret;
-			try {
-				ret = a->get() <= b->get();
-			} catch (introspection::Exception &e) {
-				luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__, e.what().c_str());
-			}
+            Value *b = Value::getRequired(L, 2);
+            bool ret;
+            try {
+                ret = a->get() <= b->get();
+            }
+            catch (introspection::Exception &e) {
+                luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__,
+                           e.what().c_str());
+            }
 
-			lua_pushboolean(L, ret);
+            lua_pushboolean(L, ret);
 
-			return 1;
-		}
+            return 1;
+        }
 
-	} // end of value_metamethods namespace
+    } // end of value_metamethods namespace
 
 } // end of osgLua namespace
