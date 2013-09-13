@@ -9,4 +9,5 @@ styleDirectory() {
 cd $(dirname $0) && cd ..
 styleDirectory src
 styleDirectory vrjugglua
+styleDirectory third-party/osgLua
 )
