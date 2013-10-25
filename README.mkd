@@ -32,6 +32,17 @@ Changes
 -------
 For the full change history, see the git repository.  This section is a high-level overview of useful, user-facing changes by date (newest changes at the top).
 
+### October 2013
+- *Bug fix serving effectively as a feature*: Loading models in formats other than IVE and OSG works now - whatever formats your OSG build incldues plugins for.
+- *Enhanced functionality*: More complete and consistent sound binding, including example.
+- *Added example*: Shader for Phong shading (per-pixel lighting).
+
+### September 2013
+Because of API break, a commit here was tagged 2.0.
+
+- *C++ API break*: externally-exposed weak pointer overuse was eliminated.
+- *Cleanup and optimization*: Improved search path handling and handle compilation of/against shared libraries.
+
 ### July 2013
 - *Extended functionality*: A long-awaited overhaul of math operator support has landed. This means that you can just use `+`, `-`, `*`, `-`, etc. as appropriate with matrices, vectors, quaternions, and numbers: this should be much more convenient. (`*` is a dot product for two vectors, and `^` is a cross product for 3-dimensional vectors only)
 
