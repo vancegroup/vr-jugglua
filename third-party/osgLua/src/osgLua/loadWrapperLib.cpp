@@ -137,9 +137,9 @@ osgDB::DynamicLibrary *loadWrapperLib(std::string const &libname) {
     /// First ask osgDB itself for its idea, and we'll stick lib in front of it
     /// as an extra measure.
     OSG_INFO
-        << std::endl
-        << "Asking osgDB::Registry what it would call the wrapper library for "
-        << libname << std::endl;
+    << std::endl
+    << "Asking osgDB::Registry what it would call the wrapper library for "
+    << libname << std::endl;
     names.pushNameVariants(
         osgDB::Registry::instance()->createLibraryNameForNodeKit("osgwrapper_" +
                                                                  libname));

@@ -159,7 +159,7 @@ namespace osgLua {
 
     void Console::attachToViewer(osgViewer::Viewer *viewer) {
         //	viewer->getEventHandlerList().push_front( new
-        //ConsoleCallback(this) );
+        // ConsoleCallback(this) );
         const osg::DisplaySettings *ds = viewer->getDisplaySettings();
         if (ds) {
             float aspect = ds->getScreenWidth() / (float)ds->getScreenHeight();
