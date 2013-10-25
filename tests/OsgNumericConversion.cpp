@@ -1,10 +1,11 @@
 /** @date	2010
 
-	@author
-	Ryan Pavlik ( <rpavlik@iastate.edu> http://academic.cleardefinition.com/ ),
-	Iowa State University
-	Virtual Reality Applications Center and
-	Human-Computer Interaction Graduate Program
+        @author
+        Ryan Pavlik ( <rpavlik@iastate.edu> http://academic.cleardefinition.com/
+   ),
+        Iowa State University
+        Virtual Reality Applications Center and
+        Human-Computer Interaction Graduate Program
 */
 
 #define BOOST_TEST_MODULE OSG Numeric Conversion tests
@@ -35,75 +36,78 @@ using namespace luabind;
 
 /*
 void vecFunc(osg::Vec3d vec) {
-	std::cout << "Got the vector " << vec.x() << "," << vec.y() << "," << vec.z() << std::endl;
+        std::cout << "Got the vector " << vec.x() << "," << vec.y() << "," <<
+vec.z() << std::endl;
 }
 
 void matrixFunc(osg::Matrixd mat) {
-	std::cout << "Got the matrix:" << std::endl;
-	for (unsigned int row = 0; row < 4; ++row) {
-		for (unsigned int col = 0; col < 4; ++col) {
-			std::cout << std::setw(10) << mat(row, col);
-			if (col != 3) {
-				std::cout << ", ";
-			}
-		}
-		std::cout << std::endl;
-	}
+        std::cout << "Got the matrix:" << std::endl;
+        for (unsigned int row = 0; row < 4; ++row) {
+                for (unsigned int col = 0; col < 4; ++col) {
+                        std::cout << std::setw(10) << mat(row, col);
+                        if (col != 3) {
+                                std::cout << ", ";
+                        }
+                }
+                std::cout << std::endl;
+        }
 }
 
 struct Fixture {
-	Fixture() {
-		LuaStatePtr ptr(s.getLuaState().lock());
-		module(ptr.get())[
-		    def("nodeFunc", &nodeFunc),
-		    def("groupFunc", &groupFunc),
-		    def("vecFunc", &vecFunc),
-		    def("matrixFunc", &matrixFunc)
-		];
-	}
-	LuaScript s;
+        Fixture() {
+                LuaStatePtr ptr(s.getLuaState().lock());
+                module(ptr.get())[
+                    def("nodeFunc", &nodeFunc),
+                    def("groupFunc", &groupFunc),
+                    def("vecFunc", &vecFunc),
+                    def("matrixFunc", &matrixFunc)
+                ];
+        }
+        LuaScript s;
 
 };
 */
 
 LuaScript s;
-	
+
 BOOST_AUTO_TEST_CASE(ConversionPathVec3fToVec3d) {
-	osgLua::introspection::Value v = osg::Vec3f(1, 1, 1);
-	BOOST_CHECK(!v.tryConvertTo(typeof(osg::Vec3d)).isEmpty());
+    osgLua::introspection::Value v = osg::Vec3f(1, 1, 1);
+    BOOST_CHECK(!v.tryConvertTo(typeof(osg::Vec3d)).isEmpty());
 }
 
 BOOST_AUTO_TEST_CASE(ConstructionVec3fToVec3d) {
-	osgLua::introspection::Value v = osg::Vec3f(1, 1, 1);
+    osgLua::introspection::Value v = osg::Vec3f(1, 1, 1);
     osgLua::introspection::ValueList args;
     args.push_back(v);
-	BOOST_CHECK_NO_THROW(typeof(osg::Vec3d).createInstance(args));
+    BOOST_CHECK_NO_THROW(typeof(osg::Vec3d).createInstance(args));
 }
 
 BOOST_AUTO_TEST_CASE(Vec3fToVec3dCompatibleSet) {
-	osgLua::introspection::Value vf = osg::Vec3f(1, 1, 1);
+    osgLua::introspection::Value vf = osg::Vec3f(1, 1, 1);
     osgLua::introspection::ValueList args;
     args.push_back(vf);
 
-	BOOST_CHECK(typeof(osg::Vec3d).getCompatibleMethod("set", args, true));
+    BOOST_CHECK(typeof(osg::Vec3d).getCompatibleMethod("set", args, true));
 }
 
 BOOST_AUTO_TEST_CASE(Vec3fToVec3dUsingSet) {
-	osgLua::introspection::Value vf = osg::Vec3f(1, 1, 1);
+    osgLua::introspection::Value vf = osg::Vec3f(1, 1, 1);
     osgLua::introspection::ValueList args;
     args.push_back(vf);
-    
-	osgLua::introspection::Value vd = osg::Vec3d();
-	BOOST_CHECK_NO_THROW(typeof(osg::Vec3d).invokeMethod("set", vd, args, true));
+
+    osgLua::introspection::Value vd = osg::Vec3d();
+    BOOST_CHECK_NO_THROW(
+        typeof(osg::Vec3d).invokeMethod("set", vd, args, true));
 }
 
 BOOST_AUTO_TEST_CASE(GetConversionVec3fToVec3d) {
-	osgLua::introspection::Value vf = osg::Vec3f(1, 1, 1);
+    osgLua::introspection::Value vf = osg::Vec3f(1, 1, 1);
     osgLua::introspection::ValueList args;
     args.push_back(vf);
-    
-	osgLua::introspection::Value vd = osg::Vec3d();
-	BOOST_CHECK(osgLua::introspection::Reflection::getConverter(typeof(osg::Vec3f), typeof(osg::Vec3d)));
-	BOOST_CHECK(osgLua::introspection::Reflection::getConverter(typeof(osg::Vec3d), typeof(osg::Vec3f)));
-}
 
+    osgLua::introspection::Value vd = osg::Vec3d();
+    BOOST_CHECK(osgLua::introspection::Reflection::getConverter(
+        typeof(osg::Vec3f), typeof(osg::Vec3d)));
+    BOOST_CHECK(osgLua::introspection::Reflection::getConverter(
+        typeof(osg::Vec3d), typeof(osg::Vec3f)));
+}
