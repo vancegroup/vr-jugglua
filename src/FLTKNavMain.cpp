@@ -23,6 +23,7 @@
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
+#include <boost/make_shared.hpp>
 
 #include <FL/Fl.H>
 
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]) {
     script.requireModule("osgnav-testbed");
 
     /// Create the console GUI
-    boost::shared_ptr<FLTKConsole> console(new FLTKConsole(script));
+    boost::shared_ptr<FLTKConsole> console = boost::make_shared<FLTKConsole>(script);
     console->setTitle("Scenegraph Navigation Testbed");
     console->getRunBufFromLuaGlobal();
 

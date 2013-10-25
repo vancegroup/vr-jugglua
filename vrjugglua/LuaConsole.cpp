@@ -26,6 +26,7 @@
 #include <luabind/object.hpp>
 
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/make_shared.hpp>
 
 #include <vrj/Kernel/Kernel.h>
 
@@ -102,9 +103,7 @@ namespace vrjLua {
     }
 
     bool LuaConsole::createRunBuf() {
-        boost::shared_ptr<SynchronizedRunBuffer> buf(
-            new SynchronizedRunBuffer(_script));
-        _runbuf = buf;
+        _runbuf = boost::make_shared<SynchronizedRunBuffer>(_script);
 
         /// @todo fix global
         /*

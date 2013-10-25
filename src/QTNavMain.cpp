@@ -26,6 +26,7 @@
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
 #include <luabind/object.hpp>
+#include <boost/make_shared.hpp>
 
 // Standard includes
 #include <vector>
@@ -68,12 +69,10 @@ int main(int argc, char *argv[]) {
     boost::shared_ptr<LuaConsole> console;
     if (stubConsole) {
         std::cout << "Creating stub console, as requested..." << std::endl;
-        boost::shared_ptr<LuaConsole> temp(new StubConsole(script));
-        console = temp;
+        console = boost::make_shared<StubConsole>(script);
     } else {
         QTConsole::setup(argc, argv);
-        boost::shared_ptr<LuaConsole> temp(new QTConsole(script));
-        console = temp;
+        console = boost::make_shared<QTConsole>(script);
     }
     console->setTitle("Scenegraph Navigation Testbed");
 #ifdef BUILD_WITHOUT_TERMINAL

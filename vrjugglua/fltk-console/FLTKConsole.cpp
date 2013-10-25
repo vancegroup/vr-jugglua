@@ -28,6 +28,8 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Native_File_Chooser.H>
 
+#include <boost/make_shared.hpp>
+
 #include <vrj/Kernel/Kernel.h>
 
 // Standard includes
@@ -63,9 +65,8 @@ namespace vrjLua {
         }
 
         virtual void chooseAndRunFile() {
-            boost::shared_ptr<Fl_Native_File_Chooser> fc(
-                new Fl_Native_File_Chooser(
-                    Fl_Native_File_Chooser::BROWSE_FILE));
+            boost::shared_ptr<Fl_Native_File_Chooser> fc = boost::make_shared<Fl_Native_File_Chooser>(
+                    Fl_Native_File_Chooser::BROWSE_FILE);
             fc->title("Open VRJLua File...");
             fc->filter("VRJLua files\t*.{vrjlua,lua}");
 
@@ -121,11 +122,11 @@ namespace vrjLua {
     }
 
     FLTKConsole::FLTKConsole() : LuaConsole() {
-        _view.reset(new FLTKConsoleView(this));
+        _view = boost::make_shared<FLTKConsoleView>(this);
     }
 
     FLTKConsole::FLTKConsole(LuaScript const &script) : LuaConsole(script) {
-        _view.reset(new FLTKConsoleView(this));
+        _view = boost::make_shared<FLTKConsoleView>(this);
     }
 
     FLTKConsole::~FLTKConsole() {}

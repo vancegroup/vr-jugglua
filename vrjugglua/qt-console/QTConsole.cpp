@@ -25,6 +25,7 @@
 
 // Library/third-party includes
 #include <boost/scoped_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 #include <QFileDialog>
 #include <QScrollBar>
@@ -187,7 +188,7 @@ namespace vrjLua {
     bool QTConsole::threadLoop() {
         {
             LoopGuard guard(run_, LoopGuard::DELAY_REPORTING_START);
-            boost::shared_ptr<QTimer> timer(new QTimer(this));
+            boost::shared_ptr<QTimer> timer = boost::make_shared<QTimer>(this);
             connect(this, SIGNAL(textDisplaySignal(QString const &)), this,
                     SLOT(addTextToDisplay(QString const &)));
             connect(this, SIGNAL(disableGUISignal()), this,
@@ -200,7 +201,7 @@ namespace vrjLua {
             connect(_ui->plainTextEdit, SIGNAL(gotLuaFile(QUrl)), this,
                     SLOT(runLuaFile(QUrl)));
 
-            boost::shared_ptr<QTimer> logTimer(new QTimer(this));
+            boost::shared_ptr<QTimer> logTimer = boost::make_shared<QTimer>(this);
             if (_loggingActive) {
                 connect(logTimer.get(), SIGNAL(timeout()), this,
                         SLOT(updateDebugLog()));
