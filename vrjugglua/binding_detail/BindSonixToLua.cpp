@@ -20,10 +20,12 @@
 // Local includes
 #include "BindSonixToLua.h"
 #include "../VRJLuaOutput.h"
+#include "../osgLuaBind.h"
 
 // Library/third-party includes
 #include <luabind/luabind.hpp>
 #include <osg/Vec4>
+#include <osg/Vec3d>
 #include <snx/SoundHandle.h>
 
 // Standard includes
@@ -37,9 +39,9 @@ namespace {
         hbetter.getPosition(x, y, z);
         return osg::Vec3f(x, y, z) * feetToMeters;
     }
-    void scalingSetPosition(snx::SoundHandle &h, osg::Vec3f &vec) {
+    void scalingSetPosition(snx::SoundHandle &h, osg::Vec3d const &vec) {
         const double metersToFeet = 3.28084;
-        osg::Vec3f scaledVec = vec * metersToFeet;
+        osg::Vec3d scaledVec = vec * metersToFeet;
         h.setPosition(scaledVec.x(), scaledVec.y(), scaledVec.z());
         return;
     }
