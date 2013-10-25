@@ -65,7 +65,8 @@ namespace vrjLua {
         }
 
         virtual void chooseAndRunFile() {
-            boost::shared_ptr<Fl_Native_File_Chooser> fc = boost::make_shared<Fl_Native_File_Chooser>(
+            boost::shared_ptr<Fl_Native_File_Chooser> fc =
+                boost::make_shared<Fl_Native_File_Chooser>(
                     Fl_Native_File_Chooser::BROWSE_FILE);
             fc->title("Open VRJLua File...");
             fc->filter("VRJLua files\t*.{vrjlua,lua}");

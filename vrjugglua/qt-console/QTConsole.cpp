@@ -201,7 +201,8 @@ namespace vrjLua {
             connect(_ui->plainTextEdit, SIGNAL(gotLuaFile(QUrl)), this,
                     SLOT(runLuaFile(QUrl)));
 
-            boost::shared_ptr<QTimer> logTimer = boost::make_shared<QTimer>(this);
+            boost::shared_ptr<QTimer> logTimer =
+                boost::make_shared<QTimer>(this);
             if (_loggingActive) {
                 connect(logTimer.get(), SIGNAL(timeout()), this,
                         SLOT(updateDebugLog()));
