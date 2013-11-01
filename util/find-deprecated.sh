@@ -25,12 +25,12 @@ warnOnExamples "osg.Switch(" "Consider using Switch{}"
 warnOnExamples "osg.Group(" "Consider using Group{}"
 
 for size in 4 3 2; do
-    warnOnExamples "osg.Vec${size}d" "Use Vec() instead"
+    warnOnExamples "osg.Vec${size}d(" "Use Vec() instead"
 done
 
 for type in f b s ub; do
 for size in 4 3 2; do
-    warnOnExamples "osg.Vec${size}${type}" "Use Vec${type}() instead"
+    warnOnExamples "osg.Vec${size}${type}(" "Use Vec${type}() instead"
 done
 done
 
