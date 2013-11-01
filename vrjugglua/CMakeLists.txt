@@ -86,6 +86,10 @@ set(LUA_BINDING_SOURCES
 
 source_group("Binding Details" FILES ${LUA_BINDING_SOURCES})
 
+if(WIN32)
+    list(APPEND SOURCES icon.rc)
+endif()
+
 add_library(vrjugglua ${SOURCES} ${LUA_BINDING_SOURCES} ${API})
 set_target_properties(vrjugglua PROPERTIES PUBLIC_HEADER "${API}")
 target_link_libraries(vrjugglua ${VRJUGGLER_LIBRARIES} ${OPENSCENEGRAPH_LIBRARIES} ${LUABIND_LIBRARIES} ${OSGLUA_LIBRARIES})
