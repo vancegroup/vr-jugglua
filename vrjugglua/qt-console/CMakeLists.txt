@@ -19,7 +19,7 @@ set(API
 
 set(UIS QTConsoleMainWindow.ui)
 
-#set(RESOURCES QTConsoleResources.qrc)
+set(RESOURCES QTConsoleResources.qrc)
 
 # Let QT pre-process the files and add the generated files to the source list
 qt4_wrap_ui(GENERATED_SOURCES ${UIS})

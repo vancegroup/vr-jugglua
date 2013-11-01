@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="common">
+    <file alias="icon-vector">../../assets/icon/128px.svg</file>
+    <file alias="icon">../../assets/icon/256px.png</file>
+  </qresource>
+</RCC>

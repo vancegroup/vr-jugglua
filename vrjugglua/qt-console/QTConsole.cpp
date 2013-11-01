@@ -57,6 +57,12 @@ namespace vrjLua {
         : _app(s_app)
         , _ui(new Ui::MainWindow()) {
         _shared_init();
+#if defined(_WIN32) || defined(__APPLE__)
+        QIcon mainIcon(":/common/icon");
+#else
+        QIcon mainIcon(":/common/icon-vector");
+#endif
+        setWindowIcon(mainIcon);
     }
 
     QTConsole::QTConsole(LuaScript const &script)

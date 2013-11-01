@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>VR JuggLua Interactive Console</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="QTConsoleResources.qrc">
+    <normaloff>:/common/icon</normaloff>:/common/icon</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -248,7 +252,9 @@
    <header location="global">vrjugglua/qt-console/QTCodeInput.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="QTConsoleResources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionShow_debug_log</sender>
