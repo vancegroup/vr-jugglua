@@ -57,10 +57,14 @@ namespace vrjLua {
         : _app(s_app)
         , _ui(new Ui::MainWindow()) {
         _shared_init();
-#if defined(_WIN32) || defined(__APPLE__)
-        QIcon mainIcon(":/common/icon");
-#else
-        QIcon mainIcon(":/common/icon-vector");
+        QIcon mainIcon;
+        mainIcon.addFile(":/icon/16.png");
+        mainIcon.addFile(":/icon/32.png");
+        mainIcon.addFile(":/icon/48.png");
+        mainIcon.addFile(":/icon/128.png");
+        mainIcon.addFile(":/icon/256.png");
+#if 0
+        mainIcon.addFile(":/icon/vector.svg");
 #endif
         setWindowIcon(mainIcon);
     }

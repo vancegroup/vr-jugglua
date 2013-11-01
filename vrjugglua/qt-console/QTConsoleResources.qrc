@@ -1,6 +1,10 @@
 <RCC>
-  <qresource prefix="common">
-    <file alias="icon-vector">../../assets/icon/128px.svg</file>
-    <file alias="icon">../../assets/icon/256px.png</file>
+  <qresource prefix="icon">
+    <file alias="vector.svg">../../assets/icon/128px.svg</file>
+    <file alias="16.png">../../assets/icon/16px.png</file>
+    <file alias="32.png">../../assets/icon/32px.png</file>
+    <file alias="48.png">../../assets/icon/48px.png</file>
+    <file alias="128.png">../../assets/icon/128px.png</file>
+    <file alias="256.png">../../assets/icon/256px.png</file>
   </qresource>
 </RCC>
