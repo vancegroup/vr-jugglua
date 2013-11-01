@@ -27,18 +27,28 @@ int osgLua::lua_loadObjectFile(lua_State *L) {
     luaL_argcheck(L, name != 0, 1, "need a string");
     // Try a generic load first.
     osg::Object *obj = osgDB::readObjectFile(name);
+
     if (!obj) {
         obj = osgDB::readNodeFile(name);
     }
+
     if (!obj) {
         obj = osgDB::readImageFile(name);
     }
+
     if (!obj) {
         obj = osgDB::readHeightFieldFile(name);
     }
+
     if (!obj) {
         obj = osgDB::readShaderFile(name);
     }
+
+    if (!obj) {
+        /// Return nothing (and thus nil) if we couldn't load it.
+        return 0;
+    }
+
     osgLua::Value::push(L, obj);
     return 1;
 }

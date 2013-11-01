@@ -277,14 +277,10 @@ end
 
 function Model(filename)
 	local m = osgLua.loadObjectFile(filename)
-	local c = osgLua.getTypeInfo(m)
-
-	if c and #c.methods > 0 then
-		-- Model loaded successfully
-		return m
-	else
+	if m == nil then
 		error("Failed to load model " .. filename, 2)
 	end
+	return m
 end
 
 function Sphere(a)
