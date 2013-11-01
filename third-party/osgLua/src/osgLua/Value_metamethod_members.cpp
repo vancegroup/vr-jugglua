@@ -189,8 +189,14 @@ namespace osgLua {
                     return luaL_error(L, "Property %s defined as not settable",
                                       prop->getName().c_str());
                 } else {
-                    prop->setValue(v->get(), newVal->get());
-                    return 0;
+                    try {
+                        prop->setValue(v->get(), newVal->get());
+                        return 0;
+                    }
+                    catch (introspection::Exception &e) {
+                        return luaL_error(L, "[%s:%d] %s", __FILE__, __LINE__,
+                                          e.what().c_str());
+                    }
                 }
             }
 
