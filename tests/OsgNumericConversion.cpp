@@ -30,9 +30,17 @@
 #include <iostream>
 #include <iomanip>
 
+#include "PathSetupDummy.h"
+
 using namespace boost::unit_test;
 using namespace vrjLua;
 using namespace luabind;
+
+
+struct Fixture {
+    InitPath dummy; // Needed to make LuaScript start OK.
+    LuaScript s; // Needed to initialize the extra converters
+};
 
 /*
 void vecFunc(osg::Vec3d vec) {

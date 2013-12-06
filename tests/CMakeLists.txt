@@ -144,6 +144,7 @@ add_boost_test(OsgPointers
 add_boost_test(OsgNumericConversion
 	SOURCES
 	OsgNumericConversion.cpp
+	PathSetupDummy.h
 	LAUNCHER
 	${GENERIC_LAUNCHER_COMMAND}
 	LIBRARIES
