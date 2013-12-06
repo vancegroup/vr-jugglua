@@ -29,6 +29,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include "PathSetupDummy.h"
+
 using namespace boost::unit_test;
 using namespace vrjLua;
 using namespace luabind;
@@ -84,6 +86,7 @@ struct Fixture {
                           class_<A>("A").def(constructor<>()).property(
                               "val", &A::get, &A::set)];
     }
+    InitPath dummy;
     LuaScript s;
 };
 

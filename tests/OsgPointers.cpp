@@ -30,6 +30,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include "PathSetupDummy.h"
+
 using namespace boost::unit_test;
 using namespace vrjLua;
 using namespace luabind;
@@ -76,6 +78,7 @@ struct Fixture {
             def("matrixFunc", &matrixFunc)
         ];
     }
+    InitPath dummy;
     LuaScript s;
 };
 
