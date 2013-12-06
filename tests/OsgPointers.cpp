@@ -85,27 +85,31 @@ struct Fixture {
 BOOST_AUTO_TEST_CASE(RefExactMatch) {
     Fixture f;
     BOOST_CHECK(f.s.runString("node = osg.Node(); nodeFunc(node)"));
+    BOOST_CHECK(f.s.runString("osg.Group():addChild(osg.Node())"));
 }
 
 BOOST_AUTO_TEST_CASE(RefSingleConversion) {
     Fixture f;
     BOOST_CHECK(f.s.runString("node = osg.Group(); nodeFunc(node)"));
+    BOOST_CHECK(f.s.runString("osg.Group():addChild(osg.Group())"));
 }
 
 BOOST_AUTO_TEST_CASE(RefMultipleConversion) {
     Fixture f;
-    BOOST_CHECK(f.s.runString(
-        "node = osg.PositionAttitudeTransform(); nodeFunc(node)"));
+    BOOST_CHECK(f.s.runString("node = osg.Transform(); nodeFunc(node)"));
+    BOOST_CHECK(f.s.runString("osg.Group():addChild(osg.Transform())"));
 }
 
 BOOST_AUTO_TEST_CASE(RefInvalidConversion) {
     Fixture f;
     BOOST_CHECK(!f.s.runString("node = osg.Matrix(); nodeFunc(node)"));
+    BOOST_CHECK(!f.s.runString("osg.Group():addChild(osg.Matrix())"));
 }
 
 BOOST_AUTO_TEST_CASE(RefInvalidRefConversion) {
     Fixture f;
     BOOST_CHECK(!f.s.runString("node = osg.RefMatrix(); nodeFunc(node)"));
+    BOOST_CHECK(!f.s.runString("osg.Group():addChild(osg.RefMatrix())"));
 }
 
 BOOST_AUTO_TEST_CASE(RefPtrExactMatch) {
