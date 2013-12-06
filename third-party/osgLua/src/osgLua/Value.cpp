@@ -181,6 +181,13 @@ namespace osgLua {
     }
 
     void Value::push(lua_State *L, const introspection::Value &original) {
+        static const introspection::Type &voidType =
+            introspection::Reflection::getType(extended_typeid<void>());
+        if (voidType == original.getType()) {
+            lua_pushnil(L);
+            return;
+        }
+
         if (detail::pushIfTypeIs<bool>(L, original) ||
             detail::pushIfTypeIs<int>(L, original) ||
             detail::pushIfTypeIs<unsigned int>(L, original) ||
