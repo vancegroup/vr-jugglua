@@ -32,5 +32,8 @@ expectSuccess [[MatrixTransform{}.Matrix = osg.Matrixd()]]
 expectAnythingButCrash [[MatrixTransform{}.Matrix = osg.Matrixf()]]
 expectSuccess [[MatrixTransform{}.Matrix = MatrixTransform{}.Matrix]]
 
+-- Invalid types for property
+expectError [[MatrixTransform{}.Matrix = nil]]
+expectError [[MatrixTransform{}.Matrix = osg.Matrixd():makeIdentity()]] -- this is a "void" pushed as a "nil"
 
 print("Done!")
