@@ -82,6 +82,10 @@ namespace vrjLua {
 
         // Extend the lua script search path for "require"
         LuaPath &lp = LuaPath::instance();
+#ifdef VERBOSE
+        lp.debugDump(std::cerr);
+#endif
+
         {
             LuaSearchPathUpdater searchpath(L);
             searchpath.extend(SearchDirectory(lp.getLuaDir()));
