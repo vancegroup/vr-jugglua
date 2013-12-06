@@ -184,55 +184,53 @@ namespace osgLua {
             std::string destName;
         };
 
-        template <template <typename, typename> class Converter, typename T1,
-                  typename T2>
-        inline void registerUnidirectionalConverter() {
+        template <template <typename, typename> class ConverterType,
+                  typename T1, typename T2>
+        inline void registerUniConvert() {
             if (!introspection::Reflection::getConverter(typeof(T1),
                                                          typeof(T2))) {
-                std::cerr << "Registering converter from "
-                          << typeof(T1).getQualifiedName() << " to "
-                          << typeof(T2).getQualifiedName() << std::endl;
-                introspection::ConverterProxy cvt1to2(typeof(T1), typeof(T2),
-                                                      new Converter<T1, T2>());
+                VERBOSEDUMP("Registering converter from "
+                            << typeof(T1).getQualifiedName() << " to "
+                            << typeof(T2).getQualifiedName());
+                introspection::ConverterProxy cvt1to2(
+                    typeof(T1), typeof(T2), new ConverterType<T1, T2>());
+            } else {
+                VERBOSEDUMP("Already got converter from "
+                            << typeof(T1).getQualifiedName() << " to "
+                            << typeof(T2).getQualifiedName());
             }
         }
-        template <template <typename, typename> class Converter, typename T1,
-                  typename T2>
-        inline void registerBidirectionalConverter() {
-            registerUnidirectionalConverter<Converter, T1, T2>();
-            registerUnidirectionalConverter<Converter, T2, T1>();
+        template <template <typename, typename> class ConverterType,
+                  typename T1, typename T2>
+        inline void registerBiConvert() {
+            registerUniConvert<ConverterType, T1, T2>();
+            registerUniConvert<ConverterType, T2, T1>();
         }
 
     } // end of anonymous namespace
 
     void registerCustomConverters() {
         std::cerr << "Registering custom converters." << std::endl;
-        registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec2d,
-                                       osg::Vec2f>();
-        registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec2s,
-                                       osg::Vec2b>();
+        registerBiConvert<VectorPrecisionConverter, osg::Vec2d, osg::Vec2f>();
+        registerBiConvert<VectorPrecisionConverter, osg::Vec2s, osg::Vec2b>();
 
-        registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec3d,
-                                       osg::Vec3f>();
+        registerBiConvert<VectorPrecisionConverter, osg::Vec3d, osg::Vec3f>();
 
-        registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec4d,
-                                       osg::Vec4f>();
-        // registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec4f,
+        registerBiConvert<VectorPrecisionConverter, osg::Vec4d, osg::Vec4f>();
+        // registerBiConvert<VectorPrecisionConverter, osg::Vec4f,
         // osg::Vec4s>();
-        registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec4s,
-                                       osg::Vec4b>();
-        registerBidirectionalConverter<VectorPrecisionConverter, osg::Vec4b,
-                                       osg::Vec4ub>();
+        registerBiConvert<VectorPrecisionConverter, osg::Vec4s, osg::Vec4b>();
+        registerBiConvert<VectorPrecisionConverter, osg::Vec4b, osg::Vec4ub>();
 
-        registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixd,
-                                       osg::Matrixf>();
-        registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixd,
-                                       osg::RefMatrixd>();
-        registerBidirectionalConverter<MatrixPrecisionConverter, osg::Matrixf,
-                                       osg::RefMatrixf>();
+        registerBiConvert<MatrixPrecisionConverter, osg::Matrixd,
+                          osg::Matrixf>();
+        registerBiConvert<MatrixPrecisionConverter, osg::Matrixd,
+                          osg::RefMatrixd>();
+        registerBiConvert<MatrixPrecisionConverter, osg::Matrixf,
+                          osg::RefMatrixf>();
 
-        registerUnidirectionalConverter<NumberPrecisionConverter, int, float>();
-        registerUnidirectionalConverter<NumberPrecisionConverter, int,
-                                        double>();
+        registerUniConvert<NumberPrecisionConverter, int, float>();
+        registerUniConvert<NumberPrecisionConverter, int, double>();
+        std::cerr << "Converter registration complete." << std::endl;
     }
 } // end of namespace osgLua
