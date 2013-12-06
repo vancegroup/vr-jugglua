@@ -68,10 +68,13 @@ void matrixFunc(osg::Matrixd mat) {
 struct Fixture {
     Fixture() {
         LuaStatePtr ptr(s.getLuaState());
-        module(
-            ptr.get())[def("nodeFunc", &nodeFunc), def("groupFunc", &groupFunc),
-                       def("vecFunc", &vecFunc), def("vecfFunc", &vecfFunc),
-                       def("matrixFunc", &matrixFunc)];
+        module(ptr.get())[
+            def("nodeFunc", &nodeFunc),
+            def("groupFunc", &groupFunc),
+            def("vecFunc", &vecFunc),
+            def("vecfFunc", &vecfFunc),
+            def("matrixFunc", &matrixFunc)
+        ];
     }
     LuaScript s;
 };
