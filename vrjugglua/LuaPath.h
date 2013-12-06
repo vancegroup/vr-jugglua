@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <iosfwd>
 
 namespace vrjLua {
 
@@ -48,6 +49,8 @@ namespace vrjLua {
         std::string const &getExeDir() const;
         std::string const &getInitialPath() const;
         std::string const &getLuaDir() const;
+
+        void debugDump(std::ostream &s) const;
 
         /// DEPRECATED
         void addLuaRequirePath(LuaStatePtr state,

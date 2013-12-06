@@ -39,6 +39,15 @@ namespace fs = boost::filesystem;
 
 namespace vrjLua {
 
+    void LuaPath::debugDump(std::ostream &s) const {
+        s << "Initial path:\t" << _initialPath << "\n";
+        s << "EXE dir:\t" << _exeDir << "\n";
+        s << "Root:\t" << _root << "\n";
+        s << "Lua dir:\t" << _luaDir << "\n";
+        s << "Share dir:\t" << _shareDir << "\n";
+        s << "App root:\t" << _appRoot << "\n";
+        s << std::endl;
+    }
     std::string
     LuaPath::_findFilePath(std::vector<std::string> const &startingPlaces,
                            std::string const &qualified) {
