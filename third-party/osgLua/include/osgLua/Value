@@ -93,7 +93,7 @@ namespace osgLua {
 			/// @}
 	};
 
-	introspection::Value OSGLUA_API getValue(lua_State *L, int index);
+	introspection::Value OSGLUA_API getValue(lua_State *L, int index, const char * valueDescription = "Value");
 
 
 	/****************************************************************/

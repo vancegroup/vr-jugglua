@@ -138,7 +138,8 @@ namespace osgLua {
 
     Value::~Value() {}
 
-    introspection::Value getValue(lua_State *L, int index) {
+    introspection::Value getValue(lua_State *L, int index,
+                                  const char *valueDescription) {
         int top = lua_gettop(L);
         index = (index > 0) ? index : top + index + 1;
 
@@ -147,9 +148,9 @@ namespace osgLua {
             if (v) {
                 return v->get();
             } else {
-                luaL_error(
-                    L,
-                    "userdata can not be used as osgLua::introspection::Value");
+                luaL_error(L, "%s (userdata) can not be used as "
+                              "osgLua::introspection::Value",
+                           valueDescription);
             }
         }
 
@@ -172,10 +173,10 @@ namespace osgLua {
                                                                        : true);
         }
 
-        luaL_error(
-            L,
-            "Value at %d(%s) can not be used as osgLua::introspection::Value",
-            index, lua_typename(L, lua_type(L, index)));
+        luaL_error(L, "%s (argument at %d: %s) can not be used as "
+                      "osgLua::introspection::Value",
+                   valueDescription, index,
+                   lua_typename(L, lua_type(L, index)));
 
         return introspection::Value();
     }
