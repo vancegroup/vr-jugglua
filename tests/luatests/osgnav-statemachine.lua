@@ -7,7 +7,7 @@ print("CTEST_FULL_OUTPUT")
 function myinit()
 	print("Setting up scenegraph")
 	navtransform = osg.PositionAttitudeTransform()
-	navtransform:addChild(osgLua.loadObjectFile('cessna.osg'))
+	--navtransform:addChild(osgLua.loadObjectFile('cessna.osg'))
 
 	print("Attaching to scene")
 	StateMachine.getScene():addChild(navtransform)

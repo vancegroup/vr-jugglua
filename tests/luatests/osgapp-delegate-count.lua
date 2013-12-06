@@ -24,7 +24,8 @@ function testapp:latePreFrame(dt)
 	print(tostring(self.latePreFrameCounter) .. ": In latePreFrame")
 	if self.latePreFrameCounter ~= self.preFrameCounter then
 		print("LUA_TEST_FAIL - counter mismatch!")
-		os.exit(1)
+		-- Force exit here
+		os.sysexit(1)
 	end
 end
 
@@ -33,7 +34,8 @@ function testapp:intraFrame(dt)
 	print(tostring(self.intraFrameCounter) .. ": In intraFrame")
 	if self.intraFrameCounter ~= self.latePreFrameCounter then
 		print("LUA_TEST_FAIL - counter mismatch!")
-		os.exit(1)
+		-- Force exit here
+		os.sysexit(1)
 	end
 end
 
@@ -42,12 +44,12 @@ function testapp:postFrame(dt)
 	print(tostring(self.postFrameCounter) .. ": In postFrame")
 	if self.postFrameCounter ~= self.intraFrameCounter then
 		print("LUA_TEST_FAIL - counter mismatch!")
-		os.exit(1)
+		-- Force exit here
+		os.sysexit(1)
 	end
 	if self.postFrameCounter >= self.max then
 		print("Counter at maximum")
 		vrjKernel.stop()
-		os.exit(0)
 	end
 end
 
