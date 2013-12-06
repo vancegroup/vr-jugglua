@@ -42,39 +42,6 @@ struct Fixture {
     LuaScript s; // Needed to initialize the extra converters
 };
 
-/*
-void vecFunc(osg::Vec3d vec) {
-        std::cout << "Got the vector " << vec.x() << "," << vec.y() << "," <<
-vec.z() << std::endl;
-}
-
-void matrixFunc(osg::Matrixd mat) {
-        std::cout << "Got the matrix:" << std::endl;
-        for (unsigned int row = 0; row < 4; ++row) {
-                for (unsigned int col = 0; col < 4; ++col) {
-                        std::cout << std::setw(10) << mat(row, col);
-                        if (col != 3) {
-                                std::cout << ", ";
-                        }
-                }
-                std::cout << std::endl;
-        }
-}
-
-struct Fixture {
-        Fixture() {
-                LuaStatePtr ptr(s.getLuaState().lock());
-                module(ptr.get())[
-                    def("nodeFunc", &nodeFunc),
-                    def("groupFunc", &groupFunc),
-                    def("vecFunc", &vecFunc),
-                    def("matrixFunc", &matrixFunc)
-                ];
-        }
-        LuaScript s;
-
-};
-*/
 
 BOOST_AUTO_TEST_CASE(ConversionPathVec3fToVec3d) {
     osgLua::introspection::Value v = osg::Vec3f(1, 1, 1);
