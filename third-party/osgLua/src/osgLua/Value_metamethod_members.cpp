@@ -169,7 +169,6 @@ namespace osgLua {
 
         Value *v = _rawGet(L, 1);
 
-        Value *newVal = get(L, 3);
         if (lua_isstring(L, 2)) {
             const introspection::Type &type = v->getType();
             if (!type.isDefined()) {
@@ -189,8 +188,10 @@ namespace osgLua {
                     return luaL_error(L, "Property %s defined as not settable",
                                       prop->getName().c_str());
                 } else {
+                    introspection::Value newVal =
+                        getValue(L, 3, "New property value");
                     try {
-                        prop->setValue(v->get(), newVal->get());
+                        prop->setValue(v->get(), newVal);
                         return 0;
                     }
                     catch (introspection::Exception &e) {
