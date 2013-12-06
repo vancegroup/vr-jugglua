@@ -76,6 +76,8 @@ namespace vrjLua {
 
         LuaScript &operator=(const LuaScript &other);
 
+        static void initWithArgv0(const char *argv0);
+
         bool runFile(const std::string &fn, bool silentSuccess = true);
         bool runString(const std::string &str, bool silentSuccess = false);
         bool requireModule(const std::string &mod, bool silentSuccess = true);

@@ -21,6 +21,7 @@
 #include "LuaScript.h"
 #include "ApplyBinding.h"
 #include "LuaGCBlock.h"
+#include "LuaPath.h"
 
 #include "VRJLuaOutput.h"
 
@@ -112,6 +113,10 @@ namespace vrjLua {
 
         _state = other._state;
         return *this;
+    }
+
+    void LuaScript::initWithArgv0(const char *argv0) {
+        LuaPath::instance(argv0);
     }
 
     bool LuaScript::_handleLuaReturnCode(int returnVal,
