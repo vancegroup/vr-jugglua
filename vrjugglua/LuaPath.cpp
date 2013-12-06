@@ -140,16 +140,12 @@ namespace vrjLua {
         startingPlaces.push_back(fs::complete(vrjlua_base).string());
 #endif
         if (!arg0.empty()) {
-            std::cerr << "arg0: " << arg0 << std::endl;
 #if BOOST_FILESYSTEM_VERSION == 3
             _exeDir = fs::absolute(arg0).remove_leaf().string();
-            std::cerr << "first " << fs::absolute(arg0).string() << std::endl;
 #elif defined(BOOST_FILESYSTEM_NO_DEPRECATED)
             _exeDir = fs::complete(arg0).remove_filename().string();
-            std::cerr << "second " << fs::complete(arg0).string() << std::endl;
 #else
             _exeDir = fs::complete(arg0).remove_leaf().string();
-            std::cerr << "third " << fs::complete(arg0).string() << std::endl;
 #endif
             startingPlaces.push_back(_exeDir);
         }
