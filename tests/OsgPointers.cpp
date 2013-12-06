@@ -193,3 +193,13 @@ BOOST_AUTO_TEST_CASE(MatrixSingleConversionFromFloatRef) {
     Fixture f;
     BOOST_CHECK(f.s.runString("mat = osg.RefMatrixf(); matrixFunc(mat)"));
 }
+
+BOOST_AUTO_TEST_CASE(IntSingleConversionToFloat) {
+    Fixture f;
+    BOOST_CHECK(f.s.runString("osg.Vec3f(5, 5, 5)"));
+}
+
+BOOST_AUTO_TEST_CASE(IntSingleConversionToDouble) {
+    Fixture f;
+    BOOST_CHECK(f.s.runString("osg.Vec3d(5, 5, 5)"));
+}

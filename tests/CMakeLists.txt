@@ -139,6 +139,8 @@ add_boost_test(OsgPointers
 	MatrixExactMatchFromRef	#Conversion from refmatrix to matrix not supported?
 	MatrixSingleConversionFromRef
 	MatrixSingleConversionFromFloatRef
+	IntSingleConversionToFloat
+	IntSingleConversionToDouble
 )
 
 add_boost_test(OsgNumericConversion
