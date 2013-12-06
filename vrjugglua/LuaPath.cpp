@@ -209,18 +209,16 @@ namespace vrjLua {
         if (!vprLibraryPath.empty()) {
             try {
 #if BOOST_FILESYSTEM_VERSION == 3
-                return _findFilePath(
-                    fs::absolute(vprLibraryPath).remove_leaf().string(),
-                    jugglerTest.string());
+                std::string vprBasedRoot(
+                    fs::absolute(vprLibraryPath).remove_leaf().string());
 #elif defined(BOOST_FILESYSTEM_NO_DEPRECATED)
-                return _findFilePath(
-                    fs::complete(vprLibraryPath).remove_filename().string(),
-                    jugglerTest.string());
+                std::string vprBasedRoot(
+                    fs::complete(vprLibraryPath).remove_filename().string());
 #else
-                return _findFilePath(
-                    fs::complete(vprLibraryPath).remove_leaf().string(),
-                    jugglerTest.string());
+                std::string vprBasedRoot(
+                    fs::complete(vprLibraryPath).remove_leaf().string());
 #endif
+                return _findFilePath(vprBasedRoot, jugglerTest.string());
             }
             catch (std::runtime_error &) {
                 // nothing
