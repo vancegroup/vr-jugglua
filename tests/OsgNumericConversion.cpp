@@ -68,8 +68,6 @@ struct Fixture {
 };
 */
 
-LuaScript s;
-
 BOOST_AUTO_TEST_CASE(ConversionPathVec3fToVec3d) {
     osgLua::introspection::Value v = osg::Vec3f(1, 1, 1);
     BOOST_CHECK(!v.tryConvertTo(typeof(osg::Vec3d)).isEmpty());
