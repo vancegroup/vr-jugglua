@@ -81,7 +81,7 @@ namespace vrjLua {
 #ifdef BOOST_FILESYSTEM_NO_DEPRECATED
              location.has_parent_path() &&
 #else
-                 location.has_branch_path() &&
+             location.has_branch_path() &&
 #endif
                  i < 5 && fs::exists(location) && !fs::exists(filepath);
              ++i) {
