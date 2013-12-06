@@ -19,7 +19,7 @@
 
 // Internal Includes
 #include <vrjugglua/fltk-console/FLTKConsole.h>
-#include <vrjugglua/LuaPath.h>
+#include <vrjugglua/LuaScript.h>
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     Fl::get_system_colors();
 
     /// Tell it our application path
-    LuaPath lp = LuaPath::instance(argv[0]);
+    LuaScript::initWithArgv0(argv[0]);
 
     /// Load the startup script
     LuaScript script;

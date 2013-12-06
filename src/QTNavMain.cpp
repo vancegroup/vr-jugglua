@@ -21,7 +21,6 @@
 #include <vrjugglua/qt-console/QTConsole.h>
 #include <vrjugglua/LuaConsole.h>
 #include <vrjugglua/LuaScript.h>
-#include <vrjugglua/LuaPath.h>
 
 // Library/third-party includes
 #include <vrj/Kernel/Kernel.h>
@@ -40,7 +39,7 @@ int main(int argc, char *argv[]) {
     bool ret;
 
     /// Tell it our application path
-    LuaPath lp = LuaPath::instance(argv[0]);
+    LuaScript::initWithArgv0(argv[0]);
 
     /// Process command line args
     bool stubConsole = false;
