@@ -46,6 +46,12 @@
 // Standard includes
 #include <iostream>
 
+#ifdef VERBOSE
+#define VERBOSEDUMP(X) std::cerr << X << std::endl
+#else
+#define VERBOSEDUMP(X)
+#endif
+
 namespace osgLua {
     namespace {
         template <int Val> struct IntToType {};
