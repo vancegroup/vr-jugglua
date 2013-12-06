@@ -64,9 +64,15 @@ namespace osgLua {
             };
             typedef IntToType<DestType::num_components> NumComponentsType;
 
+          public:
+            VectorPrecisionConverter()
+                : srcName(typeof(SrcType).getQualifiedName())
+                , destName(typeof(DestType).getQualifiedName()) {}
             virtual ~VectorPrecisionConverter() {}
             virtual introspection::Value
             convert(const introspection::Value &src) const {
+                VERBOSEDUMP("In a VectorPrecisionConverter<"
+                            << srcName << ", " << destName << "> !");
                 return convertVec(introspection::variant_cast<SrcType>(src),
                                   NumComponentsType());
             }
@@ -92,14 +98,22 @@ namespace osgLua {
             virtual introspection::CastType getCastType() const {
                 return introspection::STATIC_CAST;
             }
+            std::string srcName;
+            std::string destName;
         };
 
         template <typename SrcType, typename DestType>
         class NumberPrecisionConverter : public introspection::Converter {
+          public:
+            NumberPrecisionConverter()
+                : srcName(typeof(SrcType).getQualifiedName())
+                , destName(typeof(DestType).getQualifiedName()) {}
 
             virtual ~NumberPrecisionConverter() {}
             virtual introspection::Value
             convert(const introspection::Value &src) const {
+                VERBOSEDUMP("In a NumberPrecisionConverter<"
+                            << srcName << ", " << destName << "> !");
                 return introspection::Value(static_cast<DestType>(
                     introspection::variant_cast<SrcType>(src)));
             }
@@ -107,6 +121,8 @@ namespace osgLua {
             virtual introspection::CastType getCastType() const {
                 return introspection::STATIC_CAST;
             }
+            std::string srcName;
+            std::string destName;
         };
 
         template <typename T> struct MatrixInfo;
@@ -144,10 +160,15 @@ namespace osgLua {
 
         template <typename SrcType, typename DestType>
         class MatrixPrecisionConverter : public introspection::Converter {
-
+          public:
+            MatrixPrecisionConverter()
+                : srcName(typeof(SrcType).getQualifiedName())
+                , destName(typeof(DestType).getQualifiedName()) {}
             virtual ~MatrixPrecisionConverter() {}
             virtual introspection::Value
             convert(const introspection::Value &src) const {
+                VERBOSEDUMP("In a MatrixPrecisionConverter<"
+                            << srcName << ", " << destName << "> !");
                 return MatrixInfo<DestType>::create(
                     MatrixInfo<SrcType>::getPtr(src));
                 // return
@@ -158,6 +179,9 @@ namespace osgLua {
             virtual introspection::CastType getCastType() const {
                 return introspection::STATIC_CAST;
             }
+
+            std::string srcName;
+            std::string destName;
         };
 
         template <template <typename, typename> class Converter, typename T1,
