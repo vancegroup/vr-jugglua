@@ -134,11 +134,14 @@ namespace vrjLua {
         _initialPath = fs::initial_path().string();
         std::vector<std::string> startingPlaces;
         startingPlaces.push_back(_initialPath);
+        if (!vrjlua_base.empty()) {
 #if BOOST_FILESYSTEM_VERSION == 3
-        startingPlaces.push_back(fs::absolute(vrjlua_base).string());
+            startingPlaces.push_back(fs::absolute(vrjlua_base).string());
 #else
-        startingPlaces.push_back(fs::complete(vrjlua_base).string());
+            startingPlaces.push_back(fs::complete(vrjlua_base).string());
 #endif
+        }
+
         if (!arg0.empty()) {
 #if BOOST_FILESYSTEM_VERSION == 3
             _exeDir = fs::absolute(arg0).remove_leaf().string();
