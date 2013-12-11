@@ -22,7 +22,7 @@ We have a Google Group that you're encouraged to use.
 Windows Downloads
 -----------------
 
-### <http://hci.iastate.edu/~rpavlik/downloads/vrjugglua/jenkins/>
+### <http://www.vrac.iastate.edu/vancegroup/downloads/vr-jugglua/>
 
 These are Windows automated snapshot builds, created every time the main repository is pushed to. Ready to unzip and use.
 
