@@ -114,26 +114,6 @@ namespace osgLua {
             const introspection::Type &type = value->getType();
             method = type.getCompatibleMethod(name, vl, true);
 
-            if (!method && vl.size() > 0) {
-                if (vl.back().getType().isNonConstPointer() &&
-                    vl.back().getInstanceType().isSubclassOf(
-                        introspection::Reflection::getType(
-                            "osg::NodeVisitor"))) {
-                    /// @todo make this more general instead of a
-                    /// visitor-specific hack
-                    // OK, we have a pointer to a visitor, let's search again
-                    // after dereferencing
-                    introspection::Value vPointer = vl.back();
-                    vl.pop_back();
-                    // Dereference the pointer
-                    vl.push_back(
-                        *introspection::variant_cast<osg::NodeVisitor *>(
-                             vPointer));
-
-                    // Search again for the method
-                    method = type.getCompatibleMethod(name, vl, true);
-                }
-            }
             if (!method) {
                 // Couldn't find a method
                 int top = lua_gettop(L);
