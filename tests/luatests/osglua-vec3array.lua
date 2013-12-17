@@ -31,10 +31,12 @@ a.Item[2] = osg.Vec3(2,2,2)
 assert(#(a.Item) == 2)
 assert(a.Item[2] == osg.Vec3(2,2,2))
 
+print "Removing"
 a.Item:remove(1)
 
 assert(#(a.Item) == 1)
 assert(a.Item[1] == osg.Vec3(2,2,2))
 
+print "Trying things that must fail."
 assert(pcall(function() a.Item[2] = osg.Vec4(2,2,2,2) end) == false)
 assert(pcall(function() a.Item[1] = osg.Vec4(2,2,2,2) end) == false)
