@@ -118,7 +118,7 @@ namespace osgLua {
                 // Couldn't find a method
                 int top = lua_gettop(L);
                 lua_pushfstring(L, "Error method %s::%s(",
-                                type.getName().c_str(),
+                                type.getQualifiedName().c_str(),
                                 lua_tostring(L, lua_upvalueindex(1)));
                 for (introspection::ValueList::iterator i = vl.begin();
                      i != vl.end(); ++i) {
