@@ -58,10 +58,10 @@ endif()
 
 if(BUILD_SHARED_OSGLUA)
 	set(LIBTYPE SHARED)
+	set(OSGLUA_LIBRARY_STATIC NO)
 else()
 	set(LIBTYPE STATIC)
-	set(OSGLUA_LIBRARY_STATIC)
-	add_definitions(-DOSGLUA_LIBRARY_STATIC)
+	set(OSGLUA_LIBRARY_STATIC YES)
 endif()
 
 configure_file("${HEADER_DIR}/Config.in" "${CMAKE_CURRENT_BINARY_DIR}/${HEADER_DIR}/Config")
