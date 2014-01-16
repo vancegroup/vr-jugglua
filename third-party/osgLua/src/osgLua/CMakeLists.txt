@@ -42,6 +42,7 @@ set(OSGLUA_PRIVATE_API
 set(HEADER_DIR ../../include/osgLua)
 set(OSGLUA_PUBLIC_API
 	${HEADER_DIR}/Callback
+	${HEADER_DIR}/osgLuabind
 	${HEADER_DIR}/LoadWrapper
 	${HEADER_DIR}/LuaInclude
 	${HEADER_DIR}/Script
