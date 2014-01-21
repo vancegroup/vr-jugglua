@@ -103,8 +103,7 @@ namespace luabind {
 
         /// Template function for shared score computation (both value and
         /// reference) - uses a type-dispatched partial specialized function
-        /// for the "inner section"
-        /// that differs between value and reference.
+        /// for the "inner section" that differs between value and reference.
         template <typename T>
         static int compute_osglua_score_for_type(lua_State *L, int index) {
             using osgLua::introspection::Type;
@@ -251,49 +250,28 @@ namespace osgLuabind {
     /// Example: template<> struct Blacklist<CreationRecord> : boost::true_type
     /// {};
     template <typename T, typename = void> struct Blacklist : false_type {};
-#if 0
 
-    /// Templated type trait: all types are assumed to
-    /// not be OSG, unless they derive from osg::Object or arrive in a ref_ptr,
-    /// and are not blacklisted.
-	template <typename, typename> struct IsObjectType;
-
-	template<typename T, typename Val>
-	struct EnableIfNotBlacklistedAnd : enable_if<typename and_<typename not_<typename Blacklist<T>::type>::type, Val>::type > {};
-
-	template<typename T, typename Val = boost::true_type>
-	struct EnableIfNotBlacklisted : EnableIfNotBlacklistedAnd<T, true_type> {};
-
-	template<typename T, typename = void>
-	struct IsObjectType : false_type {};
-
-	// Handle things derived from osg::Object, unless blacklisted
-	template<typename T>
-	struct IsObjectType<T, typename EnableIfNotOsgLuaBlacklistedAnd<T, typename is_base_and_derived<osg_ref_base_t,T>::type
-		>::type> : boost::true_type {};
-
-	// Handle things in osg::ref_ptr (unless contained type is blacklisted which would be weird)
-	template<typename T>
-	struct IsObjectType< ::osg::ref_ptr<T>, typename EnableIfNotBlacklisted<T>::type> : boost::true_type {};
-#endif
+    /// Templated type trait: all types descending from osg::Object are
+    /// assumed to be OSG Object types, unless they are blacklisted as above.
     template <typename T>
     struct IsObjectType
         : and_<typename not_<typename Blacklist<T>::type>::type,
                typename is_base_and_derived<osg_ref_base_t, T>::type> {};
 
 } // end of namespace osgLuabind
-//-- Reference Types --//
+
+//-- Object/Reference Types --//
 namespace luabind {
 
-    /// Raw pointers to objects inheriting from luabind::detail::osg_ref_base_t
+    /// Raw pointers to OSG object types
     /// should be converted as osgLua reference objects
     template <typename T>
     struct default_converter<T *,
                              typename boost::enable_if<osgLuabind::IsObjectType<
                                  T> >::type> : osglua_ref_converter_base<T> {};
 
-    /// Anything held in an osg::ref_ptr should be converted as an osgLua
-    /// reference object
+    /// Anything held in an osg::ref_ptr and an OSG object type should be
+    /// converted as an osgLua reference object
     template <typename T>
     struct default_converter<
         ::osg::ref_ptr<T>,
@@ -302,8 +280,7 @@ namespace luabind {
 
     namespace detail {
         /// Shared template function for looking up a type name string in
-        /// osgIntrospection
-        /// and pusing it onto the lua stack.
+        /// osgIntrospection and pusing it onto the lua stack.
         template <typename T> struct osglua_type_to_string {
             static void push(lua_State *L) {
                 using osgLua::introspection::Type;
@@ -315,13 +292,11 @@ namespace luabind {
         };
 
         /// type_to_string partial specialization for types inheriting from
-        /// luabind::detail::osg_ref_base_t
-        /// includes annotation mentioning osgLuaBind and type name from
-        /// osgIntrospection.
+        /// luabind::detail::osg_ref_base_t includes annotation mentioning
+        /// osgLuaBind and type name from osgIntrospection.
         ///
         /// @note Luabind includes forwarding partial specializations to apply
-        /// modifiers like *, &,
-        /// and const, so no need to define those here.
+        /// modifiers like *, &, and const, so no need to define those here.
         template <typename T>
         struct type_to_string<
             T, typename boost::enable_if<osgLuabind::IsObjectType<T> >::type> {
@@ -400,10 +375,8 @@ namespace luabind {
 /// not already mentioned at the bottom of this header, you'll need to use this
 /// macro in your source file to tag the type you're using as an OSG value type.
 /// Failing to do so will give you a weird error at runtime when trying to use
-/// that
-/// bound item that reads something like "No matching overload found,
-/// candidates:
-/// void functionname(custom [Z7osg...])"
+/// that bound item that reads something like "No matching overload found,
+/// candidates: void functionname(custom [Z7osg...])"
 #define CREATE_OSGLUA_VALUE_CONVERTER(T)                                       \
     namespace luabind {                                                        \
         template <> struct IsOSGValue<T> : boost::true_type {};                \
@@ -420,17 +393,13 @@ namespace luabind {
 /// @name Forward declaration and type trait tagging of common OSG value types.
 ///
 /// To bind something using one of these types, you'll still need to include
-/// that type's
-/// header, but forward declaration here keeps this header from forcing every
-/// file
-/// using it to include lots of extra headers.
+/// that type's header, but forward declaration here keeps this header from
+/// forcing every file using it to include lots of extra headers.
 ///
 /// Any value types may be added here to make their converter available
-/// automatically when
-/// including this file and the corresponding osg header. To make a converter
-/// available
-/// without modifying this main header, use the CREATE_OSGLUA_VALUE_CONVERTER
-/// macro.
+/// automatically when including this file and the corresponding osg header. To
+/// make a converter available without modifying this main header, use the
+/// CREATE_OSGLUA_VALUE_CONVERTER macro.
 ///
 /// @{
 
