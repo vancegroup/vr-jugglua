@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?org-vrjuggler-jccl-settings configuration.version="3.0"?>
+<configuration xmlns="http://www.vrjuggler.org/jccl/xsd/3.0/configuration" name="C:\Users\rpavlik\Downloads\vrjugglua-snapshot-to-troubleshoot-hydra\vrjugglua-install\testscript\RazerHydraGood.jconf" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.vrjuggler.org/jccl/xsd/3.0/configuration http://www.vrjuggler.org/jccl/xsd/3.0/configuration.xsd">
+   <elements>
+      <input_manager name="RazerHydraVRPNManager" version="2">
+         <driver>VRPN_drv</driver>
+      </input_manager>
+      <vrpn name="RazerHydra" version="2">
+         <tracker_server>Hydra0@localhost</tracker_server>
+         <button_server>Hydra0@localhost</button_server>
+         <analog_server>Hydra0@localhost</analog_server>
+         <tracker_count>2</tracker_count>
+         <button_count>14</button_count>
+         <analog_count>8</analog_count>
+         <min>-1.0</min>
+         <max>1.0</max>
+         <position_filters>
+            <position_transform_filter name="ChangeCoordinateSystem" version="1">
+               <pre_translate>0.0</pre_translate>
+               <pre_translate>0.0</pre_translate>
+               <pre_translate>0.0</pre_translate>
+               <pre_rotation>90.0</pre_rotation>
+               <pre_rotation>0.0</pre_rotation>
+               <pre_rotation>0.0</pre_rotation>
+               <custom_scale>1.0</custom_scale>
+               <device_units>1.0</device_units>
+               <post_translate>0.0</post_translate>
+               <post_translate>0.0</post_translate>
+               <post_translate>0.0</post_translate>
+               <post_rotation>90.0</post_rotation>
+               <post_rotation>0.0</post_rotation>
+               <post_rotation>0.0</post_rotation>
+            </position_transform_filter>
+         </position_filters>
+      </vrpn>
+      <position_proxy name="HydraLeftController" version="1">
+         <device>RazerHydra</device>
+         <unit>0</unit>
+      </position_proxy>
+      <position_proxy name="HydraRightController" version="1">
+         <device>RazerHydra</device>
+         <unit>1</unit>
+      </position_proxy>
+      <digital_proxy name="HydraLeftMiddleButton" version="1">
+         <device>RazerHydra</device>
+         <unit>0</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraLeftButton1" version="1">
+         <device>RazerHydra</device>
+         <unit>1</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraLeftButton2" version="1">
+         <device>RazerHydra</device>
+         <unit>2</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraLeftButton3" version="1">
+         <device>RazerHydra</device>
+         <unit>3</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraLeftButton4" version="1">
+         <device>RazerHydra</device>
+         <unit>4</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraLeftBumper" version="1">
+         <device>RazerHydra</device>
+         <unit>5</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraLeftJSButton" version="1">
+         <device>RazerHydra</device>
+         <unit>6</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraRightMiddleButton" version="1">
+         <device>RazerHydra</device>
+         <unit>8</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraRightButton1" version="1">
+         <device>RazerHydra</device>
+         <unit>9</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraRightButton2" version="1">
+         <device>RazerHydra</device>
+         <unit>10</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraRightButton3" version="1">
+         <device>RazerHydra</device>
+         <unit>11</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraRightButton4" version="1">
+         <device>RazerHydra</device>
+         <unit>12</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraRightBumper" version="1">
+         <device>RazerHydra</device>
+         <unit>13</unit>
+      </digital_proxy>
+      <digital_proxy name="HydraRightJSButton" version="1">
+         <device>RazerHydra</device>
+         <unit>14</unit>
+      </digital_proxy>
+      <analog_proxy name="HydraLeftJSX" version="1">
+         <device>RazerHydra</device>
+         <unit>0</unit>
+      </analog_proxy>
+      <analog_proxy name="HydraLeftJSY" version="1">
+         <device>RazerHydra</device>
+         <unit>1</unit>
+      </analog_proxy>
+      <analog_proxy name="HydraLeftTrigger" version="1">
+         <device>RazerHydra</device>
+         <unit>2</unit>
+      </analog_proxy>
+      <analog_proxy name="HydraRightJSX" version="1">
+         <device>RazerHydra</device>
+         <unit>3</unit>
+      </analog_proxy>
+      <analog_proxy name="HydraRightJSY" version="1">
+         <device>RazerHydra</device>
+         <unit>4</unit>
+      </analog_proxy>
+      <analog_proxy name="HydraRightTrigger" version="1">
+         <device>RazerHydra</device>
+         <unit>5</unit>
+      </analog_proxy>
+   </elements>
+</configuration>
+
