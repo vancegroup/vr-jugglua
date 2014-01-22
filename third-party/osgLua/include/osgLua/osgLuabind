@@ -31,9 +31,9 @@
 
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits/is_base_of.hpp>
+#include <boost/type_traits/is_const.hpp>
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/not.hpp>
-#include <boost/mpl/apply.hpp>
 
 // Standard includes
 #ifdef BUILD_OSGLUABIND_VERBOSE
@@ -237,6 +237,8 @@ namespace osgLuabind {
     using boost::true_type;
     using boost::false_type;
     using boost::is_base_and_derived;
+	using boost::is_const;
+
     // Convenience typedef for the root of the OSG referenced object class
     // hierarchy.
     typedef ::osg::Object osg_ref_base_t;
@@ -256,6 +258,7 @@ namespace osgLuabind {
     template <typename T>
     struct IsObjectType
         : and_<typename not_<typename Blacklist<T>::type>::type,
+               typename not_<typename is_const<T>::type>::type,
                typename is_base_and_derived<osg_ref_base_t, T>::type> {};
 
 } // end of namespace osgLuabind
@@ -299,7 +302,7 @@ namespace luabind {
         /// modifiers like *, &, and const, so no need to define those here.
         template <typename T>
         struct type_to_string<
-            T, typename boost::enable_if<osgLuabind::IsObjectType<T> >::type> {
+			T, typename boost::enable_if<typename osgLuabind::IsObjectType<T>::type >::type> {
             static void get(lua_State *L) {
                 lua_pushstring(L, "[osgLuaBind object] ");
                 osglua_type_to_string<T>::push(L);
