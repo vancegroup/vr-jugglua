@@ -78,6 +78,8 @@ namespace vrjLua {
                  .def("pause", &snx::SoundHandle::pause)
                  .def("unpause", &snx::SoundHandle::unpause)
                  .property("isPaused", &snx::SoundHandle::isPaused)
+				 .def("setVolume",&snx::SoundHandle::setVolume)
+				 .def("setPitchBend",&snx::SoundHandle::setPitchBend)
                  .property("ambient", &snx::SoundHandle::isAmbient,
                            &snx::SoundHandle::setAmbient)
                  .property("retriggerable", &snx::SoundHandle::isRetriggerable,
