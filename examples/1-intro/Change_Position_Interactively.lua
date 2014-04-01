@@ -21,12 +21,12 @@ RelativeTo.World:addChild(xform)
 -- 5) Run this script in VRJuggLua.
 
 -- 6) Once the script is running, move the xform object with the setPosition method.
--- Enter the following command into the VRJuggLua Scenegraph Navigation Testbed Window and hit "Run"
+-- Enter the following command into the VR JuggLua Scenegraph Navigation Testbed Window and hit "Run"
 -- xform:setPosition(Vec(1, 0, 0))
 
 --[[
-You can enter commands into the VRJuggLua Scenegraph Navigation Testbed Window interactively. 
-This means you do not have to re-run the script everytime you make a change. If enter a change into 
+You can enter commands into the VR JuggLua Scenegraph Navigation Testbed Window interactively. 
+This means you do not have to re-run the script everytime you make a change. If you enter a change into 
 the Testbed Window you like, make sure to include it in your script.
 ]]--
 
