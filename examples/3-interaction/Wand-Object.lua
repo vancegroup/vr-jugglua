@@ -1,4 +1,3 @@
-require("Actions")
 
 --This example allows you to load in a model and have it
 --fixed to the wand.  This is usful in simulation mode for
@@ -7,10 +6,11 @@ require("Actions")
 
 device = gadget.PositionInterface("VJWand")
 
-Actions.addFrameAction(function()
-		local xform = osg.MatrixTransform()
-		m = Model("examples/models/cessna.osg")
-		xform:addChild(m)
+Actions.addFrameAction(
+	function()
+		local xform = MatrixTransform{
+			Model("examples/models/cessna.osg")
+		}
 
 		RelativeTo.Room:addChild(xform)
 
@@ -19,5 +19,6 @@ Actions.addFrameAction(function()
 			xform:setMatrix(device.matrix)
 			Actions.waitForRedraw()
 		end
-	end)
+	end
+)
 
