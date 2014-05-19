@@ -2,8 +2,6 @@ if(BUILD_LUA_AS_CPP)
 	add_definitions(-DLUABIND_CPLUSPLUS_LUA)
 endif()
 
-add_definitions(-DOSGLUA_LIBRARY_STATIC)
-
 add_definitions(${LUABIND_DEFINITIONS})
 
 include_directories(${VRJUGGLER_INCLUDE_DIRS}
