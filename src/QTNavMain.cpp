@@ -70,7 +70,6 @@ int main(int argc, char *argv[]) {
         std::cout << "Creating stub console, as requested..." << std::endl;
         console = boost::make_shared<StubConsole>(script);
     } else {
-        Q_INIT_RESOURCE(QTConsoleResources);
         QTConsole::setup(argc, argv);
         console = boost::make_shared<QTConsole>(script);
     }

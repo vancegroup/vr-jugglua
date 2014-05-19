@@ -41,6 +41,11 @@
 #include <stdexcept>
 #include <cassert>
 
+
+static void initResource() {
+    Q_INIT_RESOURCE(QTConsoleResources);
+}
+
 namespace vrjLua {
 
     QApplication *QTConsole::s_app = NULL;
@@ -50,6 +55,8 @@ namespace vrjLua {
     static const int LOG_UPDATE_INTERVAL = 250;
 
     void QTConsole::setup(int &argc, char *argv[]) {
+
+        initResource();
         s_app = new QApplication(argc, argv);
     }
 
