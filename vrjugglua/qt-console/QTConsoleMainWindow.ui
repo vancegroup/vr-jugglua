@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="QTConsoleResources.qrc">
-    <normaloff>:/icon/vector.svg</normaloff>:/icon/vector.svg</iconset>
+    <normaloff>:/icon/48.png</normaloff>:/icon/48.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">

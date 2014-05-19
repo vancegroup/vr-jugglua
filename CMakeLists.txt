@@ -229,7 +229,7 @@ endif()
 
 # Qt
 if(BUILD_QT_GUI)
-	find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+	find_package(Qt4 COMPONENTS QtCore QtGui QtSvg REQUIRED)
 	if(WIN32)
 		list(APPEND RUNTIME_LIBRARY_DIRS ${QT_LIBRARY_DIR}/../bin)
 	else()
