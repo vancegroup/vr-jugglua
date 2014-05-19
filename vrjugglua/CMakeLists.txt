@@ -44,7 +44,7 @@ set(SOURCES
 set(API
 	AddToLuaPaths.h
 	ApplyBinding.h
-	osgLuaBind.h
+	FindVPRDLL.h
 	Internal_AnalogInterface.h
 	Internal_DigitalInterface.h
 	Internal_PositionInterface.h
@@ -59,8 +59,11 @@ set(API
 	LuaPathUpdater.h
 	LuaRunBuffer.h
 	LuaScript.h
+	LuaStateFwd.h
 	OsgAppProxy.h
+	osgLuaBind.h
 	Reconfiguration.h
+	RunLoopManager.h
 	SearchPathString.h
 	SynchronizedRunBuffer.h
 	VRJLua_C_Interface.h
