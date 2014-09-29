@@ -1,0 +1,23 @@
+It is encouraged to learn the examples in the following order.
+
+1. LoadModel.lua
+
+2. AddDirectly
+.lua
+
+3. Transformation
+.lua
+
+4. Orientation.lua
+
+5. DisplayingText
+.lua
+
+6. Group.lua
+
+7. RelativeTo.lua
+
+
+8. Change_Position_Interactively.lua
+
+9. TransparentGroup.lua

@@ -1,6 +1,9 @@
---[[ EXAMPLE: RelativeTo.lua
-
-Builds on DisplayingText.lua so learn that one first.
+--[[
+EXAMPLE: RelativeTo.lua
+PREREQUISITE: DisplayingText.lua and AddDirectly.lua
+DESCRIPTION: Here we create 2 TextGeodes. We attach one relative to the world
+			 and one relative to the room. The one attached relative to the room
+			 will always be in the same physical space.
 ]]
 
 require("Text")
